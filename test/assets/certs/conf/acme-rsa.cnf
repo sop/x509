@@ -1,0 +1,100 @@
+[ req ]
+default_md				= sha1
+string_mask				= utf8only
+utf8					= yes
+distinguished_name		= req_dn
+req_extensions			= req_ext
+attributes				= req_attribs
+x509_extensions			= x509_ext
+
+[ req_dn ]
+
+[ req_ext ]
+keyUsage				= keyCertSign, keyEncipherment
+
+[ req_attribs ]
+
+[ x509_ext ]
+basicConstraints		= CA:TRUE, pathlen:3
+keyUsage				= keyCertSign, keyEncipherment
+extendedKeyUsage		= serverAuth, timeStamping
+subjectKeyIdentifier	= hash
+# issuer used for test purposes here (https://www.v13.gr/blog/?p=293)
+authorityKeyIdentifier	= keyid:always, issuer:always
+subjectAltName			= email:foo@example.com, \
+						  URI:urn:foo:bar, \
+						  DNS:alt.example.com, \
+						  RID:1.3.6.1.4.1.45710.2.1, \
+						  IP:127.0.0.1, \
+						  IP:2001:0db8:85a3:0000:0000:8a2e:0370:7334, \
+						  dirName:san_dir, \
+						  otherName:1.3.6.1.4.1.45710.2.2;UTF8:example
+issuerAltName			= issuer:copy
+authorityInfoAccess		= caIssuers;URI:http://example.com/ca.html
+crlDistributionPoints	= crldp
+freshestCRL				= deltadp
+certificatePolicies		= @policy
+policyConstraints		= requireExplicitPolicy:3,inhibitPolicyMapping:1
+inhibitAnyPolicy		= 2
+nameConstraints			= permitted;DNS:.example.com
+2.5.29.9				= ASN1:SEQUENCE:subj_dir_attribs
+
+[ san_dir ]
+CN						= alt.example.com
+C						= FI
+O						= ACME Alternative Ltd.
+
+[ crldp ]
+fullname				= URI:http://example.com/myca.crl
+CRLissuer				= dirName:crl_issuer
+reasons					= keyCompromise, CACompromise
+
+[ crl_issuer ]
+O						= ACME Ltd.
+CN						= ACME
+
+[ deltadp ]
+relativename			= deltadp_dn
+CRLissuer				= dirName:crl_issuer
+reasons					= keyCompromise, CACompromise
+
+[ deltadp_dn ]
+CN						= Delta Distribution Point
+
+[ policy ]
+policyIdentifier		= 1.3.6.1.4.1.45710.2.2.1
+CPS.1					= http://example.com/cps.html
+userNotice.1			= @unotice
+
+[ unotice ]
+explicitText			= "All your base are belong to us!"
+organization			= "Toaplan Co., Ltd."
+noticeNumbers			= 1, 2
+
+[ subj_dir_attribs ]
+attr1					= SEQUENCE:subj_dir_attr1
+
+[ subj_dir_attr1 ]
+type					= OID:description
+values					= SETWRAP,UTF8:A Company Manufacturing Everything
+
+[ ca ]
+default_ca				= acme_ca
+
+[ acme_ca ]
+database				= db/ca.db
+serial					= db/serial.txt
+unique_subject			= no
+email_in_dn				= no
+policy					= ca_policy_any
+default_days			= 30
+default_md				= sha1
+x509_extensions			= x509_ext
+
+[ ca_policy_any ]
+countryName				= optional
+stateOrProvinceName		= optional
+organizationName		= supplied
+organizationalUnitName	= optional
+commonName				= supplied
+emailAddress			= optional

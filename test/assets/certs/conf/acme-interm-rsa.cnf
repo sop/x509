@@ -1,0 +1,44 @@
+[ req ]
+default_md				= sha256
+string_mask				= utf8only
+utf8					= yes
+distinguished_name		= req_dn
+req_extensions			= req_ext
+x509_extensions			= x509_ext
+
+[ req_dn ]
+
+[ req_ext ]
+
+[ x509_ext ]
+basicConstraints		= CA:TRUE, pathlen:2
+keyUsage				= keyCertSign
+subjectKeyIdentifier	= hash
+authorityKeyIdentifier	= keyid:always
+subjectAltName			= dirName:san_dir
+
+[ san_dir ]
+CN						= ACME Wheel Intermediate
+C						= FI
+O						= ACME Alternative Ltd.
+
+[ ca ]
+default_ca				= acme_ca
+
+[ acme_ca ]
+database				= db/ca.db
+serial					= db/serial.txt
+unique_subject			= no
+email_in_dn				= no
+policy					= ca_policy_any
+default_days			= 30
+default_md				= sha256
+x509_extensions			= x509_ext
+
+[ ca_policy_any ]
+countryName				= optional
+stateOrProvinceName		= optional
+organizationName		= supplied
+organizationalUnitName	= optional
+commonName				= supplied
+emailAddress			= optional

@@ -1,0 +1,39 @@
+[ req ]
+default_md				= sha1
+string_mask				= utf8only
+utf8					= yes
+distinguished_name		= req_dn
+req_extensions			= req_ext
+attributes				= req_attribs
+x509_extensions			= x509_ext
+
+[ req_dn ]
+
+[ req_ext ]
+
+[ req_attribs ]
+
+[ x509_ext ]
+subjectKeyIdentifier	= hash
+authorityKeyIdentifier	= keyid:always
+
+[ ca ]
+default_ca				= acme_ca
+
+[ acme_ca ]
+database				= db/ca.db
+serial					= db/serial.txt
+unique_subject			= no
+email_in_dn				= no
+policy					= ca_policy_any
+default_days			= 30
+default_md				= sha1
+x509_extensions			= x509_ext
+
+[ ca_policy_any ]
+countryName				= optional
+stateOrProvinceName		= optional
+organizationName		= supplied
+organizationalUnitName	= optional
+commonName				= supplied
+emailAddress			= optional

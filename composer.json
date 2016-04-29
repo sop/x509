@@ -1,0 +1,29 @@
+{
+	"name": "sop/x509",
+	"description": "A PHP library for X.509 certificates.",
+	"homepage": "https://github.com/sop/x509",
+	"license": "MIT",
+	"type": "library",
+	"keywords": ["x509", "x.509", "certificate", 
+		"attribute certificate", "ac", 
+		"certification request", "csr"],
+	"authors": [
+		{
+			"name": "Joni Eskelinen",
+			"email": "jonieske@gmail.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.6.3",
+		"ext-openssl": "*",
+		"sop/asn1": "^1.0.1",
+		"sop/x501": "dev-master",
+		"sop/crypto-util": "^1.1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"X509\\": "lib/X509/"
+		}
+	}
+}

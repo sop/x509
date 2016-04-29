@@ -1,0 +1,23 @@
+[ req ]
+default_md				= sha512
+string_mask				= utf8only
+utf8					= yes
+distinguished_name		= req_dn
+req_extensions			= req_ext
+x509_extensions			= x509_ext
+
+[ req_dn ]
+
+[ req_ext ]
+
+[ x509_ext ]
+basicConstraints		= CA:TRUE, pathlen:5
+keyUsage				= keyCertSign
+subjectKeyIdentifier	= hash
+authorityKeyIdentifier	= keyid:always
+subjectAltName			= dirName:san_dir
+
+[ san_dir ]
+CN						= ACME Wheel
+C						= FI
+O						= ACME Alternative Ltd.
