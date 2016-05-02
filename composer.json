@@ -16,7 +16,6 @@
 	],
 	"require": {
 		"php": ">=5.6.3",
-		"ext-openssl": "*",
 		"sop/asn1": "^1.0.1",
 		"sop/x501": "^0.1.0",
 		"sop/crypto-util": "^1.1.0"
