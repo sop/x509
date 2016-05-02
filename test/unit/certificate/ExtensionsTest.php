@@ -102,4 +102,16 @@ class ExtensionsTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(2, $values);
 		$this->assertContainsOnlyInstancesOf(Extension::class, $values);
 	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Extensions $exts
+	 */
+	public function testWithExtensions(Extensions $exts) {
+		static $oid = "1.3.6.1.3.3";
+		$exts = $exts->withExtensions(
+			new UnknownExtension($oid, true, new DERData("\x05\x00")));
+		$this->assertTrue($exts->has($oid));
+	}
 }
