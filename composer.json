@@ -1,6 +1,6 @@
 {
 	"name": "sop/x509",
-	"description": "A PHP library for X.509 certificates.",
+	"description": "A PHP library for X.509 public key certificates, attribute certificates, certification requests and certification path validation.",
 	"homepage": "https://github.com/sop/x509",
 	"license": "MIT",
 	"type": "library",
@@ -18,7 +18,7 @@
 		"php": ">=5.6.3",
 		"ext-openssl": "*",
 		"sop/asn1": "^1.0.1",
-		"sop/x501": "dev-master",
+		"sop/x501": "^0.1.0",
 		"sop/crypto-util": "^1.1.0"
 	},
 	"autoload": {
