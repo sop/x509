@@ -15,6 +15,9 @@ use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\PEM\PEM;
 use X501\ASN1\Name;
+use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
+use X509\Certificate\Extension\Extension;
+use X509\Certificate\Extension\SubjectKeyIdentifierExtension;
 use X509\CertificationRequest\CertificationRequest;
 
 
@@ -172,13 +175,44 @@ class TBSCertificate
 		$cri = $cr->certificationRequestInfo();
 		$tbs_cert = new self($cri->subject(), $cri->subjectPKInfo(), new Name(), 
 			Validity::fromStrings(null, null));
+		// if CSR has Extension Request attribute
 		if ($cri->hasAttributes()) {
 			$attribs = $cri->attributes();
 			if ($attribs->hasExtensionRequest()) {
-				$tbs_cert->_extensions = $attribs->extensionRequest()->extensions();
+				$tbs_cert = $tbs_cert->withExtensions(
+					$attribs->extensionRequest()
+						->extensions());
 			}
 		}
+		// add Subject Key Identifier extension
+		$tbs_cert = $tbs_cert->withAdditionalExtensions(
+			new SubjectKeyIdentifierExtension(false, 
+				$cri->subjectPKInfo()
+					->keyIdentifier()));
 		return $tbs_cert;
+	}
+	
+	/**
+	 * Get self with fields set from the issuer's certificate.
+	 *
+	 * Issuer shall be set to issuing certificate's subject.
+	 * Authority key identifier extensions shall be added with a key identifier
+	 * set to issuing certificate's public key identifier.
+	 *
+	 * @param Certificate $cert Issuing party's certificate
+	 * @return self
+	 */
+	public function withIssuerCertificate(Certificate $cert) {
+		$obj = clone $this;
+		// set issuer DN from cert's subject
+		$obj->_issuer = $cert->tbsCertificate()->subject();
+		// add authority key identifier extension
+		$key_id = $cert->tbsCertificate()
+			->subjectPublicKeyInfo()
+			->keyIdentifier();
+		$obj->_extensions = $obj->_extensions->withExtensions(
+			new AuthorityKeyIdentifierExtension(true, $key_id));
+		return $obj;
 	}
 	
 	/**
@@ -277,6 +311,18 @@ class TBSCertificate
 	public function withExtensions(Extensions $extensions) {
 		$obj = clone $this;
 		$obj->_extensions = $extensions;
+		return $obj;
+	}
+	
+	/**
+	 * Get self with extensions added.
+	 *
+	 * @param Extension ...$exts One or more Extension objects
+	 * @return self
+	 */
+	public function withAdditionalExtensions(Extension ...$exts) {
+		$obj = clone $this;
+		$obj->_extensions = $obj->_extensions->withExtensions(...$exts);
 		return $obj;
 	}
 	
