@@ -77,6 +77,20 @@ class Extensions implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Get self with extensions added.
+	 *
+	 * @param Extension ...$ext One or more extensions to add
+	 * @return self
+	 */
+	public function withExtensions(Extension ...$exts) {
+		$obj = clone $this;
+		foreach ($exts as $ext) {
+			$obj->_extensions[$ext->oid()] = $ext;
+		}
+		return $obj;
+	}
+	
+	/**
 	 * Check whether extension is present.
 	 *
 	 * @param string $oid Extensions OID
