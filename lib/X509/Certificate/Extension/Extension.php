@@ -94,7 +94,7 @@ abstract class Extension
 	 *
 	 * @var array
 	 */
-	private static $_oidToCls = array(
+	const OID_TO_CLS = array(
 		/* @formatter:off */
 		self::OID_AUTHORITY_KEY_IDENTIFIER => AuthorityKeyIdentifierExtension::class,
 		self::OID_SUBJECT_KEY_IDENTIFIER => SubjectKeyIdentifierExtension::class,
@@ -176,8 +176,8 @@ abstract class Extension
 			$critical = $seq->at($idx++)->value();
 		}
 		$data = $seq->at($idx, Element::TYPE_OCTET_STRING)->str();
-		if (isset(self::$_oidToCls[$extnID])) {
-			$cls = self::$_oidToCls[$extnID];
+		if (array_key_exists($extnID, self::OID_TO_CLS)) {
+			$cls = self::OID_TO_CLS[$extnID];
 			return $cls::_fromDER($data, $critical);
 		}
 		return new UnknownExtension($extnID, $critical, new DERData($data));
