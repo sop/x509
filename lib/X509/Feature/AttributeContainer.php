@@ -56,7 +56,7 @@ trait AttributeContainer
 	public function firstOf($name) {
 		$attr = $this->_findFirst($name);
 		if (!$attr) {
-			throw new \OutOfBoundsException("No $name attribute");
+			throw new \OutOfBoundsException("No $name attribute.");
 		}
 		return $attr;
 	}

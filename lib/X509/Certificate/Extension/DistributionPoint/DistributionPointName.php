@@ -51,7 +51,7 @@ abstract class DistributionPointName
 				RDN::fromASN1($el->implicit(Element::TYPE_SET)));
 		default:
 			throw new \UnexpectedValueException(
-				"Tag " . $el->tag() . " not supported");
+				"DistributionPointName tag " . $el->tag() . " not supported.");
 		}
 	}
 	

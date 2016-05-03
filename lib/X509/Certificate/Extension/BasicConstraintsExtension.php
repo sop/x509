@@ -82,7 +82,7 @@ class BasicConstraintsExtension extends Extension
 	 */
 	public function pathLen() {
 		if (!$this->hasPathLen()) {
-			throw new \LogicException("Path length constraint not set");
+			throw new \LogicException("pathLenConstraint not set.");
 		}
 		return $this->_pathLen;
 	}

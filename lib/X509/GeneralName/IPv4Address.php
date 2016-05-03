@@ -25,7 +25,7 @@ class IPv4Address extends IPAddress
 			$mask = implode(".", array_slice($bytes, 4, 4));
 			break;
 		default:
-			throw new \InvalidArgumentException("Invalid IPv4 octet length");
+			throw new \InvalidArgumentException("Invalid IPv4 octet length.");
 		}
 		return new self($ip, $mask);
 	}

@@ -63,7 +63,7 @@ class CertificatePoliciesExtension extends Extension implements \Countable,
 	 */
 	public function get($oid) {
 		if (!$this->has($oid)) {
-			throw \OutOfBoundsException("Not certificate policy by OID $oid");
+			throw \OutOfBoundsException("Not certificate policy by OID $oid.");
 		}
 		return $this->_policies[$oid];
 	}

@@ -92,7 +92,7 @@ class V2Form extends AttCertIssuer
 	 */
 	public function issuerName() {
 		if (!$this->hasIssuerName()) {
-			throw new \LogicException("issuerName not set");
+			throw new \LogicException("issuerName not set.");
 		}
 		return $this->_issuerName;
 	}

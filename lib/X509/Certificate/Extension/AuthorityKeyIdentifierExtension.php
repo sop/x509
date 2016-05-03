@@ -69,7 +69,7 @@ class AuthorityKeyIdentifierExtension extends Extension
 				throw new \UnexpectedValueException(
 					"AuthorityKeyIdentifier must have both" .
 						 " authorityCertIssuer and authorityCertSerialNumber" .
-						 " present or both absent");
+						 " present or both absent.");
 			}
 			$issuer = GeneralNames::fromASN1(
 				$seq->getTagged(1)->implicit(Element::TYPE_SEQUENCE));
@@ -97,7 +97,7 @@ class AuthorityKeyIdentifierExtension extends Extension
 	 */
 	public function keyIdentifier() {
 		if (!$this->hasKeyIdentifier()) {
-			throw new \LogicException("Key identifier not set");
+			throw new \LogicException("keyIdentifier not set.");
 		}
 		return $this->_keyIdentifier;
 	}
@@ -119,7 +119,7 @@ class AuthorityKeyIdentifierExtension extends Extension
 	 */
 	public function issuer() {
 		if (!$this->hasIssuer()) {
-			throw new \LogicException("Issuer not set");
+			throw new \LogicException("authorityCertIssuer not set.");
 		}
 		return $this->_authorityCertIssuer;
 	}
@@ -133,7 +133,7 @@ class AuthorityKeyIdentifierExtension extends Extension
 	public function serial() {
 		// both issuer and serial must be present or both absent
 		if (!$this->hasIssuer()) {
-			throw new \LogicException("Issuer not set");
+			throw new \LogicException("authorityCertSerialNumber not set.");
 		}
 		return $this->_authorityCertSerialNumber;
 	}

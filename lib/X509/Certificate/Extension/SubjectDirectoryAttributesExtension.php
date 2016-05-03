@@ -41,7 +41,7 @@ class SubjectDirectoryAttributesExtension extends Extension implements
 	protected function _valueASN1() {
 		if (!count($this->_attributes)) {
 			throw new \LogicException(
-				"SubjectDirectoryAttributes must have at least one Attribute");
+				"SubjectDirectoryAttributes must have at least one Attribute.");
 		}
 		$elements = array_map(
 			function (Attribute $attr) {

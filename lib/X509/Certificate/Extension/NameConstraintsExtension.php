@@ -75,7 +75,7 @@ class NameConstraintsExtension extends Extension
 	 */
 	public function permittedSubtrees() {
 		if (!$this->hasPermittedSubtrees()) {
-			throw new \LogicException("No permitted subtrees");
+			throw new \LogicException("No permitted subtrees.");
 		}
 		return $this->_permitted;
 	}
@@ -97,7 +97,7 @@ class NameConstraintsExtension extends Extension
 	 */
 	public function excludedSubtrees() {
 		if (!$this->hasExcludedSubtrees()) {
-			throw new \LogicException("No excluded subtrees");
+			throw new \LogicException("No excluded subtrees.");
 		}
 		return $this->_excluded;
 	}

@@ -97,7 +97,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 */
 	public function extensionRequest() {
 		if (!$this->hasExtensionRequest()) {
-			throw new \LogicException("No extension request attribute");
+			throw new \LogicException("No extension request attribute.");
 		}
 		return $this->firstOf(ExtensionRequestValue::OID)->first();
 	}

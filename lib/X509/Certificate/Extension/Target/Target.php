@@ -63,9 +63,10 @@ abstract class Target
 		case self::TYPE_GROUP:
 			return TargetGroup::_fromASN1($el->explicit());
 		case self::TYPE_CERT:
-			throw new \RuntimeException("targetCert not supported");
+			throw new \RuntimeException("targetCert not supported.");
 		}
-		throw new \UnexpectedValueException("Invalid type");
+		throw new \UnexpectedValueException(
+			"Target type " . $el->tag() . " not supported.");
 	}
 	
 	/**

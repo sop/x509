@@ -67,7 +67,7 @@ abstract class IPAddress extends GeneralName
 			return IPv6Address::fromOctets($octets);
 		default:
 			throw new \UnexpectedValueException(
-				"Invalid octet length for IP addrses");
+				"Invalid octet length for IP address.");
 		}
 	}
 	

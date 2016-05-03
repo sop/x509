@@ -115,7 +115,7 @@ class AttributeCertificateInfo
 	public static function fromASN1(Sequence $seq) {
 		$version = $seq->at(0, Element::TYPE_INTEGER)->number();
 		if ($version != self::VERSION_2) {
-			throw new \UnexpectedValueException("Version must be 2");
+			throw new \UnexpectedValueException("Version must be 2.");
 		}
 		$holder = Holder::fromASN1($seq->at(1, Element::TYPE_SEQUENCE));
 		$issuer = AttCertIssuer::fromASN1($seq->at(2));

@@ -25,7 +25,7 @@ class IPv6Address extends IPAddress
 			$mask = self::_wordsToIPv6String(array_slice($words, 8, 8));
 			break;
 		default:
-			throw new \InvalidArgumentException("Invalid IPv6 octet length");
+			throw new \InvalidArgumentException("Invalid IPv6 octet length.");
 		}
 		return new self($ip, $mask);
 	}

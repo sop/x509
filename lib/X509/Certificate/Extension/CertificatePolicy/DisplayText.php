@@ -93,7 +93,7 @@ class DisplayText
 			return new UTF8String($this->_text);
 		default:
 			throw new \UnexpectedValueException(
-				"Type " . Element::tagToName($this->_tag) . " not supported");
+				"Type " . Element::tagToName($this->_tag) . " not supported.");
 		}
 	}
 	

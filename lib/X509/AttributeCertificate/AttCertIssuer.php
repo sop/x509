@@ -46,12 +46,12 @@ abstract class AttCertIssuer
 	 */
 	public static function fromASN1(Element $el) {
 		if (!$el->isTagged()) {
-			throw new \UnexpectedValueException("v1Form issuer not supported");
+			throw new \UnexpectedValueException("v1Form issuer not supported.");
 		}
 		switch ($el->tag()) {
 		case 0:
 			return V2Form::_fromASN1($el->implicit(Element::TYPE_SEQUENCE));
 		}
-		throw new \UnexpectedValueException("Unsupported issuer type");
+		throw new \UnexpectedValueException("Unsupported issuer type.");
 	}
 }

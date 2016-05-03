@@ -95,7 +95,7 @@ class DistributionPoint
 	 */
 	public function distributionPointName() {
 		if (!$this->hasDistributionPointName()) {
-			throw new \LogicException("distributionPoint not set");
+			throw new \LogicException("distributionPoint not set.");
 		}
 		return $this->_distributionPoint;
 	}
@@ -118,7 +118,7 @@ class DistributionPoint
 	 */
 	public function fullName() {
 		if (!$this->hasFullName()) {
-			throw new \LogicException("fullName not set");
+			throw new \LogicException("fullName not set.");
 		}
 		return $this->_distributionPoint;
 	}
@@ -141,7 +141,7 @@ class DistributionPoint
 	 */
 	public function relativeName() {
 		if (!$this->hasRelativeName()) {
-			throw new \LogicException("nameRelativeToCRLIssuer not set");
+			throw new \LogicException("nameRelativeToCRLIssuer not set.");
 		}
 		return $this->_distributionPoint;
 	}
@@ -163,7 +163,7 @@ class DistributionPoint
 	 */
 	public function reasons() {
 		if (!$this->hasReasons()) {
-			throw new \LogicException("reasons not set");
+			throw new \LogicException("reasons not set.");
 		}
 		return $this->_reasons;
 	}
@@ -185,7 +185,7 @@ class DistributionPoint
 	 */
 	public function crlIssuer() {
 		if (!$this->hasCRLIssuer()) {
-			throw new \LogicException("crlIssuer not set");
+			throw new \LogicException("crlIssuer not set.");
 		}
 		return $this->_issuer;
 	}

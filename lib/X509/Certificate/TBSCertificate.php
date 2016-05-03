@@ -342,7 +342,7 @@ class TBSCertificate
 	 */
 	public function version() {
 		if (!$this->hasVersion()) {
-			throw new \LogicException("version not set");
+			throw new \LogicException("version not set.");
 		}
 		return $this->_version;
 	}
@@ -363,7 +363,7 @@ class TBSCertificate
 	 */
 	public function serialNumber() {
 		if (!$this->hasSerialNumber()) {
-			throw new \LogicException("serialNumber not set");
+			throw new \LogicException("serialNumber not set.");
 		}
 		return $this->_serialNumber;
 	}
@@ -384,7 +384,7 @@ class TBSCertificate
 	 */
 	public function signature() {
 		if (!$this->hasSignature()) {
-			throw new \LogicException("signature not set");
+			throw new \LogicException("signature not set.");
 		}
 		return $this->_signature;
 	}
@@ -441,7 +441,7 @@ class TBSCertificate
 	 */
 	public function issuerUniqueID() {
 		if (!$this->hasIssuerUniqueID()) {
-			throw new \LogicException("issuerUniqueID not set");
+			throw new \LogicException("issuerUniqueID not set.");
 		}
 		return $this->_issuerUniqueID;
 	}
@@ -462,7 +462,7 @@ class TBSCertificate
 	 */
 	public function subjectUniqueID() {
 		if (!$this->hasSubjectUniqueID()) {
-			throw new \LogicException("subjectUniqueID not set");
+			throw new \LogicException("subjectUniqueID not set.");
 		}
 		return $this->_subjectUniqueID;
 	}

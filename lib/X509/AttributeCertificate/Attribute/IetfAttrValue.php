@@ -56,7 +56,7 @@ class IetfAttrValue
 			return new self($el->oid(), $el->tag());
 		}
 		throw new \UnexpectedValueException(
-			"Type " . $el->tag() . " not supproted");
+			"Type " . Element::tagToName($el->tag()) . " not supported.");
 	}
 	
 	/**
@@ -149,7 +149,8 @@ class IetfAttrValue
 		case Element::TYPE_OBJECT_IDENTIFIER:
 			return new ObjectIdentifier($this->_value);
 		}
-		throw new \LogicException("Unsupported type");
+		throw new \LogicException(
+			"Type " . Element::tagToName($this->_type) . " not supported.");
 	}
 	
 	public function __toString() {

@@ -43,7 +43,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	public static function fromASN1(Sequence $seq) {
 		if (!count($seq)) {
 			throw new \UnexpectedValueException(
-				"GeneralNames must have at least one GeneralName");
+				"GeneralNames must have at least one GeneralName.");
 		}
 		$names = array_map(
 			function (Element $el) {
@@ -87,7 +87,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	public function firstOf($tag) {
 		$name = $this->_findFirst($tag);
 		if (!$name) {
-			throw new \OutOfBoundsException("No GeneralName by tag $tag");
+			throw new \OutOfBoundsException("No GeneralName by tag $tag.");
 		}
 		return $name;
 	}
@@ -141,7 +141,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	public function toASN1() {
 		if (!count($this->_names)) {
 			throw new \LogicException(
-				"GeneralNames must have at least one GeneralName");
+				"GeneralNames must have at least one GeneralName.");
 		}
 		$elements = array_map(
 			function (GeneralName $name) {

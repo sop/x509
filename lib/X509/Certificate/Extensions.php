@@ -109,7 +109,7 @@ class Extensions implements \Countable, \IteratorAggregate
 	 */
 	public function get($oid) {
 		if (!$this->has($oid)) {
-			throw new \OutOfBoundsException("No extension by OID $oid");
+			throw new \OutOfBoundsException("No extension by OID $oid.");
 		}
 		return $this->_extensions[$oid];
 	}

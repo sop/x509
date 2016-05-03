@@ -92,7 +92,7 @@ abstract class GeneralName
 				$el->implicit(Element::TYPE_OBJECT_IDENTIFIER));
 		}
 		throw new \UnexpectedValueException(
-			"GeneralName tag " . $el->tag() . " not implemented");
+			"GeneralName type " . $el->tag() . " not supported.");
 	}
 	
 	/**

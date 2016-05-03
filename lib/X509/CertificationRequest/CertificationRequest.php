@@ -76,7 +76,7 @@ class CertificationRequest
 	 */
 	public static function fromPEM(PEM $pem) {
 		if ($pem->type() !== PEM::TYPE_CERTIFICATE_REQUEST) {
-			throw new \UnexpectedValueException("Invalid PEM type");
+			throw new \UnexpectedValueException("Invalid PEM type.");
 		}
 		return self::fromASN1(Sequence::fromDER($pem->data()));
 	}

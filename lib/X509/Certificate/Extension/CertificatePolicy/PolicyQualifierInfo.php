@@ -59,7 +59,7 @@ abstract class PolicyQualifierInfo
 			return UserNoticeQualifier::_fromASN1(
 				$seq->at(1, Element::TYPE_SEQUENCE));
 		}
-		throw new \UnexpectedValueException("Qualifier $oid not supported");
+		throw new \UnexpectedValueException("Qualifier $oid not supported.");
 	}
 	
 	/**

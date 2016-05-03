@@ -100,39 +100,78 @@ class AAControlsExtension extends Extension
 			$permit_unspecified);
 	}
 	
+	/**
+	 * Check whether path length constraint is present.
+	 *
+	 * @return bool
+	 */
 	public function hasPathLen() {
 		return isset($this->_pathLenConstraint);
 	}
 	
+	/**
+	 * Get path length constraint.
+	 *
+	 * @throws \LogicException
+	 * @return int
+	 */
 	public function pathLen() {
 		if (!$this->hasPathLen()) {
-			throw new \LogicException("pathLen not set");
+			throw new \LogicException("pathLen not set.");
 		}
 		return $this->_pathLenConstraint;
 	}
 	
+	/**
+	 * Check whether permitted attributes are present.
+	 *
+	 * @return bool
+	 */
 	public function hasPermittedAttrs() {
 		return isset($this->_permittedAttrs);
 	}
 	
+	/**
+	 * Get OID's of permitted attributes.
+	 *
+	 * @throws \LogicException
+	 * @return string[]
+	 */
 	public function permittedAttrs() {
 		if (!$this->hasPermittedAttrs()) {
-			throw new \LogicException("permittedAttrs not set");
+			throw new \LogicException("permittedAttrs not set.");
 		}
 		return $this->_permittedAttrs;
 	}
 	
+	/**
+	 * Check whether excluded attributes are present.
+	 *
+	 * @return bool
+	 */
 	public function hasExcludedAttrs() {
 		return isset($this->_excludedAttrs);
 	}
 	
+	/**
+	 * Get OID's of excluded attributes.
+	 *
+	 * @throws \LogicException
+	 * @return string[]
+	 */
 	public function excludedAttrs() {
 		if (!$this->hasExcludedAttrs()) {
-			throw new \LogicException("excludedAttrs not set");
+			throw new \LogicException("excludedAttrs not set.");
 		}
 		return $this->_excludedAttrs;
 	}
 	
+	/**
+	 * Whether to permit attributes that are not explicitly specified in
+	 * neither permitted nor excluded list.
+	 *
+	 * @return bool
+	 */
 	public function permitUnspecified() {
 		return $this->_permitUnSpecified;
 	}
