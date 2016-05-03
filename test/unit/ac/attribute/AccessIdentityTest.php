@@ -1,7 +1,6 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
 use X509\AttributeCertificate\Attributes;
@@ -64,7 +63,7 @@ class AccessIdentityAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param AttributeValue $value
 	 */
 	public function testOID(AttributeValue $value) {
-		$this->assertEquals(AttributeType::OID_ACCESS_IDENTITY, $value->oid());
+		$this->assertEquals(AccessIdentityAttributeValue::OID, $value->oid());
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
 use X509\AttributeCertificate\Attribute\IetfAttrValue;
@@ -72,7 +71,7 @@ class ChargingIdentityAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param AttributeValue $value
 	 */
 	public function testOID(AttributeValue $value) {
-		$this->assertEquals(AttributeType::OID_CHARGING_IDENTITY, $value->oid());
+		$this->assertEquals(ChargingIdentityAttributeValue::OID, $value->oid());
 	}
 	
 	/**

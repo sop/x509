@@ -2,7 +2,6 @@
 
 namespace X509\AttributeCertificate\Attribute;
 
-use X501\ASN1\AttributeType;
 use X509\GeneralName\GeneralName;
 
 
@@ -13,6 +12,8 @@ use X509\GeneralName\GeneralName;
  */
 class AuthenticationInfoAttributeValue extends SvceAuthInfo
 {
+	const OID = "1.3.6.1.5.5.7.10.1";
+	
 	/**
 	 * Constructor
 	 *
@@ -23,6 +24,6 @@ class AuthenticationInfoAttributeValue extends SvceAuthInfo
 	public function __construct(GeneralName $service, GeneralName $ident, 
 			$auth_info = null) {
 		parent::__construct($service, $ident, $auth_info);
-		$this->_oid = AttributeType::OID_AUTHENTICATION_INFO;
+		$this->_oid = self::OID;
 	}
 }

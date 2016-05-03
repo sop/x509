@@ -1,7 +1,6 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X509\AttributeCertificate\Attribute\GroupAttributeValue;
 use X509\AttributeCertificate\Attribute\IetfAttrValue;
@@ -67,7 +66,7 @@ class GroupAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param AttributeValue $value
 	 */
 	public function testOID(AttributeValue $value) {
-		$this->assertEquals(AttributeType::OID_GROUP, $value->oid());
+		$this->assertEquals(GroupAttributeValue::OID, $value->oid());
 	}
 	
 	/**

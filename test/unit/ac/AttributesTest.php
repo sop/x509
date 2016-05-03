@@ -2,7 +2,6 @@
 
 use ASN1\Type\Constructed\Sequence;
 use X501\ASN1\Attribute;
-use X501\ASN1\AttributeType;
 use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
 use X509\AttributeCertificate\Attribute\RoleAttributeValue;
 use X509\AttributeCertificate\Attributes;
@@ -87,7 +86,7 @@ class AttributeCertificateAttributesTest extends PHPUnit_Framework_TestCase
 	 * @param Attributes $attribs
 	 */
 	public function testHas(Attributes $attribs) {
-		$this->assertTrue($attribs->has(AttributeType::OID_ACCESS_IDENTITY));
+		$this->assertTrue($attribs->has(AccessIdentityAttributeValue::OID));
 	}
 	
 	/**
@@ -97,7 +96,7 @@ class AttributeCertificateAttributesTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFirstOf(Attributes $attribs) {
 		$this->assertInstanceOf(Attribute::class, 
-			$attribs->firstOf(AttributeType::OID_ACCESS_IDENTITY));
+			$attribs->firstOf(AccessIdentityAttributeValue::OID));
 	}
 	
 	/**
@@ -107,6 +106,6 @@ class AttributeCertificateAttributesTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testAllOf(Attributes $attribs) {
 		$this->assertCount(1, 
-			$attribs->allOf(AttributeType::OID_ACCESS_IDENTITY));
+			$attribs->allOf(AccessIdentityAttributeValue::OID));
 	}
 }

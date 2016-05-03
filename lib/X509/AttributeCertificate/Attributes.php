@@ -34,10 +34,10 @@ class Attributes implements \Countable, \IteratorAggregate
 	 */
 	const OID_TO_CLS = array(
 		/* @formatter:off */
-		AttributeType::OID_ACCESS_IDENTITY => AccessIdentityAttributeValue::class,
-		AttributeType::OID_AUTHENTICATION_INFO => AuthenticationInfoAttributeValue::class,
-		AttributeType::OID_CHARGING_IDENTITY => ChargingIdentityAttributeValue::class,
-		AttributeType::OID_GROUP => GroupAttributeValue::class,
+		AccessIdentityAttributeValue::OID => AccessIdentityAttributeValue::class,
+		AuthenticationInfoAttributeValue::OID => AuthenticationInfoAttributeValue::class,
+		ChargingIdentityAttributeValue::OID => ChargingIdentityAttributeValue::class,
+		GroupAttributeValue::OID => GroupAttributeValue::class,
 		AttributeType::OID_ROLE => RoleAttributeValue::class
 		/* @formatter:on */
 	);
@@ -96,7 +96,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return bool
 	 */
 	public function hasAccessIdentity() {
-		return $this->has(AttributeType::OID_ACCESS_IDENTITY);
+		return $this->has(AccessIdentityAttributeValue::OID);
 	}
 	
 	/**
@@ -105,7 +105,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return AccessIdentityAttributeValue
 	 */
 	public function accessIdentity() {
-		return $this->firstOf(AttributeType::OID_ACCESS_IDENTITY)->first();
+		return $this->firstOf(AccessIdentityAttributeValue::OID)->first();
 	}
 	
 	/**
@@ -114,7 +114,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return bool
 	 */
 	public function hasAuthenticationInformation() {
-		return $this->has(AttributeType::OID_AUTHENTICATION_INFO);
+		return $this->has(AuthenticationInfoAttributeValue::OID);
 	}
 	
 	/**
@@ -123,7 +123,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return AuthenticationInfoAttributeValue
 	 */
 	public function authenticationInformation() {
-		return $this->firstOf(AttributeType::OID_AUTHENTICATION_INFO)->first();
+		return $this->firstOf(AuthenticationInfoAttributeValue::OID)->first();
 	}
 	
 	/**
@@ -132,7 +132,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return bool
 	 */
 	public function hasChargingIdentity() {
-		return $this->has(AttributeType::OID_CHARGING_IDENTITY);
+		return $this->has(ChargingIdentityAttributeValue::OID);
 	}
 	
 	/**
@@ -141,7 +141,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return ChargingIdentityAttributeValue
 	 */
 	public function chargingIdentity() {
-		return $this->firstOf(AttributeType::OID_CHARGING_IDENTITY)->first();
+		return $this->firstOf(ChargingIdentityAttributeValue::OID)->first();
 	}
 	
 	/**
@@ -150,7 +150,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return bool
 	 */
 	public function hasGroup() {
-		return $this->has(AttributeType::OID_GROUP);
+		return $this->has(GroupAttributeValue::OID);
 	}
 	
 	/**
@@ -159,7 +159,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	 * @return GroupAttributeValue
 	 */
 	public function group() {
-		return $this->firstOf(AttributeType::OID_GROUP)->first();
+		return $this->firstOf(GroupAttributeValue::OID)->first();
 	}
 	
 	/**

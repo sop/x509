@@ -1,7 +1,6 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
 use X509\AttributeCertificate\Attributes;
@@ -66,7 +65,7 @@ class AuthenticationInfoAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param AttributeValue $value
 	 */
 	public function testOID(AttributeValue $value) {
-		$this->assertEquals(AttributeType::OID_AUTHENTICATION_INFO, 
+		$this->assertEquals(AuthenticationInfoAttributeValue::OID, 
 			$value->oid());
 	}
 	

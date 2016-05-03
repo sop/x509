@@ -2,8 +2,6 @@
 
 namespace X509\AttributeCertificate\Attribute;
 
-use X501\ASN1\AttributeType;
-
 
 /**
  * Implements value for 'Group' attribute.
@@ -12,6 +10,8 @@ use X501\ASN1\AttributeType;
  */
 class GroupAttributeValue extends IetfAttrSyntax
 {
+	const OID = "1.3.6.1.5.5.7.10.4";
+	
 	/**
 	 * Constructor
 	 *
@@ -19,6 +19,6 @@ class GroupAttributeValue extends IetfAttrSyntax
 	 */
 	public function __construct(IetfAttrValue ...$values) {
 		parent::__construct(...$values);
-		$this->_oid = AttributeType::OID_GROUP;
+		$this->_oid = self::OID;
 	}
 }
