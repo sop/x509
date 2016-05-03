@@ -75,7 +75,7 @@ class CertificationRequestInfo
 		$version = $seq->at(0, Element::TYPE_INTEGER)->number();
 		if ($version != self::VERSION_1) {
 			throw new \UnexpectedValueException(
-				"Version #$version not supported");
+				"Version $version not supported.");
 		}
 		$subject = Name::fromASN1($seq->at(1, Element::TYPE_SEQUENCE));
 		$pkinfo = PublicKeyInfo::fromASN1($seq->at(2, Element::TYPE_SEQUENCE));
@@ -94,6 +94,18 @@ class CertificationRequestInfo
 	 */
 	public function version() {
 		return $this->_version;
+	}
+	
+	/**
+	 * Get self with subject.
+	 *
+	 * @param Name $subject
+	 * @return self
+	 */
+	public function withSubject(Name $subject) {
+		$obj = clone $this;
+		$obj->_subject = $subject;
+		return $obj;
 	}
 	
 	/**
@@ -131,7 +143,7 @@ class CertificationRequestInfo
 	 */
 	public function attributes() {
 		if (!$this->hasAttributes()) {
-			throw new \LogicException("No attributes");
+			throw new \LogicException("No attributes.");
 		}
 		return $this->_attributes;
 	}

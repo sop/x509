@@ -111,6 +111,17 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param CertificationRequestInfo $cri
 	 */
+	public function testWithSubject(CertificationRequestInfo $cri) {
+		static $name = "cn=New Name";
+		$cri = $cri->withSubject(Name::fromString($name));
+		$this->assertEquals($name, $cri->subject());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationRequestInfo $cri
+	 */
 	public function testSubjectPKI(CertificationRequestInfo $cri) {
 		$pkinfo = self::$_privateKeyInfo->privateKey()
 			->publicKey()
