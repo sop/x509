@@ -18,10 +18,16 @@ use X509\CertificationRequest\CertificationRequest;
 
 require dirname(__DIR__) . "/vendor/autoload.php";
 
+$argc == 3 or printf("Usage: %s <ca-path> <csr-path>\n", $argv[0]) and exit(1);
 // load issuer certificate from PEM
 $issuer_cert = Certificate::fromPEM(PEM::fromFile($argv[1]));
 // load certification request from PEM
 $csr = CertificationRequest::fromPEM(PEM::fromFile($argv[2]));
+// verify CSR
+if (!$csr->verify(Crypto::getDefault())) {
+	echo "Failed to verify certification request signature.\n";
+	exit(1);
+}
 // load private key from PEM
 $private_key_info = PrivateKeyInfo::fromPEM(
 	PEM::fromFile(dirname(__DIR__) . "/test/assets/rsa/private_key.pem"));
