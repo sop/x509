@@ -92,9 +92,11 @@ abstract class Extension
 	/**
 	 * Mapping from extension ID to implementation class name.
 	 *
+	 * @internal
+	 *
 	 * @var array
 	 */
-	const OID_TO_CLS = array(
+	const MAP_OID_TO_CLASS = array(
 		/* @formatter:off */
 		self::OID_AUTHORITY_KEY_IDENTIFIER => AuthorityKeyIdentifierExtension::class,
 		self::OID_SUBJECT_KEY_IDENTIFIER => SubjectKeyIdentifierExtension::class,
@@ -176,8 +178,8 @@ abstract class Extension
 			$critical = $seq->at($idx++)->value();
 		}
 		$data = $seq->at($idx, Element::TYPE_OCTET_STRING)->str();
-		if (array_key_exists($extnID, self::OID_TO_CLS)) {
-			$cls = self::OID_TO_CLS[$extnID];
+		if (array_key_exists($extnID, self::MAP_OID_TO_CLASS)) {
+			$cls = self::MAP_OID_TO_CLASS[$extnID];
 			return $cls::_fromDER($data, $critical);
 		}
 		return new UnknownExtension($extnID, $critical, new DERData($data));

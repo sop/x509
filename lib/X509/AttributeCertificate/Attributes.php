@@ -30,9 +30,11 @@ class Attributes implements \Countable, \IteratorAggregate
 	/**
 	 * Mapping from OID to attribute value class name.
 	 *
+	 * @internal
+	 *
 	 * @var array
 	 */
-	const OID_TO_CLS = array(
+	const MAP_OID_TO_CLASS = array(
 		/* @formatter:off */
 		AccessIdentityAttributeValue::OID => AccessIdentityAttributeValue::class,
 		AuthenticationInfoAttributeValue::OID => AuthenticationInfoAttributeValue::class,
@@ -81,8 +83,8 @@ class Attributes implements \Countable, \IteratorAggregate
 		$attribs = array_map(
 			function (Attribute $attr) {
 				$oid = $attr->oid();
-				if (array_key_exists($oid, self::OID_TO_CLS)) {
-					$cls = self::OID_TO_CLS[$oid];
+				if (array_key_exists($oid, self::MAP_OID_TO_CLASS)) {
+					$cls = self::MAP_OID_TO_CLASS[$oid];
 					$attr = $attr->castValues($cls);
 				}
 				return $attr;
