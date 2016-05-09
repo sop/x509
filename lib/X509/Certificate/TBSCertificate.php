@@ -243,6 +243,22 @@ class TBSCertificate
 	}
 	
 	/**
+	 * Get self with random positive serial number.
+	 *
+	 * @param int $size Number of random bytes
+	 * @return self
+	 */
+	public function withRandomSerialNumber($size = 16) {
+		// ensure that first byte is always non-zero and having first bit unset
+		$num = gmp_init(mt_rand(1, 0x7f), 10);
+		for ($i = 1; $i < $size; ++$i) {
+			$num <<= 8;
+			$num += mt_rand(0, 0xff);
+		}
+		return $this->withSerialNumber(gmp_strval($num, 10));
+	}
+	
+	/**
 	 * Get self with given signature algorithm.
 	 *
 	 * @param SignatureAlgorithmIdentifier $algo

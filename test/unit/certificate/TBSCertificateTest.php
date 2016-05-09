@@ -158,4 +158,15 @@ class TBSCertificateTest extends PHPUnit_Framework_TestCase
 	public function testHasNoExtensions(TBSCertificate $tc) {
 		$this->assertCount(0, $tc->extensions());
 	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param TBSCertificate $tc
+	 */
+	public function testWithRandomSerialNumber(TBSCertificate $tc) {
+		$tc = $tc->withRandomSerialNumber(16);
+		$bin = gmp_export(gmp_init($tc->serialNumber(), 10), 1);
+		$this->assertEquals(16, strlen($bin));
+	}
 }
