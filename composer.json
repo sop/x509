@@ -20,6 +20,9 @@
 		"sop/x501": "^0.1.0",
 		"sop/crypto-util": "^1.1.0"
 	},
+	"suggest": {
+		"ext-gmp": "*"
+	},
 	"autoload": {
 		"psr-4": {
 			"X509\\": "lib/X509/"
