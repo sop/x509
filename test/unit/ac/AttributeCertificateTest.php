@@ -49,7 +49,7 @@ class AttributeCertificateTest extends PHPUnit_Framework_TestCase
 		$acinfo = new AttributeCertificateInfo($holder, $issuer, $validity, 
 			$attribs);
 		$algo = new SHA256WithRSAEncryptionAlgorithmIdentifier();
-		$acinfo = $acinfo->withSignature($algo)->withSerial(1);
+		$acinfo = $acinfo->withSignature($algo)->withSerialNumber(1);
 		$signature = Crypto::getDefault()->sign($acinfo->toASN1()
 			->toDER(), self::$_privateKeyInfo, $algo);
 		$ac = new AttributeCertificate($acinfo, $algo, $signature);

@@ -62,7 +62,7 @@ class AttributeCertificateInfoTest extends PHPUnit_Framework_TestCase
 			self::$_validity, self::$_attribs);
 		$aci = $aci->withSignature(
 			new SHA256WithRSAEncryptionAlgorithmIdentifier())
-			->withSerial(1)
+			->withSerialNumber(1)
 			->withExtensions(self::$_extensions);
 		$this->assertInstanceOf(AttributeCertificateInfo::class, $aci);
 		return $aci;
@@ -174,5 +174,16 @@ class AttributeCertificateInfoTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testExtensions(AttributeCertificateInfo $aci) {
 		$this->assertEquals(self::$_extensions, $aci->extensions());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param AttributeCertificateInfo $aci
+	 */
+	public function testWithRandomSerial(AttributeCertificateInfo $aci) {
+		$aci = $aci->withRandomSerialNumber(16);
+		$bin = gmp_export(gmp_init($aci->serialNumber(), 10), 1);
+		$this->assertEquals(16, strlen($bin));
 	}
 }
