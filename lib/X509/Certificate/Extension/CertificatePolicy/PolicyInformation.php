@@ -97,7 +97,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
 	 */
 	public function get($oid) {
 		if (!$this->has($oid)) {
-			throw new \OutOfBoundsException("No $oid qualifier.");
+			throw new \LogicException("No $oid qualifier.");
 		}
 		return $this->_qualifiers[$oid];
 	}
@@ -163,6 +163,12 @@ class PolicyInformation implements \Countable, \IteratorAggregate
 		return new Sequence(...$elements);
 	}
 	
+	/**
+	 * Get number of qualifiers.
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
 	public function count() {
 		return count($this->_qualifiers);
 	}
