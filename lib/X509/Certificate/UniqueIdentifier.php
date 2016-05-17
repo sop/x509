@@ -48,6 +48,24 @@ class UniqueIdentifier
 	}
 	
 	/**
+	 * Get unique identifier as a string.
+	 *
+	 * @return string
+	 */
+	public function string() {
+		return $this->_uid->str();
+	}
+	
+	/**
+	 * Get unique identifier as a bit string.
+	 *
+	 * @return BitString
+	 */
+	public function bitString() {
+		return $this->_uid;
+	}
+	
+	/**
 	 * Get ASN.1 element.
 	 *
 	 * @return BitString
