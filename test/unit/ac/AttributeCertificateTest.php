@@ -26,14 +26,18 @@ use X509\GeneralName\UniformResourceIdentifier;
  */
 class AttributeCertificateTest extends PHPUnit_Framework_TestCase
 {
+	private static $_acPem;
+	
 	private static $_privateKeyInfo;
 	
 	public static function setUpBeforeClass() {
+		self::$_acPem = PEM::fromFile(TEST_ASSETS_DIR . "/ac/acme-ac.pem");
 		self::$_privateKeyInfo = PrivateKeyInfo::fromPEM(
 			PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
 	}
 	
 	public static function tearDownAfterClass() {
+		self::$_acPem = null;
 		self::$_privateKeyInfo = null;
 	}
 	
@@ -129,5 +133,47 @@ class AttributeCertificateTest extends PHPUnit_Framework_TestCase
 			->publicKey()
 			->publicKeyInfo();
 		$this->assertTrue($ac->verify(Crypto::getDefault(), $pubkey_info));
+	}
+	
+	public function testFromPEM() {
+		$ac = AttributeCertificate::fromPEM(self::$_acPem);
+		$this->assertInstanceOf(AttributeCertificate::class, $ac);
+		return $ac;
+	}
+	
+	/**
+	 * @depends testFromPEM
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testToPEM(AttributeCertificate $ac) {
+		$pem = $ac->toPEM();
+		$this->assertInstanceOf(PEM::class, $pem);
+		return $pem;
+	}
+	
+	/**
+	 * @depends testToPEM
+	 *
+	 * @param PEM $pem
+	 */
+	public function testPEMEquals(PEM $pem) {
+		$this->assertEquals(self::$_acPem, $pem);
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testInvalidPEMTypeFail() {
+		AttributeCertificate::fromPEM(new PEM("fail", ""));
+	}
+	
+	/**
+	 * @depends testFromPEM
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testToString(AttributeCertificate $ac) {
+		$this->assertInternalType("string", strval($ac));
 	}
 }

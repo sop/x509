@@ -160,4 +160,11 @@ class CertificationRequestTest extends PHPUnit_Framework_TestCase
 			CertificationRequest $new) {
 		$this->assertEquals($ref, $new);
 	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testFromInvalidPEMFail() {
+		CertificationRequest::fromPEM(new PEM("nope", ""));
+	}
 }

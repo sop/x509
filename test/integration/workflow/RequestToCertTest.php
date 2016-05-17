@@ -58,8 +58,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
 					KeyUsageExtension::DIGITAL_SIGNATURE |
 						 KeyUsageExtension::KEY_CERT_SIGN)));
 		$algo = new SHA256WithRSAEncryptionAlgorithmIdentifier();
-		$pem = $tbs_cert->sign(Crypto::getDefault(), $algo, self::$_issuerKey);
-		$cert = Certificate::fromPEM($pem);
+		$cert = $tbs_cert->sign(Crypto::getDefault(), $algo, self::$_issuerKey);
 		$this->assertInstanceOf(Certificate::class, $cert);
 		return $cert;
 	}
@@ -70,9 +69,10 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
 			->publicKey()
 			->publicKeyInfo();
 		$cri = new CertificationRequestInfo($subject, $pkinfo);
+		$cri = $cri->withExtensionRequest(
+			new Extensions(new BasicConstraintsExtension(true, false)));
 		$algo = new ECDSAWithSHA1AlgorithmIdentifier();
-		$pem = $cri->sign(Crypto::getDefault(), $algo, self::$_subjectKey);
-		$csr = CertificationRequest::fromPEM($pem);
+		$csr = $cri->sign(Crypto::getDefault(), $algo, self::$_subjectKey);
 		$this->assertInstanceOf(CertificationRequest::class, $csr);
 		return $csr;
 	}
@@ -97,8 +97,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
 					 KeyUsageExtension::KEY_ENCIPHERMENT), 
 			new BasicConstraintsExtension(true, false));
 		$algo = new SHA512WithRSAEncryptionAlgorithmIdentifier();
-		$pem = $tbs_cert->sign(Crypto::getDefault(), $algo, self::$_issuerKey);
-		$cert = Certificate::fromPEM($pem);
+		$cert = $tbs_cert->sign(Crypto::getDefault(), $algo, self::$_issuerKey);
 		$this->assertInstanceOf(Certificate::class, $cert);
 		return $cert;
 	}

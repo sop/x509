@@ -1,29 +1,33 @@
 <?php
 
 use ASN1\Element;
+use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use ASN1\Type\Tagged\ImplicitTagging;
 use ASN1\Type\TaggedType;
 use X509\GeneralName\GeneralName;
-use X509\GeneralName\RFC822Name;
+use X509\GeneralName\X400Address;
 
 
 /**
  * @group general-name
  */
-class RFC822NameTest extends PHPUnit_Framework_TestCase
+class X400AddressTest extends PHPUnit_Framework_TestCase
 {
 	public function testCreate() {
-		$name = new RFC822Name("test@example.com");
-		$this->assertInstanceOf(RFC822Name::class, $name);
+		$name = X400Address::fromASN1(
+			new ImplicitlyTaggedType(GeneralName::TAG_X400_ADDRESS, 
+				new Sequence()));
+		$this->assertInstanceOf(X400Address::class, $name);
 		return $name;
 	}
 	
 	/**
 	 * @depends testCreate
 	 *
-	 * @param RFC822Name $name
+	 * @param X400Address $name
 	 */
-	public function testEncode(RFC822Name $name) {
+	public function testEncode(X400Address $name) {
 		$el = $name->toASN1();
 		$this->assertInstanceOf(ImplicitTagging::class, $el);
 		return $el->toDER();
@@ -36,7 +40,7 @@ class RFC822NameTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testChoiceTag($der) {
 		$el = TaggedType::fromDER($der);
-		$this->assertEquals(GeneralName::TAG_RFC822_NAME, $el->tag());
+		$this->assertEquals(GeneralName::TAG_X400_ADDRESS, $el->tag());
 	}
 	
 	/**
@@ -45,8 +49,8 @@ class RFC822NameTest extends PHPUnit_Framework_TestCase
 	 * @param string $der
 	 */
 	public function testDecode($der) {
-		$name = RFC822Name::fromASN1(Element::fromDER($der));
-		$this->assertInstanceOf(RFC822Name::class, $name);
+		$name = X400Address::fromASN1(Element::fromDER($der));
+		$this->assertInstanceOf(X400Address::class, $name);
 		return $name;
 	}
 	
@@ -54,28 +58,19 @@ class RFC822NameTest extends PHPUnit_Framework_TestCase
 	 * @depends testCreate
 	 * @depends testDecode
 	 *
-	 * @param RFC822Name $ref
-	 * @param RFC822Name $new
+	 * @param X400Address $ref
+	 * @param X400Address $new
 	 */
-	public function testRecoded(RFC822Name $ref, RFC822Name $new) {
+	public function testRecoded(X400Address $ref, X400Address $new) {
 		$this->assertEquals($ref, $new);
 	}
 	
 	/**
 	 * @depends testCreate
 	 *
-	 * @param RFC822Name $name
+	 * @param X400Address $name
 	 */
-	public function testString(RFC822Name $name) {
+	public function testString(X400Address $name) {
 		$this->assertInternalType("string", $name->string());
-	}
-	
-	/**
-	 * @depends testCreate
-	 *
-	 * @param RFC822Name $name
-	 */
-	public function testEmail(RFC822Name $name) {
-		$this->assertEquals("test@example.com", $name->email());
 	}
 }

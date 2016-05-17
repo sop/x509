@@ -67,6 +67,15 @@ class DirectoryNameTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param DirectoryName $name
 	 */
+	public function testString(DirectoryName $name) {
+		$this->assertEquals("cn=Test", $name->string());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param DirectoryName $name
+	 */
 	public function testDN(DirectoryName $name) {
 		$this->assertEquals(Name::fromString("cn=Test"), $name->dn());
 	}

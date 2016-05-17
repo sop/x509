@@ -2,6 +2,7 @@
 
 use ASN1\Type\Constructed\Sequence;
 use X501\ASN1\AttributeValue\AttributeValue;
+use X501\MatchingRule\MatchingRule;
 use X509\Certificate\Extensions;
 use X509\CertificationRequest\Attribute\ExtensionRequestValue;
 
@@ -67,5 +68,42 @@ class ExtensionRequestTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testExtensions(ExtensionRequestValue $value) {
 		$this->assertInstanceOf(Extensions::class, $value->extensions());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param ExtensionRequestValue $value
+	 */
+	public function testStringValue(ExtensionRequestValue $value) {
+		$this->assertInternalType("string", $value->stringValue());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param ExtensionRequestValue $value
+	 */
+	public function testEqualityMatchingRule(ExtensionRequestValue $value) {
+		$this->assertInstanceOf(MatchingRule::class, 
+			$value->equalityMatchingRule());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param ExtensionRequestValue $value
+	 */
+	public function testRFC2253String(ExtensionRequestValue $value) {
+		$this->assertInternalType("string", $value->rfc2253String());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param ExtensionRequestValue $value
+	 */
+	public function testToString(ExtensionRequestValue $value) {
+		$this->assertInternalType("string", strval($value));
 	}
 }

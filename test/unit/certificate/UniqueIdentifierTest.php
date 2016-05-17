@@ -9,8 +9,10 @@ use X509\Certificate\UniqueIdentifier;
  */
 class UniqueIdentifierTest extends PHPUnit_Framework_TestCase
 {
+	const UID = "urn:test";
+	
 	public function testCreate() {
-		$id = UniqueIdentifier::fromString("urn:test");
+		$id = UniqueIdentifier::fromString(self::UID);
 		$this->assertInstanceOf(UniqueIdentifier::class, $id);
 		return $id;
 	}
@@ -46,5 +48,23 @@ class UniqueIdentifierTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testRecoded(UniqueIdentifier $ref, UniqueIdentifier $new) {
 		$this->assertEquals($ref, $new);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param UniqueIdentifier $id
+	 */
+	public function testString(UniqueIdentifier $id) {
+		$this->assertEquals(self::UID, $id->string());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param UniqueIdentifier $id
+	 */
+	public function testBitString(UniqueIdentifier $id) {
+		$this->assertInstanceOf(BitString::class, $id->bitString());
 	}
 }

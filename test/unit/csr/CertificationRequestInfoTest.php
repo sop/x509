@@ -1,6 +1,7 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\Integer;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\PEM\PEM;
 use X501\ASN1\Name;
@@ -141,6 +142,17 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	}
 	
 	/**
+	 * @expectedException LogicException
+	 */
+	public function testNoAttributesFail() {
+		$cri = new CertificationRequestInfo(self::$_subject, 
+			self::$_privateKeyInfo->privateKey()
+				->publicKey()
+				->publicKeyInfo());
+		$cri->attributes();
+	}
+	
+	/**
 	 * @depends testAttribs
 	 *
 	 * @param Attributes $attribs
@@ -153,5 +165,17 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 			->firstDN()
 			->toString();
 		$this->assertEquals(self::SAN_DN, $dn);
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testInvalidVersionFail() {
+		$seq = new Sequence(new Integer(1), self::$_subject->toASN1(), 
+			self::$_privateKeyInfo->privateKey()
+				->publicKey()
+				->publicKeyInfo()
+				->toASN1());
+		CertificationRequestInfo::fromASN1($seq);
 	}
 }

@@ -12,8 +12,10 @@ use X509\GeneralName\UniformResourceIdentifier;
  */
 class URINameTest extends PHPUnit_Framework_TestCase
 {
+	const URI = "urn:test";
+	
 	public function testCreate() {
-		$uri = new UniformResourceIdentifier("urn:test");
+		$uri = new UniformResourceIdentifier(self::URI);
 		$this->assertInstanceOf(UniformResourceIdentifier::class, $uri);
 		return $uri;
 	}
@@ -67,7 +69,16 @@ class URINameTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param UniformResourceIdentifier $uri
 	 */
+	public function testString(UniformResourceIdentifier $uri) {
+		$this->assertEquals(self::URI, $uri->string());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param UniformResourceIdentifier $uri
+	 */
 	public function testURI(UniformResourceIdentifier $uri) {
-		$this->assertEquals("urn:test", $uri->uri());
+		$this->assertEquals(self::URI, $uri->uri());
 	}
 }

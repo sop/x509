@@ -6,6 +6,7 @@ use X509\Certificate\Validity;
 
 /**
  * @group certificate
+ * @group time
  */
 class ValidityTest extends PHPUnit_Framework_TestCase
 {

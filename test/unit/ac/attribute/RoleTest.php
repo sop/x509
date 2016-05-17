@@ -3,6 +3,7 @@
 use ASN1\Type\Constructed\Sequence;
 use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
+use X501\MatchingRule\MatchingRule;
 use X509\AttributeCertificate\Attribute\RoleAttributeValue;
 use X509\AttributeCertificate\Attributes;
 use X509\GeneralName\DirectoryName;
@@ -108,5 +109,93 @@ class RoleAttributeTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFromAttributes(Attributes $attribs) {
 		$this->assertInstanceOf(RoleAttributeValue::class, $attribs->role());
+	}
+	
+	public function testCreateWithoutAuthority() {
+		$value = new RoleAttributeValue(
+			new UniformResourceIdentifier(self::ROLE_URI));
+		$this->assertInstanceOf(RoleAttributeValue::class, $value);
+		return $value;
+	}
+	
+	/**
+	 * @depends testCreateWithoutAuthority
+	 *
+	 * @param AttributeValue $value
+	 */
+	public function testEncodeWithoutAuthority(AttributeValue $value) {
+		$el = $value->toASN1();
+		$this->assertInstanceOf(Sequence::class, $el);
+		return $el->toDER();
+	}
+	
+	/**
+	 * @depends testEncodeWithoutAuthority
+	 *
+	 * @param unknown $der
+	 */
+	public function testDecodeWithoutAuthority($der) {
+		$value = RoleAttributeValue::fromASN1(Sequence::fromDER($der));
+		$this->assertInstanceOf(RoleAttributeValue::class, $value);
+		return $value;
+	}
+	
+	/**
+	 * @depends testCreateWithoutAuthority
+	 * @depends testDecodeWithoutAuthority
+	 *
+	 * @param AttributeValue $ref
+	 * @param AttributeValue $new
+	 */
+	public function testRecodedWithoutAuthority(AttributeValue $ref, 
+			AttributeValue $new) {
+		$this->assertEquals($ref, $new);
+	}
+	
+	/**
+	 * @depends testCreateWithoutAuthority
+	 * @expectedException LogicException
+	 *
+	 * @param RoleAttributeValue $value
+	 */
+	public function testNoRoleAuthorityFail(RoleAttributeValue $value) {
+		$value->roleAuthority();
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param AttributeValue $value
+	 */
+	public function testStringValue(AttributeValue $value) {
+		$this->assertInternalType("string", $value->stringValue());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param AttributeValue $value
+	 */
+	public function testEqualityMatchingRule(AttributeValue $value) {
+		$this->assertInstanceOf(MatchingRule::class, 
+			$value->equalityMatchingRule());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param AttributeValue $value
+	 */
+	public function testRFC2253String(AttributeValue $value) {
+		$this->assertInternalType("string", $value->rfc2253String());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param AttributeValue $value
+	 */
+	public function testToString(AttributeValue $value) {
+		$this->assertInternalType("string", strval($value));
 	}
 }

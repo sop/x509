@@ -66,6 +66,15 @@ class RegisteredIDNameTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param RegisteredID $rid
 	 */
+	public function testString(RegisteredID $rid) {
+		$this->assertInternalType("string", $rid->string());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param RegisteredID $rid
+	 */
 	public function testOID(RegisteredID $rid) {
 		$this->assertEquals("1.3.6.1.3.1", $rid->oid());
 	}

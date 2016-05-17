@@ -1,9 +1,11 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use X509\GeneralName\DirectoryName;
 use X509\GeneralName\DNSName;
 use X509\GeneralName\GeneralName;
 use X509\GeneralName\GeneralNames;
+use X509\GeneralName\UniformResourceIdentifier;
 
 
 /**
@@ -89,6 +91,16 @@ class GeneralNamesTest extends PHPUnit_Framework_TestCase
 	
 	/**
 	 * @depends testCreate
+	 * @expectedException UnexpectedValueException
+	 *
+	 * @param GeneralNames $gns
+	 */
+	public function testFirstOfFail(GeneralNames $gns) {
+		$gns->firstOf(GeneralName::TAG_URI);
+	}
+	
+	/**
+	 * @depends testCreate
 	 *
 	 * @param GeneralNames $gns
 	 */
@@ -108,5 +120,38 @@ class GeneralNamesTest extends PHPUnit_Framework_TestCase
 		}
 		$this->assertCount(2, $values);
 		$this->assertContainsOnlyInstancesOf(GeneralName::class, $values);
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testFromEmptyFail() {
+		GeneralNames::fromASN1(new Sequence());
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEmptyToASN1Fail() {
+		$gn = new GeneralNames();
+		$gn->toASN1();
+	}
+	
+	public function testFirstDNS() {
+		$name = new DNSName("example.com");
+		$gn = new GeneralNames($name);
+		$this->assertEquals($name, $gn->firstDNS());
+	}
+	
+	public function testFirstDN() {
+		$name = DirectoryName::fromDNString("cn=Example");
+		$gn = new GeneralNames($name);
+		$this->assertEquals($name->dn(), $gn->firstDN());
+	}
+	
+	public function testFirstURI() {
+		$name = new UniformResourceIdentifier("urn:example");
+		$gn = new GeneralNames($name);
+		$this->assertEquals($name, $gn->firstURI());
 	}
 }

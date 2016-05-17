@@ -9,6 +9,7 @@ use X509\Certificate\Extensions;
 
 /**
  * @group certificate
+ * @group extension
  */
 class ExtensionsTest extends PHPUnit_Framework_TestCase
 {
@@ -78,6 +79,16 @@ class ExtensionsTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGet(Extensions $exts) {
 		$this->assertInstanceOf(Extension::class, $exts->get("1.3.6.1.3.1"));
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @expectedException LogicException
+	 *
+	 * @param Extensions $exts
+	 */
+	public function testGetFail(Extensions $exts) {
+		$exts->get("1.3.6.1.3.3");
 	}
 	
 	/**

@@ -147,4 +147,20 @@ class CertificateTest extends PHPUnit_Framework_TestCase
 	public function testPEMRecoded(Certificate $ref, Certificate $new) {
 		$this->assertEquals($ref, $new);
 	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testFromInvalidPEMFail() {
+		Certificate::fromPEM(new PEM("nope", ""));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Certificate $cert
+	 */
+	public function testToString(Certificate $cert) {
+		$this->assertInternalType("string", strval($cert));
+	}
 }

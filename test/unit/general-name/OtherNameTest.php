@@ -67,6 +67,15 @@ class OtherNameTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param OtherName $name
 	 */
+	public function testString(OtherName $name) {
+		$this->assertInternalType("string", $name->string());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param OtherName $name
+	 */
 	public function testOID(OtherName $name) {
 		$this->assertEquals("1.3.6.1.3.1", $name->type());
 	}
