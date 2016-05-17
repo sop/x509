@@ -3,6 +3,7 @@
 namespace X509\GeneralName;
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Tagged\ImplicitlyTaggedType;
 
 
 /**
@@ -32,6 +33,6 @@ class EDIPartyName extends GeneralName
 	}
 	
 	protected function _choiceASN1() {
-		return $this->_element;
+		return new ImplicitlyTaggedType($this->_tag, $this->_element);
 	}
 }
