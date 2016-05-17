@@ -64,7 +64,7 @@ class DistributionPoint
 		$issuer = null;
 		if ($seq->hasTagged(0)) {
 			// promoted to explicit tagging because underlying type is CHOICE
-			$name = DistributionPointName::fromDERTaggedType(
+			$name = DistributionPointName::fromTaggedType(
 				$seq->getTagged(0)->explicit());
 		}
 		if ($seq->hasTagged(1)) {

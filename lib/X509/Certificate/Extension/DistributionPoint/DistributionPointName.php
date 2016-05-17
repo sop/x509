@@ -3,8 +3,8 @@
 namespace X509\Certificate\Extension\DistributionPoint;
 
 use ASN1\Element;
-use ASN1\Type\Tagged\DERTaggedType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\TaggedType;
 use X501\ASN1\RDN;
 use X509\GeneralName\GeneralNames;
 
@@ -35,20 +35,22 @@ abstract class DistributionPointName
 	abstract protected function _valueASN1();
 	
 	/**
-	 * Initialize from DERTaggedType.
+	 * Initialize from TaggedType.
 	 *
-	 * @param DERTaggedType $el
+	 * @param TaggedType $el
 	 * @throws \UnexpectedValueException
 	 * @return self
 	 */
-	public static function fromDERTaggedType(DERTaggedType $el) {
+	public static function fromTaggedType(TaggedType $el) {
 		switch ($el->tag()) {
 		case self::TAG_FULL_NAME:
 			return new FullName(
-				GeneralNames::fromASN1($el->implicit(Element::TYPE_SEQUENCE)));
+				GeneralNames::fromASN1(
+					$el->expectImplicit()->implicit(Element::TYPE_SEQUENCE)));
 		case self::TAG_RDN:
 			return new RelativeName(
-				RDN::fromASN1($el->implicit(Element::TYPE_SET)));
+				RDN::fromASN1(
+					$el->expectImplicit()->implicit(Element::TYPE_SET)));
 		default:
 			throw new \UnexpectedValueException(
 				"DistributionPointName tag " . $el->tag() . " not supported.");
