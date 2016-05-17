@@ -69,6 +69,16 @@ class AttributeCertificate
 	}
 	
 	/**
+	 * Initialize from DER data.
+	 *
+	 * @param string $data
+	 * @return self
+	 */
+	public static function fromDER($data) {
+		return self::fromASN1(Sequence::fromDER($data));
+	}
+	
+	/**
 	 * Initialize from PEM.
 	 *
 	 * @param PEM $pem
@@ -79,7 +89,7 @@ class AttributeCertificate
 		if ($pem->type() !== PEM::TYPE_ATTRIBUTE_CERTIFICATE) {
 			throw new \UnexpectedValueException("Invalid PEM type.");
 		}
-		return self::fromASN1(Sequence::fromDER($pem->data()));
+		return self::fromDER($pem->data());
 	}
 	
 	/**
@@ -121,12 +131,21 @@ class AttributeCertificate
 	}
 	
 	/**
+	 * Get attribute certificate as a DER.
+	 *
+	 * @return string
+	 */
+	public function toDER() {
+		return $this->toASN1()->toDER();
+	}
+	
+	/**
 	 * Get attribute certificate as a PEM.
 	 *
 	 * @return PEM
 	 */
 	public function toPEM() {
-		return new PEM(PEM::TYPE_ATTRIBUTE_CERTIFICATE, $this->toASN1()->toDER());
+		return new PEM(PEM::TYPE_ATTRIBUTE_CERTIFICATE, $this->toDER());
 	}
 	
 	/**
@@ -140,5 +159,14 @@ class AttributeCertificate
 		$data = $this->_acinfo->toASN1()->toDER();
 		return $crypto->verify($data, $this->_signatureValue, $pubkey_info, 
 			$this->_signatureAlgorithm);
+	}
+	
+	/**
+	 * Get attribute certificate as a PEM formatted string.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->toPEM()->str();
 	}
 }
