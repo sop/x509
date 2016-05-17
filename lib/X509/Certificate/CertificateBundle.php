@@ -6,6 +6,9 @@ use CryptoUtil\PEM\PEM;
 use CryptoUtil\PEM\PEMBundle;
 
 
+/**
+ * Implements a list of certificates.
+ */
 class CertificateBundle implements \Countable, \IteratorAggregate
 {
 	/**
@@ -25,20 +28,6 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	}
 	
 	/**
-	 * Initialize from PEM bundle.
-	 *
-	 * @param PEMBundle $pem_bundle
-	 * @return self
-	 */
-	public static function fromPEMBundle(PEMBundle $pem_bundle) {
-		$certs = array_map(
-			function ($pem) {
-				return Certificate::fromPEM($pem);
-			}, $pem_bundle->all());
-		return new self(...$certs);
-	}
-	
-	/**
 	 * Initialize from PEMs.
 	 *
 	 * @param PEM ...$pems PEM objects
@@ -50,6 +39,16 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 				return Certificate::fromPEM($pem);
 			}, $pems);
 		return new self(...$certs);
+	}
+	
+	/**
+	 * Initialize from PEM bundle.
+	 *
+	 * @param PEMBundle $pem_bundle
+	 * @return self
+	 */
+	public static function fromPEMBundle(PEMBundle $pem_bundle) {
+		return self::fromPEMs(...$pem_bundle->all());
 	}
 	
 	/**
