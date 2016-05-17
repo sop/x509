@@ -3,6 +3,7 @@
 namespace X509\Certificate\Extension\DistributionPoint;
 
 use X509\GeneralName\GeneralNames;
+use X509\GeneralName\UniformResourceIdentifier;
 
 
 /**
@@ -28,6 +29,16 @@ class FullName extends DistributionPointName
 	public function __construct(GeneralNames $names) {
 		$this->_tag = self::TAG_FULL_NAME;
 		$this->_names = $names;
+	}
+	
+	/**
+	 * Initialize with a single URI.
+	 *
+	 * @param string $uri
+	 * @return self
+	 */
+	public static function fromURI($uri) {
+		return new self(new GeneralNames(new UniformResourceIdentifier($uri)));
 	}
 	
 	/**
