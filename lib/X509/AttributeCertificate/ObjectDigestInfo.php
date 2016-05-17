@@ -14,6 +14,7 @@ use CryptoUtil\ASN1\AlgorithmIdentifier;
  * Implements <i>ObjectDigestInfo</i> ASN.1 type.
  *
  * @link https://tools.ietf.org/html/rfc5755#section-4.1
+ * @link https://tools.ietf.org/html/rfc5755#section-7.3
  */
 class ObjectDigestInfo
 {
