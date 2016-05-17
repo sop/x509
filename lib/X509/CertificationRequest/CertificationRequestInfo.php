@@ -2,7 +2,6 @@
 
 namespace X509\CertificationRequest;
 
-use ASN1\DERData;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
@@ -11,8 +10,10 @@ use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
-use CryptoUtil\PEM\PEM;
+use X501\ASN1\Attribute;
 use X501\ASN1\Name;
+use X509\Certificate\Extensions;
+use X509\CertificationRequest\Attribute\ExtensionRequestValue;
 
 
 /**
@@ -48,7 +49,7 @@ class CertificationRequestInfo
 	/**
 	 * Attributes.
 	 *
-	 * @var Attributes $_attributes
+	 * @var Attributes|null $_attributes
 	 */
 	protected $_attributes;
 	
@@ -160,6 +161,23 @@ class CertificationRequestInfo
 	}
 	
 	/**
+	 * Get self with extension request attribute.
+	 *
+	 * @param Extensions $extensions Extensions to request
+	 * @return self
+	 */
+	public function withExtensionRequest(Extensions $extensions) {
+		$obj = clone $this;
+		if (!isset($obj->_attributes)) {
+			$obj->_attributes = new Attributes();
+		}
+		$obj->_attributes = $obj->_attributes->withUnique(
+			Attribute::fromAttributeValues(
+				new ExtensionRequestValue($extensions)));
+		return $obj;
+	}
+	
+	/**
 	 * Generate ASN.1 structure.
 	 *
 	 * @return Sequence
@@ -180,14 +198,12 @@ class CertificationRequestInfo
 	 * @param Crypto $crypto Crypto engine
 	 * @param SignatureAlgorithmIdentifier $algo Algorithm used for signing
 	 * @param PrivateKey $private_key Private key used for signing
-	 * @return PEM
+	 * @return CertificationRequest
 	 */
 	public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo, 
 			PrivateKeyInfo $privkey_info) {
 		$data = $this->toASN1()->toDER();
 		$signature = $crypto->sign($data, $privkey_info, $algo);
-		$seq = new Sequence(new DERData($data), $algo->toASN1(), 
-			$signature->toBitString());
-		return new PEM(PEM::TYPE_CERTIFICATE_REQUEST, $seq->toDER());
+		return new CertificationRequest($this, $algo, $signature);
 	}
 }
