@@ -2,7 +2,6 @@
 
 namespace X509\AttributeCertificate;
 
-use ASN1\DERData;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
@@ -10,7 +9,6 @@ use CryptoUtil\ASN1\AlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\Crypto\Crypto;
-use CryptoUtil\PEM\PEM;
 use X509\Certificate\Extensions;
 use X509\Certificate\UniqueIdentifier;
 
@@ -278,12 +276,21 @@ class AttributeCertificateInfo
 	}
 	
 	/**
+	 * Check whether signature is set.
+	 *
+	 * @return bool
+	 */
+	public function hasSignature() {
+		return isset($this->_signature);
+	}
+	
+	/**
 	 * Get signature algorithm identifier.
 	 *
 	 * @return AlgorithmIdentifier
 	 */
 	public function signature() {
-		if (!isset($this->_signature)) {
+		if (!$this->hasSignature()) {
 			throw new \LogicException("signature not set.");
 		}
 		return $this->_signature;
@@ -384,7 +391,7 @@ class AttributeCertificateInfo
 	 * @param Crypto $crypto
 	 * @param SignatureAlgorithmIdentifier $algo Signature algorithm
 	 * @param PrivateKeyInfo $privkey_info Private key
-	 * @return PEM
+	 * @return AttributeCertificate
 	 */
 	public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo, 
 			PrivateKeyInfo $privkey_info) {
@@ -395,8 +402,6 @@ class AttributeCertificateInfo
 		$aci->_signature = $algo;
 		$data = $aci->toASN1()->toDER();
 		$signature = $crypto->sign($data, $privkey_info, $algo);
-		$seq = new Sequence(new DERData($data), $algo->toASN1(), 
-			$signature->toASN1());
-		return new PEM(PEM::TYPE_ATTRIBUTE_CERTIFICATE, $seq->toDER());
+		return new AttributeCertificate($aci, $algo, $signature);
 	}
 }
