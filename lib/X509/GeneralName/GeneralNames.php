@@ -87,7 +87,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	public function firstOf($tag) {
 		$name = $this->_findFirst($tag);
 		if (!$name) {
-			throw new \OutOfBoundsException("No GeneralName by tag $tag.");
+			throw new \UnexpectedValueException("No GeneralName by tag $tag.");
 		}
 		return $name;
 	}
@@ -163,7 +163,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	 * Get iterator for GeneralName objects.
 	 *
 	 * @see IteratorAggregate::getIterator()
-	 * @return \Traversable
+	 * @return \ArrayIterator
 	 */
 	public function getIterator() {
 		return new \ArrayIterator($this->_names);
