@@ -68,6 +68,16 @@ class CertificationRequest
 	}
 	
 	/**
+	 * Initialize from DER.
+	 *
+	 * @param string $data
+	 * @return self
+	 */
+	public static function fromDER($data) {
+		return self::fromASN1(Sequence::fromDER($data));
+	}
+	
+	/**
 	 * Initialize from PEM.
 	 *
 	 * @param PEM $pem
@@ -78,7 +88,7 @@ class CertificationRequest
 		if ($pem->type() !== PEM::TYPE_CERTIFICATE_REQUEST) {
 			throw new \UnexpectedValueException("Invalid PEM type.");
 		}
-		return self::fromASN1(Sequence::fromDER($pem->data()));
+		return self::fromDER($pem->data());
 	}
 	
 	/**
@@ -120,12 +130,21 @@ class CertificationRequest
 	}
 	
 	/**
-	 * Get certificate request as a PEM.
+	 * Get certification request as a DER.
+	 *
+	 * @return string
+	 */
+	public function toDER() {
+		return $this->toASN1()->toDER();
+	}
+	
+	/**
+	 * Get certification request as a PEM.
 	 *
 	 * @return PEM
 	 */
 	public function toPEM() {
-		return new PEM(PEM::TYPE_CERTIFICATE_REQUEST, $this->toASN1()->toDER());
+		return new PEM(PEM::TYPE_CERTIFICATE_REQUEST, $this->toDER());
 	}
 	
 	/**
@@ -139,5 +158,14 @@ class CertificationRequest
 		$pk_info = $this->_certificationRequestInfo->subjectPKInfo();
 		return $crypto->verify($data, $this->_signature, $pk_info, 
 			$this->_signatureAlgorithm);
+	}
+	
+	/**
+	 * Get certification request as a PEM formatted string.
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->toPEM()->str();
 	}
 }
