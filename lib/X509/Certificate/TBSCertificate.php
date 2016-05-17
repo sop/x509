@@ -2,7 +2,6 @@
 
 namespace X509\Certificate;
 
-use ASN1\DERData;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
@@ -13,7 +12,6 @@ use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
-use CryptoUtil\PEM\PEM;
 use X501\ASN1\Name;
 use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
 use X509\Certificate\Extension\Extension;
@@ -531,7 +529,7 @@ class TBSCertificate
 	 * @param Crypto $crypto Crypto engine
 	 * @param SignatureAlgorithmIdentifier $algo Algorithm used for signing
 	 * @param PrivateKeyInfo $privkey_info Private key used for signing
-	 * @return PEM
+	 * @return Certificate
 	 */
 	public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo, 
 			PrivateKeyInfo $privkey_info) {
@@ -545,9 +543,7 @@ class TBSCertificate
 		$tbsCert->_signature = $algo;
 		$data = $tbsCert->toASN1()->toDER();
 		$signature = $crypto->sign($data, $privkey_info, $algo);
-		$seq = new Sequence(new DERData($data), $algo->toASN1(), 
-			$signature->toBitString());
-		return new PEM(PEM::TYPE_CERTIFICATE, $seq->toDER());
+		return new Certificate($tbsCert, $algo, $signature);
 	}
 	
 	/**
