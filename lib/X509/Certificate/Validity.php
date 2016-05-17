@@ -58,10 +58,8 @@ class Validity
 	 * @return self
 	 */
 	public static function fromStrings($nb_date, $na_date, $tz = null) {
-		$timezone = isset($tz) ? new \DateTimeZone($tz) : null;
-		$nb = new \DateTimeImmutable($nb_date, $timezone);
-		$na = new \DateTimeImmutable($na_date, $timezone);
-		return new self(new Time($nb), new Time($na));
+		return new self(Time::fromString($nb_date, $tz), 
+			Time::fromString($na_date, $tz));
 	}
 	
 	/**
