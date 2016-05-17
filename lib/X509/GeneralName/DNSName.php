@@ -24,7 +24,7 @@ class DNSName extends GeneralName
 	/**
 	 * Constructor
 	 *
-	 * @param string $name
+	 * @param string $name Domain name
 	 */
 	public function __construct($name) {
 		$this->_tag = self::TAG_DNS_NAME;
