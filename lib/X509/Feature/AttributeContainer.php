@@ -56,7 +56,7 @@ trait AttributeContainer
 	public function firstOf($name) {
 		$attr = $this->_findFirst($name);
 		if (!$attr) {
-			throw new \OutOfBoundsException("No $name attribute.");
+			throw new \UnexpectedValueException("No $name attribute.");
 		}
 		return $attr;
 	}
@@ -81,8 +81,40 @@ trait AttributeContainer
 	 *
 	 * @return Attribute[]
 	 */
-	public function attributes() {
+	public function all() {
 		return $this->_attributes;
+	}
+	
+	/**
+	 * Get self with additional attributes added.
+	 *
+	 * @param Attribute ...$attribs
+	 * @return self
+	 */
+	public function withAdditional(Attribute ...$attribs) {
+		$obj = clone $this;
+		foreach ($attribs as $attr) {
+			$obj->_attributes[] = $attr;
+		}
+		return $obj;
+	}
+	
+	/**
+	 * Get self with single unique attribute added.
+	 *
+	 * All previous attributes of the same type are removed.
+	 *
+	 * @param Attribute $attr
+	 * @return self
+	 */
+	public function withUnique(Attribute $attr) {
+		$obj = clone $this;
+		$obj->_attributes = array_filter($obj->_attributes, 
+			function (Attribute $a) use ($attr) {
+				return $a->oid() != $attr->oid();
+			});
+		$obj->_attributes[] = $attr;
+		return $obj;
 	}
 	
 	/**
