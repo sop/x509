@@ -72,7 +72,7 @@ abstract class IPAddress extends GeneralName
 	}
 	
 	public function string() {
-		return $this->_ip . isset($this->_mask) ? "/" . $this->_mask : "";
+		return $this->_ip . (isset($this->_mask) ? "/" . $this->_mask : "");
 	}
 	
 	/**
