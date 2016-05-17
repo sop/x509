@@ -21,11 +21,11 @@ class IPv6Address extends IPAddress
 			$ip = self::_wordsToIPv6String($words);
 			break;
 		case 16:
-			$ip = self::_wordsToIPv6String(array_slice($shorts, 0, 8));
+			$ip = self::_wordsToIPv6String(array_slice($words, 0, 8));
 			$mask = self::_wordsToIPv6String(array_slice($words, 8, 8));
 			break;
 		default:
-			throw new \InvalidArgumentException("Invalid IPv6 octet length.");
+			throw new \UnexpectedValueException("Invalid IPv6 octet length.");
 		}
 		return new self($ip, $mask);
 	}
