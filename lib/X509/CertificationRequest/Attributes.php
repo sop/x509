@@ -105,7 +105,7 @@ class Attributes implements \Countable, \IteratorAggregate
 	}
 	
 	/**
-	 * Generate ASN1 structure
+	 * Generate ASN.1 structure.
 	 *
 	 * @return Set
 	 */
