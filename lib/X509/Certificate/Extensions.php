@@ -104,12 +104,12 @@ class Extensions implements \Countable, \IteratorAggregate
 	 * Get extension by OID.
 	 *
 	 * @param string $oid
-	 * @throws \OutOfBoundsException
+	 * @throws \LogicException
 	 * @return Extension
 	 */
 	public function get($oid) {
 		if (!$this->has($oid)) {
-			throw new \OutOfBoundsException("No extension by OID $oid.");
+			throw new \LogicException("No extension by OID $oid.");
 		}
 		return $this->_extensions[$oid];
 	}
