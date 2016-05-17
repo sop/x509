@@ -6,6 +6,7 @@ use ASN1\Element;
 use ASN1\Type\Primitive\GeneralizedTime;
 use ASN1\Type\Primitive\UTCTime;
 use ASN1\Type\TimeType;
+use X509\Feature\DateTimeHelper;
 
 
 /**
@@ -15,6 +16,8 @@ use ASN1\Type\TimeType;
  */
 class Time
 {
+	use DateTimeHelper;
+	
 	/**
 	 * Datetime
 	 *
@@ -59,9 +62,7 @@ class Time
 	 * @return self
 	 */
 	public static function fromString($time, $tz = null) {
-		$timezone = isset($tz) ? new \DateTimeZone($tz) : null;
-		$dt = new \DateTimeImmutable($time, $timezone);
-		return new self($dt);
+		return new self(self::_createDateTime($time, $tz));
 	}
 	
 	/**
