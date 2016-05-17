@@ -5,6 +5,7 @@ namespace X509\AttributeCertificate;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\GeneralizedTime;
+use X509\Feature\DateTimeHelper;
 
 
 /**
@@ -14,6 +15,8 @@ use ASN1\Type\Primitive\GeneralizedTime;
  */
 class AttCertValidityPeriod
 {
+	use DateTimeHelper;
+	
 	/**
 	 * Not before time.
 	 *
@@ -60,9 +63,8 @@ class AttCertValidityPeriod
 	 * @return self
 	 */
 	public static function fromStrings($nb_date, $na_date, $tz = null) {
-		$timezone = isset($tz) ? new \DateTimeZone($tz) : null;
-		$nb = new \DateTimeImmutable($nb_date, $timezone);
-		$na = new \DateTimeImmutable($na_date, $timezone);
+		$nb = self::_createDateTime($nb_date, $tz);
+		$na = self::_createDateTime($na_date, $tz);
 		return new self($nb, $na);
 	}
 	
