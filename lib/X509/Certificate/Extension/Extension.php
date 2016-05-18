@@ -149,8 +149,8 @@ abstract class Extension
 	 * @return self
 	 */
 	protected static function _fromDER($data, $critical) {
-		// override in concrete class
-		throw new \BadMethodCallException();
+		throw new \BadMethodCallException(
+			__FUNCTION__ . " must be implemented in derived class.");
 	}
 	
 	/**
