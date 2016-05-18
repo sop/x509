@@ -42,6 +42,10 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 				return GeneralSubtree::fromASN1(
 					$el->expectType(Element::TYPE_SEQUENCE));
 			}, $seq->elements());
+		if (!count($subtrees)) {
+			throw new \UnexpectedValueException(
+				"GeneralSubtrees must contain at least 1 GeneralSubtree.");
+		}
 		return new self(...$subtrees);
 	}
 	
@@ -60,6 +64,9 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 	 * @return Sequence
 	 */
 	public function toASN1() {
+		if (!count($this->_subtrees)) {
+			throw new \LogicException("No subtrees.");
+		}
 		$elements = array_map(
 			function (GeneralSubtree $gs) {
 				return $gs->toASN1();
