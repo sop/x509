@@ -35,13 +35,16 @@ class SubjectDirectoryAttributesExtension extends Extension implements
 				return Attribute::fromASN1(
 					$el->expectType(Element::TYPE_SEQUENCE));
 			}, Sequence::fromDER($data)->elements());
+		if (!count($attribs)) {
+			throw new \UnexpectedValueException(
+				"SubjectDirectoryAttributes must have at least one Attribute.");
+		}
 		return new self($critical, ...$attribs);
 	}
 	
 	protected function _valueASN1() {
 		if (!count($this->_attributes)) {
-			throw new \LogicException(
-				"SubjectDirectoryAttributes must have at least one Attribute.");
+			throw new \LogicException("No attributes");
 		}
 		$elements = array_map(
 			function (Attribute $attr) {
