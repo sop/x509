@@ -40,11 +40,19 @@ class CRLDistributionPointsExtension extends Extension implements \Countable,
 				return DistributionPoint::fromASN1(
 					$el->expectType(Element::TYPE_SEQUENCE));
 			}, Sequence::fromDER($data)->elements());
+		if (!count($dps)) {
+			throw new \UnexpectedValueException(
+				"CRLDistributionPoints must have" .
+					 " at least one DistributionPoint.");
+		}
 		// late static bound, extended by Freshest CRL extension
 		return new static($critical, ...$dps);
 	}
 	
 	protected function _valueASN1() {
+		if (!count($this->_distributionPoints)) {
+			throw new \LogicException("No distribution points.");
+		}
 		$elements = array_map(
 			function (DistributionPoint $dp) {
 				return $dp->toASN1();
@@ -61,6 +69,12 @@ class CRLDistributionPointsExtension extends Extension implements \Countable,
 		return $this->_distributionPoints;
 	}
 	
+	/**
+	 * Get the number of distribution points.
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
 	public function count() {
 		return count($this->_distributionPoints);
 	}
