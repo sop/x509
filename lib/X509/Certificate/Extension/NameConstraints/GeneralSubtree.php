@@ -13,7 +13,7 @@ use X509\GeneralName\GeneralName;
  * Implements <i>GeneralSubtree</i> ASN.1 type used by
  * 'Name Constraints' certificate extension.
  *
- * @link @link https://tools.ietf.org/html/rfc5280#section-4.2.1.10
+ * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.10
  */
 class GeneralSubtree
 {
