@@ -39,12 +39,16 @@ class PolicyMappingsExtension extends Extension implements \Countable,
 				return PolicyMapping::fromASN1(
 					$el->expectType(Element::TYPE_SEQUENCE));
 			}, Sequence::fromDER($data)->elements());
+		if (!count($mappings)) {
+			throw new \UnexpectedValueException(
+				"PolicyMappings must have at least one mapping.");
+		}
 		return new self($critical, ...$mappings);
 	}
 	
 	protected function _valueASN1() {
 		if (!count($this->_mappings)) {
-			throw new \LogicException("At least one mapping required.");
+			throw new \LogicException("No mappings.");
 		}
 		$elements = array_map(
 			function (PolicyMapping $mapping) {
@@ -62,6 +66,12 @@ class PolicyMappingsExtension extends Extension implements \Countable,
 		return $this->_mappings;
 	}
 	
+	/**
+	 * Get the number of mappings.
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
 	public function count() {
 		return count($this->_mappings);
 	}
