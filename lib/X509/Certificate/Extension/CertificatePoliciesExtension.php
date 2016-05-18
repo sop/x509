@@ -42,6 +42,11 @@ class CertificatePoliciesExtension extends Extension implements \Countable,
 				return PolicyInformation::fromASN1(
 					$el->expectType(Element::TYPE_SEQUENCE));
 			}, Sequence::fromDER($data)->elements());
+		if (!count($policies)) {
+			throw new \UnexpectedValueException(
+				"certificatePolicies must contain" .
+					 " at least one PolicyInformation.");
+		}
 		return new self($critical, ...$policies);
 	}
 	
@@ -59,16 +64,20 @@ class CertificatePoliciesExtension extends Extension implements \Countable,
 	 * Get policy information by OID.
 	 *
 	 * @param string $oid
+	 * @throws \LogicException
 	 * @return PolicyInformation
 	 */
 	public function get($oid) {
 		if (!$this->has($oid)) {
-			throw \OutOfBoundsException("Not certificate policy by OID $oid.");
+			throw new \LogicException("Not certificate policy by OID $oid.");
 		}
 		return $this->_policies[$oid];
 	}
 	
 	protected function _valueASN1() {
+		if (!count($this->_policies)) {
+			throw new \LogicException("No policies.");
+		}
 		$elements = array_map(
 			function (PolicyInformation $pi) {
 				return $pi->toASN1();
@@ -76,6 +85,12 @@ class CertificatePoliciesExtension extends Extension implements \Countable,
 		return new Sequence(...$elements);
 	}
 	
+	/**
+	 * Get the number of policies.
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
 	public function count() {
 		return count($this->_policies);
 	}
