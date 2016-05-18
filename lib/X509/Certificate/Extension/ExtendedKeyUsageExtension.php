@@ -105,6 +105,12 @@ class ExtendedKeyUsageExtension extends Extension implements \Countable,
 		return new Sequence(...$elements);
 	}
 	
+	/**
+	 * Get the number of purposes.
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
 	public function count() {
 		return count($this->_purposes);
 	}
