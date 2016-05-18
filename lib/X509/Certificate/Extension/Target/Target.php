@@ -45,8 +45,8 @@ abstract class Target
 	 * @return self
 	 */
 	protected static function _fromASN1(TaggedType $el) {
-		// implement in derived class
-		throw new \BadMethodCallException();
+		throw new \BadMethodCallException(
+			__FUNCTION__ . " must be implemented in derived class.");
 	}
 	
 	/**
