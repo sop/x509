@@ -44,7 +44,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 			}, $seq->elements());
 		if (!count($subtrees)) {
 			throw new \UnexpectedValueException(
-				"GeneralSubtrees must contain at least 1 GeneralSubtree.");
+				"GeneralSubtrees must contain at least one GeneralSubtree.");
 		}
 		return new self(...$subtrees);
 	}
