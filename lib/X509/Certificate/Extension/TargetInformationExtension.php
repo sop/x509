@@ -63,7 +63,7 @@ class TargetInformationExtension extends Extension implements \Countable,
 		if (!isset($this->_merged)) {
 			$a = array();
 			foreach ($this->_targets as $targets) {
-				$a = array_merge($a, $targets->targets());
+				$a = array_merge($a, $targets->all());
 			}
 			$this->_merged = $a;
 		}

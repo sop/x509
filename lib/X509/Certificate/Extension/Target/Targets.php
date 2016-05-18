@@ -11,7 +11,7 @@ use ASN1\Type\Constructed\Sequence;
  *
  * @link https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
-class Targets
+class Targets implements \Countable, \IteratorAggregate
 {
 	/**
 	 * Target elements.
@@ -48,7 +48,7 @@ class Targets
 	 *
 	 * @return Target[]
 	 */
-	public function targets() {
+	public function all() {
 		return $this->_targets;
 	}
 	
@@ -63,5 +63,24 @@ class Targets
 				return $target->toASN1();
 			}, $this->_targets);
 		return new Sequence(...$elements);
+	}
+	
+	/**
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
+	public function count() {
+		return count($this->_targets);
+	}
+	
+	/**
+	 * Get iterator for targets.
+	 *
+	 * @see IteratorAggregate::getIterator()
+	 * @return \ArrayIterator
+	 */
+	public function getIterator() {
+		return new \ArrayIterator($this->_targets);
 	}
 }
