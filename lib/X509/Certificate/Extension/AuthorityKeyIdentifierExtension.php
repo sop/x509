@@ -20,21 +20,21 @@ class AuthorityKeyIdentifierExtension extends Extension
 	/**
 	 * Key identifier.
 	 *
-	 * @var string $_keyIdentifier
+	 * @var string|null $_keyIdentifier
 	 */
 	protected $_keyIdentifier;
 	
 	/**
 	 * Issuer name.
 	 *
-	 * @var GeneralNames $_authorityCertIssuer
+	 * @var GeneralNames|null $_authorityCertIssuer
 	 */
 	protected $_authorityCertIssuer;
 	
 	/**
 	 * Issuer serial number.
 	 *
-	 * @var int|string $_authorityCertSerialNumber
+	 * @var int|string|null $_authorityCertSerialNumber
 	 */
 	protected $_authorityCertSerialNumber;
 	
@@ -42,9 +42,9 @@ class AuthorityKeyIdentifierExtension extends Extension
 	 * Constructor
 	 *
 	 * @param bool $critical
-	 * @param string $keyIdentifier
-	 * @param GeneralNames $issuer
-	 * @param int|string $serial
+	 * @param string|null $keyIdentifier
+	 * @param GeneralNames|null $issuer
+	 * @param int|string|null $serial
 	 */
 	public function __construct($critical, $keyIdentifier, 
 			GeneralNames $issuer = null, $serial = null) {
@@ -144,11 +144,18 @@ class AuthorityKeyIdentifierExtension extends Extension
 			$elements[] = new ImplicitlyTaggedType(0, 
 				new OctetString($this->_keyIdentifier));
 		}
-		if (isset($this->_authorityCertIssuer)) {
+		// if either issuer or serial is set, both must be set
+		if (isset($this->_authorityCertIssuer) ||
+			 isset($this->_authorityCertSerialNumber)) {
+			if (!isset($this->_authorityCertIssuer, 
+				$this->_authorityCertSerialNumber)) {
+				throw new \LogicException(
+					"AuthorityKeyIdentifier must have both" .
+					 " authorityCertIssuer and authorityCertSerialNumber" .
+					 " present or both absent.");
+			}
 			$elements[] = new ImplicitlyTaggedType(1, 
 				$this->_authorityCertIssuer->toASN1());
-		}
-		if (isset($this->_authorityCertSerialNumber)) {
 			$elements[] = new ImplicitlyTaggedType(2, 
 				new Integer($this->_authorityCertSerialNumber));
 		}
