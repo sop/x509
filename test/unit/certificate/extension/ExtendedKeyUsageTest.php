@@ -97,6 +97,15 @@ class ExtendedKeyUsageTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param ExtendedKeyUsageExtension $ext
 	 */
+	public function testPurposes(ExtendedKeyUsageExtension $ext) {
+		$this->assertContainsOnly("string", $ext->purposes());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param ExtendedKeyUsageExtension $ext
+	 */
 	public function testCount(ExtendedKeyUsageExtension $ext) {
 		$this->assertCount(2, $ext);
 	}
@@ -111,7 +120,7 @@ class ExtendedKeyUsageTest extends PHPUnit_Framework_TestCase
 		foreach ($ext as $oid) {
 			$values[] = $oid;
 		}
-		$this->assertCount(2, $values);
+		$this->assertContainsOnly("string", $values);
 	}
 	
 	/**

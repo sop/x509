@@ -1,6 +1,8 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\Primitive\OctetString;
 use X501\ASN1\Attribute;
 use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\CommonNameValue;
@@ -127,5 +129,24 @@ class SubjectDirectoryAttributesTest extends PHPUnit_Framework_TestCase
 		}
 		$this->assertCount(2, $values);
 		$this->assertContainsOnlyInstancesOf(Attribute::class, $values);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEncodeEmptyFail() {
+		$ext = new SubjectDirectoryAttributesExtension(false);
+		$ext->toASN1();
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testDecodeEmptyFail() {
+		$seq = new Sequence();
+		$ext_seq = new Sequence(
+			new ObjectIdentifier(Extension::OID_SUBJECT_DIRECTORY_ATTRIBUTES), 
+			new OctetString($seq->toDER()));
+		SubjectDirectoryAttributesExtension::fromASN1($ext_seq);
 	}
 }

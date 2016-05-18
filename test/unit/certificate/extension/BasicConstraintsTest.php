@@ -107,4 +107,12 @@ class BasicConstraintsTest extends PHPUnit_Framework_TestCase
 		$ext = $exts->basicConstraints();
 		$this->assertInstanceOf(BasicConstraintsExtension::class, $ext);
 	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testNoPathLenFail() {
+		$ext = new BasicConstraintsExtension(false, false);
+		$ext->pathLen();
+	}
 }

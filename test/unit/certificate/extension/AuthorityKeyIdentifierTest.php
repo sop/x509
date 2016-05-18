@@ -1,6 +1,10 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\Integer;
+use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\Primitive\OctetString;
+use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use X501\ASN1\Name;
 use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
 use X509\Certificate\Extension\Extension;
@@ -136,5 +140,49 @@ class AuthorityKeyIdentifierTest extends PHPUnit_Framework_TestCase
 	public function testFromExtensions(Extensions $exts) {
 		$ext = $exts->authorityKeyIdentifier();
 		$this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testDecodeIssuerXorSerialFail() {
+		$seq = new Sequence(new ImplicitlyTaggedType(0, new OctetString("")), 
+			new ImplicitlyTaggedType(2, new Integer(1)));
+		$ext_seq = new Sequence(
+			new ObjectIdentifier(Extension::OID_AUTHORITY_KEY_IDENTIFIER), 
+			new OctetString($seq->toDER()));
+		AuthorityKeyIdentifierExtension::fromASN1($ext_seq);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEncodeIssuerXorSerialFail() {
+		$ext = new AuthorityKeyIdentifierExtension(false, "", null, 1);
+		$ext->toASN1();
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testNoKeyIdentifierFail() {
+		$ext = new AuthorityKeyIdentifierExtension(false, null);
+		$ext->keyIdentifier();
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testNoIssuerFail() {
+		$ext = new AuthorityKeyIdentifierExtension(false, null);
+		$ext->issuer();
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testNoSerialFail() {
+		$ext = new AuthorityKeyIdentifierExtension(false, null);
+		$ext->serial();
 	}
 }

@@ -199,4 +199,63 @@ class NameConstraintsTest extends PHPUnit_Framework_TestCase
 		$ext = $exts->nameConstraints();
 		$this->assertInstanceOf(NameConstraintsExtension::class, $ext);
 	}
+	
+	public function testCreateEmpty() {
+		$ext = new NameConstraintsExtension(false);
+		$this->assertInstanceOf(NameConstraintsExtension::class, $ext);
+		return $ext;
+	}
+	
+	/**
+	 * @depends testCreateEmpty
+	 *
+	 * @param Extension $ext
+	 */
+	public function testEncodeEmpty(Extension $ext) {
+		$seq = $ext->toASN1();
+		$this->assertInstanceOf(Sequence::class, $seq);
+		return $seq->toDER();
+	}
+	
+	/**
+	 * @depends testEncodeEmpty
+	 *
+	 * @param string $der
+	 */
+	public function testDecodeEmpty($der) {
+		$ext = NameConstraintsExtension::fromASN1(Sequence::fromDER($der));
+		$this->assertInstanceOf(NameConstraintsExtension::class, $ext);
+		return $ext;
+	}
+	
+	/**
+	 * @depends testCreateEmpty
+	 * @depends testDecodeEmpty
+	 *
+	 * @param Extension $ref
+	 * @param Extension $new
+	 */
+	public function testRecodedEmpty(Extension $ref, Extension $new) {
+		$this->assertEquals($ref, $new);
+	}
+	
+	/**
+	 * @depends testCreateEmpty
+	 * @expectedException LogicException
+	 *
+	 * @param NameConstraintsExtension $ext
+	 */
+	public function testNoPermittedSubtreesFail(NameConstraintsExtension $ext) {
+		$ext->permittedSubtrees();
+	}
+	
+	/**
+	 * @depends testCreateEmpty
+	 * @expectedException LogicException
+	 *
+	 * @param NameConstraintsExtension $ext
+	 */
+	public function testNoExcludedSubtreesFail(NameConstraintsExtension $ext) {
+		$ext->excludedSubtrees();
+	}
 }

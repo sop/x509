@@ -1,6 +1,8 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\Primitive\OctetString;
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
 use X509\Certificate\Extension\PolicyMappingsExtension;
@@ -159,5 +161,24 @@ class PolicyMappingsTest extends PHPUnit_Framework_TestCase
 	public function testFromExtensions(Extensions $exts) {
 		$ext = $exts->policyMappings();
 		$this->assertInstanceOf(PolicyMappingsExtension::class, $ext);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEncodeEmptyFail() {
+		$ext = new PolicyMappingsExtension(false);
+		$ext->toASN1();
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testDecodeEmptyFail() {
+		$seq = new Sequence();
+		$ext_seq = new Sequence(
+			new ObjectIdentifier(Extension::OID_POLICY_MAPPINGS), 
+			new OctetString($seq->toDER()));
+		PolicyMappingsExtension::fromASN1($ext_seq);
 	}
 }

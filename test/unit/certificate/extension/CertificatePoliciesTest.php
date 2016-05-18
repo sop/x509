@@ -1,6 +1,8 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\Primitive\OctetString;
 use X509\Certificate\Extension\CertificatePoliciesExtension;
 use X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
 use X509\Certificate\Extension\CertificatePolicy\DisplayText;
@@ -56,7 +58,8 @@ class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
 	 * @param PolicyInformation $info
 	 */
 	public function testCreate(PolicyInformation $info) {
-		$ext = new CertificatePoliciesExtension(true, $info);
+		$ext = new CertificatePoliciesExtension(true, $info, 
+			new PolicyInformation("1.3.6.1.3.10"));
 		$this->assertInstanceOf(CertificatePoliciesExtension::class, $ext);
 		return $ext;
 	}
@@ -118,7 +121,7 @@ class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
 	 * @param CertificatePoliciesExtension $ext
 	 */
 	public function testCount(CertificatePoliciesExtension $ext) {
-		$this->assertCount(1, $ext);
+		$this->assertCount(2, $ext);
 	}
 	
 	/**
@@ -131,8 +134,18 @@ class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
 		foreach ($ext as $info) {
 			$values[] = $info;
 		}
-		$this->assertCount(1, $values);
+		$this->assertCount(2, $values);
 		$this->assertContainsOnlyInstancesOf(PolicyInformation::class, $values);
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @expectedException LogicException
+	 *
+	 * @param CertificatePoliciesExtension $ext
+	 */
+	public function testGetFail(CertificatePoliciesExtension $ext) {
+		$ext->get("1.2.3");
 	}
 	
 	/**
@@ -258,5 +271,24 @@ class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
 	public function testFromExtensions(Extensions $exts) {
 		$ext = $exts->certificatePolicies();
 		$this->assertInstanceOf(CertificatePoliciesExtension::class, $ext);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEncodeEmptyFail() {
+		$ext = new CertificatePoliciesExtension(false);
+		$ext->toASN1();
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testDecodeEmptyFail() {
+		$seq = new Sequence();
+		$ext_seq = new Sequence(
+			new ObjectIdentifier(Extension::OID_CERTIFICATE_POLICIES), 
+			new OctetString($seq->toDER()));
+		CertificatePoliciesExtension::fromASN1($ext_seq);
 	}
 }

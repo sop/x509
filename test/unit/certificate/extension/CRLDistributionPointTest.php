@@ -1,6 +1,8 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\Primitive\OctetString;
 use X501\ASN1\Name;
 use X509\Certificate\Extension\CRLDistributionPointsExtension;
 use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
@@ -38,7 +40,8 @@ class CRLDistributionPointTest extends PHPUnit_Framework_TestCase
 	 * @param DistributionPoint $dp
 	 */
 	public function testCreate(DistributionPoint $dp) {
-		$ext = new CRLDistributionPointsExtension(true, $dp);
+		$ext = new CRLDistributionPointsExtension(true, $dp, 
+			new DistributionPoint());
 		$this->assertInstanceOf(CRLDistributionPointsExtension::class, $ext);
 		return $ext;
 	}
@@ -100,7 +103,7 @@ class CRLDistributionPointTest extends PHPUnit_Framework_TestCase
 	 * @param CRLDistributionPointsExtension $ext
 	 */
 	public function testCount(CRLDistributionPointsExtension $ext) {
-		$this->assertCount(1, $ext);
+		$this->assertCount(2, $ext);
 	}
 	
 	/**
@@ -113,7 +116,7 @@ class CRLDistributionPointTest extends PHPUnit_Framework_TestCase
 		foreach ($ext as $dp) {
 			$values[] = $dp;
 		}
-		$this->assertCount(1, $values);
+		$this->assertCount(2, $values);
 		$this->assertContainsOnlyInstancesOf(DistributionPoint::class, $values);
 	}
 	
@@ -179,5 +182,24 @@ class CRLDistributionPointTest extends PHPUnit_Framework_TestCase
 	public function testFromExtensions(Extensions $exts) {
 		$ext = $exts->crlDistributionPoints();
 		$this->assertInstanceOf(CRLDistributionPointsExtension::class, $ext);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEncodeEmptyFail() {
+		$ext = new CRLDistributionPointsExtension(false);
+		$ext->toASN1();
+	}
+	
+	/**
+	 * @expectedException UnexpectedValueException
+	 */
+	public function testDecodeEmptyFail() {
+		$seq = new Sequence();
+		$ext_seq = new Sequence(
+			new ObjectIdentifier(Extension::OID_CRL_DISTRIBUTION_POINTS), 
+			new OctetString($seq->toDER()));
+		CRLDistributionPointsExtension::fromASN1($ext_seq);
 	}
 }
