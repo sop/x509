@@ -3,15 +3,16 @@
 use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKey;
 use CryptoUtil\ASN1\PrivateKeyInfo;
+use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\PEM\PEM;
 use X501\ASN1\Attribute;
 use X509\AttributeCertificate\AttCertValidityPeriod;
-use X509\AttributeCertificate\Attribute\AccessIdentityAttribute;
-use X509\AttributeCertificate\Attribute\AuthenticationInfoAttribute;
-use X509\AttributeCertificate\Attribute\ChargingIdentityAttribute;
-use X509\AttributeCertificate\Attribute\GroupAttribute;
+use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
+use X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
+use X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
+use X509\AttributeCertificate\Attribute\GroupAttributeValue;
 use X509\AttributeCertificate\Attribute\IetfAttrValue;
-use X509\AttributeCertificate\Attribute\RoleAttribute;
+use X509\AttributeCertificate\Attribute\RoleAttributeValue;
 use X509\AttributeCertificate\AttributeCertificateInfo;
 use X509\AttributeCertificate\Attributes;
 use X509\AttributeCertificate\Holder;
@@ -26,9 +27,8 @@ use X509\Certificate\Extension\TargetInformationExtension;
 use X509\Certificate\Extensions;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\DNSName;
-use X509\GeneralName\UniformResourceIdentifier;
 use X509\GeneralName\GeneralNames;
-use CryptoUtil\Crypto\Crypto;
+use X509\GeneralName\UniformResourceIdentifier;
 
 require_once dirname(dirname(dirname(__DIR__))) . "/vendor/autoload.php";
 
@@ -38,9 +38,7 @@ $issuer_cert = Certificate::fromPEM(
 // load issuer private and public keys
 $issuer_private_key = PrivateKey::fromPEM(
 	PEM::fromFile(dirname(__DIR__) . "/certs/keys/acme-rsa.pem"))->privateKeyInfo();
-$issuer_public_key = $issuer_private_key->privateKey()
-	->publicKey()
-	->publicKeyInfo();
+$issuer_public_key = $issuer_private_key->publicKeyInfo();
 // load AC holder certificate
 $holder_cert = Certificate::fromPEM(
 	PEM::fromFile(dirname(__DIR__) . "/certs/acme-ecdsa.pem"));
@@ -53,22 +51,23 @@ $issuer = new V2Form(
 		new DirectoryName($issuer_cert->tbsCertificate()->subject())));
 $validity = AttCertValidityPeriod::fromStrings("2016-01-01 12:00:00", 
 	"2016-03-01 12:00:00", "UTC");
-$authinfo_attr = new AuthenticationInfoAttribute(
+$authinfo_attr = new AuthenticationInfoAttributeValue(
 	new UniformResourceIdentifier("urn:service"), 
 	DirectoryName::fromDNString("cn=username"), "password");
-$authid_attr = new AccessIdentityAttribute(
+$authid_attr = new AccessIdentityAttributeValue(
 	new UniformResourceIdentifier("urn:service"), 
 	DirectoryName::fromDNString("cn=username"));
-$charge_attr = new ChargingIdentityAttribute(
-	new GeneralNames(DirectoryName::fromDNString("cn=ACME Ltd.")), 
+$charge_attr = new ChargingIdentityAttributeValue(
 	IetfAttrValue::fromString("ACME Ltd."));
-$group_attr = new GroupAttribute(null, IetfAttrValue::fromString("group1"), 
+$charge_attr = $charge_attr->withPolicyAuthority(
+	new GeneralNames(DirectoryName::fromDNString("cn=ACME Ltd.")));
+$group_attr = new GroupAttributeValue(IetfAttrValue::fromString("group1"), 
 	IetfAttrValue::fromString("group2"));
 $role_attr = Attribute::fromAttributeValues(
-	new RoleAttribute(new UniformResourceIdentifier("urn:role1")), 
-	new RoleAttribute(new UniformResourceIdentifier("urn:role2")));
-$attribs = new Attributes($authinfo_attr->attribute(), $authid_attr->attribute(), 
-	$charge_attr->attribute(), $group_attr->attribute(), $role_attr);
+	new RoleAttributeValue(new UniformResourceIdentifier("urn:role1")), 
+	new RoleAttributeValue(new UniformResourceIdentifier("urn:role2")));
+$attribs = Attributes::fromAttributeValues($authinfo_attr, $authid_attr, 
+	$charge_attr, $group_attr)->withAdditional($role_attr);
 $aki_ext = new AuthorityKeyIdentifierExtension(false, 
 	$issuer_public_key->keyIdentifier());
 $ti_ext = new TargetInformationExtension(true, 
