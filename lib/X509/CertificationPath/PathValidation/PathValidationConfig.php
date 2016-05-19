@@ -140,6 +140,42 @@ class PathValidationConfig
 	}
 	
 	/**
+	 * Get self with initial-policy-mapping-inhibit set.
+	 *
+	 * @param bool $flag
+	 * @return self
+	 */
+	public function withPolicyMappingInhibit($flag) {
+		$obj = clone $this;
+		$obj->_policyMappingInhibit = (bool) $flag;
+		return $obj;
+	}
+	
+	/**
+	 * Get self with initial-explicit-policy set.
+	 *
+	 * @param bool $flag
+	 * @return self
+	 */
+	public function withExplicitPolicy($flag) {
+		$obj = clone $this;
+		$obj->_explicitPolicy = (bool) $flag;
+		return $obj;
+	}
+	
+	/**
+	 * Get self with initial-any-policy-inhibit set.
+	 *
+	 * @param bool $flag
+	 * @return self
+	 */
+	public function withAnyPolicyInhibit($flag) {
+		$obj = clone $this;
+		$obj->_anyPolicyInhibit = (bool) $flag;
+		return $obj;
+	}
+	
+	/**
 	 * Get maximum certification path length.
 	 *
 	 * @return int
