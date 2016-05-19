@@ -146,9 +146,14 @@ class PathValidator
 	protected function _prepareNext(ValidatorState $state, Certificate $cert) {
 		$tbs_cert = $cert->tbsCertificate();
 		$extensions = $tbs_cert->extensions();
-		// (a)(b)
+		// (a)(b) if policy mappings extension is present
 		if ($extensions->hasPolicyMappings()) {
-			// @todo Implement policy mappings handling
+			// (a) verify that anyPolicy mapping is not used
+			if ($extensions->policyMappings()->hasAnyPolicyMapping()) {
+				throw new PathValidationException("anyPolicy mapping found.");
+			}
+			// (b) process policy mappings
+			$state = $this->_processPolicyMappings($state, $cert);
 		}
 		// (c) assign working_issuer_name
 		$state = $state->withWorkingIssuerName($tbs_cert->subject());
@@ -277,7 +282,7 @@ class PathValidator
 			$state = $state->withWorkingPublicKeyParameters($params);
 		} else {
 			// if algorithms differ, set parameters to null
-			if ($pk_info->algorithm()->oid() !==
+			if ($pk_info->algorithmIdentifier()->oid() !==
 				 $state->workingPublicKeyAlgorithm()->oid()) {
 				$state = $state->withWorkingPublicKeyParameters(null);
 			}
@@ -355,6 +360,7 @@ class PathValidator
 	protected function _checkPermittedSubtrees(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
+		$subtrees = $state->permittedSubtrees();
 	}
 	
 	/**
@@ -365,6 +371,7 @@ class PathValidator
 	protected function _checkExcludedSubtrees(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
+		$subtrees = $state->excludedSubtrees();
 	}
 	
 	/**
@@ -430,6 +437,19 @@ class PathValidator
 				}
 			}
 		}
+		return $state;
+	}
+	
+	/**
+	 * Process policy mappings extension.
+	 *
+	 * @param ValidatorState $state
+	 * @param Certificate $cert
+	 * @return ValidatorState
+	 */
+	protected function _processPolicyMappings(ValidatorState $state, 
+			Certificate $cert) {
+		// @todo Implement
 		return $state;
 	}
 	
