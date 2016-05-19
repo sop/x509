@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/sop/x509.svg?branch=master)](https://travis-ci.org/sop/x509)
+[![Coverage Status](https://coveralls.io/repos/github/sop/x509/badge.svg?branch=master)](https://coveralls.io/github/sop/x509?branch=master)
 [![License](https://poser.pugx.org/sop/x509/license)](https://github.com/sop/x509/blob/master/LICENSE)
 
 # X.509
