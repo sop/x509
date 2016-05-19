@@ -130,4 +130,18 @@ class TimeTest extends PHPUnit_Framework_TestCase
 		$prop->setValue($time, Element::TYPE_NULL);
 		$time->toASN1();
 	}
+	
+	/**
+	 * @expectedException RuntimeException
+	 */
+	public function testInvalidDateFail() {
+		Time::fromString("nope");
+	}
+	
+	/**
+	 * @expectedException RuntimeException
+	 */
+	public function testInvalidTimezone() {
+		Time::fromString("now", "fail");
+	}
 }

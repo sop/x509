@@ -129,9 +129,7 @@ class AttributeCertificateTest extends PHPUnit_Framework_TestCase
 	 * @param AttributeCertificate $ac
 	 */
 	public function testVerify(AttributeCertificate $ac) {
-		$pubkey_info = self::$_privateKeyInfo->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pubkey_info = self::$_privateKeyInfo->publicKeyInfo();
 		$this->assertTrue($ac->verify(Crypto::getDefault(), $pubkey_info));
 	}
 	

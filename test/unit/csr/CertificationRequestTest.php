@@ -32,9 +32,7 @@ class CertificationRequestTest extends PHPUnit_Framework_TestCase
 	}
 	
 	public function testCreate() {
-		$pkinfo = self::$_privateKeyInfo->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pkinfo = self::$_privateKeyInfo->publicKeyInfo();
 		$cri = new CertificationRequestInfo(self::$_subject, $pkinfo);
 		$data = $cri->toASN1()->toDER();
 		$algo = new SHA256WithRSAEncryptionAlgorithmIdentifier();
@@ -127,6 +125,15 @@ class CertificationRequestTest extends PHPUnit_Framework_TestCase
 		$pem = $cr->toPEM();
 		$this->assertInstanceOf(PEM::class, $pem);
 		return $pem;
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationRequest $cr
+	 */
+	public function testToString(CertificationRequest $cr) {
+		$this->assertInternalType("string", strval($cr));
 	}
 	
 	/**

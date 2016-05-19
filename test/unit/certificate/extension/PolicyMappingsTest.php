@@ -3,6 +3,7 @@
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Primitive\OctetString;
+use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
 use X509\Certificate\Extension\PolicyMappingsExtension;
@@ -140,6 +141,29 @@ class PolicyMappingsTest extends PHPUnit_Framework_TestCase
 	public function testSubjectPolicy(PolicyMapping $mapping) {
 		$this->assertEquals(self::SUBJECT_POLICY_OID, 
 			$mapping->subjectDomainPolicy());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param PolicyMappingsExtension $ext
+	 */
+	public function testHasAnyPolicyMapping(PolicyMappingsExtension $ext) {
+		$this->assertFalse($ext->hasAnyPolicyMapping());
+	}
+	
+	public function testHasAnyPolicyIssuer() {
+		$ext = new PolicyMappingsExtension(false, 
+			new PolicyMapping(PolicyInformation::OID_ANY_POLICY, 
+				self::SUBJECT_POLICY_OID));
+		$this->assertTrue($ext->hasAnyPolicyMapping());
+	}
+	
+	public function testHasAnyPolicySubject() {
+		$ext = new PolicyMappingsExtension(false, 
+			new PolicyMapping(self::ISSUER_POLICY_OID, 
+				PolicyInformation::OID_ANY_POLICY));
+		$this->assertTrue($ext->hasAnyPolicyMapping());
 	}
 	
 	/**

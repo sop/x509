@@ -2,7 +2,10 @@
 
 use ASN1\Type\Constructed\Sequence;
 use X501\ASN1\Attribute;
+use X501\ASN1\AttributeType;
 use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
+use X509\AttributeCertificate\Attribute\GroupAttributeValue;
+use X509\AttributeCertificate\Attribute\IetfAttrValue;
 use X509\AttributeCertificate\Attribute\RoleAttributeValue;
 use X509\AttributeCertificate\Attributes;
 use X509\GeneralName\UniformResourceIdentifier;
@@ -107,5 +110,46 @@ class AttributeCertificateAttributesTest extends PHPUnit_Framework_TestCase
 	public function testAllOf(Attributes $attribs) {
 		$this->assertCount(1, 
 			$attribs->allOf(AccessIdentityAttributeValue::OID));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testWithAdditional(Attributes $attribs) {
+		$attribs = $attribs->withAdditional(
+			Attribute::fromAttributeValues(
+				new GroupAttributeValue(IetfAttrValue::fromString("test"))));
+		$this->assertInstanceOf(Attributes::class, $attribs);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testWithUniqueReplace(Attributes $attribs) {
+		$attribs = $attribs->withUnique(
+			Attribute::fromAttributeValues(
+				new RoleAttributeValue(new UniformResourceIdentifier("uri:new"))));
+		$this->assertInstanceOf(Attributes::class, $attribs);
+		$this->assertCount(2, $attribs);
+		$this->assertEquals("uri:new", 
+			$attribs->firstOf(AttributeType::OID_ROLE)
+				->first()
+				->roleName());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testWithUniqueAdded(Attributes $attribs) {
+		$attribs = $attribs->withUnique(
+			Attribute::fromAttributeValues(
+				new GroupAttributeValue(IetfAttrValue::fromString("test"))));
+		$this->assertCount(3, $attribs);
 	}
 }

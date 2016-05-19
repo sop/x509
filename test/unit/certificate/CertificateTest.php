@@ -30,9 +30,7 @@ class CertificateTest extends PHPUnit_Framework_TestCase
 	}
 	
 	public function testCreate() {
-		$pki = self::$_privateKeyInfo->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pki = self::$_privateKeyInfo->publicKeyInfo();
 		$tc = new TBSCertificate(Name::fromString("cn=Subject"), $pki, 
 			Name::fromString("cn=Issuer"), Validity::fromStrings(null, null));
 		$tc = $tc->withVersion(TBSCertificate::VERSION_1)

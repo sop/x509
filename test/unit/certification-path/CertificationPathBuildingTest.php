@@ -1,7 +1,6 @@
 <?php
 
 use CryptoUtil\PEM\PEM;
-use CryptoUtil\PEM\PEMBundle;
 use X509\Certificate\Certificate;
 use X509\Certificate\CertificateBundle;
 use X509\CertificationPath\CertificationPath;
@@ -13,20 +12,32 @@ use X509\CertificationPath\PathBuilding\CertificationPathBuilder;
  */
 class CertificationPathBuildingTest extends PHPUnit_Framework_TestCase
 {
-	/**
-	 *
-	 * @return CertificationPath
-	 */
+	private static $_ca;
+	
+	private static $_interm;
+	
+	private static $_cert;
+	
+	public static function setUpBeforeClass() {
+		self::$_ca = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
+		self::$_interm = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-interm-rsa.pem"));
+		self::$_cert = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem"));
+	}
+	
+	public static function tearDownAfterClass() {
+		self::$_ca = null;
+		self::$_interm = null;
+		self::$_cert = null;
+	}
+	
 	public function testBuildPath() {
-		$anchors = CertificateBundle::fromPEMBundle(
-			PEMBundle::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
-		$intermediate = CertificateBundle::fromPEMBundle(
-			PEMBundle::fromFile(
-				TEST_ASSETS_DIR . "/certs/intermediate-bundle.pem"));
-		$target = Certificate::fromPEM(
-			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ecdsa.pem"));
-		$builder = new CertificationPathBuilder($anchors);
-		$path = $builder->shortestPathToTarget($target, $intermediate);
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca));
+		$path = $builder->shortestPathToTarget(self::$_cert, 
+			new CertificateBundle(self::$_interm));
 		$this->assertInstanceOf(CertificationPath::class, $path);
 		return $path;
 	}
@@ -46,9 +57,7 @@ class CertificationPathBuildingTest extends PHPUnit_Framework_TestCase
 	 * @param CertificationPath $path
 	 */
 	public function testPathAnchor(CertificationPath $path) {
-		$cert = Certificate::fromPEM(
-			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
-		$this->assertEquals($cert, $path->certificates()[0]);
+		$this->assertEquals(self::$_ca, $path->certificates()[0]);
 	}
 	
 	/**
@@ -57,9 +66,7 @@ class CertificationPathBuildingTest extends PHPUnit_Framework_TestCase
 	 * @param CertificationPath $path
 	 */
 	public function testPathIntermediate(CertificationPath $path) {
-		$cert = Certificate::fromPEM(
-			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-interm-ecdsa.pem"));
-		$this->assertEquals($cert, $path->certificates()[1]);
+		$this->assertEquals(self::$_interm, $path->certificates()[1]);
 	}
 	
 	/**
@@ -67,21 +74,55 @@ class CertificationPathBuildingTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param CertificationPath $path
 	 */
-	public function testPathTargete(CertificationPath $path) {
-		$cert = Certificate::fromPEM(
-			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ecdsa.pem"));
-		$this->assertEquals($cert, $path->certificates()[2]);
+	public function testPathTarget(CertificationPath $path) {
+		$this->assertEquals(self::$_cert, $path->certificates()[2]);
 	}
 	
 	/**
 	 * @expectedException X509\CertificationPath\Exception\PathBuildingException
 	 */
 	public function testBuildPathFail() {
-		$anchors = CertificateBundle::fromPEMBundle(
-			PEMBundle::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
-		$target = Certificate::fromPEM(
-			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ecdsa.pem"));
-		$builder = new CertificationPathBuilder($anchors);
-		$builder->shortestPathToTarget($target, new CertificateBundle());
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca));
+		$builder->shortestPathToTarget(self::$_cert, new CertificateBundle());
+	}
+	
+	public function testBuildSelfSigned() {
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca));
+		$path = $builder->shortestPathToTarget(self::$_ca);
+		$this->assertCount(1, $path);
+	}
+	
+	public function testBuildLength2() {
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca));
+		$path = $builder->shortestPathToTarget(self::$_interm);
+		$this->assertCount(2, $path);
+	}
+	
+	public function testBuildWithCAInIntermediate() {
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca));
+		$path = $builder->shortestPathToTarget(self::$_cert, 
+			new CertificateBundle(self::$_ca, self::$_interm));
+		$this->assertCount(3, $path);
+	}
+	
+	public function testBuildMultipleChoices() {
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca, self::$_interm));
+		$paths = $builder->allPathsToTarget(self::$_cert, 
+			new CertificateBundle(self::$_interm));
+		$this->assertCount(2, $paths);
+		$this->assertContainsOnlyInstancesOf(CertificationPath::class, $paths);
+	}
+	
+	public function testBuildShortest() {
+		$builder = new CertificationPathBuilder(
+			new CertificateBundle(self::$_ca, self::$_interm));
+		$path = $builder->shortestPathToTarget(self::$_cert, 
+			new CertificateBundle(self::$_interm));
+		$this->assertCount(2, $path);
 	}
 }

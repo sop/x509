@@ -131,9 +131,7 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
 		$priv_key_info = PrivateKeyInfo::fromPEM(
 			PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
 		$tc = new TBSCertificate(Name::fromString("cn=Subject"), 
-			$priv_key_info->privateKey()
-				->publicKey()
-				->publicKeyInfo(), Name::fromString("cn=Issuer"), 
+			$priv_key_info->publicKeyInfo(), Name::fromString("cn=Issuer"), 
 			Validity::fromStrings(null, null));
 		$cert = $tc->sign(Crypto::getDefault(), 
 			new SHA1WithRSAEncryptionAlgorithmIdentifier(), $priv_key_info);

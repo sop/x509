@@ -47,18 +47,16 @@ class TBSCertificateTest extends PHPUnit_Framework_TestCase
 	
 	public function testCreate() {
 		$tc = new TBSCertificate(self::$_subject, 
-			self::$_privateKeyInfo->privateKey()
-				->publicKey()
-				->publicKeyInfo(), self::$_issuer, self::$_validity);
+			self::$_privateKeyInfo->publicKeyInfo(), self::$_issuer, 
+			self::$_validity);
 		$this->assertInstanceOf(TBSCertificate::class, $tc);
 		return $tc;
 	}
 	
 	public function testCreateWithAll() {
 		$tc = new TBSCertificate(self::$_subject, 
-			self::$_privateKeyInfo->privateKey()
-				->publicKey()
-				->publicKeyInfo(), self::$_issuer, self::$_validity);
+			self::$_privateKeyInfo->publicKeyInfo(), self::$_issuer, 
+			self::$_validity);
 		$tc = $tc->withVersion(TBSCertificate::VERSION_3)
 			->withSerialNumber(1)
 			->withSignature(new SHA1WithRSAEncryptionAlgorithmIdentifier())
@@ -164,10 +162,8 @@ class TBSCertificateTest extends PHPUnit_Framework_TestCase
 	 * @param TBSCertificate $tc
 	 */
 	public function testSubjectPKI(TBSCertificate $tc) {
-		$this->assertEquals(
-			self::$_privateKeyInfo->privateKey()
-				->publicKey()
-				->publicKeyInfo(), $tc->subjectPublicKeyInfo());
+		$this->assertEquals(self::$_privateKeyInfo->publicKeyInfo(), 
+			$tc->subjectPublicKeyInfo());
 	}
 	
 	/**
@@ -257,6 +253,27 @@ class TBSCertificateTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testWithValidity(TBSCertificate $tc) {
 		$tc = $tc->withValidity(self::$_validity);
+		$this->assertInstanceOf(TBSCertificate::class, $tc);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param TBSCertificate $tc
+	 */
+	public function testWithSubject(TBSCertificate $tc) {
+		$tc = $tc->withSubject(self::$_subject);
+		$this->assertInstanceOf(TBSCertificate::class, $tc);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param TBSCertificate $tc
+	 */
+	public function testWithSubjectPublicKeyInfo(TBSCertificate $tc) {
+		$tc = $tc->withSubjectPublicKeyInfo(
+			self::$_privateKeyInfo->publicKeyInfo());
 		$this->assertInstanceOf(TBSCertificate::class, $tc);
 	}
 	

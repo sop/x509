@@ -3,6 +3,7 @@
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\PEM\PEM;
 use X509\Certificate\Certificate;
+use X509\Certificate\CertificateBundle;
 use X509\CertificationPath\CertificationPath;
 use X509\CertificationPath\PathValidation\PathValidationConfig;
 use X509\CertificationPath\PathValidation\PathValidationResult;
@@ -67,5 +68,11 @@ class CertificationPathTest extends PHPUnit_Framework_TestCase
 		$result = $path->validate(Crypto::getDefault(), 
 			PathValidationConfig::defaultConfig());
 		$this->assertInstanceOf(PathValidationResult::class, $result);
+	}
+	
+	public function testFromTrustAnchorToTarget() {
+		$path = CertificationPath::fromTrustAnchorToTarget(self::$_certs[0], 
+			self::$_certs[2], new CertificateBundle(...self::$_certs));
+		$this->assertInstanceOf(CertificationPath::class, $path);
 	}
 }

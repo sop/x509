@@ -47,9 +47,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
 		$name = Name::fromString("cn=Issuer");
 		$validity = Validity::fromStrings("2016-05-02 12:00:00", 
 			"2016-05-03 12:00:00");
-		$pki = self::$_issuerKey->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pki = self::$_issuerKey->publicKeyInfo();
 		$tbs_cert = new TBSCertificate($name, $pki, $name, $validity);
 		$tbs_cert = $tbs_cert->withExtensions(
 			new Extensions(new BasicConstraintsExtension(true, true), 
@@ -65,9 +63,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
 	
 	public function testCreateRequest() {
 		$subject = Name::fromString("cn=Subject");
-		$pkinfo = self::$_subjectKey->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pkinfo = self::$_subjectKey->publicKeyInfo();
 		$cri = new CertificationRequestInfo($subject, $pkinfo);
 		$cri = $cri->withExtensionRequest(
 			new Extensions(new BasicConstraintsExtension(true, false)));

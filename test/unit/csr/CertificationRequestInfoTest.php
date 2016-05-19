@@ -2,13 +2,16 @@
 
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
+use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\PEM\PEM;
 use X501\ASN1\Name;
 use X509\Certificate\Extension\SubjectAlternativeNameExtension;
 use X509\Certificate\Extensions;
 use X509\CertificationRequest\Attribute\ExtensionRequestValue;
 use X509\CertificationRequest\Attributes;
+use X509\CertificationRequest\CertificationRequest;
 use X509\CertificationRequest\CertificationRequestInfo;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\GeneralNames;
@@ -45,9 +48,7 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	}
 	
 	public function testCreate() {
-		$pkinfo = self::$_privateKeyInfo->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pkinfo = self::$_privateKeyInfo->publicKeyInfo();
 		$cri = new CertificationRequestInfo(self::$_subject, $pkinfo);
 		$cri = $cri->withAttributes(self::$_attribs);
 		$this->assertInstanceOf(CertificationRequestInfo::class, $cri);
@@ -123,10 +124,23 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param CertificationRequestInfo $cri
 	 */
+	public function testWithExtensionRequest(CertificationRequestInfo $cri) {
+		$cri->withExtensionRequest(new Extensions());
+	}
+	
+	public function testWithExtensionRequestWithoutAttributes() {
+		$cri = new CertificationRequestInfo(self::$_subject, 
+			self::$_privateKeyInfo->publicKeyInfo());
+		$cri->withExtensionRequest(new Extensions());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationRequestInfo $cri
+	 */
 	public function testSubjectPKI(CertificationRequestInfo $cri) {
-		$pkinfo = self::$_privateKeyInfo->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pkinfo = self::$_privateKeyInfo->publicKeyInfo();
 		$this->assertEquals($pkinfo, $cri->subjectPKInfo());
 	}
 	
@@ -146,9 +160,7 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testNoAttributesFail() {
 		$cri = new CertificationRequestInfo(self::$_subject, 
-			self::$_privateKeyInfo->privateKey()
-				->publicKey()
-				->publicKeyInfo());
+			self::$_privateKeyInfo->publicKeyInfo());
 		$cri->attributes();
 	}
 	
@@ -172,10 +184,19 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testInvalidVersionFail() {
 		$seq = new Sequence(new Integer(1), self::$_subject->toASN1(), 
-			self::$_privateKeyInfo->privateKey()
-				->publicKey()
-				->publicKeyInfo()
-				->toASN1());
+			self::$_privateKeyInfo->publicKeyInfo()->toASN1());
 		CertificationRequestInfo::fromASN1($seq);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationRequestInfo $cri
+	 */
+	public function testSign(CertificationRequestInfo $cri) {
+		$csr = $cri->sign(Crypto::getDefault(), 
+			new SHA1WithRSAEncryptionAlgorithmIdentifier(), 
+			self::$_privateKeyInfo);
+		$this->assertInstanceOf(CertificationRequest::class, $csr);
 	}
 }

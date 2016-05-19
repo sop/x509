@@ -28,9 +28,7 @@ class CertificateVersionTest extends PHPUnit_Framework_TestCase
 			PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
 		$subject = Name::fromString("cn=Test Subject");
 		$issuer = Name::fromString("cn=Test Issuer");
-		$pki = self::$_privateKeyInfo->privateKey()
-			->publicKey()
-			->publicKeyInfo();
+		$pki = self::$_privateKeyInfo->publicKeyInfo();
 		$validity = Validity::fromStrings("now", "now + 1 day", "UTC");
 		self::$_tbsCert = new TBSCertificate($subject, $pki, $issuer, $validity);
 	}
