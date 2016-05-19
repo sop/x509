@@ -293,6 +293,30 @@ class TBSCertificate
 	}
 	
 	/**
+	 * Get self with given subject.
+	 *
+	 * @param Name $subject
+	 * @return self
+	 */
+	public function withSubject(Name $subject) {
+		$obj = clone $this;
+		$obj->_subject = $subject;
+		return $obj;
+	}
+	
+	/**
+	 * Get self with given subject public key info.
+	 *
+	 * @param PublicKeyInfo $pub_key_info
+	 * @return self
+	 */
+	public function withSubjectPublicKeyInfo(PublicKeyInfo $pub_key_info) {
+		$obj = clone $this;
+		$obj->_subjectPublicKeyInfo = $pub_key_info;
+		return $obj;
+	}
+	
+	/**
 	 * Get self with issuer unique ID.
 	 *
 	 * @param UniqueIdentifier $id
