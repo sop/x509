@@ -42,25 +42,54 @@ class CertificationPathBuilder
 	 */
 	public function allPathsToTarget(Certificate $target, 
 			CertificateBundle $intermediate = null) {
-		$paths = array();
-		// signed by certificate in trust list
-		foreach ($this->_findIssuers($target, $this->_trustList) as $issuer) {
-			$paths[] = array($issuer, $target);
-		}
-		if (isset($intermediate)) {
-			// signed by intermediate certificate
-			foreach ($this->_findIssuers($target, $intermediate) as $issuer) {
-				$subpaths = $this->allPathsToTarget($issuer, $intermediate);
-				foreach ($subpaths as $path) {
-					$paths[] = array_merge($path->certificates(), 
-						array($target));
-				}
-			}
-		}
+		$paths = $this->_resolvePathsToTarget($target, $intermediate);
+		// map paths to CertificationPath objects
 		return array_map(
 			function ($certs) {
 				return new CertificationPath(...$certs);
 			}, $paths);
+	}
+	
+	/**
+	 * Resolve all possible certification paths from any trust anchor to
+	 * the target certificate, using optional intermediate certificates.
+	 *
+	 * Helper method for allPathsToTarget to be called recursively.
+	 *
+	 * @todo Implement loop detection
+	 * @param Certificate $target
+	 * @param CertificateBundle $intermediate
+	 * @return array[] Array of arrays containing path certificates
+	 */
+	private function _resolvePathsToTarget(Certificate $target, 
+			CertificateBundle $intermediate = null) {
+		// array of possible paths
+		$paths = array();
+		// signed by certificate in the trust list
+		foreach ($this->_findIssuers($target, $this->_trustList) as $issuer) {
+			// if target is self-signed, path consists of only
+			// the target certificate
+			if ($target->equals($issuer)) {
+				$paths[] = array($target);
+			} else {
+				$paths[] = array($issuer, $target);
+			}
+		}
+		if (isset($intermediate)) {
+			// signed by intermediate certificate
+			foreach ($this->_findIssuers($target, $intermediate) as $issuer) {
+				// intermediate certificate must not be self-signed
+				if ($issuer->isSelfIssued()) {
+					continue;
+				}
+				// resolve paths to issuer
+				$subpaths = $this->_resolvePathsToTarget($issuer, $intermediate);
+				foreach ($subpaths as $path) {
+					$paths[] = array_merge($path, array($target));
+				}
+			}
+		}
+		return $paths;
 	}
 	
 	/**
@@ -95,14 +124,21 @@ class CertificationPathBuilder
 	protected function _findIssuers(Certificate $target, 
 			CertificateBundle $bundle) {
 		$issuers = array();
-		$tbs_cert = $target->tbsCertificate();
-		$extensions = $tbs_cert->extensions();
+		$issuer_name = $target->tbsCertificate()->issuer();
+		$extensions = $target->tbsCertificate()->extensions();
 		// find by authority key identifier
 		if ($extensions->hasAuthorityKeyIdentifier()) {
 			$ext = $extensions->authorityKeyIdentifier();
 			if ($ext->hasKeyIdentifier()) {
-				$issuers = array_merge($issuers, 
-					$bundle->allBySubjectKeyIdentifier($ext->keyIdentifier()));
+				foreach ($bundle->allBySubjectKeyIdentifier(
+					$ext->keyIdentifier()) as $issuer) {
+					// check that issuer name matches
+					if ($issuer->tbsCertificate()
+						->subject()
+						->equals($issuer_name)) {
+						$issuers[] = $issuer;
+					}
+				}
 			}
 		}
 		return $issuers;
