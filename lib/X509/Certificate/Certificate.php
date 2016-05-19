@@ -120,13 +120,35 @@ class Certificate
 	}
 	
 	/**
-	 * Whether certificate is self-issued.
+	 * Check whether certificate is self-issued.
 	 *
 	 * @return bool
 	 */
 	public function isSelfIssued() {
 		return $this->_tbsCertificate->subject()->equals(
 			$this->_tbsCertificate->issuer());
+	}
+	
+	/**
+	 * Check whether certificate is semantically equal to another.
+	 *
+	 * @param Certificate $cert
+	 * @return bool
+	 */
+	public function equals(Certificate $cert) {
+		// if subjects differ
+		$s1 = $this->_tbsCertificate->subject();
+		$s2 = $cert->_tbsCertificate->subject();
+		if (!$s1->equals($s2)) {
+			return false;
+		}
+		// if public keys differ
+		$kid1 = $this->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
+		$kid2 = $cert->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
+		if ($kid1 != $kid2) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
