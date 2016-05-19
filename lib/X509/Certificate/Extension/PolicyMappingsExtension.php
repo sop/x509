@@ -4,6 +4,7 @@ namespace X509\Certificate\Extension;
 
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
 use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
 
 
@@ -64,6 +65,28 @@ class PolicyMappingsExtension extends Extension implements \Countable,
 	 */
 	public function mappings() {
 		return $this->_mappings;
+	}
+	
+	/**
+	 * Check whether policy mappings have anyPolicy mapped.
+	 *
+	 * RFC 5280 section 4.2.1.5 states that "Policies MUST NOT be mapped either
+	 * to or from the special value anyPolicy".
+	 *
+	 * @return bool
+	 */
+	public function hasAnyPolicyMapping() {
+		foreach ($this->_mappings as $mapping) {
+			if ($mapping->issuerDomainPolicy() ==
+				 PolicyInformation::OID_ANY_POLICY) {
+				return true;
+			}
+			if ($mapping->subjectDomainPolicy() ==
+				 PolicyInformation::OID_ANY_POLICY) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
