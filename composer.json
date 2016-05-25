@@ -16,9 +16,9 @@
 	],
 	"require": {
 		"php": ">=5.6.3",
-		"sop/asn1": "^1.4.0",
+		"sop/asn1": "^1.5.0",
 		"sop/x501": "^0.2.0",
-		"sop/crypto-util": "^1.3.0"
+		"sop/crypto-util": "^1.4.0"
 	},
 	"suggest": {
 		"ext-gmp": "*"
