@@ -41,7 +41,7 @@ class AuthorityKeyIdentifierExtension extends Extension
 	/**
 	 * Constructor
 	 *
-	 * @param bool $critical
+	 * @param bool $critical Conforming CA's must mark as non-critical (false)
 	 * @param string|null $keyIdentifier
 	 * @param GeneralNames|null $issuer
 	 * @param int|string|null $serial
