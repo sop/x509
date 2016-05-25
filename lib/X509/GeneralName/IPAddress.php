@@ -57,7 +57,7 @@ abstract class IPAddress extends GeneralName
 	 * @return self
 	 */
 	protected static function _fromASN1(OctetString $str) {
-		$octets = $str->str();
+		$octets = $str->string();
 		switch (strlen($octets)) {
 		case 4:
 		case 8:

@@ -51,7 +51,7 @@ class IetfAttrValue
 		switch ($el->tag()) {
 		case Element::TYPE_OCTET_STRING:
 		case Element::TYPE_UTF8_STRING:
-			return new self($el->str(), $el->tag());
+			return new self($el->string(), $el->tag());
 		case Element::TYPE_OBJECT_IDENTIFIER:
 			return new self($el->oid(), $el->tag());
 		}

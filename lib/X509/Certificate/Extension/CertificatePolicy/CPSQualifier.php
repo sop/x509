@@ -38,7 +38,7 @@ class CPSQualifier extends PolicyQualifierInfo
 	 * @return self
 	 */
 	protected static function _fromASN1(StringType $str) {
-		return new self($str->str());
+		return new self($str->string());
 	}
 	
 	/**

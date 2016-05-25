@@ -31,7 +31,7 @@ class SubjectKeyIdentifierExtension extends Extension
 	}
 	
 	protected static function _fromDER($data, $critical) {
-		return new self($critical, OctetString::fromDER($data)->str());
+		return new self($critical, OctetString::fromDER($data)->string());
 	}
 	
 	/**

@@ -62,7 +62,7 @@ class AuthorityKeyIdentifierExtension extends Extension
 		if ($seq->hasTagged(0)) {
 			$keyIdentifier = $seq->getTagged(0)
 				->implicit(Element::TYPE_OCTET_STRING)
-				->str();
+				->string();
 		}
 		if ($seq->hasTagged(1) || $seq->hasTagged(2)) {
 			if (!$seq->hasTagged(1) || !$seq->hasTagged(2)) {

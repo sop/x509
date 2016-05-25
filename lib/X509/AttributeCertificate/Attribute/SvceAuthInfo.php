@@ -59,7 +59,7 @@ abstract class SvceAuthInfo extends AttributeValue
 		$ident = GeneralName::fromASN1($el->at(1));
 		$auth_info = null;
 		if ($el->has(2, Element::TYPE_OCTET_STRING)) {
-			$auth_info = $el->at(2)->str();
+			$auth_info = $el->at(2)->string();
 		}
 		return new static($service, $ident, $auth_info);
 	}

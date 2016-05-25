@@ -177,7 +177,7 @@ abstract class Extension
 		if ($seq->has($idx, Element::TYPE_BOOLEAN)) {
 			$critical = $seq->at($idx++)->value();
 		}
-		$data = $seq->at($idx, Element::TYPE_OCTET_STRING)->str();
+		$data = $seq->at($idx, Element::TYPE_OCTET_STRING)->string();
 		if (array_key_exists($extnID, self::MAP_OID_TO_CLASS)) {
 			$cls = self::MAP_OID_TO_CLASS[$extnID];
 			return $cls::_fromDER($data, $critical);

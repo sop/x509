@@ -53,7 +53,7 @@ class UniqueIdentifier
 	 * @return string
 	 */
 	public function string() {
-		return $this->_uid->str();
+		return $this->_uid->string();
 	}
 	
 	/**

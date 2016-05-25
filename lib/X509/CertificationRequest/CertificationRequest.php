@@ -166,6 +166,6 @@ class CertificationRequest
 	 * @return string
 	 */
 	public function __toString() {
-		return $this->toPEM()->str();
+		return $this->toPEM()->string();
 	}
 }

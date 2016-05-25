@@ -50,7 +50,7 @@ class DisplayText
 	 * @return self
 	 */
 	public static function fromASN1(StringType $el) {
-		return new self($el->str(), $el->tag());
+		return new self($el->string(), $el->tag());
 	}
 	
 	/**
