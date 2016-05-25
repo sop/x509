@@ -209,7 +209,7 @@ class TBSCertificate
 			->subjectPublicKeyInfo()
 			->keyIdentifier();
 		$obj->_extensions = $obj->_extensions->withExtensions(
-			new AuthorityKeyIdentifierExtension(true, $key_id));
+			new AuthorityKeyIdentifierExtension(false, $key_id));
 		return $obj;
 	}
 	
