@@ -8,6 +8,7 @@ use ASN1\Type\Primitive\BitString;
 use ASN1\Type\Primitive\Enumerated;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 
 
 /**
@@ -39,7 +40,7 @@ class ObjectDigestInfo
 	/**
 	 * Digest algorithm.
 	 *
-	 * @var AlgorithmIdentifier $_digestAlgorithm
+	 * @var AlgorithmIdentifierType $_digestAlgorithm
 	 */
 	protected $_digestAlgorithm;
 	
@@ -54,10 +55,10 @@ class ObjectDigestInfo
 	 * Constructor
 	 *
 	 * @param int $type
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @param BitString $digest
 	 */
-	public function __construct($type, AlgorithmIdentifier $algo, 
+	public function __construct($type, AlgorithmIdentifierType $algo, 
 			BitString $digest) {
 		$this->_digestedObjectType = $type;
 		$this->_otherObjectTypeID = null;

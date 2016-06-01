@@ -5,6 +5,7 @@ namespace X509\CertificationRequest;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
 use CryptoUtil\PEM\PEM;
@@ -27,7 +28,7 @@ class CertificationRequest
 	/**
 	 * Signature algorithm.
 	 *
-	 * @var AlgorithmIdentifier $_signatureAlgorithm
+	 * @var AlgorithmIdentifierType $_signatureAlgorithm
 	 */
 	protected $_signatureAlgorithm;
 	
@@ -42,11 +43,11 @@ class CertificationRequest
 	 * Constructor
 	 *
 	 * @param CertificationRequestInfo $info
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @param Signature $signature
 	 */
 	public function __construct(CertificationRequestInfo $info, 
-			AlgorithmIdentifier $algo, Signature $signature) {
+			AlgorithmIdentifierType $algo, Signature $signature) {
 		$this->_certificationRequestInfo = $info;
 		$this->_signatureAlgorithm = $algo;
 		$this->_signature = $signature;
@@ -103,7 +104,7 @@ class CertificationRequest
 	/**
 	 * Get signature algorithm.
 	 *
-	 * @return AlgorithmIdentifier
+	 * @return AlgorithmIdentifierType
 	 */
 	public function signatureAlgorithm() {
 		return $this->_signatureAlgorithm;

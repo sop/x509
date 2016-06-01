@@ -5,6 +5,7 @@ namespace X509\Certificate;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
@@ -29,7 +30,7 @@ class Certificate
 	/**
 	 * Signature algorithm.
 	 *
-	 * @var AlgorithmIdentifier $_signatureAlgorithm
+	 * @var AlgorithmIdentifierType $_signatureAlgorithm
 	 */
 	protected $_signatureAlgorithm;
 	
@@ -44,11 +45,11 @@ class Certificate
 	 * Constructor
 	 *
 	 * @param TBSCertificate $tbsCert
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @param Signature $signature
 	 */
 	public function __construct(TBSCertificate $tbsCert, 
-			AlgorithmIdentifier $algo, Signature $signature) {
+			AlgorithmIdentifierType $algo, Signature $signature) {
 		$this->_tbsCertificate = $tbsCert;
 		$this->_signatureAlgorithm = $algo;
 		$this->_signatureValue = $signature;
@@ -104,7 +105,7 @@ class Certificate
 	/**
 	 * Get signature algorithm.
 	 *
-	 * @return AlgorithmIdentifier
+	 * @return AlgorithmIdentifierType
 	 */
 	public function signatureAlgorithm() {
 		return $this->_signatureAlgorithm;

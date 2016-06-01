@@ -5,6 +5,7 @@ namespace X509\AttributeCertificate;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
@@ -28,7 +29,7 @@ class AttributeCertificate
 	/**
 	 * Signature algorithm identifier.
 	 *
-	 * @var AlgorithmIdentifier $_signatureAlgorithm
+	 * @var AlgorithmIdentifierType $_signatureAlgorithm
 	 */
 	protected $_signatureAlgorithm;
 	
@@ -43,11 +44,11 @@ class AttributeCertificate
 	 * Constructor
 	 *
 	 * @param AttributeCertificateInfo $acinfo
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @param Signature $signature
 	 */
 	public function __construct(AttributeCertificateInfo $acinfo, 
-			AlgorithmIdentifier $algo, Signature $signature) {
+			AlgorithmIdentifierType $algo, Signature $signature) {
 		$this->_acinfo = $acinfo;
 		$this->_signatureAlgorithm = $algo;
 		$this->_signatureValue = $signature;
@@ -104,7 +105,7 @@ class AttributeCertificate
 	/**
 	 * Get signature algorithm identifier.
 	 *
-	 * @return AlgorithmIdentifier
+	 * @return AlgorithmIdentifierType
 	 */
 	public function signatureAlgorithm() {
 		return $this->_signatureAlgorithm;

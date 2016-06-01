@@ -4,6 +4,7 @@ namespace X509\CertificationPath\PathValidation;
 
 use ASN1\Element;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use X501\ASN1\Name;
 use X509\Certificate\Certificate;
@@ -56,7 +57,7 @@ class ValidatorState
 	
 	/**
 	 *
-	 * @var AlgorithmIdentifier $_workingPublicKeyAlgorithm
+	 * @var AlgorithmIdentifierType $_workingPublicKeyAlgorithm
 	 */
 	protected $_workingPublicKeyAlgorithm;
 	
@@ -177,10 +178,10 @@ class ValidatorState
 	/**
 	 * Get self with working_public_key_algorithm.
 	 *
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @return self
 	 */
-	public function withWorkingPublicKeyAlgorithm(AlgorithmIdentifier $algo) {
+	public function withWorkingPublicKeyAlgorithm(AlgorithmIdentifierType $algo) {
 		$state = clone $this;
 		$state->_workingPublicKeyAlgorithm = $algo;
 		return $state;
@@ -312,7 +313,7 @@ class ValidatorState
 	/**
 	 * Get working_public_key_algorithm.
 	 *
-	 * @return AlgorithmIdentifier
+	 * @return AlgorithmIdentifierType
 	 */
 	public function workingPublicKeyAlgorithm() {
 		return $this->_workingPublicKeyAlgorithm;
@@ -366,10 +367,10 @@ class ValidatorState
 	/**
 	 * Get ASN.1 parameters from algorithm identifier.
 	 *
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @return Element|null ASN.1 element or null if parameters are omitted
 	 */
-	public static function getAlgorithmParameters(AlgorithmIdentifier $algo) {
+	public static function getAlgorithmParameters(AlgorithmIdentifierType $algo) {
 		$seq = $algo->toASN1();
 		return $seq->has(1) ? $seq->at(1) : null;
 	}

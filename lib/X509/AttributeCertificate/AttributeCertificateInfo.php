@@ -6,6 +6,7 @@ use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\Crypto\Crypto;
@@ -46,7 +47,7 @@ class AttributeCertificateInfo
 	/**
 	 * Signature algorithm identifier.
 	 *
-	 * @var AlgorithmIdentifier $_signature
+	 * @var AlgorithmIdentifierType $_signature
 	 */
 	protected $_signature;
 	
@@ -287,7 +288,7 @@ class AttributeCertificateInfo
 	/**
 	 * Get signature algorithm identifier.
 	 *
-	 * @return AlgorithmIdentifier
+	 * @return AlgorithmIdentifierType
 	 */
 	public function signature() {
 		if (!$this->hasSignature()) {

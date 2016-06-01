@@ -3,7 +3,7 @@
 namespace X509\CertificationPath\PathValidation;
 
 use ASN1\Element;
-use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use X509\Certificate\Certificate;
 
@@ -39,7 +39,7 @@ class PathValidationResult
 	/**
 	 * Public key algorithm.
 	 *
-	 * @var AlgorithmIdentifier
+	 * @var AlgorithmIdentifierType
 	 */
 	protected $_publicKeyAlgo;
 	
@@ -56,11 +56,11 @@ class PathValidationResult
 	 * @param Certificate $cert
 	 * @param mixed $policy_tree
 	 * @param PublicKeyInfo $pubkey_info
-	 * @param AlgorithmIdentifier $algo
+	 * @param AlgorithmIdentifierType $algo
 	 * @param Element|null $params
 	 */
 	public function __construct(Certificate $cert, $policy_tree, 
-			PublicKeyInfo $pubkey_info, AlgorithmIdentifier $algo, 
+			PublicKeyInfo $pubkey_info, AlgorithmIdentifierType $algo, 
 			Element $params = null) {
 		$this->_certificate = $cert;
 		$this->_policyTree = $policy_tree;

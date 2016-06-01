@@ -8,6 +8,7 @@ use ASN1\Type\Primitive\Integer;
 use ASN1\Type\Tagged\ExplicitlyTaggedType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\ASN1\PublicKeyInfo;
@@ -48,7 +49,7 @@ class TBSCertificate
 	/**
 	 * Signature algorithm.
 	 *
-	 * @var AlgorithmIdentifier
+	 * @var AlgorithmIdentifierType
 	 */
 	protected $_signature;
 	
@@ -418,7 +419,7 @@ class TBSCertificate
 	/**
 	 * Get signature algorithm.
 	 *
-	 * @return AlgorithmIdentifier
+	 * @return AlgorithmIdentifierType
 	 */
 	public function signature() {
 		if (!$this->hasSignature()) {
