@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/sop/x509.svg?branch=master)](https://travis-ci.org/sop/x509)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sop/x509/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sop/x509/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/sop/x509/badge.svg?branch=master)](https://coveralls.io/github/sop/x509?branch=master)
 [![License](https://poser.pugx.org/sop/x509/license)](https://github.com/sop/x509/blob/master/LICENSE)
 
