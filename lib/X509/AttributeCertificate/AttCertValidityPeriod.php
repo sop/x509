@@ -2,7 +2,6 @@
 
 namespace X509\AttributeCertificate;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\GeneralizedTime;
 use X509\Feature\DateTimeHelper;
@@ -49,8 +48,12 @@ class AttCertValidityPeriod
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$nb = $seq->at(0, Element::TYPE_GENERALIZED_TIME)->dateTime();
-		$na = $seq->at(1, Element::TYPE_GENERALIZED_TIME)->dateTime();
+		$nb = $seq->at(0)
+			->asGeneralizedTime()
+			->dateTime();
+		$na = $seq->at(1)
+			->asGeneralizedTime()
+			->dateTime();
 		return new self($nb, $na);
 	}
 	

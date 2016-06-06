@@ -2,8 +2,8 @@
 
 namespace X509\Certificate\Extension\NameConstraints;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -38,9 +38,8 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 	 */
 	public static function fromASN1(Sequence $seq) {
 		$subtrees = array_map(
-			function (Element $el) {
-				return GeneralSubtree::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return GeneralSubtree::fromASN1($el->asSequence());
 			}, $seq->elements());
 		if (!count($subtrees)) {
 			throw new \UnexpectedValueException(

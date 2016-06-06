@@ -57,42 +57,41 @@ abstract class GeneralName
 		// otherName
 		case self::TAG_OTHER_NAME:
 			return OtherName::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_SEQUENCE));
+				$el->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
 		// rfc822Name
 		case self::TAG_RFC822_NAME:
 			return RFC822Name::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_IA5_STRING));
+				$el->asImplicit(Element::TYPE_IA5_STRING)->asIA5String());
 		// dNSName
 		case self::TAG_DNS_NAME:
 			return DNSName::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_IA5_STRING));
+				$el->asImplicit(Element::TYPE_IA5_STRING)->asIA5String());
 		// x400Address
 		case self::TAG_X400_ADDRESS:
 			return X400Address::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_SEQUENCE));
+				$el->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
 		// directoryName
 		case self::TAG_DIRECTORY_NAME:
 			// because Name is a CHOICE, albeit having only one option,
 			// explicit tagging must be used
 			// (see X.680 07/2002 30.6.c)
-			return DirectoryName::_fromASN1(
-				$el->expectExplicit()->explicit(Element::TYPE_SEQUENCE));
+			return DirectoryName::_fromASN1($el->asExplicit()->asSequence());
 		// ediPartyName
 		case self::TAG_EDI_PARTY_NAME:
 			return EDIPartyName::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_SEQUENCE));
+				$el->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
 		// uniformResourceIdentifier
 		case self::TAG_URI:
 			return UniformResourceIdentifier::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_IA5_STRING));
+				$el->asImplicit(Element::TYPE_IA5_STRING)->asIA5String());
 		// iPAddress
 		case self::TAG_IP_ADDRESS:
 			return IPAddress::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_OCTET_STRING));
+				$el->asImplicit(Element::TYPE_OCTET_STRING)->asOctetString());
 		// registeredID
 		case self::TAG_REGISTERED_ID:
 			return RegisteredID::_fromASN1(
-				$el->expectImplicit()->implicit(Element::TYPE_OBJECT_IDENTIFIER));
+				$el->asImplicit(Element::TYPE_OBJECT_IDENTIFIER)->asObjectIdentifier());
 		}
 		throw new \UnexpectedValueException(
 			"GeneralName type " . $el->tag() . " not supported.");

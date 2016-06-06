@@ -58,17 +58,19 @@ class GeneralSubtree
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$base = GeneralName::fromASN1($seq->at(0));
+		$base = GeneralName::fromASN1($seq->at(0)->asTagged());
 		$min = 0;
 		$max = null;
 		if ($seq->hasTagged(0)) {
 			$min = $seq->getTagged(0)
-				->implicit(Element::TYPE_INTEGER)
+				->asImplicit(Element::TYPE_INTEGER)
+				->asInteger()
 				->number();
 		}
 		if ($seq->hasTagged(1)) {
 			$max = $seq->getTagged(1)
-				->implicit(Element::TYPE_INTEGER)
+				->asImplicit(Element::TYPE_INTEGER)
+				->asInteger()
 				->number();
 		}
 		return new self($base, $min, $max);

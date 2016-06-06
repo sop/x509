@@ -6,6 +6,7 @@ use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ExplicitlyTaggedType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X501\MatchingRule\BinaryMatch;
@@ -47,14 +48,19 @@ class RoleAttributeValue extends AttributeValue
 		$this->_oid = AttributeType::OID_ROLE;
 	}
 	
-	public static function fromASN1(Element $el) {
-		$el->expectType(Element::TYPE_SEQUENCE);
+	public static function fromASN1(UnspecifiedType $el) {
+		$seq = $el->asSequence();
 		$authority = null;
-		if ($el->hasTagged(0)) {
+		if ($seq->hasTagged(0)) {
 			$authority = GeneralNames::fromASN1(
-				$el->getTagged(0)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(0)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
-		$name = GeneralName::fromASN1($el->getTagged(1)->explicit());
+		$name = GeneralName::fromASN1(
+			$seq->getTagged(1)
+				->asExplicit()
+				->asTagged());
 		return new self($name, $authority);
 	}
 	

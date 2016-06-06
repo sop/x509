@@ -49,8 +49,12 @@ class OtherName extends GeneralName
 	 * @return self
 	 */
 	protected static function _fromASN1(Sequence $seq) {
-		$type_id = $seq->at(0, Element::TYPE_OBJECT_IDENTIFIER)->oid();
-		$value = $seq->getTagged(0)->explicit();
+		$type_id = $seq->at(0)
+			->asObjectIdentifier()
+			->oid();
+		$value = $seq->getTagged(0)
+			->asExplicit()
+			->asElement();
 		return new self($type_id, $value);
 	}
 	

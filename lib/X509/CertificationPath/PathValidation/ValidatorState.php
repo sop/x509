@@ -372,6 +372,6 @@ class ValidatorState
 	 */
 	public static function getAlgorithmParameters(AlgorithmIdentifierType $algo) {
 		$seq = $algo->toASN1();
-		return $seq->has(1) ? $seq->at(1) : null;
+		return $seq->has(1) ? $seq->at(1)->asElement() : null;
 	}
 }

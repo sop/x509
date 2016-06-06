@@ -131,33 +131,41 @@ class TBSCertificate
 			$idx++;
 			$version = intval(
 				$seq->getTagged(0)
-					->explicit(Element::TYPE_INTEGER)
+					->asExplicit()
+					->asInteger()
 					->number());
 		} else {
 			$version = self::VERSION_1;
 		}
-		$serial = $seq->at($idx++, Element::TYPE_INTEGER)->number();
-		$algo = AlgorithmIdentifier::fromASN1(
-			$seq->at($idx++, Element::TYPE_SEQUENCE));
-		$issuer = Name::fromASN1($seq->at($idx++, Element::TYPE_SEQUENCE));
-		$validity = Validity::fromASN1($seq->at($idx++, Element::TYPE_SEQUENCE));
-		$subject = Name::fromASN1($seq->at($idx++, Element::TYPE_SEQUENCE));
-		$pki = PublicKeyInfo::fromASN1($seq->at($idx++, Element::TYPE_SEQUENCE));
+		$serial = $seq->at($idx++)
+			->asInteger()
+			->number();
+		$algo = AlgorithmIdentifier::fromASN1($seq->at($idx++)->asSequence());
+		$issuer = Name::fromASN1($seq->at($idx++)->asSequence());
+		$validity = Validity::fromASN1($seq->at($idx++)->asSequence());
+		$subject = Name::fromASN1($seq->at($idx++)->asSequence());
+		$pki = PublicKeyInfo::fromASN1($seq->at($idx++)->asSequence());
 		$tbs_cert = new self($subject, $pki, $issuer, $validity);
 		$tbs_cert->_version = $version;
 		$tbs_cert->_serialNumber = $serial;
 		$tbs_cert->_signature = $algo;
 		if ($seq->hasTagged(1)) {
 			$tbs_cert->_issuerUniqueID = UniqueIdentifier::fromASN1(
-				$seq->getTagged(1)->implicit(Element::TYPE_BIT_STRING));
+				$seq->getTagged(1)
+					->asImplicit(Element::TYPE_BIT_STRING)
+					->asBitString());
 		}
 		if ($seq->hasTagged(2)) {
 			$tbs_cert->_subjectUniqueID = UniqueIdentifier::fromASN1(
-				$seq->getTagged(2)->implicit(Element::TYPE_BIT_STRING));
+				$seq->getTagged(2)
+					->asImplicit(Element::TYPE_BIT_STRING)
+					->asBitString());
 		}
 		if ($seq->hasTagged(3)) {
 			$tbs_cert->_extensions = Extensions::fromASN1(
-				$seq->getTagged(3)->explicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(3)
+					->asExplicit()
+					->asSequence());
 		}
 		return $tbs_cert;
 	}

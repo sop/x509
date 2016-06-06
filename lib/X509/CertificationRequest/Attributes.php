@@ -2,8 +2,8 @@
 
 namespace X509\CertificationRequest;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Set;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Attribute;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X509\CertificationRequest\Attribute\ExtensionRequestValue;
@@ -65,9 +65,8 @@ class Attributes implements \Countable, \IteratorAggregate
 	 */
 	public static function fromASN1(Set $set) {
 		$attribs = array_map(
-			function (Element $el) {
-				return Attribute::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return Attribute::fromASN1($el->asSequence());
 			}, $set->elements());
 		// cast attributes
 		$attribs = array_map(
@@ -75,7 +74,7 @@ class Attributes implements \Countable, \IteratorAggregate
 				$oid = $attr->oid();
 				if (array_key_exists($oid, self::MAP_OID_TO_CLASS)) {
 					$cls = self::MAP_OID_TO_CLASS[$oid];
-					$attr = $attr->castValues($cls);
+					return $attr->castValues($cls);
 				}
 				return $attr;
 			}, $attribs);

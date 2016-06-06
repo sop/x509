@@ -41,7 +41,8 @@ class AccessIdentityAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param unknown $der
 	 */
 	public function testDecode($der) {
-		$value = AccessIdentityAttributeValue::fromASN1(Sequence::fromDER($der));
+		$value = AccessIdentityAttributeValue::fromASN1(
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(AccessIdentityAttributeValue::class, $value);
 		return $value;
 	}

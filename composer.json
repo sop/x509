@@ -16,12 +16,10 @@
 	],
 	"require": {
 		"php": ">=5.6.3",
-		"sop/asn1": "^1.5.0",
-		"sop/x501": "^0.2.0",
-		"sop/crypto-util": "^1.4.0"
-	},
-	"suggest": {
-		"ext-gmp": "*"
+		"ext-gmp": "*",
+		"sop/asn1": "dev-master",
+		"sop/x501": "dev-master",
+		"sop/crypto-util": "dev-master"
 	},
 	"autoload": {
 		"psr-4": {

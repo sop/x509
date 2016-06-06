@@ -46,7 +46,8 @@ class RoleAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param unknown $der
 	 */
 	public function testDecode($der) {
-		$value = RoleAttributeValue::fromASN1(Sequence::fromDER($der));
+		$value = RoleAttributeValue::fromASN1(
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(RoleAttributeValue::class, $value);
 		return $value;
 	}
@@ -135,7 +136,8 @@ class RoleAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param unknown $der
 	 */
 	public function testDecodeWithoutAuthority($der) {
-		$value = RoleAttributeValue::fromASN1(Sequence::fromDER($der));
+		$value = RoleAttributeValue::fromASN1(
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(RoleAttributeValue::class, $value);
 		return $value;
 	}

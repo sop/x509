@@ -171,13 +171,19 @@ abstract class Extension
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$extnID = $seq->at(0, Element::TYPE_OBJECT_IDENTIFIER)->oid();
+		$extnID = $seq->at(0)
+			->asObjectIdentifier()
+			->oid();
 		$critical = false;
 		$idx = 1;
 		if ($seq->has($idx, Element::TYPE_BOOLEAN)) {
-			$critical = $seq->at($idx++)->value();
+			$critical = $seq->at($idx++)
+				->asBoolean()
+				->value();
 		}
-		$data = $seq->at($idx, Element::TYPE_OCTET_STRING)->string();
+		$data = $seq->at($idx)
+			->asOctetString()
+			->string();
 		if (array_key_exists($extnID, self::MAP_OID_TO_CLASS)) {
 			$cls = self::MAP_OID_TO_CLASS[$extnID];
 			return $cls::_fromDER($data, $critical);

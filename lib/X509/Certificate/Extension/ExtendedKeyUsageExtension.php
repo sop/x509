@@ -2,9 +2,9 @@
 
 namespace X509\Certificate\Extension;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -65,8 +65,8 @@ class ExtendedKeyUsageExtension extends Extension implements \Countable,
 	
 	protected static function _fromDER($data, $critical) {
 		$purposes = array_map(
-			function (Element $el) {
-				return $el->expectType(Element::TYPE_OBJECT_IDENTIFIER)->oid();
+			function (UnspecifiedType $el) {
+				return $el->asObjectIdentifier()->oid();
 			}, Sequence::fromDER($data)->elements());
 		return new self($critical, ...$purposes);
 	}

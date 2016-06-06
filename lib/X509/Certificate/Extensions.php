@@ -2,8 +2,8 @@
 
 namespace X509\Certificate;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
 use X509\Certificate\Extension\BasicConstraintsExtension;
 use X509\Certificate\Extension\CertificatePoliciesExtension;
@@ -56,9 +56,8 @@ class Extensions implements \Countable, \IteratorAggregate
 	 */
 	public static function fromASN1(Sequence $seq) {
 		$extensions = array_map(
-			function (Element $el) {
-				return Extension::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return Extension::fromASN1($el->asSequence());
 			}, $seq->elements());
 		return new self(...$extensions);
 	}

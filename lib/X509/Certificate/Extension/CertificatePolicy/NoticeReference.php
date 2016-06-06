@@ -2,9 +2,9 @@
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -47,11 +47,13 @@ class NoticeReference
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$org = DisplayText::fromASN1($seq->at(0, Element::TYPE_STRING));
+		$org = DisplayText::fromASN1($seq->at(0)->asString());
 		$numbers = array_map(
-			function (Element $el) {
-				return $el->expectType(Element::TYPE_INTEGER)->number();
-			}, $seq->at(1, Element::TYPE_SEQUENCE)->elements());
+			function (UnspecifiedType $el) {
+				return $el->asInteger()->number();
+			}, $seq->at(1)
+				->asSequence()
+				->elements());
 		return new self($org, ...$numbers);
 	}
 	

@@ -47,12 +47,14 @@ class PolicyConstraintsExtension extends Extension
 		$inhibit_policy_mapping = null;
 		if ($seq->hasTagged(0)) {
 			$require_explicit_policy = $seq->getTagged(0)
-				->implicit(Element::TYPE_INTEGER)
+				->asImplicit(Element::TYPE_INTEGER)
+				->asInteger()
 				->number();
 		}
 		if ($seq->hasTagged(1)) {
 			$inhibit_policy_mapping = $seq->getTagged(1)
-				->implicit(Element::TYPE_INTEGER)
+				->asImplicit(Element::TYPE_INTEGER)
+				->asInteger()
 				->number();
 		}
 		return new self($critical, $require_explicit_policy, 

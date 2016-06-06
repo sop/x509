@@ -2,8 +2,8 @@
 
 namespace X509\Certificate\Extension\Target;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -37,8 +37,8 @@ class Targets implements \Countable, \IteratorAggregate
 	 */
 	public static function fromASN1(Sequence $seq) {
 		$targets = array_map(
-			function (Element $el) {
-				return Target::fromASN1($el->expectTagged());
+			function (UnspecifiedType $el) {
+				return Target::fromASN1($el->asTagged());
 			}, $seq->elements());
 		return new self(...$targets);
 	}

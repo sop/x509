@@ -2,8 +2,8 @@
 
 namespace X509\Certificate\Extension;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
 
 
@@ -36,9 +36,8 @@ class CRLDistributionPointsExtension extends Extension implements \Countable,
 	
 	protected static function _fromDER($data, $critical) {
 		$dps = array_map(
-			function (Element $el) {
-				return DistributionPoint::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return DistributionPoint::fromASN1($el->asSequence());
 			}, Sequence::fromDER($data)->elements());
 		if (!count($dps)) {
 			throw new \UnexpectedValueException(

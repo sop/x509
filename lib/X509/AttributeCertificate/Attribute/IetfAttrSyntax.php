@@ -5,6 +5,7 @@ namespace X509\AttributeCertificate\Attribute;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X501\MatchingRule\BinaryMatch;
 use X509\GeneralName\GeneralNames;
@@ -43,20 +44,23 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable,
 		$this->_values = $values;
 	}
 	
-	public static function fromASN1(Element $el) {
-		$el->expectType(Element::TYPE_SEQUENCE);
+	public static function fromASN1(UnspecifiedType $el) {
+		$seq = $el->asSequence();
 		$authority = null;
 		$idx = 0;
-		if ($el->hasTagged(0)) {
+		if ($seq->hasTagged(0)) {
 			$authority = GeneralNames::fromASN1(
-				$el->getTagged(0)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(0)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 			++$idx;
 		}
-		$seq = $el->at($idx, Element::TYPE_SEQUENCE);
 		$values = array_map(
-			function (Element $el) {
+			function (UnspecifiedType $el) {
 				return IetfAttrValue::fromASN1($el);
-			}, $seq->elements());
+			}, $seq->at($idx)
+				->asSequence()
+				->elements());
 		$obj = new static(...$values);
 		$obj->_policyAuthority = $authority;
 		return $obj;

@@ -51,13 +51,14 @@ abstract class PolicyQualifierInfo
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$oid = $seq->at(0, Element::TYPE_OBJECT_IDENTIFIER)->oid();
+		$oid = $seq->at(0)
+			->asObjectIdentifier()
+			->oid();
 		switch ($oid) {
 		case self::OID_CPS:
-			return CPSQualifier::_fromASN1($seq->at(1, Element::TYPE_STRING));
+			return CPSQualifier::_fromASN1($seq->at(1)->asString());
 		case self::OID_UNOTICE:
-			return UserNoticeQualifier::_fromASN1(
-				$seq->at(1, Element::TYPE_SEQUENCE));
+			return UserNoticeQualifier::_fromASN1($seq->at(1)->asSequence());
 		}
 		throw new \UnexpectedValueException("Qualifier $oid not supported.");
 	}

@@ -5,6 +5,7 @@ namespace X509\AttributeCertificate\Attribute;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\OctetString;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X501\MatchingRule\BinaryMatch;
 use X509\GeneralName\GeneralName;
@@ -53,13 +54,15 @@ abstract class SvceAuthInfo extends AttributeValue
 		$this->_authInfo = $auth_info;
 	}
 	
-	public static function fromASN1(Element $el) {
-		$el->expectType(Element::TYPE_SEQUENCE);
-		$service = GeneralName::fromASN1($el->at(0));
-		$ident = GeneralName::fromASN1($el->at(1));
+	public static function fromASN1(UnspecifiedType $el) {
+		$seq = $el->asSequence();
+		$service = GeneralName::fromASN1($seq->at(0)->asTagged());
+		$ident = GeneralName::fromASN1($seq->at(1)->asTagged());
 		$auth_info = null;
-		if ($el->has(2, Element::TYPE_OCTET_STRING)) {
-			$auth_info = $el->at(2)->string();
+		if ($seq->has(2, Element::TYPE_OCTET_STRING)) {
+			$auth_info = $seq->at(2)
+				->asString()
+				->string();
 		}
 		return new static($service, $ident, $auth_info);
 	}

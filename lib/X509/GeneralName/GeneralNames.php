@@ -2,8 +2,8 @@
 
 namespace X509\GeneralName;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Name;
 
 
@@ -46,8 +46,8 @@ class GeneralNames implements \Countable, \IteratorAggregate
 				"GeneralNames must have at least one GeneralName.");
 		}
 		$names = array_map(
-			function (Element $el) {
-				return GeneralName::fromASN1($el->expectTagged());
+			function (UnspecifiedType $el) {
+				return GeneralName::fromASN1($el->asTagged());
 			}, $seq->elements());
 		return new self(...$names);
 	}

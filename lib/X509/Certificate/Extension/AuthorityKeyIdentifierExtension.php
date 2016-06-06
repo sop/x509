@@ -61,7 +61,8 @@ class AuthorityKeyIdentifierExtension extends Extension
 		$serial = null;
 		if ($seq->hasTagged(0)) {
 			$keyIdentifier = $seq->getTagged(0)
-				->implicit(Element::TYPE_OCTET_STRING)
+				->asImplicit(Element::TYPE_OCTET_STRING)
+				->asOctetString()
 				->string();
 		}
 		if ($seq->hasTagged(1) || $seq->hasTagged(2)) {
@@ -72,9 +73,12 @@ class AuthorityKeyIdentifierExtension extends Extension
 						 " present or both absent.");
 			}
 			$issuer = GeneralNames::fromASN1(
-				$seq->getTagged(1)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(1)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 			$serial = $seq->getTagged(2)
-				->implicit(Element::TYPE_INTEGER)
+				->asImplicit(Element::TYPE_INTEGER)
+				->asInteger()
 				->number();
 		}
 		return new self($critical, $keyIdentifier, $issuer, $serial);

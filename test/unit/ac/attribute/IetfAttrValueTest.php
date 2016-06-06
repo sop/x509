@@ -2,6 +2,7 @@
 
 use ASN1\Element;
 use ASN1\Type\Primitive\NullType;
+use ASN1\Type\UnspecifiedType;
 use X509\AttributeCertificate\Attribute\IetfAttrValue;
 
 
@@ -15,7 +16,7 @@ class IetfAttrValueTest extends PHPUnit_Framework_TestCase
 	 * @expectedException UnexpectedValueException
 	 */
 	public function testFromUnsupportedTypeFail() {
-		IetfAttrValue::fromASN1(new NullType());
+		IetfAttrValue::fromASN1(new UnspecifiedType(new NullType()));
 	}
 	
 	/**

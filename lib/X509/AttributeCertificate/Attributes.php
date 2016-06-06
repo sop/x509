@@ -2,8 +2,8 @@
 
 namespace X509\AttributeCertificate;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Attribute;
 use X501\ASN1\AttributeType;
 use X501\ASN1\AttributeValue\AttributeValue;
@@ -75,9 +75,8 @@ class Attributes implements \Countable, \IteratorAggregate
 	 */
 	public static function fromASN1(Sequence $seq) {
 		$attribs = array_map(
-			function (Element $el) {
-				return Attribute::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return Attribute::fromASN1($el->asSequence());
 			}, $seq->elements());
 		// cast attributes
 		$attribs = array_map(

@@ -2,6 +2,8 @@
 
 use ASN1\Type\Constructed\Set;
 use X501\ASN1\Attribute;
+use X501\ASN1\AttributeType;
+use X501\ASN1\AttributeValue\CommonNameValue;
 use X509\Certificate\Extensions;
 use X509\CertificationRequest\Attribute\ExtensionRequestValue;
 use X509\CertificationRequest\Attributes;
@@ -110,5 +112,51 @@ class CSRAttributesTest extends PHPUnit_Framework_TestCase
 	public function testNoExtensionRequestFail() {
 		$attribs = new Attributes();
 		$attribs->extensionRequest();
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testWithAdditional(Attributes $attribs) {
+		$attribs = $attribs->withAdditional(
+			Attribute::fromAttributeValues(new CommonNameValue("Test")));
+		$this->assertCount(2, $attribs);
+		return $attribs;
+	}
+	
+	/**
+	 * @depends testWithAdditional
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testEncodeWithAdditional(Attributes $attribs) {
+		$seq = $attribs->toASN1();
+		$this->assertInstanceOf(Set::class, $seq);
+		return $seq->toDER();
+	}
+	
+	/**
+	 * @depends testEncodeWithAdditional
+	 *
+	 * @param string $data
+	 */
+	public function testDecodeWithAdditional($data) {
+		$attribs = Attributes::fromASN1(Set::fromDER($data));
+		$this->assertInstanceOf(Attributes::class, $attribs);
+		return $attribs;
+	}
+	
+	/**
+	 * @depends testDecodeWithAdditional
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testDecodedWithAdditionalHasCustomAttribute(
+			Attributes $attribs) {
+		$this->assertInstanceOf(CommonNameValue::class, 
+			$attribs->firstOf(AttributeType::OID_COMMON_NAME)
+				->first());
 	}
 }

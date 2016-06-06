@@ -59,15 +59,21 @@ class Holder
 		$digest_info = null;
 		if ($seq->hasTagged(0)) {
 			$cert_id = IssuerSerial::fromASN1(
-				$seq->getTagged(0)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(0)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		if ($seq->hasTagged(1)) {
 			$entity_name = GeneralNames::fromASN1(
-				$seq->getTagged(1)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(1)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		if ($seq->hasTagged(2)) {
 			$digest_info = ObjectDigestInfo::fromASN1(
-				$seq->getTagged(2)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(2)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		$obj = new self($cert_id, $entity_name);
 		$obj->_objectDigestInfo = $digest_info;

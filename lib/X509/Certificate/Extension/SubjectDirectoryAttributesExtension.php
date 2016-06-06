@@ -2,8 +2,8 @@
 
 namespace X509\Certificate\Extension;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Attribute;
 use X509\Feature\AttributeContainer;
 
@@ -31,9 +31,8 @@ class SubjectDirectoryAttributesExtension extends Extension implements
 	
 	protected static function _fromDER($data, $critical) {
 		$attribs = array_map(
-			function (Element $el) {
-				return Attribute::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return Attribute::fromASN1($el->asSequence());
 			}, Sequence::fromDER($data)->elements());
 		if (!count($attribs)) {
 			throw new \UnexpectedValueException(

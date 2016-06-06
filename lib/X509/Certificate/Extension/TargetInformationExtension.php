@@ -4,6 +4,7 @@ namespace X509\Certificate\Extension;
 
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X509\Certificate\Extension\Target\Target;
 use X509\Certificate\Extension\Target\Targets;
 
@@ -47,9 +48,8 @@ class TargetInformationExtension extends Extension implements \Countable,
 	
 	protected static function _fromDER($data, $critical) {
 		$targets = array_map(
-			function (Element $el) {
-				return Targets::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return Targets::fromASN1($el->asSequence());
 			}, Sequence::fromDER($data)->elements());
 		return new self($critical, ...$targets);
 	}

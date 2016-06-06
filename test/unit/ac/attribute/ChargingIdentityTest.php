@@ -49,7 +49,7 @@ class ChargingIdentityAttributeTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testDecode($der) {
 		$value = ChargingIdentityAttributeValue::fromASN1(
-			Sequence::fromDER($der));
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(ChargingIdentityAttributeValue::class, $value);
 		return $value;
 	}

@@ -52,7 +52,7 @@ class V2FormTest extends PHPUnit_Framework_TestCase
 	 * @param string $data
 	 */
 	public function testDecode($data) {
-		$issuer = V2Form::fromASN1(Element::fromDER($data));
+		$issuer = V2Form::fromASN1(Element::fromDER($data)->asUnspecified());
 		$this->assertInstanceOf(V2Form::class, $issuer);
 		return $issuer;
 	}
@@ -102,7 +102,7 @@ class V2FormTest extends PHPUnit_Framework_TestCase
 			new Sequence(self::$_issuerName->toASN1(), 
 				new ImplicitlyTaggedType(0, $iss_ser->toASN1()), 
 				new ImplicitlyTaggedType(1, $odi->toASN1())));
-		$issuer = V2Form::fromASN1($el);
+		$issuer = V2Form::fromASN1($el->asUnspecified());
 		return $issuer;
 	}
 	

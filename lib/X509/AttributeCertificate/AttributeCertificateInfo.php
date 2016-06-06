@@ -112,27 +112,31 @@ class AttributeCertificateInfo
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$version = $seq->at(0, Element::TYPE_INTEGER)->number();
+		$version = $seq->at(0)
+			->asInteger()
+			->number();
 		if ($version != self::VERSION_2) {
 			throw new \UnexpectedValueException("Version must be 2.");
 		}
-		$holder = Holder::fromASN1($seq->at(1, Element::TYPE_SEQUENCE));
+		$holder = Holder::fromASN1($seq->at(1)->asSequence());
 		$issuer = AttCertIssuer::fromASN1($seq->at(2));
-		$signature = AlgorithmIdentifier::fromASN1(
-			$seq->at(3, Element::TYPE_SEQUENCE));
-		$serial = $seq->at(4, Element::TYPE_INTEGER)->number();
-		$validity = AttCertValidityPeriod::fromASN1(
-			$seq->at(5, Element::TYPE_SEQUENCE));
-		$attribs = Attributes::fromASN1($seq->at(6, Element::TYPE_SEQUENCE));
+		$signature = AlgorithmIdentifier::fromASN1($seq->at(3)->asSequence());
+		$serial = $seq->at(4)
+			->asInteger()
+			->number();
+		$validity = AttCertValidityPeriod::fromASN1($seq->at(5)->asSequence());
+		$attribs = Attributes::fromASN1($seq->at(6)->asSequence());
 		$obj = new self($holder, $issuer, $validity, $attribs);
 		$obj->_signature = $signature;
 		$obj->_serialNumber = $serial;
 		$idx = 7;
 		if ($seq->has($idx, Element::TYPE_BIT_STRING)) {
-			$obj->_issuerUniqueID = UniqueIdentifier::fromASN1($seq->at($idx++));
+			$obj->_issuerUniqueID = UniqueIdentifier::fromASN1(
+				$seq->at($idx++)->asBitString());
 		}
 		if ($seq->has($idx, Element::TYPE_SEQUENCE)) {
-			$obj->_extensions = Extensions::fromASN1($seq->at($idx++));
+			$obj->_extensions = Extensions::fromASN1(
+				$seq->at($idx++)->asSequence());
 		}
 		return $obj;
 	}

@@ -2,8 +2,8 @@
 
 namespace X509\Certificate\Extension;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
 use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
 
@@ -36,9 +36,8 @@ class PolicyMappingsExtension extends Extension implements \Countable,
 	
 	protected static function _fromDER($data, $critical) {
 		$mappings = array_map(
-			function (Element $el) {
-				return PolicyMapping::fromASN1(
-					$el->expectType(Element::TYPE_SEQUENCE));
+			function (UnspecifiedType $el) {
+				return PolicyMapping::fromASN1($el->asSequence());
 			}, Sequence::fromDER($data)->elements());
 		if (!count($mappings)) {
 			throw new \UnexpectedValueException(

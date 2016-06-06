@@ -3,6 +3,7 @@
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Name;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\GeneralNames;
@@ -40,17 +41,19 @@ abstract class AttCertIssuer
 	/**
 	 * Initialize from ASN.1.
 	 *
-	 * @param Element $el CHOICE
+	 * @param UnspecifiedType $el CHOICE
 	 * @throws \UnexpectedValueException
 	 * @return self
 	 */
-	public static function fromASN1(Element $el) {
+	public static function fromASN1(UnspecifiedType $el) {
 		if (!$el->isTagged()) {
 			throw new \UnexpectedValueException("v1Form issuer not supported.");
 		}
-		switch ($el->tag()) {
+		$tagged = $el->asTagged();
+		switch ($tagged->tag()) {
 		case 0:
-			return V2Form::_fromASN1($el->implicit(Element::TYPE_SEQUENCE));
+			return V2Form::_fromASN1(
+				$tagged->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
 		}
 		throw new \UnexpectedValueException("Unsupported issuer type.");
 	}

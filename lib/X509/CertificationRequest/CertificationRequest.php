@@ -2,7 +2,6 @@
 
 namespace X509\CertificationRequest;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
@@ -60,11 +59,9 @@ class CertificationRequest
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$info = CertificationRequestInfo::fromASN1(
-			$seq->at(0, Element::TYPE_SEQUENCE));
-		$algo = AlgorithmIdentifier::fromASN1(
-			$seq->at(1, Element::TYPE_SEQUENCE));
-		$signature = Signature::fromASN1($seq->at(2, Element::TYPE_BIT_STRING));
+		$info = CertificationRequestInfo::fromASN1($seq->at(0)->asSequence());
+		$algo = AlgorithmIdentifier::fromASN1($seq->at(1)->asSequence());
+		$signature = Signature::fromASN1($seq->at(2)->asBitString());
 		return new self($info, $algo, $signature);
 	}
 	

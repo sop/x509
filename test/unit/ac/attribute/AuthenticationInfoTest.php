@@ -43,7 +43,7 @@ class AuthenticationInfoAttributeTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testDecode($der) {
 		$value = AuthenticationInfoAttributeValue::fromASN1(
-			Sequence::fromDER($der));
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(AuthenticationInfoAttributeValue::class, $value);
 		return $value;
 	}

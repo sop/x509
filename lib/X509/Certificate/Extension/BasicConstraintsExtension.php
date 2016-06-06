@@ -48,10 +48,14 @@ class BasicConstraintsExtension extends Extension
 		$path_len = null;
 		$idx = 0;
 		if ($seq->has($idx, Element::TYPE_BOOLEAN)) {
-			$ca = $seq->at($idx++)->value();
+			$ca = $seq->at($idx++)
+				->asBoolean()
+				->value();
 		}
 		if ($seq->has($idx, Element::TYPE_INTEGER)) {
-			$path_len = $seq->at($idx)->number();
+			$path_len = $seq->at($idx)
+				->asInteger()
+				->number();
 		}
 		return new self($critical, $ca, $path_len);
 	}

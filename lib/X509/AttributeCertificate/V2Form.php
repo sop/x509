@@ -59,15 +59,19 @@ class V2Form extends AttCertIssuer
 		$cert_id = null;
 		$digest_info = null;
 		if ($seq->has(0, Element::TYPE_SEQUENCE)) {
-			$issuer = GeneralNames::fromASN1($seq->at(0));
+			$issuer = GeneralNames::fromASN1($seq->at(0)->asSequence());
 		}
 		if ($seq->hasTagged(0)) {
 			$cert_id = IssuerSerial::fromASN1(
-				$seq->getTagged(0)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(0)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		if ($seq->hasTagged(1)) {
 			$digest_info = ObjectDigestInfo::fromASN1(
-				$seq->getTagged(1)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(1)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		$obj = new self($issuer);
 		$obj->_baseCertificateID = $cert_id;

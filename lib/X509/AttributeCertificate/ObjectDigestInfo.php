@@ -73,15 +73,18 @@ class ObjectDigestInfo
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$type = $seq->at(0, Element::TYPE_ENUMERATED)->number();
+		$type = $seq->at(0)
+			->asEnumerated()
+			->number();
 		$oid = null;
 		$idx = 1;
 		if ($seq->has($idx, Element::TYPE_OBJECT_IDENTIFIER)) {
-			$oid = $seq->at($idx++)->oid();
+			$oid = $seq->at($idx++)
+				->asObjectIdentifier()
+				->oid();
 		}
-		$algo = AlgorithmIdentifier::fromASN1(
-			$seq->at($idx++, Element::TYPE_SEQUENCE));
-		$digest = $seq->at($idx, Element::TYPE_BIT_STRING);
+		$algo = AlgorithmIdentifier::fromASN1($seq->at($idx++)->asSequence());
+		$digest = $seq->at($idx)->asBitString();
 		$obj = new self($type, $algo, $digest);
 		$obj->_otherObjectTypeID = $oid;
 		return $obj;

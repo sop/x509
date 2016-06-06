@@ -6,6 +6,7 @@ use ASN1\Element;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Primitive\OctetString;
 use ASN1\Type\Primitive\UTF8String;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -43,17 +44,17 @@ class IetfAttrValue
 	/**
 	 * Initialize from ASN.1.
 	 *
-	 * @param Element $el
+	 * @param UnspecifiedType $el
 	 * @throws \UnexpectedValueException
 	 * @return self
 	 */
-	public static function fromASN1(Element $el) {
+	public static function fromASN1(UnspecifiedType $el) {
 		switch ($el->tag()) {
 		case Element::TYPE_OCTET_STRING:
 		case Element::TYPE_UTF8_STRING:
-			return new self($el->string(), $el->tag());
+			return new self($el->asString()->string(), $el->tag());
 		case Element::TYPE_OBJECT_IDENTIFIER:
-			return new self($el->oid(), $el->tag());
+			return new self($el->asObjectIdentifier()->oid(), $el->tag());
 		}
 		throw new \UnexpectedValueException(
 			"Type " . Element::tagToName($el->tag()) . " not supported.");

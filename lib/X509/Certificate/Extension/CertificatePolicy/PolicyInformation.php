@@ -2,9 +2,9 @@
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -57,14 +57,17 @@ class PolicyInformation implements \Countable, \IteratorAggregate
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$oid = $seq->at(0, Element::TYPE_OBJECT_IDENTIFIER)->oid();
+		$oid = $seq->at(0)
+			->asObjectIdentifier()
+			->oid();
 		$qualifiers = array();
 		if (count($seq) > 1) {
 			$qualifiers = array_map(
-				function (Element $el) {
-					return PolicyQualifierInfo::fromASN1(
-						$el->expectType(Element::TYPE_SEQUENCE));
-				}, $seq->at(1, Element::TYPE_SEQUENCE)->elements());
+				function (UnspecifiedType $el) {
+					return PolicyQualifierInfo::fromASN1($el->asSequence());
+				}, $seq->at(1)
+					->asSequence()
+					->elements());
 		}
 		return new self($oid, ...$qualifiers);
 	}

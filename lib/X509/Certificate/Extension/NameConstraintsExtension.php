@@ -49,11 +49,15 @@ class NameConstraintsExtension extends Extension
 		$excluded = null;
 		if ($seq->hasTagged(0)) {
 			$permitted = GeneralSubtrees::fromASN1(
-				$seq->getTagged(0)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(0)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		if ($seq->hasTagged(1)) {
 			$excluded = GeneralSubtrees::fromASN1(
-				$seq->getTagged(1)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(1)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		return new self($critical, $permitted, $excluded);
 	}

@@ -60,11 +60,13 @@ class IssuerSerial
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$issuer = GeneralNames::fromASN1($seq->at(0, Element::TYPE_SEQUENCE));
-		$serial = $seq->at(1, Element::TYPE_INTEGER)->number();
+		$issuer = GeneralNames::fromASN1($seq->at(0)->asSequence());
+		$serial = $seq->at(1)
+			->asInteger()
+			->number();
 		$uid = null;
 		if ($seq->has(2, Element::TYPE_BIT_STRING)) {
-			$uid = UniqueIdentifier::fromASN1($seq->at(2));
+			$uid = UniqueIdentifier::fromASN1($seq->at(2)->asBitString());
 		}
 		return new self($issuer, $serial, $uid);
 	}

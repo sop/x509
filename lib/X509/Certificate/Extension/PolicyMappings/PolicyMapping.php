@@ -2,7 +2,6 @@
 
 namespace X509\Certificate\Extension\PolicyMappings;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
 
@@ -47,8 +46,12 @@ class PolicyMapping
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$issuer_policy = $seq->at(0, Element::TYPE_OBJECT_IDENTIFIER)->oid();
-		$subject_policy = $seq->at(1, Element::TYPE_OBJECT_IDENTIFIER)->oid();
+		$issuer_policy = $seq->at(0)
+			->asObjectIdentifier()
+			->oid();
+		$subject_policy = $seq->at(1)
+			->asObjectIdentifier()
+			->oid();
 		return new self($issuer_policy, $subject_policy);
 	}
 	

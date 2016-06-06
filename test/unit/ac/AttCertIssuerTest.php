@@ -17,7 +17,7 @@ class AttCertIssuerTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testV1FormFail() {
 		$v1 = new GeneralNames(DirectoryName::fromDNString("cn=Test"));
-		AttCertIssuer::fromASN1($v1->toASN1());
+		AttCertIssuer::fromASN1($v1->toASN1()->asUnspecified());
 	}
 	
 	/**
@@ -25,6 +25,6 @@ class AttCertIssuerTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testUnsupportedType() {
 		$el = new ImplicitlyTaggedType(1, new NullType());
-		AttCertIssuer::fromASN1($el);
+		AttCertIssuer::fromASN1($el->asUnspecified());
 	}
 }

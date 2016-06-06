@@ -44,7 +44,8 @@ class GroupAttributeTest extends PHPUnit_Framework_TestCase
 	 * @param unknown $der
 	 */
 	public function testDecode($der) {
-		$value = GroupAttributeValue::fromASN1(Sequence::fromDER($der));
+		$value = GroupAttributeValue::fromASN1(
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(GroupAttributeValue::class, $value);
 		return $value;
 	}

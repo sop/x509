@@ -46,11 +46,10 @@ abstract class DistributionPointName
 		case self::TAG_FULL_NAME:
 			return new FullName(
 				GeneralNames::fromASN1(
-					$el->expectImplicit()->implicit(Element::TYPE_SEQUENCE)));
+					$el->asImplicit(Element::TYPE_SEQUENCE)->asSequence()));
 		case self::TAG_RDN:
 			return new RelativeName(
-				RDN::fromASN1(
-					$el->expectImplicit()->implicit(Element::TYPE_SET)));
+				RDN::fromASN1($el->asImplicit(Element::TYPE_SET)->asSet()));
 		default:
 			throw new \UnexpectedValueException(
 				"DistributionPointName tag " . $el->tag() . " not supported.");

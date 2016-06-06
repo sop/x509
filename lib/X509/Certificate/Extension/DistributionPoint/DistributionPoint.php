@@ -65,15 +65,21 @@ class DistributionPoint
 		if ($seq->hasTagged(0)) {
 			// promoted to explicit tagging because underlying type is CHOICE
 			$name = DistributionPointName::fromTaggedType(
-				$seq->getTagged(0)->explicit());
+				$seq->getTagged(0)
+					->asExplicit()
+					->asTagged());
 		}
 		if ($seq->hasTagged(1)) {
 			$reasons = ReasonFlags::fromASN1(
-				$seq->getTagged(1)->implicit(Element::TYPE_BIT_STRING));
+				$seq->getTagged(1)
+					->asImplicit(Element::TYPE_BIT_STRING)
+					->asBitString());
 		}
 		if ($seq->hasTagged(2)) {
 			$issuer = GeneralNames::fromASN1(
-				$seq->getTagged(2)->implicit(Element::TYPE_SEQUENCE));
+				$seq->getTagged(2)
+					->asImplicit(Element::TYPE_SEQUENCE)
+					->asSequence());
 		}
 		return new self($name, $reasons, $issuer);
 	}

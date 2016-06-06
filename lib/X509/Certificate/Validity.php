@@ -2,7 +2,6 @@
 
 namespace X509\Certificate;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 
 
@@ -44,8 +43,8 @@ class Validity
 	 * @param Sequence $seq
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$nb = Time::fromASN1($seq->at(0, Element::TYPE_TIME));
-		$na = Time::fromASN1($seq->at(1, Element::TYPE_TIME));
+		$nb = Time::fromASN1($seq->at(0)->asTime());
+		$na = Time::fromASN1($seq->at(1)->asTime());
 		return new self($nb, $na);
 	}
 	

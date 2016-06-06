@@ -52,10 +52,10 @@ class UserNoticeQualifier extends PolicyQualifierInfo
 		$text = null;
 		$idx = 0;
 		if ($seq->has($idx, Element::TYPE_SEQUENCE)) {
-			$ref = NoticeReference::fromASN1($seq->at($idx++));
+			$ref = NoticeReference::fromASN1($seq->at($idx++)->asSequence());
 		}
 		if ($seq->has($idx, Element::TYPE_STRING)) {
-			$text = DisplayText::fromASN1($seq->at($idx));
+			$text = DisplayText::fromASN1($seq->at($idx)->asString());
 		}
 		return new self($text, $ref);
 	}

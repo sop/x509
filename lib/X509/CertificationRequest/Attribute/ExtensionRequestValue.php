@@ -2,8 +2,8 @@
 
 namespace X509\CertificationRequest\Attribute;
 
-use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X501\MatchingRule\BinaryMatch;
 use X509\Certificate\Extensions;
@@ -35,9 +35,8 @@ class ExtensionRequestValue extends AttributeValue
 		$this->_oid = self::OID;
 	}
 	
-	public static function fromASN1(Element $el) {
-		return new self(
-			Extensions::fromASN1($el->expectType(Element::TYPE_SEQUENCE)));
+	public static function fromASN1(UnspecifiedType $el) {
+		return new self(Extensions::fromASN1($el->asSequence()));
 	}
 	
 	/**

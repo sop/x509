@@ -59,9 +59,9 @@ abstract class Target
 	public static function fromASN1(TaggedType $el) {
 		switch ($el->tag()) {
 		case self::TYPE_NAME:
-			return TargetName::_fromASN1($el->explicit());
+			return TargetName::_fromASN1($el->asExplicit()->asTagged());
 		case self::TYPE_GROUP:
-			return TargetGroup::_fromASN1($el->explicit());
+			return TargetGroup::_fromASN1($el->asExplicit()->asTagged());
 		case self::TYPE_CERT:
 			throw new \RuntimeException("targetCert not supported.");
 		}

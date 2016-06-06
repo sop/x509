@@ -36,7 +36,8 @@ class ExtensionRequestTest extends PHPUnit_Framework_TestCase
 	 * @param unknown $der
 	 */
 	public function testDecode($der) {
-		$value = ExtensionRequestValue::fromASN1(Sequence::fromDER($der));
+		$value = ExtensionRequestValue::fromASN1(
+			Sequence::fromDER($der)->asUnspecified());
 		$this->assertInstanceOf(ExtensionRequestValue::class, $value);
 		return $value;
 	}

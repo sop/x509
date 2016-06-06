@@ -73,17 +73,21 @@ class CertificationRequestInfo
 	 * @return self
 	 */
 	public static function fromASN1(Sequence $seq) {
-		$version = $seq->at(0, Element::TYPE_INTEGER)->number();
+		$version = $seq->at(0)
+			->asInteger()
+			->number();
 		if ($version != self::VERSION_1) {
 			throw new \UnexpectedValueException(
 				"Version $version not supported.");
 		}
-		$subject = Name::fromASN1($seq->at(1, Element::TYPE_SEQUENCE));
-		$pkinfo = PublicKeyInfo::fromASN1($seq->at(2, Element::TYPE_SEQUENCE));
+		$subject = Name::fromASN1($seq->at(1)->asSequence());
+		$pkinfo = PublicKeyInfo::fromASN1($seq->at(2)->asSequence());
 		$obj = new self($subject, $pkinfo);
 		if ($seq->hasTagged(0)) {
 			$obj->_attributes = Attributes::fromASN1(
-				$seq->getTagged(0)->implicit(Element::TYPE_SET));
+				$seq->getTagged(0)
+					->asImplicit(Element::TYPE_SET)
+					->asSet());
 		}
 		return $obj;
 	}

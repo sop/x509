@@ -8,6 +8,7 @@ use ASN1\Type\Primitive\Boolean;
 use ASN1\Type\Primitive\Integer;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -75,26 +76,34 @@ class AAControlsExtension extends Extension
 		$permit_unspecified = true;
 		$idx = 0;
 		if ($seq->has($idx, Element::TYPE_INTEGER)) {
-			$path_len = $seq->at($idx++)->number();
+			$path_len = $seq->at($idx++)
+				->asInteger()
+				->number();
 		}
 		if ($seq->hasTagged(0)) {
-			$attr_seq = $seq->getTagged(0)->implicit(Element::TYPE_SEQUENCE);
+			$attr_seq = $seq->getTagged(0)
+				->asImplicit(Element::TYPE_SEQUENCE)
+				->asSequence();
 			$permitted = array_map(
-				function (Element $el) {
-					return $el->expectType(Element::TYPE_OBJECT_IDENTIFIER)->oid();
+				function (UnspecifiedType $el) {
+					return $el->asObjectIdentifier()->oid();
 				}, $attr_seq->elements());
 			$idx++;
 		}
 		if ($seq->hasTagged(1)) {
-			$attr_seq = $seq->getTagged(1)->implicit(Element::TYPE_SEQUENCE);
+			$attr_seq = $seq->getTagged(1)
+				->asImplicit(Element::TYPE_SEQUENCE)
+				->asSequence();
 			$excluded = array_map(
-				function (Element $el) {
-					return $el->expectType(Element::TYPE_OBJECT_IDENTIFIER)->oid();
+				function (UnspecifiedType $el) {
+					return $el->asObjectIdentifier()->oid();
 				}, $attr_seq->elements());
 			$idx++;
 		}
 		if ($seq->has($idx, Element::TYPE_BOOLEAN)) {
-			$permit_unspecified = $seq->at($idx++)->value();
+			$permit_unspecified = $seq->at($idx++)
+				->asBoolean()
+				->value();
 		}
 		return new self($critical, $path_len, $permitted, $excluded, 
 			$permit_unspecified);
