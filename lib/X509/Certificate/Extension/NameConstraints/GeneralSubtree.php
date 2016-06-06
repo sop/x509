@@ -92,7 +92,7 @@ class GeneralSubtree
 	 */
 	public function toASN1() {
 		$elements = array($this->_base->toASN1());
-		if (isset($this->_min) && $this->_max != 0) {
+		if (isset($this->_min) && $this->_min != 0) {
 			$elements[] = new ImplicitlyTaggedType(0, new Integer($this->_min));
 		}
 		if (isset($this->_max)) {
