@@ -53,6 +53,9 @@ class PathValidator
 	 */
 	public function __construct(Crypto $crypto, PathValidationConfig $config, 
 			Certificate ...$certificates) {
+		if (!count($certificates)) {
+			throw new \LogicException("No certificates.");
+		}
 		$this->_crypto = $crypto;
 		$this->_config = $config;
 		$this->_certificates = $certificates;
@@ -360,7 +363,7 @@ class PathValidator
 	protected function _checkPermittedSubtrees(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
-		$subtrees = $state->permittedSubtrees();
+		$state->permittedSubtrees();
 	}
 	
 	/**
@@ -371,7 +374,7 @@ class PathValidator
 	protected function _checkExcludedSubtrees(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
-		$subtrees = $state->excludedSubtrees();
+		$state->excludedSubtrees();
 	}
 	
 	/**
