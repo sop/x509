@@ -4,6 +4,7 @@ namespace X509\GeneralName;
 
 use ASN1\Type\Primitive\OctetString;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -50,14 +51,12 @@ abstract class IPAddress extends GeneralName
 	}
 	
 	/**
-	 * Initialize from ASN.1.
 	 *
-	 * @param OctetString $str
-	 * @throws \UnexpectedValueException
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(OctetString $str) {
-		$octets = $str->string();
+	public static function fromChosenASN1(UnspecifiedType $el) {
+		$octets = $el->asOctetString()->string();
 		switch (strlen($octets)) {
 		case 4:
 		case 8:

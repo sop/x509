@@ -4,6 +4,7 @@ namespace X509\GeneralName;
 
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -31,13 +32,12 @@ class RegisteredID extends GeneralName
 	}
 	
 	/**
-	 * Initialize from ASN.1.
 	 *
-	 * @param ObjectIdentifier $oid
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(ObjectIdentifier $oid) {
-		return new self($oid->oid());
+	public static function fromChosenASN1(UnspecifiedType $el) {
+		return new self($el->asObjectIdentifier()->oid());
 	}
 	
 	public function string() {

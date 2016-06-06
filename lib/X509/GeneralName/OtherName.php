@@ -7,6 +7,7 @@ use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Tagged\ExplicitlyTaggedType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -43,12 +44,12 @@ class OtherName extends GeneralName
 	}
 	
 	/**
-	 * Initialize from ASN.1
 	 *
-	 * @param Sequence $seq
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(Sequence $seq) {
+	public static function fromChosenASN1(UnspecifiedType $el) {
+		$seq = $el->asSequence();
 		$type_id = $seq->at(0)
 			->asObjectIdentifier()
 			->oid();

@@ -3,8 +3,8 @@
 namespace X509\GeneralName;
 
 use ASN1\Type\Primitive\IA5String;
-use ASN1\Type\StringType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -33,13 +33,12 @@ class UniformResourceIdentifier extends GeneralName
 	}
 	
 	/**
-	 * Initialize from ASN.1.
 	 *
-	 * @param StringType $str
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(StringType $str) {
-		return new self($str->string());
+	public static function fromChosenASN1(UnspecifiedType $el) {
+		return new self($el->asIA5String()->string());
 	}
 	
 	public function string() {

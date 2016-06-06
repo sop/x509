@@ -2,8 +2,8 @@
 
 namespace X509\GeneralName;
 
-use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -22,9 +22,14 @@ class EDIPartyName extends GeneralName
 		$this->_tag = self::TAG_EDI_PARTY_NAME;
 	}
 	
-	protected static function _fromASN1(Sequence $seq) {
+	/**
+	 *
+	 * @param UnspecifiedType $el
+	 * @return self
+	 */
+	public static function fromChosenASN1(UnspecifiedType $el) {
 		$obj = new self();
-		$obj->_element = $seq;
+		$obj->_element = $el->asSequence();
 		return $obj;
 	}
 	

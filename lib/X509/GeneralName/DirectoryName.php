@@ -2,8 +2,8 @@
 
 namespace X509\GeneralName;
 
-use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ExplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Name;
 
 
@@ -32,13 +32,12 @@ class DirectoryName extends GeneralName
 	}
 	
 	/**
-	 * Initialize from ASN.1.
 	 *
-	 * @param Sequence $seq
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(Sequence $seq) {
-		return new self(Name::fromASN1($seq));
+	public static function fromChosenASN1(UnspecifiedType $el) {
+		return new self(Name::fromASN1($el->asSequence()));
 	}
 	
 	/**
