@@ -88,7 +88,7 @@ class PathValidationConfig
 	public function __construct(\DateTimeImmutable $dt, $max_length) {
 		$this->_dateTime = $dt;
 		$this->_maxLength = (int) $max_length;
-		$this->_policySet = array(PolicyInformation::OID_ANY_POLICY);
+		$this->_policySet = array((string) PolicyInformation::OID_ANY_POLICY);
 		$this->_policyMappingInhibit = false;
 		$this->_explicitPolicy = false;
 		$this->_anyPolicyInhibit = false;
