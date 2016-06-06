@@ -13,7 +13,6 @@ class IPv4Address extends IPAddress
 	 * @return self
 	 */
 	public static function fromOctets($octets) {
-		$ip = null;
 		$mask = null;
 		$bytes = unpack("C*", $octets);
 		switch (count($bytes)) {

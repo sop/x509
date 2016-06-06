@@ -13,7 +13,6 @@ class IPv6Address extends IPAddress
 	 * @return self
 	 */
 	public static function fromOctets($octets) {
-		$ip = null;
 		$mask = null;
 		$words = unpack("n*", $octets);
 		switch (count($words)) {
