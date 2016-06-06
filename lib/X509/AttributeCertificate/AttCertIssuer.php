@@ -52,7 +52,7 @@ abstract class AttCertIssuer
 		$tagged = $el->asTagged();
 		switch ($tagged->tag()) {
 		case 0:
-			return V2Form::_fromASN1(
+			return V2Form::fromV2ASN1(
 				$tagged->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
 		}
 		throw new \UnexpectedValueException("Unsupported issuer type.");

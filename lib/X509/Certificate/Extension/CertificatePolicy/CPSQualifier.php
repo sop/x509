@@ -3,7 +3,7 @@
 namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Type\Primitive\IA5String;
-use ASN1\Type\StringType;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -32,13 +32,12 @@ class CPSQualifier extends PolicyQualifierInfo
 	}
 	
 	/**
-	 * Initialize from ASN.1.
 	 *
-	 * @param StringType $str
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(StringType $str) {
-		return new self($str->string());
+	public static function fromQualifierASN1(UnspecifiedType $el) {
+		return new self($el->asString()->string());
 	}
 	
 	/**

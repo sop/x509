@@ -5,6 +5,7 @@ namespace X509\Certificate\Extension\CertificatePolicy;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -44,6 +45,17 @@ abstract class PolicyQualifierInfo
 	abstract protected function _qualifierASN1();
 	
 	/**
+	 * Initialize from qualifier ASN.1 element.
+	 *
+	 * @param UnspecifiedType $el
+	 * @return self
+	 */
+	public static function fromQualifierASN1(UnspecifiedType $el) {
+		throw new \BadMethodCallException(
+			__FUNCTION__ . " must be implemented in the derived class.");
+	}
+	
+	/**
 	 * Initialize from ASN.1.
 	 *
 	 * @param Sequence $seq
@@ -56,9 +68,9 @@ abstract class PolicyQualifierInfo
 			->oid();
 		switch ($oid) {
 		case self::OID_CPS:
-			return CPSQualifier::_fromASN1($seq->at(1)->asString());
+			return CPSQualifier::fromQualifierASN1($seq->at(1));
 		case self::OID_UNOTICE:
-			return UserNoticeQualifier::_fromASN1($seq->at(1)->asSequence());
+			return UserNoticeQualifier::fromQualifierASN1($seq->at(1));
 		}
 		throw new \UnexpectedValueException("Qualifier $oid not supported.");
 	}

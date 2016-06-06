@@ -4,6 +4,7 @@ namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\UnspecifiedType;
 
 
 /**
@@ -42,12 +43,12 @@ class UserNoticeQualifier extends PolicyQualifierInfo
 	}
 	
 	/**
-	 * Initialize from ASN.1.
 	 *
-	 * @param Sequence $seq
+	 * @param UnspecifiedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(Sequence $seq) {
+	public static function fromQualifierASN1(UnspecifiedType $el) {
+		$seq = $el->asSequence();
 		$ref = null;
 		$text = null;
 		$idx = 0;

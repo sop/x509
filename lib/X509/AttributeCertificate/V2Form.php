@@ -54,7 +54,7 @@ class V2Form extends AttCertIssuer
 	 * @param Sequence $seq
 	 * @return self
 	 */
-	protected static function _fromASN1(Sequence $seq) {
+	public static function fromV2ASN1(Sequence $seq) {
 		$issuer = null;
 		$cert_id = null;
 		$digest_info = null;
