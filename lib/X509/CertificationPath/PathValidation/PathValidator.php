@@ -72,9 +72,6 @@ class PathValidator
 	 */
 	public function validate() {
 		$n = count($this->_certificates);
-		if (!$n) {
-			throw new \LogicException("No certificates.");
-		}
 		$state = ValidatorState::initialize($this->_config, $this->_trustAnchor, 
 			$n);
 		for ($i = 0; $i < $n; ++$i) {
@@ -87,6 +84,9 @@ class PathValidator
 				// prepare next certificate (section 6.1.4.)
 				$state = $this->_prepareNext($state, $cert);
 			}
+		}
+		if (!isset($cert)) {
+			throw new \LogicException("No certificates.");
 		}
 		// wrap-up (section 6.1.5.)
 		$this->_wrapUp($state, $cert);
