@@ -32,7 +32,7 @@ class PolicyMapping
 	 * Constructor
 	 *
 	 * @param string $issuer_policy OID of the issuer policy
-	 * @param stirng $subject_policy OID of the subject policy
+	 * @param string $subject_policy OID of the subject policy
 	 */
 	public function __construct($issuer_policy, $subject_policy) {
 		$this->_issuerDomainPolicy = $issuer_policy;
