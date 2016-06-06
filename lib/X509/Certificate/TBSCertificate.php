@@ -42,7 +42,7 @@ class TBSCertificate
 	/**
 	 * Serial number.
 	 *
-	 * @var int
+	 * @var int|string
 	 */
 	protected $_serialNumber;
 	
