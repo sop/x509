@@ -39,7 +39,7 @@ abstract class Target
 	abstract public function string();
 	
 	/**
-	 * Initialize concrete object from the chocen ASN.1 element.
+	 * Initialize concrete object from the chosen ASN.1 element.
 	 *
 	 * @param TaggedType $el
 	 * @return self
