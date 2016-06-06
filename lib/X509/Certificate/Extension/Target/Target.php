@@ -39,14 +39,14 @@ abstract class Target
 	abstract public function string();
 	
 	/**
-	 * Parse concrete type.
+	 * Initialize concrete object from the chocen ASN.1 element.
 	 *
 	 * @param TaggedType $el
 	 * @return self
 	 */
-	protected static function _fromASN1(TaggedType $el) {
+	public static function fromChosenASN1(TaggedType $el) {
 		throw new \BadMethodCallException(
-			__FUNCTION__ . " must be implemented in derived class.");
+			__FUNCTION__ . " must be implemented in the derived class.");
 	}
 	
 	/**
@@ -59,9 +59,9 @@ abstract class Target
 	public static function fromASN1(TaggedType $el) {
 		switch ($el->tag()) {
 		case self::TYPE_NAME:
-			return TargetName::_fromASN1($el->asExplicit()->asTagged());
+			return TargetName::fromChosenASN1($el->asExplicit()->asTagged());
 		case self::TYPE_GROUP:
-			return TargetGroup::_fromASN1($el->asExplicit()->asTagged());
+			return TargetGroup::fromChosenASN1($el->asExplicit()->asTagged());
 		case self::TYPE_CERT:
 			throw new \RuntimeException("targetCert not supported.");
 		}

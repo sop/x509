@@ -31,7 +31,7 @@ class TargetGroup extends Target
 		$this->_type = self::TYPE_GROUP;
 	}
 	
-	protected static function _fromASN1(TaggedType $el) {
+	public static function fromChosenASN1(TaggedType $el) {
 		return new self(GeneralName::fromASN1($el));
 	}
 	

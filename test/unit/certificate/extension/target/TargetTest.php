@@ -16,10 +16,7 @@ class TargetTest extends PHPUnit_Framework_TestCase
 	 * @expectedException BadMethodCallException
 	 */
 	public function testFromASN1BadCall() {
-		$cls = new ReflectionClass(Target::class);
-		$mtd = $cls->getMethod("_fromASN1");
-		$mtd->setAccessible(true);
-		$mtd->invoke(null, new ImplicitlyTaggedType(0, new NullType()));
+		Target::fromChosenASN1(new ImplicitlyTaggedType(0, new NullType()));
 	}
 	
 	/**
