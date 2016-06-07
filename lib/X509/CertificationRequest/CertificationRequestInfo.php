@@ -201,7 +201,7 @@ class CertificationRequestInfo
 	 *
 	 * @param Crypto $crypto Crypto engine
 	 * @param SignatureAlgorithmIdentifier $algo Algorithm used for signing
-	 * @param PrivateKey $private_key Private key used for signing
+	 * @param PrivateKeyInfo $privkey_info Private key used for signing
 	 * @return CertificationRequest
 	 */
 	public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo, 
