@@ -15,7 +15,8 @@ use X501\ASN1\Name;
  *
  * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */
-class GeneralNames implements \Countable, \IteratorAggregate
+class GeneralNames implements 
+	\Countable, \IteratorAggregate
 {
 	/**
 	 * GeneralName objects.
@@ -112,7 +113,12 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	 * @return string
 	 */
 	public function firstDNS() {
-		return $this->firstOf(GeneralName::TAG_DNS_NAME)->name();
+		$gn = $this->firstOf(GeneralName::TAG_DNS_NAME);
+		if (!$gn instanceof DNSName) {
+			throw new \RuntimeException(
+				DNSName::class . " expected, got " . get_class($gn));
+		}
+		return $gn->name();
 	}
 	
 	/**
@@ -121,7 +127,12 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	 * @return Name
 	 */
 	public function firstDN() {
-		return $this->firstOf(GeneralName::TAG_DIRECTORY_NAME)->dn();
+		$gn = $this->firstOf(GeneralName::TAG_DIRECTORY_NAME);
+		if (!$gn instanceof DirectoryName) {
+			throw new \RuntimeException(
+				DirectoryName::class . " expected, got " . get_class($gn));
+		}
+		return $gn->dn();
 	}
 	
 	/**
@@ -130,7 +141,13 @@ class GeneralNames implements \Countable, \IteratorAggregate
 	 * @return string
 	 */
 	public function firstURI() {
-		return $this->firstOf(GeneralName::TAG_URI)->uri();
+		$gn = $this->firstOf(GeneralName::TAG_URI);
+		if (!$gn instanceof UniformResourceIdentifier) {
+			throw new \RuntimeException(
+				UniformResourceIdentifier::class . " expected, got " .
+					 get_class($gn));
+		}
+		return $gn->uri();
 	}
 	
 	/**
