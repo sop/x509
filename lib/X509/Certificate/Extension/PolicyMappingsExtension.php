@@ -13,8 +13,8 @@ use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
  *
  * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.5
  */
-class PolicyMappingsExtension extends Extension implements \Countable, 
-	\IteratorAggregate
+class PolicyMappingsExtension extends Extension implements 
+	\Countable, \IteratorAggregate
 {
 	/**
 	 * Policy mappings.
@@ -26,7 +26,7 @@ class PolicyMappingsExtension extends Extension implements \Countable,
 	/**
 	 * Constructor
 	 *
-	 * @param string $critical
+	 * @param bool $critical
 	 * @param PolicyMapping ...$mappings One or more PolicyMapping objects
 	 */
 	public function __construct($critical, PolicyMapping ...$mappings) {
