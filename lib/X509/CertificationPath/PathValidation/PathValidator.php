@@ -108,7 +108,7 @@ class PathValidator
 	 * @throws PathValidationException
 	 * @return ValidatorState
 	 */
-	protected function _processCertificate(ValidatorState $state, 
+	private function _processCertificate(ValidatorState $state, 
 			Certificate $cert) {
 		// (a.1) verify signature
 		$this->_verifySignature($state, $cert);
@@ -145,91 +145,41 @@ class PathValidator
 	}
 	
 	/**
-	 * Apply preparation for certificate i+1 according to rfc5280 section 6.1.4.
+	 * Apply preparation for the certificate i+1 according to rfc5280 section
+	 * 6.1.4.
 	 *
 	 * @link https://tools.ietf.org/html/rfc5280#section-6.1.4
 	 * @param ValidatorState $state
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _prepareNext(ValidatorState $state, Certificate $cert) {
+	private function _prepareNext(ValidatorState $state, Certificate $cert) {
 		$tbs_cert = $cert->tbsCertificate();
 		$extensions = $tbs_cert->extensions();
 		// (a)(b) if policy mappings extension is present
-		if ($extensions->hasPolicyMappings()) {
-			// (a) verify that anyPolicy mapping is not used
-			if ($extensions->policyMappings()->hasAnyPolicyMapping()) {
-				throw new PathValidationException("anyPolicy mapping found.");
-			}
-			// (b) process policy mappings
-			$state = $this->_processPolicyMappings($state, $cert);
-		}
+		$state = $this->_preparePolicyMappings($state, $cert);
 		// (c) assign working_issuer_name
 		$state = $state->withWorkingIssuerName($tbs_cert->subject());
 		// (d)(e)(f)
 		$state = $this->_setPublicKeyState($state, $cert);
 		// (g) if name constraints extension is present
-		if ($extensions->hasNameConstraints()) {
-			$state = $this->_processNameConstraints($state, $cert);
-		}
+		$state = $this->_prepareNameConstraints($state, $cert);
 		// (h) if certificate is not self-issued
 		if (!$cert->isSelfIssued()) {
-			// (h.1)
-			if ($state->explicitPolicy() > 0) {
-				$state = $state->withExplicitPolicy(
-					$state->explicitPolicy() - 1);
-			}
-			// (h.2)
-			if ($state->policyMapping() > 0) {
-				$state = $state->withPolicyMapping($state->policyMapping() - 1);
-			}
-			// (h.3)
-			if ($state->inhibitAnyPolicy() > 0) {
-				$state = $state->withInhibitAnyPolicy(
-					$state->inhibitAnyPolicy() - 1);
-			}
+			$state = $this->_prepareNonSelfIssued($state);
 		}
 		// (i) if policy constraints extension is present
-		if ($extensions->hasPolicyConstraints()) {
-			$ext = $extensions->policyConstraints();
-			// (i.1)
-			if ($ext->hasRequireExplicitPolicy() &&
-				 $ext->requireExplicitPolicy() < $state->explicitPolicy()) {
-				$state = $state->withExplicitPolicy(
-					$ext->requireExplicitPolicy());
-			}
-			// (i.2)
-			if ($ext->hasInhibitPolicyMapping() &&
-				 $ext->inhibitPolicyMapping() < $state->policyMapping()) {
-				$state = $state->withPolicyMapping($ext->inhibitPolicyMapping());
-			}
-		}
+		$state = $this->_preparePolicyConstraints($state, $cert);
 		// (j) if inhibit any policy extension is present
-		if ($extensions->hasInhibitAnyPolicy()) {
-			$ext = $extensions->inhibitAnyPolicy();
-			if ($ext->skipCerts() < $state->inhibitAnyPolicy()) {
-				$state = $state->withInhibitAnyPolicy($ext->skipCerts());
-			}
-		}
+		$state = $this->_prepareInhibitAnyPolicy($state, $cert);
 		// (k) check basic constraints
 		$this->_processBasicContraints($cert);
 		// (l) verify max_path_length
-		if (!$cert->isSelfIssued()) {
-			if ($state->maxPathLength() <= 0) {
-				throw new PathValidationException(
-					"Certification path length exceeded.");
-			}
-			$state = $state->withMaxPathLength($state->maxPathLength() - 1);
-		}
+		$state = $this->_verifyMaxPathLength($state, $cert);
 		// (m) check pathLenContraint
 		$state = $this->_processPathLengthContraint($state, $cert);
 		// (n) check key usage
-		if ($extensions->hasKeyUsage()) {
-			$ext = $extensions->keyUsage();
-			if (!$ext->isKeyCertSign()) {
-				throw new PathValidationException("keyCertSign usage not set.");
-			}
-		}
+		$this->_checkKeyUsage($cert);
 		// (o) process relevant extensions
 		$state = $this->_processExtensions($state, $cert);
 		return $state;
@@ -243,7 +193,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @throws PathValidationException
 	 */
-	protected function _wrapUp(ValidatorState $state, Certificate $cert) {
+	private function _wrapUp(ValidatorState $state, Certificate $cert) {
 		$tbs_cert = $cert->tbsCertificate();
 		$extensions = $tbs_cert->extensions();
 		// (a)
@@ -279,8 +229,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _setPublicKeyState(ValidatorState $state, 
-			Certificate $cert) {
+	private function _setPublicKeyState(ValidatorState $state, Certificate $cert) {
 		$pk_info = $cert->tbsCertificate()->subjectPublicKeyInfo();
 		// assign working_public_key
 		$state = $state->withWorkingPublicKey($pk_info);
@@ -309,7 +258,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @throws PathValidationException
 	 */
-	protected function _verifySignature(ValidatorState $state, Certificate $cert) {
+	private function _verifySignature(ValidatorState $state, Certificate $cert) {
 		if (!$cert->verify($this->_crypto, $state->workingPublicKey())) {
 			throw new PathValidationException(
 				"Certificate signature doesn't match.");
@@ -322,7 +271,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @throws PathValidationException
 	 */
-	protected function _checkValidity(Certificate $cert) {
+	private function _checkValidity(Certificate $cert) {
 		$refdt = $this->_config->dateTime();
 		$validity = $cert->tbsCertificate()->validity();
 		if ($validity->notBefore()
@@ -342,7 +291,7 @@ class PathValidator
 	 *
 	 * @param Certificate $cert
 	 */
-	protected function _checkRevocation(Certificate $cert) {
+	private function _checkRevocation(Certificate $cert) {
 		// @todo Implement CRL handling
 	}
 	
@@ -353,7 +302,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @throws PathValidationException
 	 */
-	protected function _checkIssuer(ValidatorState $state, Certificate $cert) {
+	private function _checkIssuer(ValidatorState $state, Certificate $cert) {
 		if (!$cert->tbsCertificate()
 			->issuer()
 			->equals($state->workingIssuerName())) {
@@ -366,7 +315,7 @@ class PathValidator
 	 * @param ValidatorState $state
 	 * @param Certificate $cert
 	 */
-	protected function _checkPermittedSubtrees(ValidatorState $state, 
+	private function _checkPermittedSubtrees(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
 		$state->permittedSubtrees();
@@ -377,7 +326,7 @@ class PathValidator
 	 * @param ValidatorState $state
 	 * @param Certificate $cert
 	 */
-	protected function _checkExcludedSubtrees(ValidatorState $state, 
+	private function _checkExcludedSubtrees(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
 		$state->excludedSubtrees();
@@ -389,10 +338,153 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _processPolicyInformation(ValidatorState $state, 
+	private function _processPolicyInformation(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
 		return $state;
+	}
+	
+	/**
+	 * Apply policy mappings handling for the preparation step.
+	 *
+	 * @param ValidatorState $state
+	 * @param Certificate $cert
+	 * @throws PathValidationException
+	 * @return ValidatorState
+	 */
+	private function _preparePolicyMappings(ValidatorState $state, 
+			Certificate $cert) {
+		$extensions = $cert->tbsCertificate()->extensions();
+		if ($extensions->hasPolicyMappings()) {
+			// (a) verify that anyPolicy mapping is not used
+			if ($extensions->policyMappings()->hasAnyPolicyMapping()) {
+				throw new PathValidationException("anyPolicy mapping found.");
+			}
+			// (b) process policy mappings
+			$state = $this->_processPolicyMappings($state, $cert);
+		}
+		return $state;
+	}
+	
+	/**
+	 * Apply name constraints handling for the preparation step.
+	 *
+	 * @param ValidatorState $state
+	 * @param Certificate $cert
+	 * @return ValidatorState
+	 */
+	private function _prepareNameConstraints(ValidatorState $state, 
+			Certificate $cert) {
+		$extensions = $cert->tbsCertificate()->extensions();
+		if ($extensions->hasNameConstraints()) {
+			$state = $this->_processNameConstraints($state, $cert);
+		}
+		return $state;
+	}
+	
+	/**
+	 * Apply preparation for a non-self-signed certificate.
+	 *
+	 * @param ValidatorState $state
+	 * @return ValidatorState
+	 */
+	private function _prepareNonSelfIssued(ValidatorState $state) {
+		// (h.1)
+		if ($state->explicitPolicy() > 0) {
+			$state = $state->withExplicitPolicy($state->explicitPolicy() - 1);
+		}
+		// (h.2)
+		if ($state->policyMapping() > 0) {
+			$state = $state->withPolicyMapping($state->policyMapping() - 1);
+		}
+		// (h.3)
+		if ($state->inhibitAnyPolicy() > 0) {
+			$state = $state->withInhibitAnyPolicy(
+				$state->inhibitAnyPolicy() - 1);
+		}
+		return $state;
+	}
+	
+	/**
+	 * Apply policy constraints handling for the preparation step.
+	 *
+	 * @param ValidatorState $state
+	 * @param Certificate $cert
+	 * @return ValidatorState
+	 */
+	private function _preparePolicyConstraints(ValidatorState $state, 
+			Certificate $cert) {
+		$extensions = $cert->tbsCertificate()->extensions();
+		if (!$extensions->hasPolicyConstraints()) {
+			return $state;
+		}
+		$ext = $extensions->policyConstraints();
+		// (i.1)
+		if ($ext->hasRequireExplicitPolicy() &&
+			 $ext->requireExplicitPolicy() < $state->explicitPolicy()) {
+			$state = $state->withExplicitPolicy($ext->requireExplicitPolicy());
+		}
+		// (i.2)
+		if ($ext->hasInhibitPolicyMapping() &&
+			 $ext->inhibitPolicyMapping() < $state->policyMapping()) {
+			$state = $state->withPolicyMapping($ext->inhibitPolicyMapping());
+		}
+		return $state;
+	}
+	
+	/**
+	 * Apply inhibit any-policy handling for the preparation step.
+	 *
+	 * @param ValidatorState $state
+	 * @param Certificate $cert
+	 * @return ValidatorState
+	 */
+	private function _prepareInhibitAnyPolicy(ValidatorState $state, 
+			Certificate $cert) {
+		$extensions = $cert->tbsCertificate()->extensions();
+		if ($extensions->hasInhibitAnyPolicy()) {
+			$ext = $extensions->inhibitAnyPolicy();
+			if ($ext->skipCerts() < $state->inhibitAnyPolicy()) {
+				$state = $state->withInhibitAnyPolicy($ext->skipCerts());
+			}
+		}
+		return $state;
+	}
+	
+	/**
+	 * Verify maximum certification path length for the preparation step.
+	 *
+	 * @param ValidatorState $state
+	 * @param Certificate $cert
+	 * @throws PathValidationException
+	 * @return ValidatorState
+	 */
+	private function _verifyMaxPathLength(ValidatorState $state, 
+			Certificate $cert) {
+		if (!$cert->isSelfIssued()) {
+			if ($state->maxPathLength() <= 0) {
+				throw new PathValidationException(
+					"Certification path length exceeded.");
+			}
+			$state = $state->withMaxPathLength($state->maxPathLength() - 1);
+		}
+		return $state;
+	}
+	
+	/**
+	 * Check key usage extension for the preparation step.
+	 *
+	 * @param Certificate $cert
+	 * @throws PathValidationException
+	 */
+	private function _checkKeyUsage(Certificate $cert) {
+		$extensions = $cert->tbsCertificate()->extensions();
+		if ($extensions->hasKeyUsage()) {
+			$ext = $extensions->keyUsage();
+			if (!$ext->isKeyCertSign()) {
+				throw new PathValidationException("keyCertSign usage not set.");
+			}
+		}
 	}
 	
 	/**
@@ -401,7 +493,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _processNameConstraints(ValidatorState $state, 
+	private function _processNameConstraints(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
 		return $state;
@@ -413,7 +505,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @throws PathValidationException
 	 */
-	protected function _processBasicContraints(Certificate $cert) {
+	private function _processBasicContraints(Certificate $cert) {
 		if ($cert->tbsCertificate()->version() == TBSCertificate::VERSION_3) {
 			$extensions = $cert->tbsCertificate()->extensions();
 			if (!$extensions->hasBasicConstraints()) {
@@ -435,7 +527,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _processPathLengthContraint(ValidatorState $state, 
+	private function _processPathLengthContraint(ValidatorState $state, 
 			Certificate $cert) {
 		$extensions = $cert->tbsCertificate()->extensions();
 		if ($extensions->hasBasicConstraints()) {
@@ -456,7 +548,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _processPolicyMappings(ValidatorState $state, 
+	private function _processPolicyMappings(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
 		return $state;
@@ -468,8 +560,7 @@ class PathValidator
 	 * @param Certificate $cert
 	 * @return ValidatorState
 	 */
-	protected function _processExtensions(ValidatorState $state, 
-			Certificate $cert) {
+	private function _processExtensions(ValidatorState $state, Certificate $cert) {
 		// @todo Implement
 		return $state;
 	}
@@ -479,7 +570,7 @@ class PathValidator
 	 * @param ValidatorState $state
 	 * @return ValidatorState
 	 */
-	protected function _calculatePolicyIntersection(ValidatorState $state) {
+	private function _calculatePolicyIntersection(ValidatorState $state) {
 		// @todo Implement
 		return $state;
 	}
