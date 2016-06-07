@@ -60,8 +60,11 @@ class PathValidator
 		$this->_config = $config;
 		$this->_certificates = $certificates;
 		// if trust anchor is explicitly given in configuration
-		$this->_trustAnchor = $config->hasTrustAnchor() ? $config->trustAnchor() : reset(
-			$certificates);
+		if ($config->hasTrustAnchor()) {
+			$this->_trustAnchor = $config->trustAnchor();
+		} else {
+			$this->_trustAnchor = $certificates[0];
+		}
 	}
 	
 	/**
