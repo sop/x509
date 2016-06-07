@@ -168,7 +168,7 @@ class AttributeCertificateInfo
 	 * Get self with signature algorithm identifier.
 	 *
 	 * @param SignatureAlgorithmIdentifier $algo
-	 * @return self;
+	 * @return self
 	 */
 	public function withSignature(SignatureAlgorithmIdentifier $algo) {
 		$obj = clone $this;
