@@ -17,8 +17,8 @@ use X509\GeneralName\GeneralNames;
  *
  * @link https://tools.ietf.org/html/rfc5755#section-4.4
  */
-abstract class IetfAttrSyntax extends AttributeValue implements \Countable, 
-	\IteratorAggregate
+abstract class IetfAttrSyntax extends AttributeValue implements 
+	\Countable, \IteratorAggregate
 {
 	/**
 	 * Policy authority.
@@ -44,6 +44,11 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable,
 		$this->_values = $values;
 	}
 	
+	/**
+	 *
+	 * @param UnspecifiedType $el
+	 * @return self
+	 */
 	public static function fromASN1(UnspecifiedType $el) {
 		$seq = $el->asSequence();
 		$authority = null;
@@ -119,7 +124,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable,
 		if (!count($this->_values)) {
 			throw new \LogicException("No values.");
 		}
-		return reset($this->_values);
+		return $this->_values[0];
 	}
 	
 	/**
