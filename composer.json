@@ -17,9 +17,9 @@
 	"require": {
 		"php": ">=5.6.3",
 		"ext-gmp": "*",
-		"sop/asn1": "dev-master",
-		"sop/x501": "dev-master",
-		"sop/crypto-util": "dev-master"
+		"sop/asn1": "^2.0.0",
+		"sop/x501": "^0.3.0",
+		"sop/crypto-util": "^1.5.0"
 	},
 	"autoload": {
 		"psr-4": {
