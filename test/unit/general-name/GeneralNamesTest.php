@@ -1,6 +1,7 @@
 <?php
 
 use ASN1\Type\Constructed\Sequence;
+use ASN1\Type\Primitive\NullType;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\DNSName;
 use X509\GeneralName\GeneralName;
@@ -153,5 +154,48 @@ class GeneralNamesTest extends PHPUnit_Framework_TestCase
 		$name = new UniformResourceIdentifier("urn:example");
 		$gn = new GeneralNames($name);
 		$this->assertEquals($name, $gn->firstURI());
+	}
+	
+	/**
+	 * @expectedException RuntimeException
+	 */
+	public function testFirstDNSFail() {
+		$gn = new GeneralNames(
+			new GeneralNamesTest_NameMockup(GeneralName::TAG_DNS_NAME));
+		$gn->firstDNS();
+	}
+	
+	/**
+	 * @expectedException RuntimeException
+	 */
+	public function testFirstDNFail() {
+		$gn = new GeneralNames(
+			new GeneralNamesTest_NameMockup(GeneralName::TAG_DIRECTORY_NAME));
+		$gn->firstDN();
+	}
+	
+	/**
+	 * @expectedException RuntimeException
+	 */
+	public function testFirstURIFail() {
+		$gn = new GeneralNames(
+			new GeneralNamesTest_NameMockup(GeneralName::TAG_URI));
+		$gn->firstURI();
+	}
+}
+
+
+class GeneralNamesTest_NameMockup extends GeneralName
+{
+	public function __construct($tag) {
+		$this->_tag = $tag;
+	}
+	
+	public function string() {
+		return "";
+	}
+	
+	protected function _choiceASN1() {
+		return new NullType();
 	}
 }

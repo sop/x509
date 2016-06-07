@@ -6,6 +6,7 @@ use X509\Certificate\Certificate;
 use X509\CertificationPath\CertificationPath;
 use X509\CertificationPath\PathValidation\PathValidationConfig;
 use X509\CertificationPath\PathValidation\PathValidationResult;
+use X509\CertificationPath\PathValidation\PathValidator;
 
 
 /**
@@ -82,5 +83,36 @@ class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
 	public function testValidatePathLengthFail() {
 		$config = PathValidationConfig::defaultConfig()->withMaxLength(0);
 		self::$_path->validate(Crypto::getDefault(), $config);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testNoCertsFail() {
+		new PathValidator(Crypto::getDefault(), 
+			PathValidationConfig::defaultConfig());
+	}
+	
+	public function testExplicitTrustAnchor() {
+		$config = PathValidationConfig::defaultConfig()->withTrustAnchor(
+			self::$_path->certificates()[0]);
+		$validator = new PathValidator(Crypto::getDefault(), $config, 
+			...self::$_path->certificates());
+		$this->assertInstanceOf(PathValidationResult::class, 
+			$validator->validate());
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testValidateFailNoCerts() {
+		$validator = new PathValidator(Crypto::getDefault(), 
+			PathValidationConfig::defaultConfig(), 
+			...self::$_path->certificates());
+		$cls = new ReflectionClass($validator);
+		$prop = $cls->getProperty("_certificates");
+		$prop->setAccessible(true);
+		$prop->setValue($validator, array());
+		$validator->validate();
 	}
 }

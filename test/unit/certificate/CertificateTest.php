@@ -3,6 +3,7 @@
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
@@ -160,5 +161,18 @@ class CertificateTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testToString(Certificate $cert) {
 		$this->assertInternalType("string", strval($cert));
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @expectedException UnexpectedValueException
+	 *
+	 * @param Certificate $cert
+	 */
+	public function testInvalidAlgoFail(Certificate $cert) {
+		$seq = $cert->toASN1();
+		$algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+		$seq = $seq->withReplaced(1, $algo->toASN1());
+		Certificate::fromASN1($seq);
 	}
 }

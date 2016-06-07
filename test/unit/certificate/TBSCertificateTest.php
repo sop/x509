@@ -2,6 +2,7 @@
 
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\NullType;
+use CryptoUtil\ASN1\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\Crypto\Crypto;
@@ -392,5 +393,18 @@ class TBSCertificateTest extends PHPUnit_Framework_TestCase
 		$seq = $tc->toASN1();
 		$tbs_cert = TBSCertificate::fromASN1($seq);
 		$this->assertInstanceOf(TBSCertificate::class, $tbs_cert);
+	}
+	
+	/**
+	 * @depends testCreateWithAll
+	 * @expectedException UnexpectedValueException
+	 *
+	 * @param TBSCertificate $tc
+	 */
+	public function testInvalidAlgoFail(TBSCertificate $tc) {
+		$seq = $tc->toASN1();
+		$algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+		$seq = $seq->withReplaced(2, $algo->toASN1());
+		TBSCertificate::fromASN1($seq);
 	}
 }

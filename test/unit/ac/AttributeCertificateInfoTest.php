@@ -2,6 +2,7 @@
 
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
+use CryptoUtil\ASN1\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
@@ -351,5 +352,18 @@ class AttributeCertificateInfoTest extends PHPUnit_Framework_TestCase
 		$ac = $aci->sign(Crypto::getDefault(), 
 			new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_privKeyInfo);
 		$this->assertInstanceOf(AttributeCertificate::class, $ac);
+	}
+	
+	/**
+	 * @depends testCreateWithAll
+	 * @expectedException UnexpectedValueException
+	 *
+	 * @param AttributeCertificateInfo $aci
+	 */
+	public function testInvalidAlgoFail(AttributeCertificateInfo $aci) {
+		$seq = $aci->toASN1();
+		$algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+		$seq = $seq->withReplaced(3, $algo->toASN1());
+		AttributeCertificateInfo::fromASN1($seq);
 	}
 }

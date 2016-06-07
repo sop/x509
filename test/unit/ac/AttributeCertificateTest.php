@@ -2,6 +2,7 @@
 
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
+use CryptoUtil\ASN1\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\Crypto\Crypto;
@@ -131,6 +132,19 @@ class AttributeCertificateTest extends PHPUnit_Framework_TestCase
 	public function testVerify(AttributeCertificate $ac) {
 		$pubkey_info = self::$_privateKeyInfo->publicKeyInfo();
 		$this->assertTrue($ac->verify(Crypto::getDefault(), $pubkey_info));
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @expectedException UnexpectedValueException
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testInvalidAlgoFail(AttributeCertificate $ac) {
+		$seq = $ac->toASN1();
+		$algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+		$seq = $seq->withReplaced(1, $algo->toASN1());
+		AttributeCertificate::fromASN1($seq);
 	}
 	
 	public function testFromPEM() {

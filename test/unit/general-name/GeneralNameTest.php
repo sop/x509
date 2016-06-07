@@ -2,6 +2,7 @@
 
 use ASN1\Type\Primitive\NullType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use ASN1\Type\UnspecifiedType;
 use X509\GeneralName\GeneralName;
 
 
@@ -15,5 +16,12 @@ class GeneralNameTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testInvalidTagFail() {
 		GeneralName::fromASN1(new ImplicitlyTaggedType(9, new NullType()));
+	}
+	
+	/**
+	 * @expectedException BadMethodCallException
+	 */
+	public function testFromChosenBadCall() {
+		GeneralName::fromChosenASN1(new UnspecifiedType(new NullType()));
 	}
 }
