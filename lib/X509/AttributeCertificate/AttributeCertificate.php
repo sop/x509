@@ -4,7 +4,7 @@ namespace X509\AttributeCertificate;
 
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
-use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
@@ -28,7 +28,7 @@ class AttributeCertificate
 	/**
 	 * Signature algorithm identifier.
 	 *
-	 * @var AlgorithmIdentifierType $_signatureAlgorithm
+	 * @var SignatureAlgorithmIdentifier $_signatureAlgorithm
 	 */
 	protected $_signatureAlgorithm;
 	
@@ -43,11 +43,11 @@ class AttributeCertificate
 	 * Constructor
 	 *
 	 * @param AttributeCertificateInfo $acinfo
-	 * @param AlgorithmIdentifierType $algo
+	 * @param SignatureAlgorithmIdentifier $algo
 	 * @param Signature $signature
 	 */
 	public function __construct(AttributeCertificateInfo $acinfo, 
-			AlgorithmIdentifierType $algo, Signature $signature) {
+			SignatureAlgorithmIdentifier $algo, Signature $signature) {
 		$this->_acinfo = $acinfo;
 		$this->_signatureAlgorithm = $algo;
 		$this->_signatureValue = $signature;
@@ -62,6 +62,10 @@ class AttributeCertificate
 	public static function fromASN1(Sequence $seq) {
 		$acinfo = AttributeCertificateInfo::fromASN1($seq->at(0)->asSequence());
 		$algo = AlgorithmIdentifier::fromASN1($seq->at(1)->asSequence());
+		if (!$algo instanceof SignatureAlgorithmIdentifier) {
+			throw new \UnexpectedValueException(
+				"Unsupported signature algorithm " . $algo->oid() . ".");
+		}
 		$signature = Signature::fromASN1($seq->at(2)->asBitString());
 		return new self($acinfo, $algo, $signature);
 	}
@@ -102,7 +106,7 @@ class AttributeCertificate
 	/**
 	 * Get signature algorithm identifier.
 	 *
-	 * @return AlgorithmIdentifierType
+	 * @return SignatureAlgorithmIdentifier
 	 */
 	public function signatureAlgorithm() {
 		return $this->_signatureAlgorithm;
