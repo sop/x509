@@ -120,6 +120,10 @@ class AttributeCertificateInfo
 		$holder = Holder::fromASN1($seq->at(1)->asSequence());
 		$issuer = AttCertIssuer::fromASN1($seq->at(2));
 		$signature = AlgorithmIdentifier::fromASN1($seq->at(3)->asSequence());
+		if (!$signature instanceof SignatureAlgorithmIdentifier) {
+			throw new \UnexpectedValueException(
+				"Unsupported signature algorithm " . $signature->oid() . ".");
+		}
 		$serial = $seq->at(4)
 			->asInteger()
 			->number();
