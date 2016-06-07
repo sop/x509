@@ -54,16 +54,13 @@ class DisplayText
 	}
 	
 	/**
-	 * Initialize from string.
-	 *
-	 * Determines type tag automatically.
+	 * Initialize from a UTF-8 string.
 	 *
 	 * @param string $str
 	 * @return self
 	 */
 	public static function fromString($str) {
-		$tag = self::_determineType($str);
-		return new self($str, $tag);
+		return new self($str, Element::TYPE_UTF8_STRING);
 	}
 	
 	/**
@@ -95,11 +92,6 @@ class DisplayText
 			throw new \UnexpectedValueException(
 				"Type " . Element::tagToName($this->_tag) . " not supported.");
 		}
-	}
-	
-	protected static function _determineType($str) {
-		// @todo Support other types
-		return Element::TYPE_UTF8_STRING;
 	}
 	
 	public function __toString() {
