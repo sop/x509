@@ -154,12 +154,12 @@ class PathValidator
 	 * @return ValidatorState
 	 */
 	private function _prepareNext(ValidatorState $state, Certificate $cert) {
-		$tbs_cert = $cert->tbsCertificate();
-		$extensions = $tbs_cert->extensions();
 		// (a)(b) if policy mappings extension is present
 		$state = $this->_preparePolicyMappings($state, $cert);
 		// (c) assign working_issuer_name
-		$state = $state->withWorkingIssuerName($tbs_cert->subject());
+		$state = $state->withWorkingIssuerName(
+			$cert->tbsCertificate()
+				->subject());
 		// (d)(e)(f)
 		$state = $this->_setPublicKeyState($state, $cert);
 		// (g) if name constraints extension is present
