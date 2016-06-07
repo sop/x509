@@ -4,7 +4,7 @@ namespace X509\Certificate;
 
 use ASN1\Type\Constructed\Sequence;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
-use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
+use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
@@ -29,7 +29,7 @@ class Certificate
 	/**
 	 * Signature algorithm.
 	 *
-	 * @var AlgorithmIdentifierType $_signatureAlgorithm
+	 * @var SignatureAlgorithmIdentifier $_signatureAlgorithm
 	 */
 	protected $_signatureAlgorithm;
 	
@@ -44,11 +44,11 @@ class Certificate
 	 * Constructor
 	 *
 	 * @param TBSCertificate $tbsCert
-	 * @param AlgorithmIdentifierType $algo
+	 * @param SignatureAlgorithmIdentifier $algo
 	 * @param Signature $signature
 	 */
 	public function __construct(TBSCertificate $tbsCert, 
-			AlgorithmIdentifierType $algo, Signature $signature) {
+			SignatureAlgorithmIdentifier $algo, Signature $signature) {
 		$this->_tbsCertificate = $tbsCert;
 		$this->_signatureAlgorithm = $algo;
 		$this->_signatureValue = $signature;
@@ -63,6 +63,10 @@ class Certificate
 	public static function fromASN1(Sequence $seq) {
 		$tbsCert = TBSCertificate::fromASN1($seq->at(0)->asSequence());
 		$algo = AlgorithmIdentifier::fromASN1($seq->at(1)->asSequence());
+		if (!$algo instanceof SignatureAlgorithmIdentifier) {
+			throw new \UnexpectedValueException(
+				"Unsupported signature algorithm " . $algo->oid() . ".");
+		}
 		$signature = Signature::fromASN1($seq->at(2)->asBitString());
 		return new self($tbsCert, $algo, $signature);
 	}
@@ -103,7 +107,7 @@ class Certificate
 	/**
 	 * Get signature algorithm.
 	 *
-	 * @return AlgorithmIdentifierType
+	 * @return SignatureAlgorithmIdentifier
 	 */
 	public function signatureAlgorithm() {
 		return $this->_signatureAlgorithm;
@@ -131,7 +135,7 @@ class Certificate
 	/**
 	 * Check whether certificate is semantically equal to another.
 	 *
-	 * @param Certificate $cert
+	 * @param Certificate $cert Certificate to compare to
 	 * @return bool
 	 */
 	public function equals(Certificate $cert) {

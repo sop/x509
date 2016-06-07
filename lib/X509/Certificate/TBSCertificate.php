@@ -8,7 +8,6 @@ use ASN1\Type\Primitive\Integer;
 use ASN1\Type\Tagged\ExplicitlyTaggedType;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use CryptoUtil\ASN1\AlgorithmIdentifier;
-use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\ASN1\PublicKeyInfo;
@@ -49,7 +48,7 @@ class TBSCertificate
 	/**
 	 * Signature algorithm.
 	 *
-	 * @var AlgorithmIdentifierType
+	 * @var SignatureAlgorithmIdentifier
 	 */
 	protected $_signature;
 	
@@ -141,6 +140,10 @@ class TBSCertificate
 			->asInteger()
 			->number();
 		$algo = AlgorithmIdentifier::fromASN1($seq->at($idx++)->asSequence());
+		if (!$algo instanceof SignatureAlgorithmIdentifier) {
+			throw new \UnexpectedValueException(
+				"Unsupported signature algorithm " . $algo->oid() . ".");
+		}
 		$issuer = Name::fromASN1($seq->at($idx++)->asSequence());
 		$validity = Validity::fromASN1($seq->at($idx++)->asSequence());
 		$subject = Name::fromASN1($seq->at($idx++)->asSequence());
@@ -427,7 +430,7 @@ class TBSCertificate
 	/**
 	 * Get signature algorithm.
 	 *
-	 * @return AlgorithmIdentifierType
+	 * @return SignatureAlgorithmIdentifier
 	 */
 	public function signature() {
 		if (!$this->hasSignature()) {
