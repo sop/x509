@@ -9,6 +9,7 @@ use CryptoUtil\ASN1\AlgorithmIdentifier;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use CryptoUtil\ASN1\PrivateKeyInfo;
 use CryptoUtil\Crypto\Crypto;
+use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extensions;
 use X509\Certificate\UniqueIdentifier;
 
@@ -253,6 +254,18 @@ class AttributeCertificateInfo
 	public function withExtensions(Extensions $extensions) {
 		$obj = clone $this;
 		$obj->_extensions = $extensions;
+		return $obj;
+	}
+	
+	/**
+	 * Get self with extensions added.
+	 *
+	 * @param Extension ...$exts One or more Extension objects
+	 * @return self
+	 */
+	public function withAdditionalExtensions(Extension ...$exts) {
+		$obj = clone $this;
+		$obj->_extensions = $obj->_extensions->withExtensions(...$exts);
 		return $obj;
 	}
 	

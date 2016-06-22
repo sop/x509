@@ -302,6 +302,18 @@ class AttributeCertificateInfoTest extends PHPUnit_Framework_TestCase
 	}
 	
 	/**
+	 * @depends testCreate
+	 *
+	 * @param AttributeCertificateInfo $aci
+	 */
+	public function testWithAdditionalExtensions(AttributeCertificateInfo $aci) {
+		$aci = $aci->withAdditionalExtensions(
+			new AuthorityKeyIdentifierExtension(true, "test"));
+		$this->assertInstanceOf(AttributeCertificateInfo::class, $aci);
+		return $aci;
+	}
+	
+	/**
 	 * @depends testCreateWithAll
 	 * @expectedException UnexpectedValueException
 	 *
