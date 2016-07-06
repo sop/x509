@@ -5,6 +5,9 @@ namespace X509\AttributeCertificate;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use X509\Certificate\Certificate;
+use X509\GeneralName\DirectoryName;
+use X509\GeneralName\GeneralName;
 use X509\GeneralName\GeneralNames;
 
 
@@ -46,6 +49,16 @@ class Holder
 			GeneralNames $entity_name = null) {
 		$this->_baseCertificateID = $issuer_serial;
 		$this->_entityName = $entity_name;
+	}
+	
+	/**
+	 * Initialize from a holder's public key certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return self
+	 */
+	public static function fromPKC(Certificate $cert) {
+		return new self(IssuerSerial::fromPKC($cert));
 	}
 	
 	/**
@@ -202,5 +215,68 @@ class Holder
 				$this->_objectDigestInfo->toASN1());
 		}
 		return new Sequence(...$elements);
+	}
+	
+	/**
+	 * Check whether Holder identifies given certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return boolean
+	 */
+	public function identifiesPKC(Certificate $cert) {
+		// if neither baseCertificateID nor entityName are present
+		if (!$this->_baseCertificateID && !$this->_entityName) {
+			return false;
+		}
+		// if baseCertificateID is present, but doesn't match
+		if ($this->_baseCertificateID &&
+			 !$this->_baseCertificateID->identifiesPKC($cert)) {
+			return false;
+		}
+		// if entityName is present, but doesn't match
+		if ($this->_entityName && !$this->_checkEntityName($cert)) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Check whether entityName matches the given certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return boolean
+	 */
+	private function _checkEntityName(Certificate $cert) {
+		$name = $this->_entityName->firstDN();
+		if ($cert->tbsCertificate()
+			->subject()
+			->equals($name)) {
+			return true;
+		}
+		$exts = $cert->tbsCertificate()->extensions();
+		if ($exts->hasSubjectAlternativeName()) {
+			$ext = $exts->subjectAlternativeName();
+			if ($this->_checkEntityAlternativeNames($ext->names())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Check whether any of the subject alternative names match entityName.
+	 *
+	 * @param GeneralNames $san
+	 * @return boolean
+	 */
+	private function _checkEntityAlternativeNames(GeneralNames $san) {
+		// only directory names supported for now
+		$name = $this->_entityName->firstDN();
+		foreach ($san->allOf(GeneralName::TAG_DIRECTORY_NAME) as $dn) {
+			if ($dn instanceof DirectoryName && $dn->dn()->equals($name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
