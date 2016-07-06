@@ -77,4 +77,20 @@ abstract class Target
 	public function type() {
 		return $this->_type;
 	}
+	
+	/**
+	 * Check whether target is equal to another.
+	 *
+	 * @param Target $other
+	 * @return bool
+	 */
+	public function equals(Target $other) {
+		if ($this->_type != $other->_type) {
+			return false;
+		}
+		if ($this->toASN1()->toDER() != $other->toASN1()->toDER()) {
+			return false;
+		}
+		return true;
+	}
 }
