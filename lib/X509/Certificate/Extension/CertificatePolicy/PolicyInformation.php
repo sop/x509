@@ -82,6 +82,15 @@ class PolicyInformation implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Check whether this policy is anyPolicy.
+	 *
+	 * @return bool
+	 */
+	public function isAnyPolicy() {
+		return self::OID_ANY_POLICY == $this->_oid;
+	}
+	
+	/**
 	 * Check whether qualifier is present.
 	 *
 	 * @param string $oid
