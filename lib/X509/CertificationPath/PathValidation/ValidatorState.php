@@ -20,6 +20,20 @@ use X509\CertificationPath\Policy\PolicyNode;
 class ValidatorState
 {
 	/**
+	 * Length of the certification path.
+	 *
+	 * @var int $_pathLength
+	 */
+	protected $_pathLength;
+	
+	/**
+	 * Current index in the certification path in the range of 1..n.
+	 *
+	 * @var int $_index
+	 */
+	protected $_index;
+	
+	/**
 	 *
 	 * @var mixed $_validPolicyTree
 	 */
@@ -102,21 +116,20 @@ class ValidatorState
 	 * @link https://tools.ietf.org/html/rfc5280#section-6.1.2
 	 * @param PathValidationConfig $config
 	 * @param Certificate $trust_anchor Trust anchor certificate
-	 * @param int $path_length Number of certificates in the certification path
+	 * @param int $n Number of certificates in the certification path
 	 * @return self
 	 */
 	public static function initialize(PathValidationConfig $config, 
-			Certificate $trust_anchor, $path_length) {
+			Certificate $trust_anchor, $n) {
 		$state = new self();
+		$state->_pathLength = $n;
+		$state->_index = 1;
 		$state->_validPolicyTree = array(PolicyNode::anyPolicyNode());
 		$state->_permittedSubtrees = null;
 		$state->_excludedSubtrees = null;
-		$state->_explicitPolicy = $config->explicitPolicy() ? 0 : $path_length +
-			 1;
-		$state->_inhibitAnyPolicy = $config->anyPolicyInhibit() ? 0 : $path_length +
-			 1;
-		$state->_policyMapping = $config->policyMappingInhibit() ? 0 : $path_length +
-			 1;
+		$state->_explicitPolicy = $config->explicitPolicy() ? 0 : $n + 1;
+		$state->_inhibitAnyPolicy = $config->anyPolicyInhibit() ? 0 : $n + 1;
+		$state->_policyMapping = $config->policyMappingInhibit() ? 0 : $n + 1;
 		$state->_workingPublicKeyAlgorithm = $trust_anchor->signatureAlgorithm();
 		$tbsCert = $trust_anchor->tbsCertificate();
 		$state->_workingPublicKey = $tbsCert->subjectPublicKeyInfo();
@@ -124,6 +137,18 @@ class ValidatorState
 			$state->_workingPublicKey->algorithmIdentifier());
 		$state->_workingIssuerName = $tbsCert->issuer();
 		$state->_maxPathLength = $config->maxLength();
+		return $state;
+	}
+	
+	/**
+	 * Get self with current certification path index set.
+	 *
+	 * @param int $index
+	 * @return self
+	 */
+	public function withIndex($index) {
+		$state = clone $this;
+		$state->_index = $index;
 		return $state;
 	}
 	
@@ -238,6 +263,8 @@ class ValidatorState
 	/**
 	 * Get self with final certificate flag.
 	 *
+	 * @deprecated
+	 *
 	 * @param bool $is_final
 	 * @return self
 	 */
@@ -245,6 +272,15 @@ class ValidatorState
 		$state = clone $this;
 		$state->_isFinalCertificate = (bool) $is_final;
 		return $state;
+	}
+	
+	/**
+	 * Get the current index in certification path in the range of 1..n.
+	 *
+	 * @return int
+	 */
+	public function index() {
+		return $this->_index;
 	}
 	
 	/**
@@ -361,7 +397,7 @@ class ValidatorState
 	 * @return bool
 	 */
 	public function isFinal() {
-		return $this->_isFinalCertificate;
+		return $this->_index == $this->_pathLength;
 	}
 	
 	/**
