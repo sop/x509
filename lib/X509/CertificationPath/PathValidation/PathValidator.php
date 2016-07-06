@@ -259,7 +259,13 @@ class PathValidator
 	 * @throws PathValidationException
 	 */
 	private function _verifySignature(ValidatorState $state, Certificate $cert) {
-		if (!$cert->verify($this->_crypto, $state->workingPublicKey())) {
+		try {
+			$valid = $cert->verify($this->_crypto, $state->workingPublicKey());
+		} catch (\RuntimeException $e) {
+			throw new PathValidationException(
+				"Failed to verify signature: " . $e->getMessage(), null, $e);
+		}
+		if (!$valid) {
 			throw new PathValidationException(
 				"Certificate signature doesn't match.");
 		}
