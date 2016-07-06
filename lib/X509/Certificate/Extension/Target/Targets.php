@@ -53,6 +53,53 @@ class Targets implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Get all targets of given type.
+	 *
+	 * @param int $type
+	 * @return Target[]
+	 */
+	protected function _allOfType($type) {
+		return array_values(
+			array_filter($this->_targets, 
+				function (Target $target) use ($type) {
+					return $target->type() == $type;
+				}));
+	}
+	
+	/**
+	 * Get all name targets.
+	 *
+	 * @return Target[]
+	 */
+	public function nameTargets() {
+		return $this->_allOfType(Target::TYPE_NAME);
+	}
+	
+	/**
+	 * Get all group targets.
+	 *
+	 * @return Target[]
+	 */
+	public function groupTargets() {
+		return $this->_allOfType(Target::TYPE_GROUP);
+	}
+	
+	/**
+	 * Check whether given target is present.
+	 *
+	 * @param Target $target
+	 * @return boolean
+	 */
+	public function hasTarget(Target $target) {
+		foreach ($this->_allOfType($target->type()) as $t) {
+			if ($target->equals($t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Generate ASN.1 structure.
 	 *
 	 * @return Sequence
