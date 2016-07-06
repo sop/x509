@@ -5,6 +5,7 @@ use X509\Certificate\Extension\Target\Target;
 use X509\Certificate\Extension\Target\TargetGroup;
 use X509\Certificate\Extension\Target\TargetName;
 use X509\Certificate\Extension\Target\Targets;
+use X509\GeneralName\DNSName;
 use X509\GeneralName\UniformResourceIdentifier;
 
 
@@ -15,10 +16,24 @@ use X509\GeneralName\UniformResourceIdentifier;
  */
 class TargetsTest extends PHPUnit_Framework_TestCase
 {
+	private static $_name;
+	
+	private static $_group;
+	
+	public static function setUpBeforeClass() {
+		self::$_name = new TargetName(
+			new UniformResourceIdentifier("urn:target"));
+		self::$_group = new TargetGroup(
+			new UniformResourceIdentifier("urn:group"));
+	}
+	
+	public static function tearDownAfterClass() {
+		self::$_name = null;
+		self::$_group = null;
+	}
+	
 	public function testCreate() {
-		$targets = new Targets(
-			new TargetName(new UniformResourceIdentifier("urn:target")), 
-			new TargetGroup(new UniformResourceIdentifier("urn:group")));
+		$targets = new Targets(self::$_name, self::$_group);
 		$this->assertInstanceOf(Targets::class, $targets);
 		return $targets;
 	}
@@ -85,5 +100,24 @@ class TargetsTest extends PHPUnit_Framework_TestCase
 			$values[] = $target;
 		}
 		$this->assertContainsOnlyInstancesOf(Target::class, $values);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Targets $targets
+	 */
+	public function testHasTarget(Targets $targets) {
+		$this->assertTrue($targets->hasTarget(self::$_name));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param Targets $targets
+	 */
+	public function testHasNoTarget(Targets $targets) {
+		$this->assertFalse(
+			$targets->hasTarget(new TargetName(new DNSName("nope"))));
 	}
 }

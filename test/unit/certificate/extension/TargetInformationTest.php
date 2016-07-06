@@ -130,4 +130,21 @@ class TargetInformationTest extends PHPUnit_Framework_TestCase
 	public function testGroup(TargetInformationExtension $ext) {
 		$this->assertEquals(self::GROUP_DOMAIN, $ext->groups()[0]->string());
 	}
+	
+	/**
+	 * Cover __clone method.
+	 *
+	 * @depends testCreate
+	 *
+	 * @param TargetInformationExtension $ext
+	 */
+	public function testClone(TargetInformationExtension $ext) {
+		$this->assertInstanceOf(TargetInformationExtension::class, clone $ext);
+	}
+	
+	public function testFromTargets() {
+		$ext = TargetInformationExtension::fromTargets(
+			new TargetName(DirectoryName::fromDNString(self::NAME_DN)));
+		$this->assertInstanceOf(TargetInformationExtension::class, $ext);
+	}
 }

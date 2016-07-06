@@ -39,7 +39,7 @@ class TargetInformationExtensionDecodeTest extends RefACExtTestHelper
 		$vals = array_map(
 			function (Target $target) {
 				return $target->string();
-			}, $ti->targets());
+			}, $ti->targets()->all());
 		$this->assertEquals(array("urn:test", "*.example.com", "urn:another"), 
 			$vals, "", 0.0, 10, true);
 	}

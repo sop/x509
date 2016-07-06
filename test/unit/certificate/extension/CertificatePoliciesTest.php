@@ -148,6 +148,12 @@ class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
 		$ext->get("1.2.3");
 	}
 	
+	public function testHasAnyPolicy() {
+		$ext = new CertificatePoliciesExtension(true, 
+			new PolicyInformation(PolicyInformation::OID_ANY_POLICY));
+		$this->assertTrue($ext->hasAnyPolicy());
+	}
+	
 	/**
 	 * @depends testCreate
 	 *

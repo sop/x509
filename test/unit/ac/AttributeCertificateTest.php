@@ -17,6 +17,7 @@ use X509\AttributeCertificate\AttributeCertificateInfo;
 use X509\AttributeCertificate\Attributes;
 use X509\AttributeCertificate\Holder;
 use X509\AttributeCertificate\IssuerSerial;
+use X509\Certificate\Certificate;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\GeneralNames;
 use X509\GeneralName\UniformResourceIdentifier;
@@ -187,5 +188,49 @@ class AttributeCertificateTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testToString(AttributeCertificate $ac) {
 		$this->assertInternalType("string", strval($ac));
+	}
+	
+	/**
+	 * @depends testFromPEM
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testIsHeldBy(AttributeCertificate $ac) {
+		$cert = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ecdsa.pem"));
+		$this->assertTrue($ac->isHeldBy($cert));
+	}
+	
+	/**
+	 * @depends testFromPEM
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testIsHeldByFail(AttributeCertificate $ac) {
+		$cert = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
+		$this->assertFalse($ac->isHeldBy($cert));
+	}
+	
+	/**
+	 * @depends testFromPEM
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testIsIssuedBy(AttributeCertificate $ac) {
+		$cert = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem"));
+		$this->assertTrue($ac->isIssuedBy($cert));
+	}
+	
+	/**
+	 * @depends testFromPEM
+	 *
+	 * @param AttributeCertificate $ac
+	 */
+	public function testIsIssuedByFail(AttributeCertificate $ac) {
+		$cert = Certificate::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
+		$this->assertFalse($ac->isIssuedBy($cert));
 	}
 }

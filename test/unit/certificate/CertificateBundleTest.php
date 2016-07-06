@@ -116,6 +116,16 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
 		$this->assertCount(3, $bundle);
 	}
 	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificateBundle $bundle
+	 */
+	public function testWithCertificates(CertificateBundle $bundle) {
+		$bundle = $bundle->withCertificates(Certificate::fromPEM(self::$_pem3));
+		$this->assertCount(3, $bundle);
+	}
+	
 	public function testFromPEMBundle() {
 		$bundle = CertificateBundle::fromPEMBundle(
 			new PEMBundle(self::$_pem1, self::$_pem2));
