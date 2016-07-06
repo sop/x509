@@ -6,6 +6,7 @@ use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
 use X509\Certificate\Certificate;
+use X509\Certificate\TBSCertificate;
 use X509\Certificate\UniqueIdentifier;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\GeneralNames;
@@ -72,12 +73,12 @@ class IssuerSerial
 	}
 	
 	/**
-	 * Initialize from certificate.
+	 * Initialize from a public key certificate.
 	 *
 	 * @param Certificate $cert
 	 * @return self
 	 */
-	public static function fromCertificate(Certificate $cert) {
+	public static function fromPKC(Certificate $cert) {
 		$tbsCert = $cert->tbsCertificate();
 		$issuer = new GeneralNames(new DirectoryName($tbsCert->issuer()));
 		$serial = $tbsCert->serialNumber();
@@ -136,5 +137,44 @@ class IssuerSerial
 			$elements[] = $this->_issuerUID->toASN1();
 		}
 		return new Sequence(...$elements);
+	}
+	
+	/**
+	 * Check whether this IssuerSerial identifies given certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return boolean
+	 */
+	public function identifiesPKC(Certificate $cert) {
+		$tbs = $cert->tbsCertificate();
+		if (!$tbs->issuer()->equals($this->_issuer->firstDN())) {
+			return false;
+		}
+		if (strval($tbs->serialNumber()) != strval($this->_serial)) {
+			return false;
+		}
+		if ($this->_issuerUID && !$this->_checkUniqueID($cert)) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Check whether issuerUID matches given certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return boolean
+	 */
+	private function _checkUniqueID(Certificate $cert) {
+		if (!$cert->tbsCertificate()->hasIssuerUniqueID()) {
+			return false;
+		}
+		$uid = $cert->tbsCertificate()
+			->issuerUniqueID()
+			->string();
+		if ($this->_issuerUID->string() != $uid) {
+			return false;
+		}
+		return true;
 	}
 }
