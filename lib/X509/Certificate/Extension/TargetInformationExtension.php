@@ -18,7 +18,8 @@ use X509\Certificate\Extension\Target\Targets;
  *
  * @link https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
-class TargetInformationExtension extends Extension implements \Countable, 
+class TargetInformationExtension extends Extension implements 
+	\Countable, 
 	\IteratorAggregate
 {
 	/**
@@ -29,9 +30,9 @@ class TargetInformationExtension extends Extension implements \Countable,
 	protected $_targets;
 	
 	/**
-	 * Targets[] merged to Target[].
+	 * Targets[] merged to single Targets.
 	 *
-	 * @var Target[]|null
+	 * @var Targets|null
 	 */
 	private $_merged;
 	
@@ -46,6 +47,31 @@ class TargetInformationExtension extends Extension implements \Countable,
 		$this->_targets = $targets;
 	}
 	
+	/**
+	 * Initialize from one or more Target objects.
+	 *
+	 * Extension criticality shall be set to true as specified by RFC 5755.
+	 *
+	 * @param Target ...$target
+	 * @return TargetInformationExtension
+	 */
+	public static function fromTargets(Target ...$target) {
+		return new self(true, new Targets(...$target));
+	}
+	
+	/**
+	 * Reset internal state on clone.
+	 */
+	public function __clone() {
+		$this->_merged = null;
+	}
+	
+	/**
+	 *
+	 * @param string $data
+	 * @param bool $critical
+	 * @return self
+	 */
 	protected static function _fromDER($data, $critical) {
 		$targets = array_map(
 			function (UnspecifiedType $el) {
@@ -57,7 +83,7 @@ class TargetInformationExtension extends Extension implements \Countable,
 	/**
 	 * Get all targets.
 	 *
-	 * @return Target[]
+	 * @return Targets
 	 */
 	public function targets() {
 		if (!isset($this->_merged)) {
@@ -65,7 +91,7 @@ class TargetInformationExtension extends Extension implements \Countable,
 			foreach ($this->_targets as $targets) {
 				$a = array_merge($a, $targets->all());
 			}
-			$this->_merged = $a;
+			$this->_merged = new Targets(...$a);
 		}
 		return $this->_merged;
 	}
@@ -76,11 +102,7 @@ class TargetInformationExtension extends Extension implements \Countable,
 	 * @return Target[]
 	 */
 	public function names() {
-		$targets = array_filter($this->targets(), 
-			function (Target $target) {
-				return $target->type() == Target::TYPE_NAME;
-			});
-		return array_values($targets);
+		return $this->targets()->nameTargets();
 	}
 	
 	/**
@@ -89,13 +111,14 @@ class TargetInformationExtension extends Extension implements \Countable,
 	 * @return Target[]
 	 */
 	public function groups() {
-		$targets = array_filter($this->targets(), 
-			function (Target $target) {
-				return $target->type() == Target::TYPE_GROUP;
-			});
-		return array_values($targets);
+		return $this->targets()->groupTargets();
 	}
 	
+	/**
+	 *
+	 * @see \X509\Certificate\Extension\Extension::_valueASN1()
+	 * @return Sequence
+	 */
 	protected function _valueASN1() {
 		$elements = array_map(
 			function (Targets $targets) {
@@ -104,6 +127,11 @@ class TargetInformationExtension extends Extension implements \Countable,
 		return new Sequence(...$elements);
 	}
 	
+	/**
+	 *
+	 * @see Countable::count()
+	 * @return int
+	 */
 	public function count() {
 		return count($this->targets());
 	}
@@ -115,6 +143,6 @@ class TargetInformationExtension extends Extension implements \Countable,
 	 * @return \ArrayIterator
 	 */
 	public function getIterator() {
-		return new \ArrayIterator($this->targets());
+		return new \ArrayIterator($this->targets()->all());
 	}
 }
