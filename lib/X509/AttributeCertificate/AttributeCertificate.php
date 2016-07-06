@@ -9,6 +9,7 @@ use CryptoUtil\ASN1\PublicKeyInfo;
 use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\Crypto\Signature;
 use CryptoUtil\PEM\PEM;
+use X509\Certificate\Certificate;
 
 
 /**
@@ -148,6 +149,34 @@ class AttributeCertificate
 	 */
 	public function toPEM() {
 		return new PEM(PEM::TYPE_ATTRIBUTE_CERTIFICATE, $this->toDER());
+	}
+	
+	/**
+	 * Check whether attribute certificate is issued to the subject identified
+	 * by given public key certificate.
+	 *
+	 * @param Certificate $cert Certificate
+	 * @return boolean
+	 */
+	public function isHeldBy(Certificate $cert) {
+		if (!$this->_acinfo->holder()->identifiesPKC($cert)) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Check whether attribute certificate is issued by given public key
+	 * certificate.
+	 *
+	 * @param Certificate $cert Certificate
+	 * @return boolean
+	 */
+	public function isIssuedBy(Certificate $cert) {
+		if (!$this->_acinfo->issuer()->identifiesPKC($cert)) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
