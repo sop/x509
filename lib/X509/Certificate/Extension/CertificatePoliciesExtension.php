@@ -12,7 +12,8 @@ use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
  *
  * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */
-class CertificatePoliciesExtension extends Extension implements \Countable, 
+class CertificatePoliciesExtension extends Extension implements 
+	\Countable, 
 	\IteratorAggregate
 {
 	/**
@@ -57,6 +58,15 @@ class CertificatePoliciesExtension extends Extension implements \Countable,
 	 */
 	public function has($oid) {
 		return isset($this->_policies[$oid]);
+	}
+	
+	/**
+	 * Check whether anyPolicy is present.
+	 *
+	 * @return bool
+	 */
+	public function hasAnyPolicy() {
+		return isset($this->_policies[PolicyInformation::OID_ANY_POLICY]);
 	}
 	
 	/**
