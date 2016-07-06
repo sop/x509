@@ -52,6 +52,18 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Get self with certificates added.
+	 *
+	 * @param Certificate ...$cert
+	 * @return self
+	 */
+	public function withCertificates(Certificate ...$cert) {
+		$obj = clone $this;
+		$obj->_certs = array_merge($obj->_certs, $cert);
+		return $obj;
+	}
+	
+	/**
 	 * Get self with certificates from PEMBundle added.
 	 *
 	 * @param PEMBundle $pem_bundle
