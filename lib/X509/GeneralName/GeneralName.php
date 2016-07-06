@@ -128,6 +128,22 @@ abstract class GeneralName
 	}
 	
 	/**
+	 * Check whether GeneralName is equal to other.
+	 *
+	 * @param GeneralName $other GeneralName to compare to
+	 * @return boolean True if names are equal
+	 */
+	public function equals(GeneralName $other) {
+		if ($this->_tag != $other->_tag) {
+			return false;
+		}
+		if ($this->_choiceASN1()->toDER() != $other->_choiceASN1()->toDER()) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Get general name as a string.
 	 *
 	 * @return string
