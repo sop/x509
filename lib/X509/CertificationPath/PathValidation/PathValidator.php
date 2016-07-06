@@ -78,8 +78,7 @@ class PathValidator
 		$state = ValidatorState::initialize($this->_config, $this->_trustAnchor, 
 			$n);
 		for ($i = 0; $i < $n; ++$i) {
-			// whether processing final certificate
-			$state = $state->withIsFinal($i === $n - 1);
+			$state = $state->withIndex($i + 1);
 			$cert = $this->_certificates[$i];
 			// process certificate (section 6.1.3.)
 			$state = $this->_processCertificate($state, $cert);
@@ -259,7 +258,13 @@ class PathValidator
 	 * @throws PathValidationException
 	 */
 	private function _verifySignature(ValidatorState $state, Certificate $cert) {
-		if (!$cert->verify($this->_crypto, $state->workingPublicKey())) {
+		try {
+			$valid = $cert->verify($this->_crypto, $state->workingPublicKey());
+		} catch (\RuntimeException $e) {
+			throw new PathValidationException(
+				"Failed to verify signature: " . $e->getMessage(), null, $e);
+		}
+		if (!$valid) {
 			throw new PathValidationException(
 				"Certificate signature doesn't match.");
 		}
@@ -341,6 +346,16 @@ class PathValidator
 	private function _processPolicyInformation(ValidatorState $state, 
 			Certificate $cert) {
 		// @todo Implement
+		$policies = $cert->tbsCertificate()
+			->extensions()
+			->certificatePolicies();
+		// (d.1) for each policy P not equal to anyPolicy
+		foreach ($policies as $policy) {
+			if ($policy->isAnyPolicy()) {
+				continue;
+			}
+		
+		}
 		return $state;
 	}
 	
