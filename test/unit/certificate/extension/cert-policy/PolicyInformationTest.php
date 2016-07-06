@@ -213,4 +213,9 @@ class PolicyInformationTest extends PHPUnit_Framework_TestCase
 		$this->assertContainsOnlyInstancesOf(PolicyQualifierInfo::class, 
 			$values);
 	}
+	
+	public function testIsAnyPolicy() {
+		$pi = new PolicyInformation(PolicyInformation::OID_ANY_POLICY);
+		$this->assertTrue($pi->isAnyPolicy());
+	}
 }
