@@ -43,7 +43,7 @@ $issuer_public_key = $issuer_private_key->publicKeyInfo();
 $holder_cert = Certificate::fromPEM(
 	PEM::fromFile(dirname(__DIR__) . "/certs/acme-ecdsa.pem"));
 
-$holder = new Holder(IssuerSerial::fromCertificate($holder_cert), 
+$holder = new Holder(IssuerSerial::fromPKC($holder_cert), 
 	new GeneralNames(
 		new DirectoryName($holder_cert->tbsCertificate()->subject())));
 $issuer = new V2Form(
