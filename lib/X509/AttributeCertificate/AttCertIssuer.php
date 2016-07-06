@@ -5,6 +5,7 @@ namespace X509\AttributeCertificate;
 use ASN1\Element;
 use ASN1\Type\UnspecifiedType;
 use X501\ASN1\Name;
+use X509\Certificate\Certificate;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\GeneralNames;
 
@@ -24,6 +25,14 @@ abstract class AttCertIssuer
 	abstract public function toASN1();
 	
 	/**
+	 * Check whether AttCertIssuer identifies given certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return bool
+	 */
+	abstract public function identifiesPKC(Certificate $cert);
+	
+	/**
 	 * Initialize from distinguished name.
 	 *
 	 * This conforms to RFC 5755 which states that only v2Form must be used,
@@ -36,6 +45,16 @@ abstract class AttCertIssuer
 	 */
 	public static function fromName(Name $name) {
 		return new V2Form(new GeneralNames(new DirectoryName($name)));
+	}
+	
+	/**
+	 * Initialize from an issuer's public key certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return self
+	 */
+	public static function fromPKC(Certificate $cert) {
+		return self::fromName($cert->tbsCertificate()->subject());
 	}
 	
 	/**

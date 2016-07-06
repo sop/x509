@@ -6,6 +6,7 @@ use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use X501\ASN1\Name;
+use X509\Certificate\Certificate;
 use X509\GeneralName\GeneralNames;
 
 
@@ -132,5 +133,20 @@ class V2Form extends AttCertIssuer
 				$this->_objectDigestInfo->toASN1());
 		}
 		return new ImplicitlyTaggedType(0, new Sequence(...$elements));
+	}
+	
+	/**
+	 *
+	 * @see \X509\AttributeCertificate\AttCertIssuer::identifiesPKC()
+	 * @return bool
+	 */
+	public function identifiesPKC(Certificate $cert) {
+		$name = $this->_issuerName->firstDN();
+		if (!$cert->tbsCertificate()
+			->subject()
+			->equals($name)) {
+			return false;
+		}
+		return true;
 	}
 }
