@@ -75,4 +75,52 @@ class CertificationPathTest extends PHPUnit_Framework_TestCase
 			self::$_certs[2], new CertificateBundle(...self::$_certs));
 		$this->assertInstanceOf(CertificationPath::class, $path);
 	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
+	public function testStartWithSingle(CertificationPath $path) {
+		$this->assertTrue($path->startsWith(self::$_certs[0]));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
+	public function testStartWithMulti(CertificationPath $path) {
+		$this->assertTrue(
+			$path->startsWith(...array_slice(self::$_certs, 0, 2, false)));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
+	public function testStartWithAll(CertificationPath $path) {
+		$this->assertTrue($path->startsWith(...self::$_certs));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
+	public function testStartWithTooManyFail(CertificationPath $path) {
+		$this->assertFalse(
+			$path->startsWith(
+				...array_merge(self::$_certs, array(self::$_certs[0]))));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
+	public function testStartWithFail(CertificationPath $path) {
+		$this->assertFalse($path->startsWith(self::$_certs[1]));
+	}
 }

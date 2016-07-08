@@ -82,6 +82,26 @@ class CertificationPath implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Check whether certification path starts with one ore more given
+	 * certificates in parameter order.
+	 *
+	 * @param Certificate ...$certs Certificates
+	 * @return true
+	 */
+	public function startsWith(Certificate ...$certs) {
+		$n = count($certs);
+		if ($n > count($this->_certificates)) {
+			return false;
+		}
+		for ($i = 0; $i < $n; ++$i) {
+			if (!$certs[$i]->equals($this->_certificates[$i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Validate certification path.
 	 *
 	 * @param Crypto $crypto
