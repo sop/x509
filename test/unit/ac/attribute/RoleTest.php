@@ -17,7 +17,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  */
 class RoleAttributeTest extends PHPUnit_Framework_TestCase
 {
-	const ROLE_URI = "urn:administartor";
+	const ROLE_URI = "urn:administrator";
 	
 	const AUTHORITY_DN = "cn=Role Authority";
 	
@@ -72,6 +72,12 @@ class RoleAttributeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(AttributeType::OID_ROLE, $value->oid());
 	}
 	
+	public function testFromString() {
+		$value = RoleAttributeValue::fromString(self::ROLE_URI, 
+			new GeneralNames(DirectoryName::fromDNString(self::AUTHORITY_DN)));
+		$this->assertInstanceOf(RoleAttributeValue::class, $value);
+	}
+	
 	/**
 	 * @depends testCreate
 	 *
@@ -110,6 +116,23 @@ class RoleAttributeTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testFromAttributes(Attributes $attribs) {
 		$this->assertInstanceOf(RoleAttributeValue::class, $attribs->role());
+	}
+	
+	/**
+	 * @depends testAttributes
+	 *
+	 * @param Attributes $attribs
+	 */
+	public function testAllFromAttributes(Attributes $attribs) {
+		$this->assertContainsOnlyInstancesOf(RoleAttributeValue::class, 
+			$attribs->roles());
+	}
+	
+	public function testAllFromMultipleAttributes() {
+		$attribs = Attributes::fromAttributeValues(
+			RoleAttributeValue::fromString("urn:role:1"), 
+			RoleAttributeValue::fromString("urn:role:2"));
+		$this->assertCount(2, $attribs->roles());
 	}
 	
 	public function testCreateWithoutAuthority() {

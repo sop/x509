@@ -182,6 +182,19 @@ class Attributes implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Get all 'Role' attribute values.
+	 * 
+	 * @return RoleAttributeValue[]
+	 */
+	public function roles() {
+		return array_merge(array(), 
+			...array_map(
+				function (Attribute $attr) {
+					return $attr->values();
+				}, $this->allOf(AttributeType::OID_ROLE)));
+	}
+	
+	/**
 	 * Generate ASN.1 structure.
 	 *
 	 * @return Sequence
