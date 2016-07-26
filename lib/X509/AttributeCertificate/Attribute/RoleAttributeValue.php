@@ -12,6 +12,7 @@ use X501\ASN1\AttributeValue\AttributeValue;
 use X501\MatchingRule\BinaryMatch;
 use X509\GeneralName\GeneralName;
 use X509\GeneralName\GeneralNames;
+use X509\GeneralName\UniformResourceIdentifier;
 
 
 /**
@@ -36,10 +37,10 @@ class RoleAttributeValue extends AttributeValue
 	protected $_roleName;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @param GeneralName $name Role name
-	 * @param GeneralNames $authority Issuing authority
+	 * @param GeneralNames|null $authority Issuing authority
 	 */
 	public function __construct(GeneralName $name, 
 			GeneralNames $authority = null) {
@@ -48,6 +49,22 @@ class RoleAttributeValue extends AttributeValue
 		$this->_oid = AttributeType::OID_ROLE;
 	}
 	
+	/**
+	 * Initialize from a role string.
+	 *
+	 * @param string $role_name Role name in URI format
+	 * @param GeneralNames|null $authority Issuing authority
+	 * @return self
+	 */
+	public static function fromString($role_name, GeneralNames $authority = null) {
+		return new self(new UniformResourceIdentifier($role_name), $authority);
+	}
+	
+	/**
+	 *
+	 * @param UnspecifiedType $el
+	 * @return self
+	 */
 	public static function fromASN1(UnspecifiedType $el) {
 		$seq = $el->asSequence();
 		$authority = null;
