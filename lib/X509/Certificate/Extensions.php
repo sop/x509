@@ -11,6 +11,7 @@ use X509\Certificate\Extension\CRLDistributionPointsExtension;
 use X509\Certificate\Extension\ExtendedKeyUsageExtension;
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extension\InhibitAnyPolicyExtension;
+use X509\Certificate\Extension\IssuerAlternativeNameExtension;
 use X509\Certificate\Extension\KeyUsageExtension;
 use X509\Certificate\Extension\NameConstraintsExtension;
 use X509\Certificate\Extension\PolicyConstraintsExtension;
@@ -219,6 +220,24 @@ class Extensions implements \Countable, \IteratorAggregate
 	 */
 	public function subjectAlternativeName() {
 		return $this->get(Extension::OID_SUBJECT_ALT_NAME);
+	}
+	
+	/**
+	 * Check whether 'Issuer Alternative Name' extension is present.
+	 *
+	 * @return bool
+	 */
+	public function hasIssuerAlternativeName() {
+		return $this->has(Extension::OID_ISSUER_ALT_NAME);
+	}
+	
+	/**
+	 * Get 'Issuer Alternative Name' extension.
+	 *
+	 * @return IssuerAlternativeNameExtension
+	 */
+	public function issuerAlternativeName() {
+		return $this->get(Extension::OID_ISSUER_ALT_NAME);
 	}
 	
 	/**

@@ -3,6 +3,7 @@
 use ASN1\Type\Constructed\Sequence;
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extension\IssuerAlternativeNameExtension;
+use X509\Certificate\Extensions;
 use X509\GeneralName\DirectoryName;
 use X509\GeneralName\GeneralNames;
 
@@ -81,5 +82,26 @@ class IssuerAlternativeNameTest extends PHPUnit_Framework_TestCase
 	public function testName(IssuerAlternativeNameExtension $ext) {
 		$this->assertEquals(self::DN, $ext->names()
 			->firstDN());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param IssuerAlternativeNameExtension $ext
+	 */
+	public function testExtensions(IssuerAlternativeNameExtension $ext) {
+		$extensions = new Extensions($ext);
+		$this->assertTrue($extensions->hasIssuerAlternativeName());
+		return $extensions;
+	}
+	
+	/**
+	 * @depends testExtensions
+	 *
+	 * @param Extensions $exts
+	 */
+	public function testFromExtensions(Extensions $exts) {
+		$ext = $exts->issuerAlternativeName();
+		$this->assertInstanceOf(IssuerAlternativeNameExtension::class, $ext);
 	}
 }
