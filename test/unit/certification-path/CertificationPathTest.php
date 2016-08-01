@@ -81,6 +81,42 @@ class CertificationPathTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param CertificationPath $path
 	 */
+	public function testTrustAnchor(CertificationPath $path) {
+		$cert = $path->trustAnchorCertificate();
+		$this->assertEquals(self::$_certs[0], $cert);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testTrustAnchorFail() {
+		$path = new CertificationPath();
+		$path->trustAnchorCertificate();
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
+	public function testEndEntity(CertificationPath $path) {
+		$cert = $path->endEntityCertificate();
+		$this->assertEquals(self::$_certs[2], $cert);
+	}
+	
+	/**
+	 * @expectedException LogicException
+	 */
+	public function testEndEntityFail() {
+		$path = new CertificationPath();
+		$path->endEntityCertificate();
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
 	public function testStartWithSingle(CertificationPath $path) {
 		$this->assertTrue($path->startsWith(self::$_certs[0]));
 	}

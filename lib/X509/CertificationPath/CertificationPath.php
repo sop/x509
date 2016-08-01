@@ -31,7 +31,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
 	protected $_certificates;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @param Certificate ...$certificates Certificates from the trust anchor
 	 *        to the target end-entity certificate
@@ -79,6 +79,32 @@ class CertificationPath implements \Countable, \IteratorAggregate
 	 */
 	public function certificates() {
 		return $this->_certificates;
+	}
+	
+	/**
+	 * Get the trust anchor certificate from the path.
+	 *
+	 * @throws \LogicException If path is empty
+	 * @return Certificate
+	 */
+	public function trustAnchorCertificate() {
+		if (!count($this->_certificates)) {
+			throw new \LogicException("No certificates.");
+		}
+		return $this->_certificates[0];
+	}
+	
+	/**
+	 * Get the end-entity certificate from the path.
+	 *
+	 * @throws \LogicException If path is empty
+	 * @return Certificate
+	 */
+	public function endEntityCertificate() {
+		if (!count($this->_certificates)) {
+			throw new \LogicException("No certificates.");
+		}
+		return $this->_certificates[count($this->_certificates) - 1];
 	}
 	
 	/**
