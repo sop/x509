@@ -137,6 +137,16 @@ class CertificationPathTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param CertificationPath $path
 	 */
+	public function testCertificateChain(CertificationPath $path) {
+		$chain = $path->certificateChain();
+		$this->assertInstanceOf(CertificateChain::class, $chain);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificationPath $path
+	 */
 	public function testStartWithSingle(CertificationPath $path) {
 		$this->assertTrue($path->startsWith(self::$_certs[0]));
 	}

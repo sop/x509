@@ -119,6 +119,16 @@ class CertificationPath implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Get certification path as a certificate chain.
+	 *
+	 * @return CertificateChain
+	 */
+	public function certificateChain() {
+		return new CertificateChain(
+			...array_reverse($this->_certificates, false));
+	}
+	
+	/**
 	 * Check whether certification path starts with one ore more given
 	 * certificates in parameter order.
 	 *
