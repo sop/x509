@@ -27,6 +27,8 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
 	
 	private static $_pem3;
 	
+	private static $_cert3;
+	
 	public static function setUpBeforeClass() {
 		self::$_pem1 = PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem");
 		self::$_cert1 = Certificate::fromPEM(self::$_pem1);
@@ -34,6 +36,7 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
 			TEST_ASSETS_DIR . "/certs/acme-interm-rsa.pem");
 		self::$_cert2 = Certificate::fromPEM(self::$_pem2);
 		self::$_pem3 = PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem");
+		self::$_cert3 = Certificate::fromPEM(self::$_pem3);
 	}
 	
 	public static function tearDownAfterClass() {
@@ -42,6 +45,7 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
 		self::$_pem2 = null;
 		self::$_cert2 = null;
 		self::$_pem3 = null;
+		self::$_cert3 = null;
 	}
 	
 	public function testCreate() {
@@ -80,6 +84,35 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
 		}
 		$this->assertCount(2, $values);
 		$this->assertContainsOnlyInstancesOf(Certificate::class, $values);
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param CertificateBundle $bundle
+	 */
+	public function testContains(CertificateBundle $bundle) {
+		$this->assertTrue($bundle->contains(self::$_cert1));
+	}
+	
+	public function testDoesNotContain() {
+		$bundle = new CertificateBundle(self::$_cert1, self::$_cert2);
+		$this->assertFalse($bundle->contains(self::$_cert3));
+	}
+	
+	public function testContainsSubjectMismatch() {
+		$priv_key_info = PrivateKeyInfo::fromPEM(
+			PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
+		$tc = new TBSCertificate(Name::fromString("cn=Subject"), 
+			$priv_key_info->publicKeyInfo(), Name::fromString("cn=Issuer 1"), 
+			Validity::fromStrings(null, null));
+		$cert1 = $tc->sign(Crypto::getDefault(), 
+			new SHA1WithRSAEncryptionAlgorithmIdentifier(), $priv_key_info);
+		$tc = $tc->withSubject(Name::fromString("cn=Issuer 2"));
+		$cert2 = $tc->sign(Crypto::getDefault(), 
+			new SHA1WithRSAEncryptionAlgorithmIdentifier(), $priv_key_info);
+		$bundle = new CertificateBundle($cert1);
+		$this->assertFalse($bundle->contains($cert2));
 	}
 	
 	/**

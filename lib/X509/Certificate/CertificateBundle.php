@@ -19,12 +19,26 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	protected $_certs;
 	
 	/**
-	 * Constructor
+	 * Mapping from public key id to array of certificates.
+	 *
+	 * @var (Certificate[])[]
+	 */
+	private $_keyIdMap;
+	
+	/**
+	 * Constructor.
 	 *
 	 * @param Certificate ...$certs Certificate objects
 	 */
 	public function __construct(Certificate ...$certs) {
 		$this->_certs = $certs;
+	}
+	
+	/**
+	 * Reset internal cached variables on clone.
+	 */
+	public function __clone() {
+		$this->_keyIdMap = null;
 	}
 	
 	/**
@@ -90,23 +104,38 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Check whether bundle contains a given certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return bool
+	 */
+	public function contains(Certificate $cert) {
+		$id = self::_getCertKeyId($cert);
+		$map = $this->_getKeyIdMap();
+		if (!isset($map[$id])) {
+			return false;
+		}
+		foreach ($map[$id] as $c) {
+			/** @var Certificate $c */
+			if ($cert->equals($c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Get all certificates that have given subject key identifier.
 	 *
 	 * @param string $id
 	 * @return Certificate[]
 	 */
 	public function allBySubjectKeyIdentifier($id) {
-		$certs = array();
-		foreach ($this->_certs as $cert) {
-			$extensions = $cert->tbsCertificate()->extensions();
-			if (!$extensions->hasSubjectKeyIdentifier()) {
-				continue;
-			}
-			if ($id === $extensions->subjectKeyIdentifier()->keyIdentifier()) {
-				$certs[] = $cert;
-			}
+		$map = $this->_getKeyIdMap();
+		if (!isset($map[$id])) {
+			return array();
 		}
-		return $certs;
+		return $map[$id];
 	}
 	
 	/**
@@ -116,6 +145,42 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	 */
 	public function all() {
 		return $this->_certs;
+	}
+	
+	/**
+	 * Get certificate mapping by public key id.
+	 *
+	 * @return (Certificate[])[]
+	 */
+	private function _getKeyIdMap() {
+		// lazily build mapping
+		if (!isset($this->_keyIdMap)) {
+			$this->_keyIdMap = array();
+			foreach ($this->_certs as $cert) {
+				$id = self::_getCertKeyId($cert);
+				if (!isset($this->_keyIdMap[$id])) {
+					$this->_keyIdMap[$id] = array();
+				}
+				array_push($this->_keyIdMap[$id], $cert);
+			}
+		}
+		return $this->_keyIdMap;
+	}
+	
+	/**
+	 * Get public key id for the certificate.
+	 *
+	 * @param Certificate $cert
+	 * @return string
+	 */
+	private static function _getCertKeyId(Certificate $cert) {
+		$exts = $cert->tbsCertificate()->extensions();
+		if ($exts->hasSubjectKeyIdentifier()) {
+			return $exts->subjectKeyIdentifier()->keyIdentifier();
+		}
+		return $cert->tbsCertificate()
+			->subjectPublicKeyInfo()
+			->keyIdentifier();
 	}
 	
 	/**
