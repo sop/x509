@@ -139,19 +139,44 @@ class Certificate
 	 * @return bool
 	 */
 	public function equals(Certificate $cert) {
-		// if subjects differ
-		$s1 = $this->_tbsCertificate->subject();
-		$s2 = $cert->_tbsCertificate->subject();
-		if (!$s1->equals($s2)) {
-			return false;
-		}
-		// if public keys differ
+		return $this->_hasEqualSerialNumber($cert) &&
+			 $this->_hasEqualPublicKey($cert) && $this->_hasEqualSubject($cert);
+	}
+	
+	/**
+	 * Check whether certificate has serial number equal to another.
+	 *
+	 * @param Certificate $cert
+	 * @return bool
+	 */
+	private function _hasEqualSerialNumber(Certificate $cert) {
+		$sn1 = $this->_tbsCertificate->serialNumber();
+		$sn2 = $cert->_tbsCertificate->serialNumber();
+		return $sn1 == $sn2;
+	}
+	
+	/**
+	 * Check whether certificate has public key equal to another.
+	 *
+	 * @param Certificate $cert
+	 * @return bool
+	 */
+	private function _hasEqualPublicKey(Certificate $cert) {
 		$kid1 = $this->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
 		$kid2 = $cert->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
-		if ($kid1 != $kid2) {
-			return false;
-		}
-		return true;
+		return $kid1 == $kid2;
+	}
+	
+	/**
+	 * Check whether certificate has subject equal to another.
+	 *
+	 * @param Certificate $cert
+	 * @return bool
+	 */
+	private function _hasEqualSubject(Certificate $cert) {
+		$dn1 = $this->_tbsCertificate->subject();
+		$dn2 = $cert->_tbsCertificate->subject();
+		return $dn1->equals($dn2);
 	}
 	
 	/**
