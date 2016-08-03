@@ -5,6 +5,7 @@ namespace X509\CertificationPath;
 use CryptoUtil\Crypto\Crypto;
 use X509\Certificate\Certificate;
 use X509\Certificate\CertificateBundle;
+use X509\Certificate\CertificateChain;
 use X509\CertificationPath\Exception\PathValidationException;
 use X509\CertificationPath\PathBuilding\CertificationPathBuilder;
 use X509\CertificationPath\PathValidation\PathValidationConfig;
@@ -38,6 +39,16 @@ class CertificationPath implements \Countable, \IteratorAggregate
 	 */
 	public function __construct(Certificate ...$certificates) {
 		$this->_certificates = $certificates;
+	}
+	
+	/**
+	 * Initialize from a certificate chain.
+	 *
+	 * @param CertificateChain $chain
+	 * @return self
+	 */
+	public static function fromCertificateChain(CertificateChain $chain) {
+		return new self(...array_reverse($chain->certificates(), false));
 	}
 	
 	/**

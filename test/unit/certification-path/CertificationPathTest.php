@@ -4,6 +4,7 @@ use CryptoUtil\Crypto\Crypto;
 use CryptoUtil\PEM\PEM;
 use X509\Certificate\Certificate;
 use X509\Certificate\CertificateBundle;
+use X509\Certificate\CertificateChain;
 use X509\CertificationPath\CertificationPath;
 use X509\CertificationPath\PathValidation\PathValidationConfig;
 use X509\CertificationPath\PathValidation\PathValidationResult;
@@ -74,6 +75,25 @@ class CertificationPathTest extends PHPUnit_Framework_TestCase
 		$path = CertificationPath::fromTrustAnchorToTarget(self::$_certs[0], 
 			self::$_certs[2], new CertificateBundle(...self::$_certs));
 		$this->assertInstanceOf(CertificationPath::class, $path);
+	}
+	
+	public function testFromCertificateChain() {
+		$chain = new CertificateChain(...array_reverse(self::$_certs, false));
+		$path = CertificationPath::fromCertificateChain($chain);
+		$this->assertInstanceOf(CertificationPath::class, $path);
+		return $path;
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @depends testFromCertificateChain
+	 *
+	 * @param CertificationPath $ref
+	 * @param CertificationPath $path
+	 */
+	public function testFromChainEquals(CertificationPath $ref, 
+			CertificationPath $path) {
+		$this->assertEquals($ref, $path);
 	}
 	
 	/**
