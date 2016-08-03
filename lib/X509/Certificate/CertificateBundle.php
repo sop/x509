@@ -21,7 +21,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	/**
 	 * Mapping from public key id to array of certificates.
 	 *
-	 * @var null|(Certificate[])[string]
+	 * @var null|(Certificate[])[]
 	 */
 	private $_keyIdMap;
 	
@@ -150,7 +150,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
 	/**
 	 * Get certificate mapping by public key id.
 	 *
-	 * @return (Certificate[])[string]
+	 * @return (Certificate[])[]
 	 */
 	private function _getKeyIdMap() {
 		// lazily build mapping
