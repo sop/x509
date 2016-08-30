@@ -96,7 +96,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
 	 * @return PolicyQualifierInfo[]
 	 */
 	public function qualifiers() {
-		return $this->_qualifiers;
+		return array_values($this->_qualifiers);
 	}
 	
 	/**
