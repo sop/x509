@@ -450,11 +450,11 @@ class ValidatorState
 	/**
 	 * Get the path validation result.
 	 *
-	 * @param Certificate $cert
+	 * @param Certificate[] $certificates Certificates in a certification path
 	 * @return PathValidationResult
 	 */
-	public function getResult(Certificate $cert) {
-		return new PathValidationResult($cert, $this->_validPolicyTree, 
+	public function getResult(array $certificates) {
+		return new PathValidationResult($certificates, $this->_validPolicyTree, 
 			$this->_workingPublicKey, $this->_workingPublicKeyAlgorithm, 
 			$this->_workingPublicKeyParameters);
 	}

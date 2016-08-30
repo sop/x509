@@ -94,7 +94,7 @@ class PathValidator
 		// wrap-up (section 6.1.5.)
 		$state = $this->_wrapUp($state, $cert);
 		// return outputs
-		return $state->getResult($cert);
+		return $state->getResult($this->_certificates);
 	}
 	
 	/**
