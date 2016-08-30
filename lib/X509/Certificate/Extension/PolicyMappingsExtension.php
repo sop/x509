@@ -14,7 +14,8 @@ use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
  * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.5
  */
 class PolicyMappingsExtension extends Extension implements 
-	\Countable, \IteratorAggregate
+	\Countable, 
+	\IteratorAggregate
 {
 	/**
 	 * Policy mappings.
@@ -64,6 +65,58 @@ class PolicyMappingsExtension extends Extension implements
 	 */
 	public function mappings() {
 		return $this->_mappings;
+	}
+	
+	/**
+	 * Get mappings flattened into single array of arrays of subject domains
+	 * keyed by issuer domain.
+	 *
+	 * Eg. if policy mappings contains multiple mappings with same issuer domain
+	 * policy, their corresponding subject domain policies are placed under the
+	 * same key.
+	 *
+	 * @return (string[])[]
+	 */
+	public function flattenedMappings() {
+		$mappings = array();
+		foreach ($this->_mappings as $mapping) {
+			$idp = $mapping->issuerDomainPolicy();
+			if (!isset($mappings[$idp])) {
+				$mappings[$idp] = array();
+			}
+			array_push($mappings[$idp], $mapping->subjectDomainPolicy());
+		}
+		return $mappings;
+	}
+	
+	/**
+	 * Get all subject domain policy OIDs that are mapped to given issuer
+	 * domain policy OID.
+	 *
+	 * @param string $oid Issuer domain policy
+	 * @return string[] List of OIDs in dotted format
+	 */
+	public function issuerMappings($oid) {
+		$oids = array();
+		foreach ($this->_mappings as $mapping) {
+			if ($mapping->issuerDomainPolicy() == $oid) {
+				$oids[] = $mapping->subjectDomainPolicy();
+			}
+		}
+		return $oids;
+	}
+	
+	/**
+	 * Get all mapped issuer domain policy OIDs.
+	 *
+	 * @return string[]
+	 */
+	public function issuerDomainPolicies() {
+		$idps = array_map(
+			function (PolicyMapping $mapping) {
+				return $mapping->issuerDomainPolicy();
+			}, $this->_mappings);
+		return array_values(array_unique($idps));
 	}
 	
 	/**
