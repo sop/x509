@@ -91,6 +91,15 @@ class PolicyInformation implements \Countable, \IteratorAggregate
 	}
 	
 	/**
+	 * Get policy qualifiers.
+	 *
+	 * @return PolicyQualifierInfo[]
+	 */
+	public function qualifiers() {
+		return $this->_qualifiers;
+	}
+	
+	/**
 	 * Check whether qualifier is present.
 	 *
 	 * @param string $oid
