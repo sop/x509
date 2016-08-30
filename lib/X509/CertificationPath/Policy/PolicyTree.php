@@ -145,6 +145,21 @@ class PolicyTree
 	}
 	
 	/**
+	 * Get policies at given policy tree depth.
+	 *
+	 * @param int $i Depth in range 1..n
+	 * @return PolicyInformation[]
+	 */
+	public function policiesAtDepth($i) {
+		$policies = array();
+		foreach ($this->_nodesAtDepth($i) as $node) {
+			$policies[] = new PolicyInformation($node->validPolicy(), 
+				...$node->qualifiers());
+		}
+		return $policies;
+	}
+	
+	/**
 	 * Process single policy information.
 	 *
 	 * @param PolicyInformation $policy
