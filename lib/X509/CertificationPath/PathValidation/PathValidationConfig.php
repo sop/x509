@@ -44,7 +44,9 @@ class PathValidationConfig
 	protected $_trustAnchor;
 	
 	/**
-	 * Whether policy mapping in allowed.
+	 * Whether policy mapping in inhibited.
+	 *
+	 * Setting this to true disallows policy mapping.
 	 *
 	 * @var bool $_policyMappingInhibit
 	 */
@@ -59,7 +61,9 @@ class PathValidationConfig
 	protected $_explicitPolicy;
 	
 	/**
-	 * Whether anyPolicy OID should be processed.
+	 * Whether anyPolicy OID processing should be inhibited.
+	 *
+	 * Setting this to true disallows the usage of anyPolicy.
 	 *
 	 * @var bool $_anyPolicyInhibit
 	 */
@@ -172,6 +176,18 @@ class PathValidationConfig
 	public function withAnyPolicyInhibit($flag) {
 		$obj = clone $this;
 		$obj->_anyPolicyInhibit = (bool) $flag;
+		return $obj;
+	}
+	
+	/**
+	 * Get self with user-initial-policy-set set to policy OIDs.
+	 *
+	 * @param string ...$policies List of policy OIDs
+	 * @return self
+	 */
+	public function withPolicySet(...$policies) {
+		$obj = clone $this;
+		$obj->_policySet = $policies;
 		return $obj;
 	}
 	
