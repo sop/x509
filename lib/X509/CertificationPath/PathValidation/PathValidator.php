@@ -4,6 +4,7 @@ namespace X509\CertificationPath\PathValidation;
 
 use CryptoUtil\Crypto\Crypto;
 use X509\Certificate\Certificate;
+use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\TBSCertificate;
 use X509\CertificationPath\Exception\PathValidationException;
@@ -91,11 +92,9 @@ class PathValidator
 			throw new \LogicException("No certificates.");
 		}
 		// wrap-up (section 6.1.5.)
-		$this->_wrapUp($state, $cert);
+		$state = $this->_wrapUp($state, $cert);
 		// return outputs
-		return new PathValidationResult($cert, $state->validPolicyTree(), 
-			$state->workingPublicKey(), $state->workingPublicKeyAlgorithm(), 
-			$state->workingPublicKeyParameters());
+		return $state->getResult($cert);
 	}
 	
 	/**
@@ -129,16 +128,17 @@ class PathValidator
 		if ($extensions->hasCertificatePolicies()) {
 			// (d) process policy information
 			if ($state->hasValidPolicyTree()) {
-				$state = $this->_processPolicyInformation($state, $cert);
+				$state = $state->validPolicyTree()->processPolicies($state, 
+					$cert);
 			}
 		} else {
 			// (e) certificate policies extension not present,
 			// set the valid_policy_tree to NULL
-			$state = $state->withValidPolicyTree(null);
+			$state = $state->withoutValidPolicyTree();
 		}
 		// (f) check that explicit_policy > 0 or valid_policy_tree is set
 		if (!($state->explicitPolicy() > 0 || $state->hasValidPolicyTree())) {
-			throw new PathValidationException("Policy error.");
+			throw new PathValidationException("No valid policies.");
 		}
 		return $state;
 	}
@@ -215,9 +215,10 @@ class PathValidator
 		$state = $this->_calculatePolicyIntersection($state);
 		// check that explicit_policy > 0 or valid_policy_tree is set
 		if (!($state->explicitPolicy() > 0 || $state->hasValidPolicyTree())) {
-			throw new PathValidationException("Policy error.");
+			throw new PathValidationException("No valid policies.");
 		}
 		// path validation succeeded
+		return $state;
 	}
 	
 	/**
@@ -338,28 +339,6 @@ class PathValidator
 	}
 	
 	/**
-	 *
-	 * @param ValidatorState $state
-	 * @param Certificate $cert
-	 * @return ValidatorState
-	 */
-	private function _processPolicyInformation(ValidatorState $state, 
-			Certificate $cert) {
-		// @todo Implement
-		$policies = $cert->tbsCertificate()
-			->extensions()
-			->certificatePolicies();
-		// (d.1) for each policy P not equal to anyPolicy
-		foreach ($policies as $policy) {
-			if ($policy->isAnyPolicy()) {
-				continue;
-			}
-		
-		}
-		return $state;
-	}
-	
-	/**
 	 * Apply policy mappings handling for the preparation step.
 	 *
 	 * @param ValidatorState $state
@@ -376,7 +355,10 @@ class PathValidator
 				throw new PathValidationException("anyPolicy mapping found.");
 			}
 			// (b) process policy mappings
-			$state = $this->_processPolicyMappings($state, $cert);
+			if ($state->hasValidPolicyTree()) {
+				$state = $state->validPolicyTree()->processMappings($state, 
+					$cert);
+			}
 		}
 		return $state;
 	}
@@ -557,19 +539,6 @@ class PathValidator
 	}
 	
 	/**
-	 * Process policy mappings extension.
-	 *
-	 * @param ValidatorState $state
-	 * @param Certificate $cert
-	 * @return ValidatorState
-	 */
-	private function _processPolicyMappings(ValidatorState $state, 
-			Certificate $cert) {
-		// @todo Implement
-		return $state;
-	}
-	
-	/**
 	 *
 	 * @param ValidatorState $state
 	 * @param Certificate $cert
@@ -586,7 +555,22 @@ class PathValidator
 	 * @return ValidatorState
 	 */
 	private function _calculatePolicyIntersection(ValidatorState $state) {
-		// @todo Implement
-		return $state;
+		// (i) If the valid_policy_tree is NULL, the intersection is NULL
+		if (!$state->hasValidPolicyTree()) {
+			return $state;
+		}
+		// (ii) If the valid_policy_tree is not NULL and
+		// the user-initial-policy-set is any-policy, the intersection
+		// is the entire valid_policy_tree
+		$initial_policies = $this->_config->policySet();
+		if (in_array(PolicyInformation::OID_ANY_POLICY, $initial_policies)) {
+			return $state;
+		}
+		// (iii) If the valid_policy_tree is not NULL and the
+		// user-initial-policy-set is not any-policy, calculate
+		// the intersection of the valid_policy_tree and the
+		// user-initial-policy-set as follows
+		return $state->validPolicyTree()->calculateIntersection($state, 
+			$initial_policies);
 	}
 }
