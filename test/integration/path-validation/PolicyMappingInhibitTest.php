@@ -16,15 +16,12 @@ use X509\Certificate\TBSCertificate;
 use X509\Certificate\Validity;
 use X509\CertificationPath\CertificationPath;
 use X509\CertificationPath\PathValidation\PathValidationConfig;
-use X509\CertificationPath\PathValidation\PathValidationResult;
 
 
 /**
  * Covers policy mapping inhibit handling.
  *
  * @group certification-path
- *
- * @todo Cover exception when policy checking is implemented
  */
 class PolicyMappingInhibitValidationIntegrationTest extends PHPUnit_Framework_TestCase
 {
@@ -97,10 +94,14 @@ class PolicyMappingInhibitValidationIntegrationTest extends PHPUnit_Framework_Te
 		self::$_cert = null;
 	}
 	
+	/* @formatter:off */
+	/**
+	 * @expectedException X509\CertificationPath\Exception\PathValidationException
+	 */
+	/* @formatter:on */
 	public function testValidate() {
 		$path = new CertificationPath(self::$_ca, self::$_interm, self::$_cert);
 		$config = new PathValidationConfig(new DateTimeImmutable(), 3);
-		$result = $path->validate(Crypto::getDefault(), $config);
-		$this->assertInstanceOf(PathValidationResult::class, $result);
+		$path->validate(Crypto::getDefault(), $config);
 	}
 }
