@@ -9,6 +9,7 @@ use CryptoUtil\ASN1\PublicKeyInfo;
 use X501\ASN1\Name;
 use X509\Certificate\Certificate;
 use X509\CertificationPath\Policy\PolicyNode;
+use X509\CertificationPath\Policy\PolicyTree;
 
 
 /**
@@ -20,93 +21,129 @@ use X509\CertificationPath\Policy\PolicyNode;
 class ValidatorState
 {
 	/**
-	 * Length of the certification path.
+	 * Length of the certification path (n).
 	 *
 	 * @var int $_pathLength
 	 */
 	protected $_pathLength;
 	
 	/**
-	 * Current index in the certification path in the range of 1..n.
+	 * Current index in the certification path in the range of 1..n (i).
 	 *
 	 * @var int $_index
 	 */
 	protected $_index;
 	
 	/**
+	 * Valid policy tree (valid_policy_tree).
 	 *
-	 * @var mixed $_validPolicyTree
+	 * A tree of certificate policies with their optional qualifiers.
+	 * Each of the leaves of the tree represents a valid policy at this stage in
+	 * the certification path validation.
+	 * Once the tree is set to NULL, policy processing ceases.
+	 *
+	 * @var PolicyTree|null $_validPolicyTree
 	 */
 	protected $_validPolicyTree;
 	
 	/**
+	 * Permitted subtrees (permitted_subtrees).
+	 *
+	 * A set of root names for each name type defining a set of subtrees within
+	 * which all subject names in subsequent certificates in the certification
+	 * path must fall.
 	 *
 	 * @var mixed $_permittedSubtrees
 	 */
 	protected $_permittedSubtrees;
 	
 	/**
+	 * Excluded subtrees (excluded_subtrees).
+	 *
+	 * A set of root names for each name type defining a set of subtrees within
+	 * which no subject name in subsequent certificates in the certification
+	 * path may fall.
 	 *
 	 * @var mixed $_excludedSubtrees
 	 */
 	protected $_excludedSubtrees;
 	
 	/**
+	 * Explicit policy (explicit_policy).
+	 *
+	 * An integer that indicates if a non-NULL valid_policy_tree is required.
 	 *
 	 * @var int $_explicitPolicy
 	 */
 	protected $_explicitPolicy;
 	
 	/**
+	 * Inhibit anyPolicy (inhibit_anyPolicy).
+	 *
+	 * An integer that indicates whether the anyPolicy policy identifier is
+	 * considered a match.
 	 *
 	 * @var int $_inhibitAnyPolicy
 	 */
 	protected $_inhibitAnyPolicy;
 	
 	/**
+	 * Policy mapping (policy_mapping).
+	 *
+	 * An integer that indicates if policy mapping is permitted.
 	 *
 	 * @var int $_policyMapping
 	 */
 	protected $_policyMapping;
 	
 	/**
+	 * Working public key algorithm (working_public_key_algorithm).
+	 *
+	 * The digital signature algorithm used to verify the signature of a
+	 * certificate.
 	 *
 	 * @var AlgorithmIdentifierType $_workingPublicKeyAlgorithm
 	 */
 	protected $_workingPublicKeyAlgorithm;
 	
 	/**
+	 * Working public key (working_public_key).
+	 *
+	 * The public key used to verify the signature of a certificate.
 	 *
 	 * @var PublicKeyInfo $_workingPublicKey
 	 */
 	protected $_workingPublicKey;
 	
 	/**
+	 * Working public key parameters (working_public_key_parameters).
+	 *
+	 * Parameters associated with the current public key that may be required to
+	 * verify a signature.
 	 *
 	 * @var Element|null $_workingPublicKeyParameters
 	 */
 	protected $_workingPublicKeyParameters;
 	
 	/**
+	 * Working issuer name (working_issuer_name).
+	 *
+	 * The issuer distinguished name expected in the next certificate in the
+	 * chain.
 	 *
 	 * @var Name $_workingIssuerName
 	 */
 	protected $_workingIssuerName;
 	
 	/**
+	 * Maximum certification path length (max_path_length).
 	 *
 	 * @var int $_maxPathLength
 	 */
 	protected $_maxPathLength;
 	
 	/**
-	 *
-	 * @var bool $_isFinalCertificate
-	 */
-	protected $_isFinalCertificate;
-	
-	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	protected function __constructor() {}
 	
@@ -124,7 +161,7 @@ class ValidatorState
 		$state = new self();
 		$state->_pathLength = $n;
 		$state->_index = 1;
-		$state->_validPolicyTree = array(PolicyNode::anyPolicyNode());
+		$state->_validPolicyTree = new PolicyTree(PolicyNode::anyPolicyNode());
 		$state->_permittedSubtrees = null;
 		$state->_excludedSubtrees = null;
 		$state->_explicitPolicy = $config->explicitPolicy() ? 0 : $n + 1;
@@ -155,12 +192,23 @@ class ValidatorState
 	/**
 	 * Get self with valid_policy_tree.
 	 *
-	 * @param mixed $policy_tree
+	 * @param PolicyTree $policy_tree
 	 * @return self
 	 */
-	public function withValidPolicyTree($policy_tree) {
+	public function withValidPolicyTree(PolicyTree $policy_tree) {
 		$state = clone $this;
 		$state->_validPolicyTree = $policy_tree;
+		return $state;
+	}
+	
+	/**
+	 * Get self with valid_policy_tree set to null.
+	 *
+	 * @return self
+	 */
+	public function withoutValidPolicyTree() {
+		$state = clone $this;
+		$state->_validPolicyTree = null;
 		return $state;
 	}
 	
@@ -227,7 +275,7 @@ class ValidatorState
 	/**
 	 * Get self with working_public_key_parameters.
 	 *
-	 * @param Element $params
+	 * @param Element|null $params
 	 * @return self
 	 */
 	public function withWorkingPublicKeyParameters(Element $params = null) {
@@ -261,17 +309,12 @@ class ValidatorState
 	}
 	
 	/**
-	 * Get self with final certificate flag.
+	 * Get the certification path length (n).
 	 *
-	 * @deprecated
-	 *
-	 * @param bool $is_final
-	 * @return self
+	 * @return int
 	 */
-	public function withIsFinal($is_final) {
-		$state = clone $this;
-		$state->_isFinalCertificate = (bool) $is_final;
-		return $state;
+	public function pathLength() {
+		return $this->_pathLength;
 	}
 	
 	/**
@@ -295,9 +338,13 @@ class ValidatorState
 	/**
 	 * Get valid_policy_tree.
 	 *
-	 * @return mixed
+	 * @throws \LogicException
+	 * @return PolicyTree
 	 */
 	public function validPolicyTree() {
+		if (!$this->hasValidPolicyTree()) {
+			throw new \LogicException("valid_policy_tree not set.");
+		}
 		return $this->_validPolicyTree;
 	}
 	
@@ -398,6 +445,18 @@ class ValidatorState
 	 */
 	public function isFinal() {
 		return $this->_index == $this->_pathLength;
+	}
+	
+	/**
+	 * Get the path validation result.
+	 *
+	 * @param Certificate $cert
+	 * @return PathValidationResult
+	 */
+	public function getResult(Certificate $cert) {
+		return new PathValidationResult($cert, $this->_validPolicyTree, 
+			$this->_workingPublicKey, $this->_workingPublicKeyAlgorithm, 
+			$this->_workingPublicKeyParameters);
 	}
 	
 	/**
