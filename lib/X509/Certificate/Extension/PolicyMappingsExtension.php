@@ -68,12 +68,12 @@ class PolicyMappingsExtension extends Extension implements
 	}
 	
 	/**
-	 * Get mappings flattened into single array of arrays of subject domains
+	 * Get mappings flattened into a single array of arrays of subject domains
 	 * keyed by issuer domain.
 	 *
-	 * Eg. if policy mappings contains multiple mappings with same issuer domain
-	 * policy, their corresponding subject domain policies are placed under the
-	 * same key.
+	 * Eg. if policy mappings contains multiple mappings with the same issuer
+	 * domain policy, their corresponding subject domain policies are placed
+	 * under the same key.
 	 *
 	 * @return (string[])[]
 	 */
