@@ -6,6 +6,8 @@ use ASN1\Element;
 use CryptoUtil\ASN1\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use CryptoUtil\ASN1\PublicKeyInfo;
 use X509\Certificate\Certificate;
+use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
+use X509\CertificationPath\Policy\PolicyTree;
 
 
 /**
@@ -16,16 +18,16 @@ use X509\Certificate\Certificate;
 class PathValidationResult
 {
 	/**
-	 * End-entity certificate.
+	 * Certificates in a certification path.
 	 *
-	 * @var Certificate $_certificate
+	 * @var Certificate[] $_certificates
 	 */
-	protected $_certificate;
+	protected $_certificates;
 	
 	/**
 	 * Valid policy tree.
 	 *
-	 * @var mixed $_policyTree
+	 * @var PolicyTree|null $_policyTree
 	 */
 	protected $_policyTree;
 	
@@ -53,16 +55,16 @@ class PathValidationResult
 	/**
 	 * Constructor
 	 *
-	 * @param Certificate $cert
-	 * @param mixed $policy_tree
+	 * @param array $certificates
+	 * @param PolicyTree|null $policy_tree
 	 * @param PublicKeyInfo $pubkey_info
 	 * @param AlgorithmIdentifierType $algo
 	 * @param Element|null $params
 	 */
-	public function __construct(Certificate $cert, $policy_tree, 
+	public function __construct(array $certificates, $policy_tree, 
 			PublicKeyInfo $pubkey_info, AlgorithmIdentifierType $algo, 
 			Element $params = null) {
-		$this->_certificate = $cert;
+		$this->_certificates = array_values($certificates);
 		$this->_policyTree = $policy_tree;
 		$this->_publicKeyInfo = $pubkey_info;
 		$this->_publicKeyAlgo = $algo;
@@ -75,6 +77,18 @@ class PathValidationResult
 	 * @return Certificate
 	 */
 	public function certificate() {
-		return $this->_certificate;
+		return $this->_certificates[count($this->_certificates) - 1];
+	}
+	
+	/**
+	 * Get certificate policies of the end-entity certificate.
+	 *
+	 * @return PolicyInformation[]
+	 */
+	public function policies() {
+		if (!$this->_policyTree) {
+			return array();
+		}
+		return $this->_policyTree->policiesAtDepth(count($this->_certificates));
 	}
 }

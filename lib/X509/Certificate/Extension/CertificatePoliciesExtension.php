@@ -54,19 +54,10 @@ class CertificatePoliciesExtension extends Extension implements
 	 * Check whether policy information by OID is present.
 	 *
 	 * @param string $oid
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has($oid) {
 		return isset($this->_policies[$oid]);
-	}
-	
-	/**
-	 * Check whether anyPolicy is present.
-	 *
-	 * @return bool
-	 */
-	public function hasAnyPolicy() {
-		return isset($this->_policies[PolicyInformation::OID_ANY_POLICY]);
 	}
 	
 	/**
@@ -81,6 +72,28 @@ class CertificatePoliciesExtension extends Extension implements
 			throw new \LogicException("Not certificate policy by OID $oid.");
 		}
 		return $this->_policies[$oid];
+	}
+	
+	/**
+	 * Check whether anyPolicy is present.
+	 *
+	 * @return bool
+	 */
+	public function hasAnyPolicy() {
+		return $this->has(PolicyInformation::OID_ANY_POLICY);
+	}
+	
+	/**
+	 * Get anyPolicy information.
+	 *
+	 * @throws \LogicException If anyPolicy is not present.
+	 * @return PolicyInformation
+	 */
+	public function anyPolicy() {
+		if (!$this->hasAnyPolicy()) {
+			throw new \LogicException("No anyPolicy.");
+		}
+		return $this->get(PolicyInformation::OID_ANY_POLICY);
 	}
 	
 	protected function _valueASN1() {

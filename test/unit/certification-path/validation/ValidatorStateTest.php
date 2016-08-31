@@ -1,5 +1,6 @@
 <?php
 
+use ASN1\Type\Primitive\NullType;
 use CryptoUtil\PEM\PEM;
 use X509\Certificate\Certificate;
 use X509\CertificationPath\PathValidation\PathValidationConfig;
@@ -27,5 +28,25 @@ class ValidatorStateTest extends PHPUnit_Framework_TestCase
 			PathValidationConfig::defaultConfig(), self::$_ca, 3);
 		$this->assertInstanceOf(ValidatorState::class, $state);
 		return $state;
+	}
+	
+	/**
+	 * @depends testInitialize
+	 * @expectedException LogicException
+	 *
+	 * @param ValidatorState $state
+	 */
+	public function testValidPolicyTreeFail(ValidatorState $state) {
+		$state->withoutValidPolicyTree()->validPolicyTree();
+	}
+	
+	/**
+	 * @depends testInitialize
+	 *
+	 * @param ValidatorState $state
+	 */
+	public function testWorkingPublicKeyParameters(ValidatorState $state) {
+		$this->assertInstanceOf(NullType::class, 
+			$state->workingPublicKeyParameters());
 	}
 }

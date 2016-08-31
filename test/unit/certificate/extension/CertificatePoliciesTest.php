@@ -155,6 +155,15 @@ class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
 	}
 	
 	/**
+	 * @expectedException LogicException
+	 */
+	public function testAnyPolicyFail() {
+		$ext = new CertificatePoliciesExtension(true, 
+			new PolicyInformation("1.3.6.1.3"));
+		$ext->anyPolicy();
+	}
+	
+	/**
 	 * @depends testCreate
 	 *
 	 * @param CertificatePoliciesExtension $ext
