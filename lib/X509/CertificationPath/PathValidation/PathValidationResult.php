@@ -77,7 +77,7 @@ class PathValidationResult
 	 * @return Certificate
 	 */
 	public function certificate() {
-		return $this->_certificate[count($this->_certificates) - 1];
+		return $this->_certificates[count($this->_certificates) - 1];
 	}
 	
 	/**
