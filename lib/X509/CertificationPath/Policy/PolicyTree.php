@@ -273,20 +273,21 @@ class PolicyTree
 				foreach ($this->_nodesAtDepth($state->index() - 1) as $node) {
 					if ($node->isAnyPolicy()) {
 						// try to fetch qualifiers of anyPolicy certificate policy
+						$qualifiers = array();
 						try {
 							$qualifiers = $cert->tbsCertificate()
 								->extensions()
 								->certificatePolicies()
 								->anyPolicy()
 								->qualifiers();
-						} catch (\LogicException $e) {
-							$qualifiers = array();
-						}
-						$child = new PolicyNode($idp, $qualifiers, $sdps);
-						$node->parent()->addChild($child);
+						} catch (\LogicException $e) {}
+						$node->addChild(
+							new PolicyNode($idp, $qualifiers, $sdps));
+						// bail after first anyPolicy has been processed
 						break;
 					}
 				}
+				// bail after first anyPolicy has been processed
 				break;
 			}
 		}
@@ -373,9 +374,9 @@ class PolicyTree
 		$this->_root->walkNodes(
 			function (PolicyNode $node) use (&$set) {
 				$parents = $node->parents();
-				// node as parents
+				// node has parents
 				if (count($parents)) {
-					// check that each ancestor is a anyPolicy node
+					// check that each ancestor is an anyPolicy node
 					foreach ($parents as $ancestor) {
 						if (!$ancestor->isAnyPolicy()) {
 							return;
