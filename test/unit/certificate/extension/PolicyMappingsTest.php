@@ -94,6 +94,26 @@ class PolicyMappingsTest extends PHPUnit_Framework_TestCase
 	 *
 	 * @param PolicyMappingsExtension $ext
 	 */
+	public function testMappings(PolicyMappingsExtension $ext) {
+		$this->assertContainsOnlyInstancesOf(PolicyMapping::class, 
+			$ext->mappings());
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param PolicyMappingsExtension $ext
+	 */
+	public function testIssuerMappings(PolicyMappingsExtension $ext) {
+		$this->assertContainsOnly("string", 
+			$ext->issuerMappings(self::ISSUER_POLICY_OID));
+	}
+	
+	/**
+	 * @depends testCreate
+	 *
+	 * @param PolicyMappingsExtension $ext
+	 */
 	public function testCount(PolicyMappingsExtension $ext) {
 		$this->assertCount(2, $ext);
 	}
