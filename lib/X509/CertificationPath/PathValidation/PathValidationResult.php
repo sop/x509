@@ -55,11 +55,13 @@ class PathValidationResult
 	/**
 	 * Constructor
 	 *
-	 * @param array $certificates
-	 * @param PolicyTree|null $policy_tree
-	 * @param PublicKeyInfo $pubkey_info
-	 * @param AlgorithmIdentifierType $algo
-	 * @param Element|null $params
+	 * @param Certificate[] $certificates Certificates in a certification path
+	 * @param PolicyTree|null $policy_tree Valid policy tree
+	 * @param PublicKeyInfo $pubkey_info Public key of the end-entity
+	 *        certificate
+	 * @param AlgorithmIdentifierType $algo Public key algorithm of the
+	 *        end-entity certificate
+	 * @param Element|null $params Algorithm parameters
 	 */
 	public function __construct(array $certificates, $policy_tree, 
 			PublicKeyInfo $pubkey_info, AlgorithmIdentifierType $algo, 

@@ -318,7 +318,7 @@ class PolicyTree
 	 * Prune tree starting from given depth.
 	 *
 	 * @param int $depth
-	 * @return The number of nodes left in a tree
+	 * @return int The number of nodes left in a tree
 	 */
 	protected function _pruneTree($depth) {
 		for ($i = $depth; $i > 0; --$i) {
