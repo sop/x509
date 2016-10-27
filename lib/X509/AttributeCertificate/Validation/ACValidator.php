@@ -71,10 +71,16 @@ class ACValidator
 		return $this->_ac;
 	}
 	
+	/**
+	 * Validate AC holder's certification.
+	 *
+	 * @throws ACValidationException
+	 * @return Certificate Certificate of the AC's holder
+	 */
 	private function _validateHolder() {
 		$path = $this->_config->holderPath();
 		$config = PathValidationConfig::defaultConfig()->withMaxLength(
-			count($path));
+			count($path))->withDateTime($this->_config->evaluationTime());
 		try {
 			$holder = $path->validate($this->_crypto, $config)->certificate();
 		} catch (PathValidationException $e) {
@@ -87,10 +93,16 @@ class ACValidator
 		return $holder;
 	}
 	
+	/**
+	 * Verify AC's signature and issuer's certification.
+	 *
+	 * @throws ACValidationException
+	 * @return Certificate Certificate of the AC's issuer
+	 */
 	private function _verifyIssuer() {
 		$path = $this->_config->issuerPath();
 		$config = PathValidationConfig::defaultConfig()->withMaxLength(
-			count($path));
+			count($path))->withDateTime($this->_config->evaluationTime());
 		try {
 			$issuer = $path->validate($this->_crypto, $config)->certificate();
 		} catch (PathValidationException $e) {
@@ -107,6 +119,13 @@ class ACValidator
 		return $issuer;
 	}
 	
+	/**
+	 * Validate AC issuer's profile.
+	 *
+	 * @link https://tools.ietf.org/html/rfc5755#section-4.5
+	 * @param Certificate $cert
+	 * @throws ACValidationException
+	 */
 	private function _validateIssuerProfile(Certificate $cert) {
 		$exts = $cert->tbsCertificate()->extensions();
 		if ($exts->hasKeyUsage() && !$exts->keyUsage()->isDigitalSignature()) {
@@ -119,6 +138,11 @@ class ACValidator
 		}
 	}
 	
+	/**
+	 * Validate AC's validity period.
+	 *
+	 * @throws ACValidationException
+	 */
 	private function _validateTime() {
 		$t = $this->_config->evaluationTime();
 		$validity = $this->_ac->acinfo()->validityPeriod();
@@ -130,6 +154,11 @@ class ACValidator
 		}
 	}
 	
+	/**
+	 * Validate AC's target information.
+	 *
+	 * @throws ACValidationException
+	 */
 	private function _validateTargeting() {
 		$exts = $this->_ac->acinfo()->extensions();
 		// if target information extension is not present
@@ -144,6 +173,12 @@ class ACValidator
 		}
 	}
 	
+	/**
+	 * Check whether validation configuration has matching targets.
+	 *
+	 * @param Targets $targets Set of eligible targets
+	 * @return boolean
+	 */
 	private function _hasMatchingTarget(Targets $targets) {
 		foreach ($this->_config->targets() as $target) {
 			if ($targets->hasTarget($target)) {

@@ -42,8 +42,8 @@ class ACValidationConfig
 	/**
 	 * Constructor.
 	 *
-	 * @param CertificationPath $holder_path
-	 * @param CertificationPath $issuer_path
+	 * @param CertificationPath $holder_path Certification path of the AC holder
+	 * @param CertificationPath $issuer_path Certification path of the AC issuer
 	 */
 	public function __construct(CertificationPath $holder_path, 
 			CertificationPath $issuer_path) {
