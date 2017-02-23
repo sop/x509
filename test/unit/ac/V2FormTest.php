@@ -103,6 +103,7 @@ class V2FormTest extends PHPUnit_Framework_TestCase
 				new ImplicitlyTaggedType(0, $iss_ser->toASN1()), 
 				new ImplicitlyTaggedType(1, $odi->toASN1())));
 		$issuer = V2Form::fromASN1($el->asUnspecified());
+		$this->assertInstanceOf(V2Form::class, $issuer);
 		return $issuer;
 	}
 	

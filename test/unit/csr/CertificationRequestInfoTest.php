@@ -125,13 +125,17 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
 	 * @param CertificationRequestInfo $cri
 	 */
 	public function testWithExtensionRequest(CertificationRequestInfo $cri) {
-		$cri->withExtensionRequest(new Extensions());
+		$cri = $cri->withExtensionRequest(new Extensions());
+		$this->assertTrue($cri->attributes()
+			->hasExtensionRequest());
 	}
 	
 	public function testWithExtensionRequestWithoutAttributes() {
 		$cri = new CertificationRequestInfo(self::$_subject, 
 			self::$_privateKeyInfo->publicKeyInfo());
-		$cri->withExtensionRequest(new Extensions());
+		$cri = $cri->withExtensionRequest(new Extensions());
+		$this->assertTrue($cri->attributes()
+			->hasExtensionRequest());
 	}
 	
 	/**
