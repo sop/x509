@@ -45,14 +45,14 @@ class ACValidator
      *
      * @param AttributeCertificate $ac Attribute certificate to validate
      * @param ACValidationConfig $config Validation configuration
-     * @param Crypto $crypto Crypto engine
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      */
     public function __construct(AttributeCertificate $ac,
-        ACValidationConfig $config, Crypto $crypto)
+        ACValidationConfig $config, Crypto $crypto = null)
     {
         $this->_ac = $ac;
         $this->_config = $config;
-        $this->_crypto = $crypto;
+        $this->_crypto = $crypto ?: Crypto::getDefault();
     }
     
     /**
@@ -83,7 +83,7 @@ class ACValidator
         $config = PathValidationConfig::defaultConfig()->withMaxLength(
             count($path))->withDateTime($this->_config->evaluationTime());
         try {
-            $holder = $path->validate($this->_crypto, $config)->certificate();
+            $holder = $path->validate($config, $this->_crypto)->certificate();
         } catch (PathValidationException $e) {
             throw new ACValidationException(
                 "Failed to validate holder PKC's certification path.", null, $e);
@@ -106,7 +106,7 @@ class ACValidator
         $config = PathValidationConfig::defaultConfig()->withMaxLength(
             count($path))->withDateTime($this->_config->evaluationTime());
         try {
-            $issuer = $path->validate($this->_crypto, $config)->certificate();
+            $issuer = $path->validate($config, $this->_crypto)->certificate();
         } catch (PathValidationException $e) {
             throw new ACValidationException(
                 "Failed to validate issuer PKC's certification path.", null, $e);
@@ -115,7 +115,7 @@ class ACValidator
             throw new ACValidationException("Name mismatch of AC's issuer PKC.");
         }
         $pubkey_info = $issuer->tbsCertificate()->subjectPublicKeyInfo();
-        if (!$this->_ac->verify($this->_crypto, $pubkey_info)) {
+        if (!$this->_ac->verify($pubkey_info, $this->_crypto)) {
             throw new ACValidationException("Failed to verify signature.");
         }
         return $issuer;

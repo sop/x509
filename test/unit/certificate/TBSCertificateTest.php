@@ -1,7 +1,6 @@
 <?php
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\NullType;
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
@@ -410,8 +409,7 @@ class TBSCertificateTest extends PHPUnit_Framework_TestCase
      */
     public function testSign(TBSCertificate $tc)
     {
-        $cert = $tc->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+        $cert = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertInstanceOf(Certificate::class, $cert);
     }

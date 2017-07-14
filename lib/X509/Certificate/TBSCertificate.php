@@ -593,25 +593,26 @@ class TBSCertificate
     /**
      * Create signed certificate.
      *
-     * @param Crypto $crypto Crypto engine
      * @param SignatureAlgorithmIdentifier $algo Algorithm used for signing
      * @param PrivateKeyInfo $privkey_info Private key used for signing
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return Certificate
      */
-    public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo,
-        PrivateKeyInfo $privkey_info)
+    public function sign(SignatureAlgorithmIdentifier $algo,
+        PrivateKeyInfo $privkey_info, Crypto $crypto = null)
     {
-        $tbsCert = clone $this;
-        if (!isset($tbsCert->_version)) {
-            $tbsCert->_version = $tbsCert->_determineVersion();
+        $crypto = $crypto ?: Crypto::getDefault();
+        $tbs_cert = clone $this;
+        if (!isset($tbs_cert->_version)) {
+            $tbs_cert->_version = $tbs_cert->_determineVersion();
         }
-        if (!isset($tbsCert->_serialNumber)) {
-            $tbsCert->_serialNumber = 0;
+        if (!isset($tbs_cert->_serialNumber)) {
+            $tbs_cert->_serialNumber = 0;
         }
-        $tbsCert->_signature = $algo;
-        $data = $tbsCert->toASN1()->toDER();
+        $tbs_cert->_signature = $algo;
+        $data = $tbs_cert->toASN1()->toDER();
         $signature = $crypto->sign($data, $privkey_info, $algo);
-        return new Certificate($tbsCert, $algo, $signature);
+        return new Certificate($tbs_cert, $algo, $signature);
     }
     
     /**

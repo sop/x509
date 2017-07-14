@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\ECDSAWithSHA1AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
@@ -56,7 +55,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
                     KeyUsageExtension::DIGITAL_SIGNATURE |
                          KeyUsageExtension::KEY_CERT_SIGN)));
         $algo = new SHA256WithRSAEncryptionAlgorithmIdentifier();
-        $cert = $tbs_cert->sign(Crypto::getDefault(), $algo, self::$_issuerKey);
+        $cert = $tbs_cert->sign($algo, self::$_issuerKey);
         $this->assertInstanceOf(Certificate::class, $cert);
         return $cert;
     }
@@ -69,7 +68,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
         $cri = $cri->withExtensionRequest(
             new Extensions(new BasicConstraintsExtension(true, false)));
         $algo = new ECDSAWithSHA1AlgorithmIdentifier();
-        $csr = $cri->sign(Crypto::getDefault(), $algo, self::$_subjectKey);
+        $csr = $cri->sign($algo, self::$_subjectKey);
         $this->assertInstanceOf(CertificationRequest::class, $csr);
         return $csr;
     }
@@ -95,7 +94,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
                      KeyUsageExtension::KEY_ENCIPHERMENT),
             new BasicConstraintsExtension(true, false));
         $algo = new SHA512WithRSAEncryptionAlgorithmIdentifier();
-        $cert = $tbs_cert->sign(Crypto::getDefault(), $algo, self::$_issuerKey);
+        $cert = $tbs_cert->sign($algo, self::$_issuerKey);
         $this->assertInstanceOf(Certificate::class, $cert);
         return $cert;
     }
@@ -123,7 +122,7 @@ class RequestToCertTest extends PHPUnit_Framework_TestCase
     {
         $config = PathValidationConfig::defaultConfig()->withDateTime(
             new DateTimeImmutable("2016-05-02 12:30:00"));
-        $result = $path->validate(Crypto::getDefault(), $config);
+        $result = $path->validate($config);
         $this->assertInstanceOf(PathValidationResult::class, $result);
     }
 }

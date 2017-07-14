@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoEncoding\PEMBundle;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\ECDSAWithSHA256AlgorithmIdentifier;
@@ -54,8 +53,8 @@ class PassingACValidationIntegrationTest extends PHPUnit_Framework_TestCase
         $aci = $aci->withAdditionalExtensions(
             TargetInformationExtension::fromTargets(
                 new TargetName(new DNSName("test"))));
-        self::$_ac = $aci->sign(Crypto::getDefault(),
-            new ECDSAWithSHA256AlgorithmIdentifier(), $issuer_pk);
+        self::$_ac = $aci->sign(new ECDSAWithSHA256AlgorithmIdentifier(),
+            $issuer_pk);
     }
     
     public static function tearDownAfterClass()
@@ -69,7 +68,7 @@ class PassingACValidationIntegrationTest extends PHPUnit_Framework_TestCase
     {
         $config = new ACValidationConfig(self::$_holderPath, self::$_issuerPath);
         $config = $config->withTargets(new TargetName(new DNSName("test")));
-        $validator = new ACValidator(self::$_ac, $config, Crypto::getDefault());
+        $validator = new ACValidator(self::$_ac, $config);
         $this->assertInstanceOf(AttributeCertificate::class,
             $validator->validate());
     }

@@ -433,14 +433,15 @@ class AttributeCertificateInfo
     /**
      * Create signed attribute certificate.
      *
-     * @param Crypto $crypto
      * @param SignatureAlgorithmIdentifier $algo Signature algorithm
      * @param PrivateKeyInfo $privkey_info Private key
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return AttributeCertificate
      */
-    public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo,
-        PrivateKeyInfo $privkey_info)
+    public function sign(SignatureAlgorithmIdentifier $algo,
+        PrivateKeyInfo $privkey_info, Crypto $crypto = null)
     {
+        $crypto = $crypto ?: Crypto::getDefault();
         $aci = clone $this;
         if (!isset($aci->_serialNumber)) {
             $aci->_serialNumber = 0;

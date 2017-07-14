@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
@@ -49,14 +48,14 @@ class CertificatePolicyErrorValidationIntegrationTest extends PHPUnit_Framework_
             new CertificatePoliciesExtension(false,
                 new PolicyInformation("1.3.6.1.3")),
             new PolicyConstraintsExtension(true, 0));
-        self::$_ca = $tbs->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
+        self::$_ca = $tbs->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_caKey);
         // create end-entity certificate
         $tbs = new TBSCertificate(Name::fromString(self::CERT_NAME),
             self::$_certKey->publicKeyInfo(), Name::fromString(self::CA_NAME),
             Validity::fromStrings(null, "now + 1 hour"));
         $tbs = $tbs->withIssuerCertificate(self::$_ca);
-        self::$_cert = $tbs->sign(Crypto::getDefault(),
+        self::$_cert = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
     }
     
@@ -77,7 +76,7 @@ class CertificatePolicyErrorValidationIntegrationTest extends PHPUnit_Framework_
     {
         $path = new CertificationPath(self::$_ca, self::$_cert);
         $config = new PathValidationConfig(new DateTimeImmutable(), 3);
-        $result = $path->validate(Crypto::getDefault(), $config);
+        $result = $path->validate($config);
         $this->assertInstanceOf(PathValidationResult::class, $result);
     }
 }

@@ -5,7 +5,6 @@
  * php path-validate.php
  */
 
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use X509\Certificate\Certificate;
 use X509\CertificationPath\CertificationPath;
@@ -36,7 +35,7 @@ foreach ($path->certificates() as $idx => $cert) {
 }
 // validate certification path with default configuration
 $config = PathValidationConfig::defaultConfig();
-$result = $path->validate(Crypto::getDefault(), $config);
+$result = $path->validate($config);
 printf("Certificate '%s' is valid.\n",
     $result->certificate()
         ->tbsCertificate()

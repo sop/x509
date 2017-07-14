@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use X509\Certificate\Certificate;
 use X509\Certificate\CertificateBundle;
@@ -70,8 +69,7 @@ class CertificationPathTest extends PHPUnit_Framework_TestCase
      */
     public function testValidate(CertificationPath $path)
     {
-        $result = $path->validate(Crypto::getDefault(),
-            PathValidationConfig::defaultConfig());
+        $result = $path->validate(PathValidationConfig::defaultConfig());
         $this->assertInstanceOf(PathValidationResult::class, $result);
     }
     

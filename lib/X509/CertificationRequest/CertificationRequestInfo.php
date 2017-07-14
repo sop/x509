@@ -209,14 +209,15 @@ class CertificationRequestInfo
     /**
      * Create signed CertificationRequest.
      *
-     * @param Crypto $crypto Crypto engine
      * @param SignatureAlgorithmIdentifier $algo Algorithm used for signing
      * @param PrivateKeyInfo $privkey_info Private key used for signing
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return CertificationRequest
      */
-    public function sign(Crypto $crypto, SignatureAlgorithmIdentifier $algo,
-        PrivateKeyInfo $privkey_info)
+    public function sign(SignatureAlgorithmIdentifier $algo,
+        PrivateKeyInfo $privkey_info, Crypto $crypto = null)
     {
+        $crypto = $crypto ?: Crypto::getDefault();
         $data = $this->toASN1()->toDER();
         $signature = $crypto->sign($data, $privkey_info, $algo);
         return new CertificationRequest($this, $algo, $signature);

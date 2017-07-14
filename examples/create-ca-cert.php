@@ -5,7 +5,6 @@
  * php create-ca-cert.php
  */
 
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Hash\SHA256AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SignatureAlgorithmIdentifierFactory;
@@ -38,5 +37,5 @@ $tbs_cert = $tbs_cert->withRandomSerialNumber()->withAdditionalExtensions(
 // sign certificate with private key
 $algo = SignatureAlgorithmIdentifierFactory::algoForAsymmetricCrypto(
     $private_key_info->algorithmIdentifier(), new SHA256AlgorithmIdentifier());
-$cert = $tbs_cert->sign(Crypto::getDefault(), $algo, $private_key_info);
+$cert = $tbs_cert->sign($algo, $private_key_info);
 echo $cert;

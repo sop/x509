@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoEncoding\PEMBundle;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
@@ -113,11 +112,11 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
         $tc = new TBSCertificate(Name::fromString("cn=Subject"),
             $priv_key_info->publicKeyInfo(), Name::fromString("cn=Issuer 1"),
             Validity::fromStrings(null, null));
-        $cert1 = $tc->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), $priv_key_info);
+        $cert1 = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            $priv_key_info);
         $tc = $tc->withSubject(Name::fromString("cn=Issuer 2"));
-        $cert2 = $tc->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), $priv_key_info);
+        $cert2 = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            $priv_key_info);
         $bundle = new CertificateBundle($cert1);
         $this->assertFalse($bundle->contains($cert2));
     }
@@ -190,8 +189,8 @@ class CertificateBundleTest extends PHPUnit_Framework_TestCase
         $tc = new TBSCertificate(Name::fromString("cn=Subject"),
             $priv_key_info->publicKeyInfo(), Name::fromString("cn=Issuer"),
             Validity::fromStrings(null, null));
-        $cert = $tc->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), $priv_key_info);
+        $cert = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            $priv_key_info);
         $bundle = new CertificateBundle($cert);
         $this->assertEmpty($bundle->allBySubjectKeyIdentifier("nope"));
     }

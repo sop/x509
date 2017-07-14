@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
@@ -48,8 +47,8 @@ class CertificatePolicyProcessPruneValidationIntegrationTest extends PHPUnit_Fra
             new InhibitAnyPolicyExtension(true, 0),
             new CertificatePoliciesExtension(true,
                 new PolicyInformation(PolicyInformation::OID_ANY_POLICY)));
-        self::$_ca = $tbs->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
+        self::$_ca = $tbs->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_caKey);
         // create end-entity certificate
         $tbs = new TBSCertificate(Name::fromString(self::CERT_NAME),
             self::$_certKey->publicKeyInfo(), Name::fromString(self::CA_NAME),
@@ -58,7 +57,7 @@ class CertificatePolicyProcessPruneValidationIntegrationTest extends PHPUnit_Fra
         $tbs = $tbs->withAdditionalExtensions(
             new CertificatePoliciesExtension(true,
                 new PolicyInformation(PolicyInformation::OID_ANY_POLICY)));
-        self::$_cert = $tbs->sign(Crypto::getDefault(),
+        self::$_cert = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
     }
     
@@ -80,6 +79,6 @@ class CertificatePolicyProcessPruneValidationIntegrationTest extends PHPUnit_Fra
         $path = new CertificationPath(self::$_ca, self::$_cert);
         $config = new PathValidationConfig(new DateTimeImmutable(), 3);
         $config = $config->withExplicitPolicy(true);
-        $path->validate(Crypto::getDefault(), $config);
+        $path->validate($config);
     }
 }

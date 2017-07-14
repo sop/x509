@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
@@ -57,8 +56,8 @@ class PolicyMappingInhibitValidationIntegrationTest extends PHPUnit_Framework_Te
             new CertificatePoliciesExtension(false,
                 new PolicyInformation("1.3.6.1.3.1")),
             new PolicyConstraintsExtension(true, 0, 0));
-        self::$_ca = $tbs->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
+        self::$_ca = $tbs->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_caKey);
         // create intermediate certificate
         $tbs = new TBSCertificate(Name::fromString(self::INTERM_NAME),
             self::$_intermKey->publicKeyInfo(), Name::fromString(self::CA_NAME),
@@ -70,17 +69,18 @@ class PolicyMappingInhibitValidationIntegrationTest extends PHPUnit_Framework_Te
                 new PolicyInformation("1.3.6.1.3.1")),
             new PolicyMappingsExtension(true,
                 new PolicyMapping("1.3.6.1.3.1", "1.3.6.1.3.2")));
-        self::$_interm = $tbs->sign(Crypto::getDefault(),
+        self::$_interm = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
         // create end-entity certificate
         $tbs = new TBSCertificate(Name::fromString(self::CERT_NAME),
-            self::$_certKey->publicKeyInfo(), Name::fromString(
-                self::INTERM_NAME), Validity::fromStrings(null, "now + 1 hour"));
+            self::$_certKey->publicKeyInfo(),
+            Name::fromString(self::INTERM_NAME),
+            Validity::fromStrings(null, "now + 1 hour"));
         $tbs = $tbs->withIssuerCertificate(self::$_interm);
         $tbs = $tbs->withAdditionalExtensions(
             new CertificatePoliciesExtension(false,
                 new PolicyInformation("1.3.6.1.3.2")));
-        self::$_cert = $tbs->sign(Crypto::getDefault(),
+        self::$_cert = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_intermKey);
     }
     
@@ -103,6 +103,6 @@ class PolicyMappingInhibitValidationIntegrationTest extends PHPUnit_Framework_Te
     {
         $path = new CertificationPath(self::$_ca, self::$_interm, self::$_cert);
         $config = new PathValidationConfig(new DateTimeImmutable(), 3);
-        $path->validate(Crypto::getDefault(), $config);
+        $path->validate($config);
     }
 }

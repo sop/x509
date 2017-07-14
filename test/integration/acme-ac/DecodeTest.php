@@ -1,6 +1,5 @@
 <?php
 use ASN1\Type\Constructed\Sequence;
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use X509\AttributeCertificate\AttributeCertificate;
@@ -77,6 +76,6 @@ class RefACDecodeTest extends PHPUnit_Framework_TestCase
         $cert = Certificate::fromPEM(
             PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem"));
         $pubkey_info = $cert->tbsCertificate()->subjectPublicKeyInfo();
-        $this->assertTrue($ac->verify(Crypto::getDefault(), $pubkey_info));
+        $this->assertTrue($ac->verify($pubkey_info));
     }
 }

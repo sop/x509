@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
@@ -38,7 +37,7 @@ class CertificateVersionTest extends PHPUnit_Framework_TestCase
     
     public function testVersion1()
     {
-        $cert = self::$_tbsCert->sign(Crypto::getDefault(),
+        $cert = self::$_tbsCert->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertEquals($cert->tbsCertificate()
@@ -49,8 +48,7 @@ class CertificateVersionTest extends PHPUnit_Framework_TestCase
     {
         $tbsCert = self::$_tbsCert->withSubjectUniqueID(
             UniqueIdentifier::fromString("subject"));
-        $cert = $tbsCert->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+        $cert = $tbsCert->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertEquals($cert->tbsCertificate()
             ->version(), TBSCertificate::VERSION_2);
@@ -60,8 +58,7 @@ class CertificateVersionTest extends PHPUnit_Framework_TestCase
     {
         $tbsCert = self::$_tbsCert->withIssuerUniqueID(
             UniqueIdentifier::fromString("issuer"));
-        $cert = $tbsCert->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+        $cert = $tbsCert->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertEquals($cert->tbsCertificate()
             ->version(), TBSCertificate::VERSION_2);
@@ -72,8 +69,7 @@ class CertificateVersionTest extends PHPUnit_Framework_TestCase
         $tbsCert = self::$_tbsCert->withSubjectUniqueID(
             UniqueIdentifier::fromString("subject"))->withIssuerUniqueID(
             UniqueIdentifier::fromString("issuer"));
-        $cert = $tbsCert->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+        $cert = $tbsCert->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertEquals($cert->tbsCertificate()
             ->version(), TBSCertificate::VERSION_2);
@@ -84,8 +80,7 @@ class CertificateVersionTest extends PHPUnit_Framework_TestCase
         $tbsCert = self::$_tbsCert->withExtensions(
             new Extensions(
                 new KeyUsageExtension(true, KeyUsageExtension::DIGITAL_SIGNATURE)));
-        $cert = $tbsCert->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+        $cert = $tbsCert->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertEquals($cert->tbsCertificate()
             ->version(), TBSCertificate::VERSION_3);

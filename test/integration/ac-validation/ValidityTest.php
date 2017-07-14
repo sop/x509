@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoEncoding\PEMBundle;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\ECDSAWithSHA256AlgorithmIdentifier;
@@ -47,8 +46,8 @@ class ValidityACValidationIntegrationTest extends PHPUnit_Framework_TestCase
             AttCertIssuer::fromPKC($issuer),
             AttCertValidityPeriod::fromStrings("now", "now + 1 hour"),
             new Attributes());
-        self::$_ac = $aci->sign(Crypto::getDefault(),
-            new ECDSAWithSHA256AlgorithmIdentifier(), $issuer_pk);
+        self::$_ac = $aci->sign(new ECDSAWithSHA256AlgorithmIdentifier(),
+            $issuer_pk);
     }
     
     public static function tearDownAfterClass()
@@ -66,7 +65,7 @@ class ValidityACValidationIntegrationTest extends PHPUnit_Framework_TestCase
         $config = new ACValidationConfig(self::$_holderPath, self::$_issuerPath);
         $config = $config->withEvaluationTime(
             new DateTimeImmutable("now - 1 hour"));
-        $validator = new ACValidator(self::$_ac, $config, Crypto::getDefault());
+        $validator = new ACValidator(self::$_ac, $config);
         $validator->validate();
     }
     
@@ -78,7 +77,7 @@ class ValidityACValidationIntegrationTest extends PHPUnit_Framework_TestCase
         $config = new ACValidationConfig(self::$_holderPath, self::$_issuerPath);
         $config = $config->withEvaluationTime(
             new DateTimeImmutable("now + 2 hours"));
-        $validator = new ACValidator(self::$_ac, $config, Crypto::getDefault());
+        $validator = new ACValidator(self::$_ac, $config);
         $validator->validate();
     }
 }

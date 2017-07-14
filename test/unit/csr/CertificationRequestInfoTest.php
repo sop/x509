@@ -1,7 +1,6 @@
 <?php
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
@@ -214,8 +213,7 @@ class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
      */
     public function testSign(CertificationRequestInfo $cri)
     {
-        $csr = $cri->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+        $csr = $cri->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertInstanceOf(CertificationRequest::class, $csr);
     }

@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
@@ -50,8 +49,8 @@ class PolicyMappingMapAnyValidationIntegrationTest extends PHPUnit_Framework_Tes
                 new PolicyInformation(PolicyInformation::OID_ANY_POLICY)),
             new PolicyMappingsExtension(true,
                 new PolicyMapping("1.3.6.1.3.1", "1.3.6.1.3.2")));
-        self::$_ca = $tbs->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
+        self::$_ca = $tbs->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_caKey);
         // create end-entity certificate
         $tbs = new TBSCertificate(Name::fromString(self::CERT_NAME),
             self::$_certKey->publicKeyInfo(), Name::fromString(self::CA_NAME),
@@ -60,7 +59,7 @@ class PolicyMappingMapAnyValidationIntegrationTest extends PHPUnit_Framework_Tes
         $tbs = $tbs->withAdditionalExtensions(
             new CertificatePoliciesExtension(true,
                 new PolicyInformation("1.3.6.1.3.2")));
-        self::$_cert = $tbs->sign(Crypto::getDefault(),
+        self::$_cert = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
     }
     
@@ -77,7 +76,7 @@ class PolicyMappingMapAnyValidationIntegrationTest extends PHPUnit_Framework_Tes
         $path = new CertificationPath(self::$_ca, self::$_cert);
         $config = new PathValidationConfig(new DateTimeImmutable(), 3);
         $config = $config->withExplicitPolicy(true);
-        $result = $path->validate(Crypto::getDefault(), $config);
+        $result = $path->validate($config);
         $this->assertEquals("1.3.6.1.3.2", $result->policies()[0]->oid());
     }
     

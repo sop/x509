@@ -1,7 +1,6 @@
 <?php
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
@@ -389,8 +388,8 @@ class AttributeCertificateInfoTest extends PHPUnit_Framework_TestCase
      */
     public function testSign(AttributeCertificateInfo $aci)
     {
-        $ac = $aci->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_privKeyInfo);
+        $ac = $aci->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_privKeyInfo);
         $this->assertInstanceOf(AttributeCertificate::class, $ac);
     }
     

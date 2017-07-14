@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
@@ -81,8 +80,8 @@ class IssuerSerialIntegrationTest extends PHPUnit_Framework_TestCase
             self::$_privKey->publicKeyInfo(), Name::fromString("cn=Iss"),
             Validity::fromStrings("now", "now + 1 hour"));
         $tbs = $tbs->withIssuerUniqueID(UniqueIdentifier::fromString("uid"));
-        $cert = $tbs->sign(Crypto::getDefault(),
-            new SHA256WithRSAEncryptionAlgorithmIdentifier(), self::$_privKey);
+        $cert = $tbs->sign(new SHA256WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_privKey);
         $is = IssuerSerial::fromPKC($cert);
         $this->assertTrue($is->identifiesPKC($cert));
     }
@@ -94,8 +93,8 @@ class IssuerSerialIntegrationTest extends PHPUnit_Framework_TestCase
             self::$_privKey->publicKeyInfo(), $issuer,
             Validity::fromStrings("now", "now + 1 hour"));
         $tbs = $tbs->withIssuerUniqueID(UniqueIdentifier::fromString("uid"));
-        $cert = $tbs->sign(Crypto::getDefault(),
-            new SHA256WithRSAEncryptionAlgorithmIdentifier(), self::$_privKey);
+        $cert = $tbs->sign(new SHA256WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_privKey);
         $is = new IssuerSerial(new GeneralNames(new DirectoryName($issuer)),
             $cert->tbsCertificate()->serialNumber(),
             UniqueIdentifier::fromString("fail"));

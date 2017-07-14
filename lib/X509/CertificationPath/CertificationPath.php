@@ -156,13 +156,14 @@ class CertificationPath implements \Countable, \IteratorAggregate
     /**
      * Validate certification path.
      *
-     * @param Crypto $crypto
      * @param PathValidationConfig $config
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      * @throws Exception\PathValidationException
      * @return PathValidation\PathValidationResult
      */
-    public function validate(Crypto $crypto, PathValidationConfig $config)
+    public function validate(PathValidationConfig $config, Crypto $crypto = null)
     {
+        $crypto = $crypto ?: Crypto::getDefault();
         $validator = new PathValidator($crypto, $config, ...$this->_certificates);
         return $validator->validate();
     }

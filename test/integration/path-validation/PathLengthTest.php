@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
@@ -42,14 +41,14 @@ class PathLengthValidationIntegrationTest extends PHPUnit_Framework_TestCase
             Validity::fromStrings(null, "now + 1 hour"));
         $tbs = $tbs->withAdditionalExtensions(
             new BasicConstraintsExtension(true, true, 1));
-        self::$_ca = $tbs->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
+        self::$_ca = $tbs->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_caKey);
         // create end-entity certificate
         $tbs = new TBSCertificate(Name::fromString(self::CERT_NAME),
             self::$_certKey->publicKeyInfo(), Name::fromString(self::CA_NAME),
             Validity::fromStrings(null, "now + 1 hour"));
         $tbs = $tbs->withIssuerCertificate(self::$_ca);
-        self::$_cert = $tbs->sign(Crypto::getDefault(),
+        self::$_cert = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
     }
     
@@ -64,7 +63,7 @@ class PathLengthValidationIntegrationTest extends PHPUnit_Framework_TestCase
     public function testValidate()
     {
         $path = new CertificationPath(self::$_ca, self::$_cert);
-        $result = $path->validate(Crypto::getDefault(),
+        $result = $path->validate(
             new PathValidationConfig(new DateTimeImmutable(), 3));
         $this->assertInstanceOf(PathValidationResult::class, $result);
     }

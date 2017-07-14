@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
@@ -77,6 +76,6 @@ $extensions = new Extensions($aki_ext, $nra_ext, $ti_ext);
 $aci = new AttributeCertificateInfo($holder, $issuer, $validity, $attribs);
 $aci = $aci->withSerialNumber(0xbadcafe);
 $aci = $aci->withExtensions($extensions);
-$ac = $aci->sign(Crypto::getDefault(),
-    new SHA256WithRSAEncryptionAlgorithmIdentifier(), $issuer_private_key);
+$ac = $aci->sign(new SHA256WithRSAEncryptionAlgorithmIdentifier(),
+    $issuer_private_key);
 echo $ac;

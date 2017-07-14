@@ -122,7 +122,7 @@ class CertificationRequestTest extends PHPUnit_Framework_TestCase
      */
     public function testVerify(CertificationRequest $cr)
     {
-        $this->assertTrue($cr->verify(Crypto::getDefault()));
+        $this->assertTrue($cr->verify());
     }
     
     /**

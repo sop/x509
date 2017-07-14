@@ -37,8 +37,7 @@ class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
      */
     public function testValidateDefault()
     {
-        $result = self::$_path->validate(Crypto::getDefault(),
-            PathValidationConfig::defaultConfig());
+        $result = self::$_path->validate(PathValidationConfig::defaultConfig());
         $this->assertInstanceOf(PathValidationResult::class, $result);
         return $result;
     }
@@ -64,7 +63,7 @@ class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
     {
         $config = PathValidationConfig::defaultConfig()->withDateTime(
             new DateTimeImmutable("2026-01-03"));
-        self::$_path->validate(Crypto::getDefault(), $config);
+        self::$_path->validate($config);
     }
     
     /* @formatter:off */
@@ -76,7 +75,7 @@ class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
     {
         $config = PathValidationConfig::defaultConfig()->withDateTime(
             new DateTimeImmutable("2015-12-31"));
-        self::$_path->validate(Crypto::getDefault(), $config);
+        self::$_path->validate($config);
     }
     
     /* @formatter:off */
@@ -87,7 +86,7 @@ class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
     public function testValidatePathLengthFail()
     {
         $config = PathValidationConfig::defaultConfig()->withMaxLength(0);
-        self::$_path->validate(Crypto::getDefault(), $config);
+        self::$_path->validate($config);
     }
     
     /**

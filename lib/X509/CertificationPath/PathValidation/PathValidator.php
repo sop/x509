@@ -264,7 +264,7 @@ class PathValidator
     private function _verifySignature(ValidatorState $state, Certificate $cert)
     {
         try {
-            $valid = $cert->verify($this->_crypto, $state->workingPublicKey());
+            $valid = $cert->verify($state->workingPublicKey(), $this->_crypto);
         } catch (\RuntimeException $e) {
             throw new PathValidationException(
                 "Failed to verify signature: " . $e->getMessage(), null, $e);

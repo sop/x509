@@ -5,7 +5,6 @@
  * php issue-cert.php <(php create-ca-cert.php) <(php create-csr.php)
  */
 
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Hash\SHA512AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SignatureAlgorithmIdentifierFactory;
@@ -25,7 +24,7 @@ $issuer_cert = Certificate::fromPEM(PEM::fromFile($argv[1]));
 // load certification request from PEM
 $csr = CertificationRequest::fromPEM(PEM::fromFile($argv[2]));
 // verify CSR
-if (!$csr->verify(Crypto::getDefault())) {
+if (!$csr->verify()) {
     echo "Failed to verify certification request signature.\n";
     exit(1);
 }
@@ -48,5 +47,5 @@ $tbs_cert = $tbs_cert->withAdditionalExtensions(
 // sign certificate with issuer's private key
 $algo = SignatureAlgorithmIdentifierFactory::algoForAsymmetricCrypto(
     $private_key_info->algorithmIdentifier(), new SHA512AlgorithmIdentifier());
-$cert = $tbs_cert->sign(Crypto::getDefault(), $algo, $private_key_info);
+$cert = $tbs_cert->sign($algo, $private_key_info);
 echo $cert;

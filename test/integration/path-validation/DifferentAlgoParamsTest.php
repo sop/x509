@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Asymmetric\RSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
@@ -40,8 +39,8 @@ class DifferentAlgoParamsValidationIntegrationTest extends PHPUnit_Framework_Tes
         $tbs = new TBSCertificate(Name::fromString(self::CA_NAME),
             self::$_caKey->publicKeyInfo(), Name::fromString(self::CA_NAME),
             Validity::fromStrings(null, "now + 1 hour"));
-        self::$_ca = $tbs->sign(Crypto::getDefault(),
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
+        self::$_ca = $tbs->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
+            self::$_caKey);
         // create end-entity certificate
         $pubkey = self::$_certKey->publicKeyInfo();
         // hack modified algorithm identifier into PublicKeyInfo
@@ -54,7 +53,7 @@ class DifferentAlgoParamsValidationIntegrationTest extends PHPUnit_Framework_Tes
             Name::fromString(self::CA_NAME),
             Validity::fromStrings(null, "now + 1 hour"));
         $tbs = $tbs->withIssuerCertificate(self::$_ca);
-        self::$_cert = $tbs->sign(Crypto::getDefault(),
+        self::$_cert = $tbs->sign(
             new SHA1WithRSAEncryptionAlgorithmIdentifier(), self::$_caKey);
     }
     
@@ -69,7 +68,7 @@ class DifferentAlgoParamsValidationIntegrationTest extends PHPUnit_Framework_Tes
     public function testValidate()
     {
         $path = new CertificationPath(self::$_ca, self::$_cert);
-        $result = $path->validate(Crypto::getDefault(),
+        $result = $path->validate(
             new PathValidationConfig(new DateTimeImmutable(), 3));
         $this->assertInstanceOf(PathValidationResult::class, $result);
     }

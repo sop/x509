@@ -1,5 +1,4 @@
 <?php
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
@@ -26,8 +25,8 @@ class CertificateEqualsIntegrationTest extends PHPUnit_Framework_TestCase
             $pubkey);
         $privkey = PrivateKey::fromPEM(
             PEM::fromFile(TEST_ASSETS_DIR . "/certs/keys/acme-rsa.pem"))->privateKeyInfo();
-        self::$_cert1DifKey = $tbs->sign(Crypto::getDefault(),
-            self::$_cert1->signatureAlgorithm(), $privkey);
+        self::$_cert1DifKey = $tbs->sign(self::$_cert1->signatureAlgorithm(),
+            $privkey);
         self::$_cert2 = Certificate::fromPEM(
             PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem"));
     }

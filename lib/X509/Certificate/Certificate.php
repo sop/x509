@@ -227,12 +227,13 @@ class Certificate
     /**
      * Verify certificate signature.
      *
-     * @param Crypto $crypto
      * @param PublicKeyInfo $pubkey_info Issuer's public key
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return bool True if certificate signature is valid
      */
-    public function verify(Crypto $crypto, PublicKeyInfo $pubkey_info)
+    public function verify(PublicKeyInfo $pubkey_info, Crypto $crypto = null)
     {
+        $crypto = $crypto ?: Crypto::getDefault();
         $data = $this->_tbsCertificate->toASN1()->toDER();
         return $crypto->verify($data, $this->_signatureValue, $pubkey_info,
             $this->_signatureAlgorithm);

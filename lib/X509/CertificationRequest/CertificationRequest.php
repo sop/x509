@@ -163,11 +163,12 @@ class CertificationRequest
     /**
      * Verify certification request signature.
      *
-     * @param Crypto $crypto
+     * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return bool True if signature matches
      */
-    public function verify(Crypto $crypto)
+    public function verify(Crypto $crypto = null)
     {
+        $crypto = $crypto ?: Crypto::getDefault();
         $data = $this->_certificationRequestInfo->toASN1()->toDER();
         $pk_info = $this->_certificationRequestInfo->subjectPKInfo();
         return $crypto->verify($data, $this->_signature, $pk_info,

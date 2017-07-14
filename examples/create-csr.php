@@ -5,7 +5,6 @@
  * php create-csr.php
  */
 
-use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Hash\SHA256AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SignatureAlgorithmIdentifierFactory;
@@ -27,5 +26,5 @@ $cri = new CertificationRequestInfo($subject, $public_key_info);
 // sign certificate request with private key
 $algo = SignatureAlgorithmIdentifierFactory::algoForAsymmetricCrypto(
     $private_key_info->algorithmIdentifier(), new SHA256AlgorithmIdentifier());
-$csr = $cri->sign(Crypto::getDefault(), $algo, $private_key_info);
+$csr = $cri->sign($algo, $private_key_info);
 echo $csr;
