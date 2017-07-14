@@ -46,9 +46,10 @@ class PathValidator
     /**
      * Constructor.
      *
-     * @param Crypto $crypto
-     * @param PathValidationConfig $config
-     * @param Certificate ...$certificates
+     * @param Crypto $crypto Crypto engine
+     * @param PathValidationConfig $config Validation config
+     * @param Certificate ...$certificates Certificates from the trust anchor to
+     *            the end-entity certificate
      */
     public function __construct(Crypto $crypto, PathValidationConfig $config,
         Certificate ...$certificates)
