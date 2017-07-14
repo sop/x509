@@ -2,9 +2,8 @@
 
 namespace X509\Certificate\Extension\NameConstraints;
 
-use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\UnspecifiedType;
-
+use ASN1\Type\Constructed\Sequence;
 
 /**
  * Implements <i>GeneralSubtrees</i> ASN.1 type used by
@@ -14,81 +13,87 @@ use ASN1\Type\UnspecifiedType;
  */
 class GeneralSubtrees implements \Countable, \IteratorAggregate
 {
-	/**
-	 * Subtrees.
-	 *
-	 * @var GeneralSubtree[] $_subtrees
-	 */
-	protected $_subtrees;
-	
-	/**
-	 * Constructor
-	 *
-	 * @param GeneralSubtree ...$subtrees
-	 */
-	public function __construct(GeneralSubtree ...$subtrees) {
-		$this->_subtrees = $subtrees;
-	}
-	
-	/**
-	 * Initialize from ASN.1.
-	 *
-	 * @param Sequence $seq
-	 * @return self
-	 */
-	public static function fromASN1(Sequence $seq) {
-		$subtrees = array_map(
-			function (UnspecifiedType $el) {
-				return GeneralSubtree::fromASN1($el->asSequence());
-			}, $seq->elements());
-		if (!count($subtrees)) {
-			throw new \UnexpectedValueException(
-				"GeneralSubtrees must contain at least one GeneralSubtree.");
-		}
-		return new self(...$subtrees);
-	}
-	
-	/**
-	 * Get all subtrees.
-	 *
-	 * @return GeneralSubtree[]
-	 */
-	public function all() {
-		return $this->_subtrees;
-	}
-	
-	/**
-	 * Generate ASN.1 structure.
-	 *
-	 * @return Sequence
-	 */
-	public function toASN1() {
-		if (!count($this->_subtrees)) {
-			throw new \LogicException("No subtrees.");
-		}
-		$elements = array_map(
-			function (GeneralSubtree $gs) {
-				return $gs->toASN1();
-			}, $this->_subtrees);
-		return new Sequence(...$elements);
-	}
-	
-	/**
-	 *
-	 * @see Countable::count()
-	 * @return int
-	 */
-	public function count() {
-		return count($this->_subtrees);
-	}
-	
-	/**
-	 * Get iterator for subtrees.
-	 *
-	 * @see IteratorAggregate::getIterator()
-	 * @return \ArrayIterator
-	 */
-	public function getIterator() {
-		return new \ArrayIterator($this->_subtrees);
-	}
+    /**
+     * Subtrees.
+     *
+     * @var GeneralSubtree[] $_subtrees
+     */
+    protected $_subtrees;
+    
+    /**
+     * Constructor.
+     *
+     * @param GeneralSubtree ...$subtrees
+     */
+    public function __construct(GeneralSubtree ...$subtrees)
+    {
+        $this->_subtrees = $subtrees;
+    }
+    
+    /**
+     * Initialize from ASN.1.
+     *
+     * @param Sequence $seq
+     * @return self
+     */
+    public static function fromASN1(Sequence $seq)
+    {
+        $subtrees = array_map(
+            function (UnspecifiedType $el) {
+                return GeneralSubtree::fromASN1($el->asSequence());
+            }, $seq->elements());
+        if (!count($subtrees)) {
+            throw new \UnexpectedValueException(
+                "GeneralSubtrees must contain at least one GeneralSubtree.");
+        }
+        return new self(...$subtrees);
+    }
+    
+    /**
+     * Get all subtrees.
+     *
+     * @return GeneralSubtree[]
+     */
+    public function all()
+    {
+        return $this->_subtrees;
+    }
+    
+    /**
+     * Generate ASN.1 structure.
+     *
+     * @return Sequence
+     */
+    public function toASN1()
+    {
+        if (!count($this->_subtrees)) {
+            throw new \LogicException("No subtrees.");
+        }
+        $elements = array_map(
+            function (GeneralSubtree $gs) {
+                return $gs->toASN1();
+            }, $this->_subtrees);
+        return new Sequence(...$elements);
+    }
+    
+    /**
+     *
+     * @see \Countable::count()
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->_subtrees);
+    }
+    
+    /**
+     * Get iterator for subtrees.
+     *
+     * @see \IteratorAggregate::getIterator()
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->_subtrees);
+    }
 }

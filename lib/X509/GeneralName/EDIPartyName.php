@@ -2,9 +2,8 @@
 
 namespace X509\GeneralName;
 
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use ASN1\Type\UnspecifiedType;
-
+use ASN1\Type\Tagged\ImplicitlyTaggedType;
 
 /**
  * Implements <i>ediPartyName</i> CHOICE type of <i>GeneralName</i>.
@@ -16,28 +15,47 @@ use ASN1\Type\UnspecifiedType;
  */
 class EDIPartyName extends GeneralName
 {
-	protected $_element;
-	
-	protected function __construct() {
-		$this->_tag = self::TAG_EDI_PARTY_NAME;
-	}
-	
-	/**
-	 *
-	 * @param UnspecifiedType $el
-	 * @return self
-	 */
-	public static function fromChosenASN1(UnspecifiedType $el) {
-		$obj = new self();
-		$obj->_element = $el->asSequence();
-		return $obj;
-	}
-	
-	public function string() {
-		return bin2hex($this->_element->toDER());
-	}
-	
-	protected function _choiceASN1() {
-		return new ImplicitlyTaggedType($this->_tag, $this->_element);
-	}
+    /**
+     *
+     * @var \ASN1\Element
+     */
+    protected $_element;
+    
+    /**
+     * Constructor.
+     */
+    protected function __construct()
+    {
+        $this->_tag = self::TAG_EDI_PARTY_NAME;
+    }
+    
+    /**
+     *
+     * @param UnspecifiedType $el
+     * @return self
+     */
+    public static function fromChosenASN1(UnspecifiedType $el)
+    {
+        $obj = new self();
+        $obj->_element = $el->asSequence();
+        return $obj;
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     */
+    public function string()
+    {
+        return bin2hex($this->_element->toDER());
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     */
+    protected function _choiceASN1()
+    {
+        return new ImplicitlyTaggedType($this->_tag, $this->_element);
+    }
 }

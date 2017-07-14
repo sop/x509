@@ -4,9 +4,15 @@
 	"homepage": "https://github.com/sop/x509",
 	"license": "MIT",
 	"type": "library",
-	"keywords": ["x509", "x.509", "certificate", 
-		"attribute certificate", "ac", 
-		"certification request", "csr"],
+	"keywords": [
+		"x509",
+		"x.509",
+		"certificate",
+		"attribute certificate",
+		"ac",
+		"certification request",
+		"csr"
+	],
 	"authors": [
 		{
 			"name": "Joni Eskelinen",
@@ -19,7 +25,9 @@
 		"ext-gmp": "*",
 		"sop/asn1": "^2.0.0",
 		"sop/x501": "^0.4.0",
-		"sop/crypto-util": "^1.10.0"
+		"sop/crypto-types": "^0.1.0",
+		"sop/crypto-bridge": "^0.1.0",
+		"sop/crypto-encoding": "^0.1.0"
 	},
 	"autoload": {
 		"psr-4": {

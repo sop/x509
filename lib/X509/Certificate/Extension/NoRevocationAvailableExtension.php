@@ -4,7 +4,6 @@ namespace X509\Certificate\Extension;
 
 use ASN1\Type\Primitive\NullType;
 
-
 /**
  * Implements 'No Revocation Available' certificate extension.
  *
@@ -12,21 +11,34 @@ use ASN1\Type\Primitive\NullType;
  */
 class NoRevocationAvailableExtension extends Extension
 {
-	/**
-	 * Constructor
-	 *
-	 * @param bool $critical
-	 */
-	public function __construct($critical) {
-		parent::__construct(self::OID_NO_REV_AVAIL, $critical);
-	}
-	
-	protected static function _fromDER($data, $critical) {
-		NullType::fromDER($data);
-		return new self($critical);
-	}
-	
-	protected function _valueASN1() {
-		return new NullType();
-	}
+    /**
+     * Constructor.
+     *
+     * @param bool $critical
+     */
+    public function __construct($critical)
+    {
+        parent::__construct(self::OID_NO_REV_AVAIL, $critical);
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return self
+     */
+    protected static function _fromDER($data, $critical)
+    {
+        NullType::fromDER($data);
+        return new self($critical);
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return NullType
+     */
+    protected function _valueASN1()
+    {
+        return new NullType();
+    }
 }

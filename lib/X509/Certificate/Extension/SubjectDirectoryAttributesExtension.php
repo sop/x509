@@ -2,11 +2,10 @@
 
 namespace X509\Certificate\Extension;
 
-use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\UnspecifiedType;
+use ASN1\Type\Constructed\Sequence;
 use X501\ASN1\Attribute;
 use X509\Feature\AttributeContainer;
-
 
 /**
  * Implements 'Subject Directory Attributes' certificate extension.
@@ -14,41 +13,55 @@ use X509\Feature\AttributeContainer;
  * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.8
  */
 class SubjectDirectoryAttributesExtension extends Extension implements 
-	\Countable, \IteratorAggregate
+    \Countable,
+    \IteratorAggregate
 {
-	use AttributeContainer;
-	
-	/**
-	 * Constructor
-	 *
-	 * @param bool $critical
-	 * @param Attribute ...$attribs One or more Attribute objects
-	 */
-	public function __construct($critical, Attribute ...$attribs) {
-		parent::__construct(self::OID_SUBJECT_DIRECTORY_ATTRIBUTES, $critical);
-		$this->_attributes = $attribs;
-	}
-	
-	protected static function _fromDER($data, $critical) {
-		$attribs = array_map(
-			function (UnspecifiedType $el) {
-				return Attribute::fromASN1($el->asSequence());
-			}, Sequence::fromDER($data)->elements());
-		if (!count($attribs)) {
-			throw new \UnexpectedValueException(
-				"SubjectDirectoryAttributes must have at least one Attribute.");
-		}
-		return new self($critical, ...$attribs);
-	}
-	
-	protected function _valueASN1() {
-		if (!count($this->_attributes)) {
-			throw new \LogicException("No attributes");
-		}
-		$elements = array_map(
-			function (Attribute $attr) {
-				return $attr->toASN1();
-			}, array_values($this->_attributes));
-		return new Sequence(...$elements);
-	}
+    use AttributeContainer;
+    
+    /**
+     * Constructor.
+     *
+     * @param bool $critical
+     * @param Attribute ...$attribs One or more Attribute objects
+     */
+    public function __construct($critical, Attribute ...$attribs)
+    {
+        parent::__construct(self::OID_SUBJECT_DIRECTORY_ATTRIBUTES, $critical);
+        $this->_attributes = $attribs;
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return self
+     */
+    protected static function _fromDER($data, $critical)
+    {
+        $attribs = array_map(
+            function (UnspecifiedType $el) {
+                return Attribute::fromASN1($el->asSequence());
+            }, Sequence::fromDER($data)->elements());
+        if (!count($attribs)) {
+            throw new \UnexpectedValueException(
+                "SubjectDirectoryAttributes must have at least one Attribute.");
+        }
+        return new self($critical, ...$attribs);
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return Sequence
+     */
+    protected function _valueASN1()
+    {
+        if (!count($this->_attributes)) {
+            throw new \LogicException("No attributes");
+        }
+        $elements = array_map(
+            function (Attribute $attr) {
+                return $attr->toASN1();
+            }, array_values($this->_attributes));
+        return new Sequence(...$elements);
+    }
 }

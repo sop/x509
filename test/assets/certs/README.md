@@ -1,7 +1,9 @@
 # Certificates for Unit Tests
+
 Below are the commands used to generate certificates for unit testing.
 
 ## Generate CA Certificate
+
 Create CA certificate `acme-ca.pem` with RSA encryption.
 
     openssl req -new -x509 -key keys/acme-ca-rsa.pem \
@@ -10,6 +12,7 @@ Create CA certificate `acme-ca.pem` with RSA encryption.
       -set_serial 1 -out acme-ca.pem
 
 ## Generate Intermediate Certificate with RSA
+
 Create intermediate certificate `acme-interm-rsa.pem` with RSA encryption.
 
     mkdir -p db && echo -n > db/ca.db &&
@@ -25,6 +28,7 @@ Create intermediate certificate `acme-interm-rsa.pem` with RSA encryption.
       -in acme-interm-rsa.csr -out acme-interm-rsa.pem
 
 ## Generate ACME Certificate
+
 Create `acme-rsa.pem` certificate for testing.
 Store certificate signature to `acme-rsa.pem.sig` and
 CSR signature to `acme-rsa.csr.sig`.
@@ -43,6 +47,7 @@ CSR signature to `acme-rsa.csr.sig`.
       -in acme-rsa.csr -out acme-rsa.pem
 
 ## Generate Intermediate Certificate with ECDSA
+
 Create intermediate certificate `acme-interm-ecdsa.pem` with
 elliptic curve encryption.
 
@@ -59,6 +64,7 @@ elliptic curve encryption.
       -in acme-interm-ecdsa.csr -out acme-interm-ecdsa.pem
 
 ## Generate ACME Certificate with ECDSA
+
 Create `acme-ecdsa.pem` certificate with elliptic curve encryption.
 
     mkdir -p db && echo -n > db/ca.db &&
@@ -75,6 +81,7 @@ Create `acme-ecdsa.pem` certificate with elliptic curve encryption.
       -in acme-ecdsa.csr -out acme-ecdsa.pem
 
 # Extract Signatures
+
 Extract signatures from certificates and certification requests.
 
     for f in acme-*.pem; do
@@ -89,6 +96,7 @@ Extract signatures from certificates and certification requests.
     done
 
 # Combine to Bundle
+
 Combine intermediate certificates to bundle.
 
     cat acme-interm-*.pem > intermediate-bundle.pem

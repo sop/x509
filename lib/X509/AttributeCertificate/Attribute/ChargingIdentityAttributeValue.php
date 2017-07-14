@@ -2,7 +2,6 @@
 
 namespace X509\AttributeCertificate\Attribute;
 
-
 /**
  * Implements value for 'Charging Identity' attribute.
  *
@@ -10,15 +9,16 @@ namespace X509\AttributeCertificate\Attribute;
  */
 class ChargingIdentityAttributeValue extends IetfAttrSyntax
 {
-	const OID = "1.3.6.1.5.5.7.10.3";
-	
-	/**
-	 * Constructor
-	 *
-	 * @param IetfAttrValue ...$values
-	 */
-	public function __construct(IetfAttrValue ...$values) {
-		parent::__construct(...$values);
-		$this->_oid = self::OID;
-	}
+    const OID = "1.3.6.1.5.5.7.10.3";
+    
+    /**
+     * Constructor.
+     *
+     * @param IetfAttrValue ...$values
+     */
+    public function __construct(IetfAttrValue ...$values)
+    {
+        parent::__construct(...$values);
+        $this->_oid = self::OID;
+    }
 }

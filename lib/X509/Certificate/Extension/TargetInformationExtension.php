@@ -2,12 +2,10 @@
 
 namespace X509\Certificate\Extension;
 
-use ASN1\Element;
-use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\UnspecifiedType;
+use ASN1\Type\Constructed\Sequence;
 use X509\Certificate\Extension\Target\Target;
 use X509\Certificate\Extension\Target\Targets;
-
 
 /**
  * Implements 'AC Targeting' certificate extension.
@@ -19,130 +17,139 @@ use X509\Certificate\Extension\Target\Targets;
  * @link https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
 class TargetInformationExtension extends Extension implements 
-	\Countable, 
-	\IteratorAggregate
+    \Countable,
+    \IteratorAggregate
 {
-	/**
-	 * Targets elements.
-	 *
-	 * @var Targets[] $_targets
-	 */
-	protected $_targets;
-	
-	/**
-	 * Targets[] merged to single Targets.
-	 *
-	 * @var Targets|null
-	 */
-	private $_merged;
-	
-	/**
-	 * Constructor
-	 *
-	 * @param bool $critical
-	 * @param Targets ...$targets
-	 */
-	public function __construct($critical, Targets ...$targets) {
-		parent::__construct(self::OID_TARGET_INFORMATION, $critical);
-		$this->_targets = $targets;
-	}
-	
-	/**
-	 * Initialize from one or more Target objects.
-	 *
-	 * Extension criticality shall be set to true as specified by RFC 5755.
-	 *
-	 * @param Target ...$target
-	 * @return TargetInformationExtension
-	 */
-	public static function fromTargets(Target ...$target) {
-		return new self(true, new Targets(...$target));
-	}
-	
-	/**
-	 * Reset internal state on clone.
-	 */
-	public function __clone() {
-		$this->_merged = null;
-	}
-	
-	/**
-	 *
-	 * @param string $data
-	 * @param bool $critical
-	 * @return self
-	 */
-	protected static function _fromDER($data, $critical) {
-		$targets = array_map(
-			function (UnspecifiedType $el) {
-				return Targets::fromASN1($el->asSequence());
-			}, Sequence::fromDER($data)->elements());
-		return new self($critical, ...$targets);
-	}
-	
-	/**
-	 * Get all targets.
-	 *
-	 * @return Targets
-	 */
-	public function targets() {
-		if (!isset($this->_merged)) {
-			$a = array();
-			foreach ($this->_targets as $targets) {
-				$a = array_merge($a, $targets->all());
-			}
-			$this->_merged = new Targets(...$a);
-		}
-		return $this->_merged;
-	}
-	
-	/**
-	 * Get all name targets.
-	 *
-	 * @return Target[]
-	 */
-	public function names() {
-		return $this->targets()->nameTargets();
-	}
-	
-	/**
-	 * Get all group targets.
-	 *
-	 * @return Target[]
-	 */
-	public function groups() {
-		return $this->targets()->groupTargets();
-	}
-	
-	/**
-	 *
-	 * @see \X509\Certificate\Extension\Extension::_valueASN1()
-	 * @return Sequence
-	 */
-	protected function _valueASN1() {
-		$elements = array_map(
-			function (Targets $targets) {
-				return $targets->toASN1();
-			}, $this->_targets);
-		return new Sequence(...$elements);
-	}
-	
-	/**
-	 *
-	 * @see Countable::count()
-	 * @return int
-	 */
-	public function count() {
-		return count($this->targets());
-	}
-	
-	/**
-	 * Get iterator for targets.
-	 *
-	 * @see IteratorAggregate::getIterator()
-	 * @return \ArrayIterator
-	 */
-	public function getIterator() {
-		return new \ArrayIterator($this->targets()->all());
-	}
+    /**
+     * Targets elements.
+     *
+     * @var Targets[] $_targets
+     */
+    protected $_targets;
+    
+    /**
+     * Targets[] merged to single Targets.
+     *
+     * @var Targets|null
+     */
+    private $_merged;
+    
+    /**
+     * Constructor.
+     *
+     * @param bool $critical
+     * @param Targets ...$targets
+     */
+    public function __construct($critical, Targets ...$targets)
+    {
+        parent::__construct(self::OID_TARGET_INFORMATION, $critical);
+        $this->_targets = $targets;
+    }
+    
+    /**
+     * Initialize from one or more Target objects.
+     *
+     * Extension criticality shall be set to true as specified by RFC 5755.
+     *
+     * @param Target ...$target
+     * @return TargetInformationExtension
+     */
+    public static function fromTargets(Target ...$target)
+    {
+        return new self(true, new Targets(...$target));
+    }
+    
+    /**
+     * Reset internal state on clone.
+     */
+    public function __clone()
+    {
+        $this->_merged = null;
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return self
+     */
+    protected static function _fromDER($data, $critical)
+    {
+        $targets = array_map(
+            function (UnspecifiedType $el) {
+                return Targets::fromASN1($el->asSequence());
+            }, Sequence::fromDER($data)->elements());
+        return new self($critical, ...$targets);
+    }
+    
+    /**
+     * Get all targets.
+     *
+     * @return Targets
+     */
+    public function targets()
+    {
+        if (!isset($this->_merged)) {
+            $a = array();
+            foreach ($this->_targets as $targets) {
+                $a = array_merge($a, $targets->all());
+            }
+            $this->_merged = new Targets(...$a);
+        }
+        return $this->_merged;
+    }
+    
+    /**
+     * Get all name targets.
+     *
+     * @return Target[]
+     */
+    public function names()
+    {
+        return $this->targets()->nameTargets();
+    }
+    
+    /**
+     * Get all group targets.
+     *
+     * @return Target[]
+     */
+    public function groups()
+    {
+        return $this->targets()->groupTargets();
+    }
+    
+    /**
+     *
+     * @see \X509\Certificate\Extension\Extension::_valueASN1()
+     * @return Sequence
+     */
+    protected function _valueASN1()
+    {
+        $elements = array_map(
+            function (Targets $targets) {
+                return $targets->toASN1();
+            }, $this->_targets);
+        return new Sequence(...$elements);
+    }
+    
+    /**
+     *
+     * @see \Countable::count()
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->targets());
+    }
+    
+    /**
+     * Get iterator for targets.
+     *
+     * @see \IteratorAggregate::getIterator()
+     * @return \ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->targets()->all());
+    }
 }

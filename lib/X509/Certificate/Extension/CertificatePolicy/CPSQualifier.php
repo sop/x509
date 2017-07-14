@@ -2,9 +2,8 @@
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Type\Primitive\IA5String;
 use ASN1\Type\UnspecifiedType;
-
+use ASN1\Type\Primitive\IA5String;
 
 /**
  * Implements <i>CPSuri</i> ASN.1 type used by
@@ -14,42 +13,51 @@ use ASN1\Type\UnspecifiedType;
  */
 class CPSQualifier extends PolicyQualifierInfo
 {
-	/**
-	 * URI.
-	 *
-	 * @var string $_uri
-	 */
-	protected $_uri;
-	
-	/**
-	 * Constructor
-	 *
-	 * @param string $uri
-	 */
-	public function __construct($uri) {
-		$this->_oid = self::OID_CPS;
-		$this->_uri = $uri;
-	}
-	
-	/**
-	 *
-	 * @param UnspecifiedType $el
-	 * @return self
-	 */
-	public static function fromQualifierASN1(UnspecifiedType $el) {
-		return new self($el->asString()->string());
-	}
-	
-	/**
-	 * Get URI.
-	 *
-	 * @return string
-	 */
-	public function uri() {
-		return $this->_uri;
-	}
-	
-	protected function _qualifierASN1() {
-		return new IA5String($this->_uri);
-	}
+    /**
+     * URI.
+     *
+     * @var string $_uri
+     */
+    protected $_uri;
+    
+    /**
+     * Constructor.
+     *
+     * @param string $uri
+     */
+    public function __construct($uri)
+    {
+        $this->_oid = self::OID_CPS;
+        $this->_uri = $uri;
+    }
+    
+    /**
+     *
+     * @param UnspecifiedType $el
+     * @return self
+     */
+    public static function fromQualifierASN1(UnspecifiedType $el)
+    {
+        return new self($el->asString()->string());
+    }
+    
+    /**
+     * Get URI.
+     *
+     * @return string
+     */
+    public function uri()
+    {
+        return $this->_uri;
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return IA5String
+     */
+    protected function _qualifierASN1()
+    {
+        return new IA5String($this->_uri);
+    }
 }

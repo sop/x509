@@ -5,7 +5,6 @@ namespace X509\Certificate\Extension;
 use ASN1\Type\Constructed\Sequence;
 use X509\GeneralName\GeneralNames;
 
-
 /**
  * Implements 'Subject Alternative Name' certificate extension.
  *
@@ -13,39 +12,53 @@ use X509\GeneralName\GeneralNames;
  */
 class SubjectAlternativeNameExtension extends Extension
 {
-	/**
-	 * Names.
-	 *
-	 * @var GeneralNames $_names
-	 */
-	protected $_names;
-	
-	/**
-	 * Constructor
-	 *
-	 * @param bool $critical
-	 * @param GeneralNames $names
-	 */
-	public function __construct($critical, GeneralNames $names) {
-		parent::__construct(self::OID_SUBJECT_ALT_NAME, $critical);
-		$this->_names = $names;
-	}
-	
-	protected static function _fromDER($data, $critical) {
-		return new self($critical, 
-			GeneralNames::fromASN1(Sequence::fromDER($data)));
-	}
-	
-	/**
-	 * Get names.
-	 *
-	 * @return GeneralNames
-	 */
-	public function names() {
-		return $this->_names;
-	}
-	
-	protected function _valueASN1() {
-		return $this->_names->toASN1();
-	}
+    /**
+     * Names.
+     *
+     * @var GeneralNames $_names
+     */
+    protected $_names;
+    
+    /**
+     * Constructor.
+     *
+     * @param bool $critical
+     * @param GeneralNames $names
+     */
+    public function __construct($critical, GeneralNames $names)
+    {
+        parent::__construct(self::OID_SUBJECT_ALT_NAME, $critical);
+        $this->_names = $names;
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return self
+     */
+    protected static function _fromDER($data, $critical)
+    {
+        return new self($critical,
+            GeneralNames::fromASN1(Sequence::fromDER($data)));
+    }
+    
+    /**
+     * Get names.
+     *
+     * @return GeneralNames
+     */
+    public function names()
+    {
+        return $this->_names;
+    }
+    
+    /**
+     *
+     * {@inheritdoc}
+     * @return Sequence
+     */
+    protected function _valueASN1()
+    {
+        return $this->_names->toASN1();
+    }
 }

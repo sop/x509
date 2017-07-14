@@ -4,7 +4,6 @@ namespace X509\Certificate\Extension;
 
 use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
 
-
 /**
  * Implements 'Freshest CRL' certificate extension.
  *
@@ -12,15 +11,16 @@ use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
  */
 class FreshestCRLExtension extends CRLDistributionPointsExtension
 {
-	/**
-	 * Constructor
-	 *
-	 * @param bool $critical
-	 * @param DistributionPoint ...$distribution_points
-	 */
-	public function __construct($critical, 
-			DistributionPoint ...$distribution_points) {
-		Extension::__construct(self::OID_FRESHEST_CRL, $critical);
-		$this->_distributionPoints = $distribution_points;
-	}
+    /**
+     * Constructor.
+     *
+     * @param bool $critical
+     * @param DistributionPoint ...$distribution_points
+     */
+    public function __construct($critical,
+        DistributionPoint ...$distribution_points)
+    {
+        Extension::__construct(self::OID_FRESHEST_CRL, $critical);
+        $this->_distributionPoints = $distribution_points;
+    }
 }
