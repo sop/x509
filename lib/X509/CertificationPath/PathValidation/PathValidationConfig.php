@@ -71,14 +71,14 @@ class PathValidationConfig
     /**
      *
      * @todo Implement
-     * @var unknown $_permittedSubtrees
+     * @var mixed $_permittedSubtrees
      */
     protected $_permittedSubtrees;
     
     /**
      *
      * @todo Implement
-     * @var unknown $_excludedSubtrees
+     * @var mixed $_excludedSubtrees
      */
     protected $_excludedSubtrees;
     

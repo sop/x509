@@ -38,7 +38,7 @@ abstract class PolicyQualifierInfo
     /**
      * Generate ASN.1 for the 'qualifier' field.
      *
-     * @return Element
+     * @return \ASN1\Element
      */
     abstract protected function _qualifierASN1();
     
