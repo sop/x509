@@ -288,6 +288,7 @@ class PolicyTree
                                 ->anyPolicy()
                                 ->qualifiers();
                         } catch (\LogicException $e) {
+                            // if there's no policies or no qualifiers
                         }
                         $node->addChild(
                             new PolicyNode($idp, $qualifiers, $sdps));
