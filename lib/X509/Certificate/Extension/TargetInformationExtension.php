@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\UnspecifiedType;
@@ -38,9 +40,9 @@ class TargetInformationExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param Targets ...$targets
+     * @param Targets[] $targets
      */
-    public function __construct($critical, Targets ...$targets)
+    public function __construct(bool $critical, Targets ...$targets)
     {
         parent::__construct(self::OID_TARGET_INFORMATION, $critical);
         $this->_targets = $targets;
@@ -51,7 +53,7 @@ class TargetInformationExtension extends Extension implements
      *
      * Extension criticality shall be set to true as specified by RFC 5755.
      *
-     * @param Target ...$target
+     * @param Target[] $target
      * @return TargetInformationExtension
      */
     public static function fromTargets(Target ...$target)
@@ -86,7 +88,7 @@ class TargetInformationExtension extends Extension implements
      *
      * @return Targets
      */
-    public function targets()
+    public function targets(): Targets
     {
         if (!isset($this->_merged)) {
             $a = array();
@@ -103,7 +105,7 @@ class TargetInformationExtension extends Extension implements
      *
      * @return Target[]
      */
-    public function names()
+    public function names(): array
     {
         return $this->targets()->nameTargets();
     }
@@ -113,7 +115,7 @@ class TargetInformationExtension extends Extension implements
      *
      * @return Target[]
      */
-    public function groups()
+    public function groups(): array
     {
         return $this->targets()->groupTargets();
     }
@@ -123,7 +125,7 @@ class TargetInformationExtension extends Extension implements
      * @see \X509\Certificate\Extension\Extension::_valueASN1()
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array_map(
             function (Targets $targets) {
@@ -137,7 +139,7 @@ class TargetInformationExtension extends Extension implements
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->targets());
     }
@@ -148,7 +150,7 @@ class TargetInformationExtension extends Extension implements
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->targets()->all());
     }

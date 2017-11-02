@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -45,7 +47,7 @@ class X400Address extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return bin2hex($this->_element->toDER());
     }

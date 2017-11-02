@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use X509\Certificate\Extension\ExtendedKeyUsageExtension;
 use X509\Certificate\Extension\Extension;
 

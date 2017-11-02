@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
@@ -29,7 +31,7 @@ abstract class AttCertIssuer
      * @param Certificate $cert
      * @return bool
      */
-    abstract public function identifiesPKC(Certificate $cert);
+    abstract public function identifiesPKC(Certificate $cert): bool;
     
     /**
      * Initialize from distinguished name.

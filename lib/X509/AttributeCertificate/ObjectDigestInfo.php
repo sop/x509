@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
@@ -96,7 +98,7 @@ class ObjectDigestInfo
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array(new Enumerated($this->_digestedObjectType));
         if (isset($this->_otherObjectTypeID)) {

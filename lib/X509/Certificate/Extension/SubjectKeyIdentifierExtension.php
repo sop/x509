@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\Primitive\OctetString;
@@ -24,7 +26,7 @@ class SubjectKeyIdentifierExtension extends Extension
      * @param bool $critical
      * @param string $keyIdentifier
      */
-    public function __construct($critical, $keyIdentifier)
+    public function __construct(bool $critical, string $keyIdentifier)
     {
         parent::__construct(self::OID_SUBJECT_KEY_IDENTIFIER, $critical);
         $this->_keyIdentifier = $keyIdentifier;
@@ -45,7 +47,7 @@ class SubjectKeyIdentifierExtension extends Extension
      *
      * @return string
      */
-    public function keyIdentifier()
+    public function keyIdentifier(): string
     {
         return $this->_keyIdentifier;
     }
@@ -55,7 +57,7 @@ class SubjectKeyIdentifierExtension extends Extension
      * {@inheritdoc}
      * @return OctetString
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): OctetString
     {
         return new OctetString($this->_keyIdentifier);
     }

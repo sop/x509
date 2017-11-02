@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Type\UnspecifiedType;
@@ -32,7 +34,7 @@ class NoticeReference
      * Constructor.
      *
      * @param DisplayText $organization
-     * @param int ...$numbers
+     * @param int[] $numbers
      */
     public function __construct(DisplayText $organization, ...$numbers)
     {
@@ -64,7 +66,7 @@ class NoticeReference
      *
      * @return DisplayText
      */
-    public function organization()
+    public function organization(): DisplayText
     {
         return $this->_organization;
     }
@@ -74,7 +76,7 @@ class NoticeReference
      *
      * @return int[]
      */
-    public function numbers()
+    public function numbers(): array
     {
         return $this->_numbers;
     }
@@ -84,7 +86,7 @@ class NoticeReference
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $org = $this->_organization->toASN1();
         $nums = array_map(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\Exception;
 
 use X509\Exception\X509ValidationException;

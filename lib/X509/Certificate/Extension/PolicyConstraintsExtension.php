@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
@@ -33,7 +35,7 @@ class PolicyConstraintsExtension extends Extension
      * @param int|null $require_explicit_policy
      * @param int|null $inhibit_policy_mapping
      */
-    public function __construct($critical, $require_explicit_policy = null,
+    public function __construct(bool $critical, $require_explicit_policy = null,
         $inhibit_policy_mapping = null)
     {
         parent::__construct(self::OID_POLICY_CONSTRAINTS, $critical);
@@ -72,7 +74,7 @@ class PolicyConstraintsExtension extends Extension
      *
      * @return bool
      */
-    public function hasRequireExplicitPolicy()
+    public function hasRequireExplicitPolicy(): bool
     {
         return isset($this->_requireExplicitPolicy);
     }
@@ -96,7 +98,7 @@ class PolicyConstraintsExtension extends Extension
      *
      * @return bool
      */
-    public function hasInhibitPolicyMapping()
+    public function hasInhibitPolicyMapping(): bool
     {
         return isset($this->_inhibitPolicyMapping);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Type\UnspecifiedType;
@@ -25,7 +27,7 @@ class CPSQualifier extends PolicyQualifierInfo
      *
      * @param string $uri
      */
-    public function __construct($uri)
+    public function __construct(string $uri)
     {
         $this->_oid = self::OID_CPS;
         $this->_uri = $uri;
@@ -46,7 +48,7 @@ class CPSQualifier extends PolicyQualifierInfo
      *
      * @return string
      */
-    public function uri()
+    public function uri(): string
     {
         return $this->_uri;
     }
@@ -56,7 +58,7 @@ class CPSQualifier extends PolicyQualifierInfo
      * {@inheritdoc}
      * @return IA5String
      */
-    protected function _qualifierASN1()
+    protected function _qualifierASN1(): IA5String
     {
         return new IA5String($this->_uri);
     }

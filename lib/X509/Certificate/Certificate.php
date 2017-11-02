@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use ASN1\Type\Constructed\Sequence;
@@ -80,7 +82,7 @@ class Certificate
      * @param string $data
      * @return self
      */
-    public static function fromDER($data)
+    public static function fromDER(string $data)
     {
         return self::fromASN1(Sequence::fromDER($data));
     }
@@ -105,7 +107,7 @@ class Certificate
      *
      * @return TBSCertificate
      */
-    public function tbsCertificate()
+    public function tbsCertificate(): TBSCertificate
     {
         return $this->_tbsCertificate;
     }
@@ -115,7 +117,7 @@ class Certificate
      *
      * @return SignatureAlgorithmIdentifier
      */
-    public function signatureAlgorithm()
+    public function signatureAlgorithm(): SignatureAlgorithmIdentifier
     {
         return $this->_signatureAlgorithm;
     }
@@ -125,7 +127,7 @@ class Certificate
      *
      * @return Signature
      */
-    public function signatureValue()
+    public function signatureValue(): Signature
     {
         return $this->_signatureValue;
     }
@@ -135,7 +137,7 @@ class Certificate
      *
      * @return bool
      */
-    public function isSelfIssued()
+    public function isSelfIssued(): bool
     {
         return $this->_tbsCertificate->subject()->equals(
             $this->_tbsCertificate->issuer());
@@ -147,7 +149,7 @@ class Certificate
      * @param Certificate $cert Certificate to compare to
      * @return bool
      */
-    public function equals(Certificate $cert)
+    public function equals(Certificate $cert): bool
     {
         return $this->_hasEqualSerialNumber($cert) &&
              $this->_hasEqualPublicKey($cert) && $this->_hasEqualSubject($cert);
@@ -159,7 +161,7 @@ class Certificate
      * @param Certificate $cert
      * @return bool
      */
-    private function _hasEqualSerialNumber(Certificate $cert)
+    private function _hasEqualSerialNumber(Certificate $cert): bool
     {
         $sn1 = $this->_tbsCertificate->serialNumber();
         $sn2 = $cert->_tbsCertificate->serialNumber();
@@ -172,7 +174,7 @@ class Certificate
      * @param Certificate $cert
      * @return bool
      */
-    private function _hasEqualPublicKey(Certificate $cert)
+    private function _hasEqualPublicKey(Certificate $cert): bool
     {
         $kid1 = $this->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
         $kid2 = $cert->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
@@ -185,7 +187,7 @@ class Certificate
      * @param Certificate $cert
      * @return bool
      */
-    private function _hasEqualSubject(Certificate $cert)
+    private function _hasEqualSubject(Certificate $cert): bool
     {
         $dn1 = $this->_tbsCertificate->subject();
         $dn2 = $cert->_tbsCertificate->subject();
@@ -197,7 +199,7 @@ class Certificate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         return new Sequence($this->_tbsCertificate->toASN1(),
             $this->_signatureAlgorithm->toASN1(),
@@ -209,7 +211,7 @@ class Certificate
      *
      * @return string
      */
-    public function toDER()
+    public function toDER(): string
     {
         return $this->toASN1()->toDER();
     }
@@ -219,7 +221,7 @@ class Certificate
      *
      * @return PEM
      */
-    public function toPEM()
+    public function toPEM(): PEM
     {
         return new PEM(PEM::TYPE_CERTIFICATE, $this->toDER());
     }
@@ -231,7 +233,7 @@ class Certificate
      * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return bool True if certificate signature is valid
      */
-    public function verify(PublicKeyInfo $pubkey_info, Crypto $crypto = null)
+    public function verify(PublicKeyInfo $pubkey_info, Crypto $crypto = null): bool
     {
         $crypto = $crypto ?: Crypto::getDefault();
         $data = $this->_tbsCertificate->toASN1()->toDER();

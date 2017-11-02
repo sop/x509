@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
@@ -204,7 +206,7 @@ class AttributeCertificateInfo
      * @param int $size Number of random bytes
      * @return self
      */
-    public function withRandomSerialNumber($size = 16)
+    public function withRandomSerialNumber(int $size = 16)
     {
         // ensure that first byte is always non-zero and having first bit unset
         $num = gmp_init(mt_rand(1, 0x7f), 10);
@@ -285,7 +287,7 @@ class AttributeCertificateInfo
      *
      * @return int
      */
-    public function version()
+    public function version(): int
     {
         return $this->_version;
     }
@@ -295,7 +297,7 @@ class AttributeCertificateInfo
      *
      * @return Holder
      */
-    public function holder()
+    public function holder(): Holder
     {
         return $this->_holder;
     }
@@ -305,7 +307,7 @@ class AttributeCertificateInfo
      *
      * @return AttCertIssuer
      */
-    public function issuer()
+    public function issuer(): AttCertIssuer
     {
         return $this->_issuer;
     }
@@ -315,7 +317,7 @@ class AttributeCertificateInfo
      *
      * @return bool
      */
-    public function hasSignature()
+    public function hasSignature(): bool
     {
         return isset($this->_signature);
     }
@@ -325,7 +327,7 @@ class AttributeCertificateInfo
      *
      * @return SignatureAlgorithmIdentifier
      */
-    public function signature()
+    public function signature(): SignatureAlgorithmIdentifier
     {
         if (!$this->hasSignature()) {
             throw new \LogicException("signature not set.");
@@ -338,7 +340,7 @@ class AttributeCertificateInfo
      *
      * @return bool
      */
-    public function hasSerialNumber()
+    public function hasSerialNumber(): bool
     {
         return isset($this->_serialNumber);
     }
@@ -361,7 +363,7 @@ class AttributeCertificateInfo
      *
      * @return AttCertValidityPeriod
      */
-    public function validityPeriod()
+    public function validityPeriod(): AttCertValidityPeriod
     {
         return $this->_attrCertValidityPeriod;
     }
@@ -371,7 +373,7 @@ class AttributeCertificateInfo
      *
      * @return Attributes
      */
-    public function attributes()
+    public function attributes(): Attributes
     {
         return $this->_attributes;
     }
@@ -381,7 +383,7 @@ class AttributeCertificateInfo
      *
      * @return bool
      */
-    public function hasIssuerUniqueID()
+    public function hasIssuerUniqueID(): bool
     {
         return isset($this->_issuerUniqueID);
     }
@@ -391,7 +393,7 @@ class AttributeCertificateInfo
      *
      * @return UniqueIdentifier
      */
-    public function issuerUniqueID()
+    public function issuerUniqueID(): UniqueIdentifier
     {
         if (!$this->hasIssuerUniqueID()) {
             throw new \LogicException("issuerUniqueID not set.");
@@ -404,7 +406,7 @@ class AttributeCertificateInfo
      *
      * @return Extensions
      */
-    public function extensions()
+    public function extensions(): Extensions
     {
         return $this->_extensions;
     }
@@ -414,7 +416,7 @@ class AttributeCertificateInfo
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array(new Integer($this->_version), $this->_holder->toASN1(),
             $this->_issuer->toASN1(), $this->signature()->toASN1(),
@@ -439,7 +441,7 @@ class AttributeCertificateInfo
      * @return AttributeCertificate
      */
     public function sign(SignatureAlgorithmIdentifier $algo,
-        PrivateKeyInfo $privkey_info, Crypto $crypto = null)
+        PrivateKeyInfo $privkey_info, Crypto $crypto = null): AttributeCertificate
     {
         $crypto = $crypto ?: Crypto::getDefault();
         $aci = clone $this;

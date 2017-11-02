@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\UnspecifiedType;
@@ -27,9 +29,9 @@ class PolicyMappingsExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param PolicyMapping ...$mappings One or more PolicyMapping objects
+     * @param PolicyMapping[] $mappings One or more PolicyMapping objects
      */
-    public function __construct($critical, PolicyMapping ...$mappings)
+    public function __construct(bool $critical, PolicyMapping ...$mappings)
     {
         parent::__construct(self::OID_POLICY_MAPPINGS, $critical);
         $this->_mappings = $mappings;
@@ -58,7 +60,7 @@ class PolicyMappingsExtension extends Extension implements
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         if (!count($this->_mappings)) {
             throw new \LogicException("No mappings.");
@@ -75,7 +77,7 @@ class PolicyMappingsExtension extends Extension implements
      *
      * @return PolicyMapping[]
      */
-    public function mappings()
+    public function mappings(): array
     {
         return $this->_mappings;
     }
@@ -90,7 +92,7 @@ class PolicyMappingsExtension extends Extension implements
      *
      * @return (string[])[]
      */
-    public function flattenedMappings()
+    public function flattenedMappings(): array
     {
         $mappings = array();
         foreach ($this->_mappings as $mapping) {
@@ -110,7 +112,7 @@ class PolicyMappingsExtension extends Extension implements
      * @param string $oid Issuer domain policy
      * @return string[] List of OIDs in dotted format
      */
-    public function issuerMappings($oid)
+    public function issuerMappings(string $oid): array
     {
         $oids = array();
         foreach ($this->_mappings as $mapping) {
@@ -126,7 +128,7 @@ class PolicyMappingsExtension extends Extension implements
      *
      * @return string[]
      */
-    public function issuerDomainPolicies()
+    public function issuerDomainPolicies(): array
     {
         $idps = array_map(
             function (PolicyMapping $mapping) {
@@ -143,7 +145,7 @@ class PolicyMappingsExtension extends Extension implements
      *
      * @return bool
      */
-    public function hasAnyPolicyMapping()
+    public function hasAnyPolicyMapping(): bool
     {
         foreach ($this->_mappings as $mapping) {
             if ($mapping->issuerDomainPolicy() ==
@@ -164,7 +166,7 @@ class PolicyMappingsExtension extends Extension implements
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_mappings);
     }
@@ -175,7 +177,7 @@ class PolicyMappingsExtension extends Extension implements
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_mappings);
     }

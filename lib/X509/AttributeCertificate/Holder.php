@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
@@ -150,7 +152,7 @@ class Holder
      * @throws \LogicException
      * @return IssuerSerial
      */
-    public function baseCertificateID()
+    public function baseCertificateID(): IssuerSerial
     {
         if (!$this->hasBaseCertificateID()) {
             throw new \LogicException("baseCertificateID not set.");
@@ -163,7 +165,7 @@ class Holder
      *
      * @return bool
      */
-    public function hasEntityName()
+    public function hasEntityName(): bool
     {
         return isset($this->_entityName);
     }
@@ -174,7 +176,7 @@ class Holder
      * @throws \LogicException
      * @return GeneralNames
      */
-    public function entityName()
+    public function entityName(): GeneralNames
     {
         if (!$this->hasEntityName()) {
             throw new \LogicException("entityName not set.");
@@ -187,7 +189,7 @@ class Holder
      *
      * @return bool
      */
-    public function hasObjectDigestInfo()
+    public function hasObjectDigestInfo(): bool
     {
         return isset($this->_objectDigestInfo);
     }
@@ -198,7 +200,7 @@ class Holder
      * @throws \LogicException
      * @return ObjectDigestInfo
      */
-    public function objectDigestInfo()
+    public function objectDigestInfo(): ObjectDigestInfo
     {
         if (!$this->hasObjectDigestInfo()) {
             throw new \LogicException("objectDigestInfo not set.");
@@ -211,9 +213,9 @@ class Holder
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
-        $elements = array();
+        $elements = [];
         if (isset($this->_baseCertificateID)) {
             $elements[] = new ImplicitlyTaggedType(0,
                 $this->_baseCertificateID->toASN1());
@@ -235,7 +237,7 @@ class Holder
      * @param Certificate $cert
      * @return boolean
      */
-    public function identifiesPKC(Certificate $cert)
+    public function identifiesPKC(Certificate $cert): bool
     {
         // if neither baseCertificateID nor entityName are present
         if (!$this->_baseCertificateID && !$this->_entityName) {
@@ -259,7 +261,7 @@ class Holder
      * @param Certificate $cert
      * @return boolean
      */
-    private function _checkEntityName(Certificate $cert)
+    private function _checkEntityName(Certificate $cert): bool
     {
         $name = $this->_entityName->firstDN();
         if ($cert->tbsCertificate()
@@ -283,7 +285,7 @@ class Holder
      * @param GeneralNames $san
      * @return boolean
      */
-    private function _checkEntityAlternativeNames(GeneralNames $san)
+    private function _checkEntityAlternativeNames(GeneralNames $san): bool
     {
         // only directory names supported for now
         $name = $this->_entityName->firstDN();

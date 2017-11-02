@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use ASN1\Type\TaggedType;
 use ASN1\Type\Tagged\ExplicitTagging;
 use X509\Certificate\Extension\Target\Target;

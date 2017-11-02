@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extension\TargetInformationExtension;
 use X509\Certificate\Extension\Target\Target;

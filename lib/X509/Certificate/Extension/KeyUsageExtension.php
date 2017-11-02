@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\Primitive\BitString;
@@ -35,7 +37,7 @@ class KeyUsageExtension extends Extension
      * @param bool $critical
      * @param int $keyUsage
      */
-    public function __construct($critical, $keyUsage)
+    public function __construct(bool $critical, $keyUsage)
     {
         parent::__construct(self::OID_KEY_USAGE, $critical);
         $this->_keyUsage = (int) $keyUsage;
@@ -57,7 +59,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isDigitalSignature()
+    public function isDigitalSignature(): bool
     {
         return $this->_flagSet(self::DIGITAL_SIGNATURE);
     }
@@ -67,7 +69,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isNonRepudiation()
+    public function isNonRepudiation(): bool
     {
         return $this->_flagSet(self::NON_REPUDIATION);
     }
@@ -77,7 +79,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isKeyEncipherment()
+    public function isKeyEncipherment(): bool
     {
         return $this->_flagSet(self::KEY_ENCIPHERMENT);
     }
@@ -87,7 +89,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isDataEncipherment()
+    public function isDataEncipherment(): bool
     {
         return $this->_flagSet(self::DATA_ENCIPHERMENT);
     }
@@ -97,7 +99,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isKeyAgreement()
+    public function isKeyAgreement(): bool
     {
         return $this->_flagSet(self::KEY_AGREEMENT);
     }
@@ -107,7 +109,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isKeyCertSign()
+    public function isKeyCertSign(): bool
     {
         return $this->_flagSet(self::KEY_CERT_SIGN);
     }
@@ -117,7 +119,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isCRLSign()
+    public function isCRLSign(): bool
     {
         return $this->_flagSet(self::CRL_SIGN);
     }
@@ -127,7 +129,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isEncipherOnly()
+    public function isEncipherOnly(): bool
     {
         return $this->_flagSet(self::ENCIPHER_ONLY);
     }
@@ -137,7 +139,7 @@ class KeyUsageExtension extends Extension
      *
      * @return bool
      */
-    public function isDecipherOnly()
+    public function isDecipherOnly(): bool
     {
         return $this->_flagSet(self::DECIPHER_ONLY);
     }
@@ -148,7 +150,7 @@ class KeyUsageExtension extends Extension
      * @param int $flag
      * @return boolean
      */
-    protected function _flagSet($flag)
+    protected function _flagSet($flag): bool
     {
         return (bool) ($this->_keyUsage & $flag);
     }
@@ -158,7 +160,7 @@ class KeyUsageExtension extends Extension
      * {@inheritdoc}
      * @return BitString
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): BitString
     {
         $flags = new Flags($this->_keyUsage, 9);
         return $flags->bitString()->withoutTrailingZeroes();

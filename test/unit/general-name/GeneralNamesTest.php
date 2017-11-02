@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\NullType;
 use X509\GeneralName\DNSName;

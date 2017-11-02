@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use ASN1\Element;
@@ -137,7 +139,7 @@ class TBSCertificate
         } else {
             $version = self::VERSION_1;
         }
-        $serial = $seq->at($idx++)
+        $serial = (int) $seq->at($idx++)
             ->asInteger()
             ->number();
         $algo = AlgorithmIdentifier::fromASN1($seq->at($idx++)->asSequence());
@@ -237,7 +239,7 @@ class TBSCertificate
      * @param int $version
      * @return self
      */
-    public function withVersion($version)
+    public function withVersion(int $version)
     {
         $obj = clone $this;
         $obj->_version = $version;
@@ -263,7 +265,7 @@ class TBSCertificate
      * @param int $size Number of random bytes
      * @return self
      */
-    public function withRandomSerialNumber($size = 16)
+    public function withRandomSerialNumber(int $size = 16)
     {
         // ensure that first byte is always non-zero and having first bit unset
         $num = gmp_init(mt_rand(1, 0x7f), 10);
@@ -396,7 +398,7 @@ class TBSCertificate
      *
      * @return bool
      */
-    public function hasVersion()
+    public function hasVersion(): bool
     {
         return isset($this->_version);
     }
@@ -419,7 +421,7 @@ class TBSCertificate
      *
      * @return bool
      */
-    public function hasSerialNumber()
+    public function hasSerialNumber(): bool
     {
         return isset($this->_serialNumber);
     }
@@ -442,7 +444,7 @@ class TBSCertificate
      *
      * @return bool
      */
-    public function hasSignature()
+    public function hasSignature(): bool
     {
         return isset($this->_signature);
     }
@@ -505,7 +507,7 @@ class TBSCertificate
      *
      * @return bool
      */
-    public function hasIssuerUniqueID()
+    public function hasIssuerUniqueID(): bool
     {
         return isset($this->_issuerUniqueID);
     }
@@ -528,7 +530,7 @@ class TBSCertificate
      *
      * @return bool
      */
-    public function hasSubjectUniqueID()
+    public function hasSubjectUniqueID(): bool
     {
         return isset($this->_subjectUniqueID);
     }
@@ -620,7 +622,7 @@ class TBSCertificate
      *
      * @return int
      */
-    protected function _determineVersion()
+    protected function _determineVersion(): int
     {
         // if extensions are present
         if (count($this->_extensions)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Type\Constructed\Sequence;
@@ -78,7 +80,7 @@ class AttCertValidityPeriod
      *
      * @return \DateTimeImmutable
      */
-    public function notBeforeTime()
+    public function notBeforeTime(): \DateTimeImmutable
     {
         return $this->_notBeforeTime;
     }
@@ -88,7 +90,7 @@ class AttCertValidityPeriod
      *
      * @return \DateTimeImmutable
      */
-    public function notAfterTime()
+    public function notAfterTime(): \DateTimeImmutable
     {
         return $this->_notAfterTime;
     }
@@ -98,7 +100,7 @@ class AttCertValidityPeriod
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         return new Sequence(new GeneralizedTime($this->_notBeforeTime),
             new GeneralizedTime($this->_notAfterTime));

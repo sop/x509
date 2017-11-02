@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\NameConstraints;
 
 use ASN1\Type\UnspecifiedType;
@@ -23,7 +25,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param GeneralSubtree ...$subtrees
+     * @param GeneralSubtree[] $subtrees
      */
     public function __construct(GeneralSubtree ...$subtrees)
     {
@@ -54,7 +56,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
      *
      * @return GeneralSubtree[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->_subtrees;
     }
@@ -64,7 +66,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         if (!count($this->_subtrees)) {
             throw new \LogicException("No subtrees.");
@@ -81,7 +83,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_subtrees);
     }
@@ -92,7 +94,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_subtrees);
     }

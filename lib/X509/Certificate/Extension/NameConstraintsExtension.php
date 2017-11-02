@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
@@ -35,7 +37,7 @@ class NameConstraintsExtension extends Extension
      * @param GeneralSubtrees $permitted
      * @param GeneralSubtrees $excluded
      */
-    public function __construct($critical, GeneralSubtrees $permitted = null,
+    public function __construct(bool $critical, GeneralSubtrees $permitted = null,
         GeneralSubtrees $excluded = null)
     {
         parent::__construct(self::OID_NAME_CONSTRAINTS, $critical);
@@ -73,7 +75,7 @@ class NameConstraintsExtension extends Extension
      *
      * @return bool
      */
-    public function hasPermittedSubtrees()
+    public function hasPermittedSubtrees(): bool
     {
         return isset($this->_permitted);
     }
@@ -84,7 +86,7 @@ class NameConstraintsExtension extends Extension
      * @throws \LogicException
      * @return GeneralSubtrees
      */
-    public function permittedSubtrees()
+    public function permittedSubtrees(): GeneralSubtrees
     {
         if (!$this->hasPermittedSubtrees()) {
             throw new \LogicException("No permitted subtrees.");
@@ -97,7 +99,7 @@ class NameConstraintsExtension extends Extension
      *
      * @return bool
      */
-    public function hasExcludedSubtrees()
+    public function hasExcludedSubtrees(): bool
     {
         return isset($this->_excluded);
     }
@@ -108,7 +110,7 @@ class NameConstraintsExtension extends Extension
      * @throws \LogicException
      * @return GeneralSubtrees
      */
-    public function excludedSubtrees()
+    public function excludedSubtrees(): GeneralSubtrees
     {
         if (!$this->hasExcludedSubtrees()) {
             throw new \LogicException("No excluded subtrees.");

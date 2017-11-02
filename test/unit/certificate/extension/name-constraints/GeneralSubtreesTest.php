@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use ASN1\Type\Constructed\Sequence;
 use X509\Certificate\Extension\NameConstraints\GeneralSubtree;
 use X509\Certificate\Extension\NameConstraints\GeneralSubtrees;

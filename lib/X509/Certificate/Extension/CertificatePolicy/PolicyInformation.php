@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Type\UnspecifiedType;
@@ -39,9 +41,9 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * Constructor.
      *
      * @param string $oid
-     * @param PolicyQualifierInfo ...$qualifiers
+     * @param PolicyQualifierInfo[] $qualifiers
      */
-    public function __construct($oid, PolicyQualifierInfo ...$qualifiers)
+    public function __construct(string $oid, PolicyQualifierInfo ...$qualifiers)
     {
         $this->_oid = $oid;
         $this->_qualifiers = array();
@@ -79,7 +81,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    public function oid()
+    public function oid(): string
     {
         return $this->_oid;
     }
@@ -89,9 +91,9 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function isAnyPolicy()
+    public function isAnyPolicy(): bool
     {
-        return self::OID_ANY_POLICY == $this->_oid;
+        return self::OID_ANY_POLICY === $this->_oid;
     }
     
     /**
@@ -99,7 +101,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @return PolicyQualifierInfo[]
      */
-    public function qualifiers()
+    public function qualifiers(): array
     {
         return array_values($this->_qualifiers);
     }
@@ -110,7 +112,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @param string $oid
      * @return boolean
      */
-    public function has($oid)
+    public function has(string $oid): bool
     {
         return isset($this->_qualifiers[$oid]);
     }
@@ -122,7 +124,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @throws \OutOfBoundsException
      * @return PolicyQualifierInfo
      */
-    public function get($oid)
+    public function get($oid): PolicyQualifierInfo
     {
         if (!$this->has($oid)) {
             throw new \LogicException("No $oid qualifier.");
@@ -135,7 +137,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasCPSQualifier()
+    public function hasCPSQualifier(): bool
     {
         return $this->has(PolicyQualifierInfo::OID_CPS);
     }
@@ -146,7 +148,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @throws \LogicException
      * @return CPSQualifier
      */
-    public function CPSQualifier()
+    public function CPSQualifier(): CPSQualifier
     {
         if (!$this->hasCPSQualifier()) {
             throw new \LogicException("CPS qualifier not set.");
@@ -159,7 +161,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasUserNoticeQualifier()
+    public function hasUserNoticeQualifier(): bool
     {
         return $this->has(PolicyQualifierInfo::OID_UNOTICE);
     }
@@ -170,7 +172,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @throws \LogicException
      * @return UserNoticeQualifier
      */
-    public function userNoticeQualifier()
+    public function userNoticeQualifier(): UserNoticeQualifier
     {
         if (!$this->hasUserNoticeQualifier()) {
             throw new \LogicException("User notice qualifier not set.");
@@ -183,7 +185,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array(new ObjectIdentifier($this->_oid));
         if (count($this->_qualifiers)) {
@@ -202,7 +204,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_qualifiers);
     }
@@ -213,7 +215,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_qualifiers);
     }

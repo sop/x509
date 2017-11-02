@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\DistributionPoint;
 
 use ASN1\Type\Primitive\BitString;
@@ -37,7 +39,7 @@ class ReasonFlags
      */
     public function __construct($flags)
     {
-        $this->_flags = (int) $flags;
+        $this->_flags = $flags;
     }
     
     /**
@@ -56,7 +58,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isKeyCompromise()
+    public function isKeyCompromise(): bool
     {
         return $this->_flagSet(self::KEY_COMPROMISE);
     }
@@ -66,7 +68,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isCACompromise()
+    public function isCACompromise(): bool
     {
         return $this->_flagSet(self::CA_COMPROMISE);
     }
@@ -76,7 +78,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isAffiliationChanged()
+    public function isAffiliationChanged(): bool
     {
         return $this->_flagSet(self::AFFILIATION_CHANGED);
     }
@@ -86,7 +88,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isSuperseded()
+    public function isSuperseded(): bool
     {
         return $this->_flagSet(self::SUPERSEDED);
     }
@@ -96,7 +98,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isCessationOfOperation()
+    public function isCessationOfOperation(): bool
     {
         return $this->_flagSet(self::CESSATION_OF_OPERATION);
     }
@@ -106,7 +108,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isCertificateHold()
+    public function isCertificateHold(): bool
     {
         return $this->_flagSet(self::CERTIFICATE_HOLD);
     }
@@ -116,7 +118,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isPrivilegeWithdrawn()
+    public function isPrivilegeWithdrawn(): bool
     {
         return $this->_flagSet(self::PRIVILEGE_WITHDRAWN);
     }
@@ -126,7 +128,7 @@ class ReasonFlags
      *
      * @return bool
      */
-    public function isAACompromise()
+    public function isAACompromise(): bool
     {
         return $this->_flagSet(self::AA_COMPROMISE);
     }
@@ -136,7 +138,7 @@ class ReasonFlags
      *
      * @return BitString
      */
-    public function toASN1()
+    public function toASN1(): BitString
     {
         $flags = new Flags($this->_flags, 9);
         return $flags->bitString()->withoutTrailingZeroes();
@@ -148,7 +150,7 @@ class ReasonFlags
      * @param int $flag
      * @return boolean
      */
-    protected function _flagSet($flag)
+    protected function _flagSet($flag): bool
     {
         return (bool) ($this->_flags & $flag);
     }

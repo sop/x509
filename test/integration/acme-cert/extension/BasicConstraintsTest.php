@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use X509\Certificate\Extension\BasicConstraintsExtension;
 
 require_once __DIR__ . "/RefExtTestHelper.php";

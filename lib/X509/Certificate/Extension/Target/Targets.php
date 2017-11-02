@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\Target;
 
 use ASN1\Type\UnspecifiedType;

@@ -98,7 +98,7 @@ class CertificationRequestInfo
      *
      * @return int
      */
-    public function version()
+    public function version(): int
     {
         return $this->_version;
     }
@@ -121,7 +121,7 @@ class CertificationRequestInfo
      *
      * @return Name
      */
-    public function subject()
+    public function subject(): Name
     {
         return $this->_subject;
     }
@@ -131,7 +131,7 @@ class CertificationRequestInfo
      *
      * @return PublicKeyInfo
      */
-    public function subjectPKInfo()
+    public function subjectPKInfo(): PublicKeyInfo
     {
         return $this->_subjectPKInfo;
     }
@@ -141,7 +141,7 @@ class CertificationRequestInfo
      *
      * @return bool
      */
-    public function hasAttributes()
+    public function hasAttributes(): bool
     {
         return isset($this->_attributes);
     }
@@ -152,7 +152,7 @@ class CertificationRequestInfo
      * @throws \LogicException
      * @return Attributes
      */
-    public function attributes()
+    public function attributes(): Attributes
     {
         if (!$this->hasAttributes()) {
             throw new \LogicException("No attributes.");
@@ -195,7 +195,7 @@ class CertificationRequestInfo
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array(new Integer($this->_version),
             $this->_subject->toASN1(), $this->_subjectPKInfo->toASN1());

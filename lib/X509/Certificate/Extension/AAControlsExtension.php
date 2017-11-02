@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
@@ -58,8 +60,8 @@ class AAControlsExtension extends Extension
      * @param string[]|null $excluded
      * @param bool $permit_unspecified
      */
-    public function __construct($critical, $path_len = null, array $permitted = null,
-        array $excluded = null, $permit_unspecified = true)
+    public function __construct(bool $critical, $path_len = null, array $permitted = null,
+        array $excluded = null, bool $permit_unspecified = true)
     {
         parent::__construct(self::OID_AA_CONTROLS, $critical);
         $this->_pathLenConstraint = $path_len;
@@ -120,7 +122,7 @@ class AAControlsExtension extends Extension
      *
      * @return bool
      */
-    public function hasPathLen()
+    public function hasPathLen(): bool
     {
         return isset($this->_pathLenConstraint);
     }
@@ -131,7 +133,7 @@ class AAControlsExtension extends Extension
      * @throws \LogicException
      * @return int
      */
-    public function pathLen()
+    public function pathLen(): int
     {
         if (!$this->hasPathLen()) {
             throw new \LogicException("pathLen not set.");
@@ -144,7 +146,7 @@ class AAControlsExtension extends Extension
      *
      * @return bool
      */
-    public function hasPermittedAttrs()
+    public function hasPermittedAttrs(): bool
     {
         return isset($this->_permittedAttrs);
     }
@@ -155,7 +157,7 @@ class AAControlsExtension extends Extension
      * @throws \LogicException
      * @return string[]
      */
-    public function permittedAttrs()
+    public function permittedAttrs(): array
     {
         if (!$this->hasPermittedAttrs()) {
             throw new \LogicException("permittedAttrs not set.");
@@ -168,7 +170,7 @@ class AAControlsExtension extends Extension
      *
      * @return bool
      */
-    public function hasExcludedAttrs()
+    public function hasExcludedAttrs(): bool
     {
         return isset($this->_excludedAttrs);
     }
@@ -179,7 +181,7 @@ class AAControlsExtension extends Extension
      * @throws \LogicException
      * @return string[]
      */
-    public function excludedAttrs()
+    public function excludedAttrs(): array
     {
         if (!$this->hasExcludedAttrs()) {
             throw new \LogicException("excludedAttrs not set.");
@@ -193,7 +195,7 @@ class AAControlsExtension extends Extension
      *
      * @return bool
      */
-    public function permitUnspecified()
+    public function permitUnspecified(): bool
     {
         return $this->_permitUnSpecified;
     }
@@ -203,7 +205,7 @@ class AAControlsExtension extends Extension
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_pathLenConstraint)) {

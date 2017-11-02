@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use X501\ASN1\AttributeType;
 use X509\Certificate\Extension\Extension;
 use X509\Certificate\Extension\SubjectDirectoryAttributesExtension;

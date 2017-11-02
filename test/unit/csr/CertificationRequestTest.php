@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use ASN1\Type\Constructed\Sequence;
 use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Type\UnspecifiedType;
@@ -80,7 +82,7 @@ abstract class PolicyQualifierInfo
      *
      * @return string
      */
-    public function oid()
+    public function oid(): string
     {
         return $this->_oid;
     }
@@ -90,7 +92,7 @@ abstract class PolicyQualifierInfo
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         return new Sequence(new ObjectIdentifier($this->_oid),
             $this->_qualifierASN1());

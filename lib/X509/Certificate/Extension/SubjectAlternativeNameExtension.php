@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\Constructed\Sequence;
@@ -25,7 +27,7 @@ class SubjectAlternativeNameExtension extends Extension
      * @param bool $critical
      * @param GeneralNames $names
      */
-    public function __construct($critical, GeneralNames $names)
+    public function __construct(bool $critical, GeneralNames $names)
     {
         parent::__construct(self::OID_SUBJECT_ALT_NAME, $critical);
         $this->_names = $names;
@@ -47,7 +49,7 @@ class SubjectAlternativeNameExtension extends Extension
      *
      * @return GeneralNames
      */
-    public function names()
+    public function names(): GeneralNames
     {
         return $this->_names;
     }
@@ -57,7 +59,7 @@ class SubjectAlternativeNameExtension extends Extension
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         return $this->_names->toASN1();
     }

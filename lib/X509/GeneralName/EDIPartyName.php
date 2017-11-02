@@ -45,7 +45,7 @@ class EDIPartyName extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return bin2hex($this->_element->toDER());
     }

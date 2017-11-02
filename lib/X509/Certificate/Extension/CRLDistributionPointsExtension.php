@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\UnspecifiedType;
@@ -26,9 +28,9 @@ class CRLDistributionPointsExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param DistributionPoint ...$distribution_points
+     * @param DistributionPoint[] $distribution_points
      */
-    public function __construct($critical,
+    public function __construct(bool $critical,
         DistributionPoint ...$distribution_points)
     {
         parent::__construct(self::OID_CRL_DISTRIBUTION_POINTS, $critical);
@@ -60,7 +62,7 @@ class CRLDistributionPointsExtension extends Extension implements
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         if (!count($this->_distributionPoints)) {
             throw new \LogicException("No distribution points.");
@@ -77,7 +79,7 @@ class CRLDistributionPointsExtension extends Extension implements
      *
      * @return DistributionPoint[]
      */
-    public function distributionPoints()
+    public function distributionPoints(): array
     {
         return $this->_distributionPoints;
     }
@@ -88,7 +90,7 @@ class CRLDistributionPointsExtension extends Extension implements
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_distributionPoints);
     }
@@ -99,7 +101,7 @@ class CRLDistributionPointsExtension extends Extension implements
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_distributionPoints);
     }

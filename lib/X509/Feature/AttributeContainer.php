@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Feature;
 
 use X501\ASN1\Attribute;

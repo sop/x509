@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
@@ -23,7 +25,7 @@ class UnknownExtension extends Extension
      * @param bool $critical
      * @param Element $data
      */
-    public function __construct($oid, $critical, Element $data)
+    public function __construct(string $oid, bool $critical, Element $data)
     {
         parent::__construct($oid, $critical);
         $this->_element = $data;

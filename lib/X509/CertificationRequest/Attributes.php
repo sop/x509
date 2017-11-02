@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationRequest;
 
 use ASN1\Type\UnspecifiedType;
@@ -88,7 +90,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasExtensionRequest()
+    public function hasExtensionRequest(): bool
     {
         return $this->has(ExtensionRequestValue::OID);
     }
@@ -99,7 +101,7 @@ class Attributes implements \Countable, \IteratorAggregate
      * @throws \LogicException
      * @return ExtensionRequestValue
      */
-    public function extensionRequest()
+    public function extensionRequest(): ExtensionRequestValue
     {
         if (!$this->hasExtensionRequest()) {
             throw new \LogicException("No extension request attribute.");
@@ -112,7 +114,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return Set
      */
-    public function toASN1()
+    public function toASN1(): Set
     {
         $elements = array_map(
             function (Attribute $attr) {

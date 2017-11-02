@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Element;
@@ -69,7 +71,7 @@ class OtherName extends GeneralName
      *
      * @return string
      */
-    public function type()
+    public function type(): string
     {
         return $this->_type;
     }
@@ -79,7 +81,7 @@ class OtherName extends GeneralName
      *
      * @return Element
      */
-    public function value()
+    public function value(): Element
     {
         return $this->_element;
     }

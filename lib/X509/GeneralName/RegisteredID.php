@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -25,7 +27,7 @@ class RegisteredID extends GeneralName
      *
      * @param string $oid OID in dotted format
      */
-    public function __construct($oid)
+    public function __construct(string $oid)
     {
         $this->_tag = self::TAG_REGISTERED_ID;
         $this->_oid = $oid;
@@ -45,7 +47,7 @@ class RegisteredID extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_oid;
     }
@@ -55,7 +57,7 @@ class RegisteredID extends GeneralName
      *
      * @return string OID
      */
-    public function oid()
+    public function oid(): string
     {
         return $this->_oid;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate\Attribute;
 
 use ASN1\Element;
@@ -47,7 +49,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @param string|null $auth_info
      */
     public function __construct(GeneralName $service, GeneralName $ident,
-        $auth_info = null)
+        string $auth_info = null)
     {
         $this->_service = $service;
         $this->_ident = $ident;
@@ -78,7 +80,7 @@ abstract class SvceAuthInfo extends AttributeValue
      *
      * @return GeneralName
      */
-    public function service()
+    public function service(): GeneralName
     {
         return $this->_service;
     }
@@ -88,7 +90,7 @@ abstract class SvceAuthInfo extends AttributeValue
      *
      * @return GeneralName
      */
-    public function ident()
+    public function ident(): GeneralName
     {
         return $this->_ident;
     }
@@ -98,7 +100,7 @@ abstract class SvceAuthInfo extends AttributeValue
      *
      * @return bool
      */
-    public function hasAuthInfo()
+    public function hasAuthInfo(): bool
     {
         return isset($this->_authInfo);
     }
@@ -109,7 +111,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @throws \LogicException
      * @return string
      */
-    public function authInfo()
+    public function authInfo(): string
     {
         if (!$this->hasAuthInfo()) {
             throw new \LogicException("authInfo not set.");
@@ -122,7 +124,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array($this->_service->toASN1(), $this->_ident->toASN1());
         if (isset($this->_authInfo)) {
@@ -136,7 +138,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::stringValue()
      * @return string
      */
-    public function stringValue()
+    public function stringValue(): string
     {
         return "#" . bin2hex($this->toASN1()->toDER());
     }
@@ -146,7 +148,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::equalityMatchingRule()
      * @return BinaryMatch
      */
-    public function equalityMatchingRule()
+    public function equalityMatchingRule(): BinaryMatch
     {
         return new BinaryMatch();
     }
@@ -156,7 +158,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::rfc2253String()
      * @return string
      */
-    public function rfc2253String()
+    public function rfc2253String(): string
     {
         return $this->stringValue();
     }
@@ -166,7 +168,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::_transcodedString()
      * @return string
      */
-    protected function _transcodedString()
+    protected function _transcodedString(): string
     {
         return $this->stringValue();
     }

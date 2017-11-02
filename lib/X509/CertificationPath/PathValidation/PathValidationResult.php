@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\PathValidation;
 
 use ASN1\Element;
 use Sop\CryptoTypes\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
+use X509\Certificate\Certificate;
 
 /**
  * Result of the path validation process.
@@ -77,7 +80,7 @@ class PathValidationResult
      *
      * @return \X509\Certificate\Certificate
      */
-    public function certificate()
+    public function certificate(): Certificate
     {
         return $this->_certificates[count($this->_certificates) - 1];
     }
@@ -87,7 +90,7 @@ class PathValidationResult
      *
      * @return \X509\Certificate\Extension\CertificatePolicy\PolicyInformation[]
      */
-    public function policies()
+    public function policies(): array
     {
         if (!$this->_policyTree) {
             return array();

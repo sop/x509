@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate\Attribute;
 
 /**
@@ -14,7 +16,7 @@ class ChargingIdentityAttributeValue extends IetfAttrSyntax
     /**
      * Constructor.
      *
-     * @param IetfAttrValue ...$values
+     * @param IetfAttrValue[] $values
      */
     public function __construct(IetfAttrValue ...$values)
     {

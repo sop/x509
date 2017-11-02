@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\Policy;
 
 use X509\Certificate\Certificate;
@@ -34,7 +36,7 @@ class PolicyTree
      * @param Certificate $cert
      * @return ValidatorState
      */
-    public function processPolicies(ValidatorState $state, Certificate $cert)
+    public function processPolicies(ValidatorState $state, Certificate $cert): ValidatorState
     {
         $policies = $cert->tbsCertificate()
             ->extensions()
@@ -62,7 +64,7 @@ class PolicyTree
      * @param Certificate $cert
      * @return ValidatorState
      */
-    public function processMappings(ValidatorState $state, Certificate $cert)
+    public function processMappings(ValidatorState $state, Certificate $cert): ValidatorState
     {
         $tree = clone $this;
         if ($state->policyMapping() > 0) {
@@ -84,7 +86,7 @@ class PolicyTree
      * @param array $policies
      * @return ValidatorState
      */
-    public function calculateIntersection(ValidatorState $state, array $policies)
+    public function calculateIntersection(ValidatorState $state, array $policies): ValidatorState
     {
         $tree = clone $this;
         $valid_policy_node_set = $tree->_validPolicyNodeSet();
@@ -152,7 +154,7 @@ class PolicyTree
      * @param int $i Depth in range 1..n
      * @return PolicyInformation[]
      */
-    public function policiesAtDepth($i)
+    public function policiesAtDepth($i): array
     {
         $policies = array();
         foreach ($this->_nodesAtDepth($i) as $node) {
@@ -353,7 +355,7 @@ class PolicyTree
      * @param int $i
      * @return PolicyNode[]
      */
-    protected function _nodesAtDepth($i)
+    protected function _nodesAtDepth($i): array
     {
         if (!$this->_root) {
             return array();
@@ -375,7 +377,7 @@ class PolicyTree
      *
      * @return PolicyNode[]
      */
-    protected function _validPolicyNodeSet()
+    protected function _validPolicyNodeSet(): array
     {
         // 1. Determine the set of policy nodes whose parent nodes have
         // a valid_policy of anyPolicy. This is the valid_policy_node_set.
@@ -407,7 +409,7 @@ class PolicyTree
      * @param PolicyNode ...$nodes
      * @return PolicyNode[]
      */
-    private static function _gatherChildren(PolicyNode ...$nodes)
+    private static function _gatherChildren(PolicyNode ...$nodes): array
     {
         $children = array();
         foreach ($nodes as $node) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\DistributionPoint;
 
 use ASN1\Element;
@@ -71,7 +73,7 @@ abstract class DistributionPointName
      *
      * @return ImplicitlyTaggedType
      */
-    public function toASN1()
+    public function toASN1(): ImplicitlyTaggedType
     {
         $element = $this->_valueASN1();
         return new ImplicitlyTaggedType($this->_tag, $element);

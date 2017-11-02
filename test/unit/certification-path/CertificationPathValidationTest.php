@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use X509\Certificate\Certificate;
@@ -12,6 +15,9 @@ use X509\CertificationPath\PathValidation\PathValidator;
  */
 class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var CertificationPath
+     */
     private static $_path;
     
     public static function setUpBeforeClass()

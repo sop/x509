@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
@@ -85,7 +87,7 @@ class V2Form extends AttCertIssuer
      *
      * @return bool
      */
-    public function hasIssuerName()
+    public function hasIssuerName(): bool
     {
         return isset($this->_issuerName);
     }
@@ -96,7 +98,7 @@ class V2Form extends AttCertIssuer
      * @throws \LogicException
      * @return GeneralNames
      */
-    public function issuerName()
+    public function issuerName(): GeneralNames
     {
         if (!$this->hasIssuerName()) {
             throw new \LogicException("issuerName not set.");
@@ -112,7 +114,7 @@ class V2Form extends AttCertIssuer
      *
      * @return \X501\ASN1\Name
      */
-    public function name()
+    public function name(): \X501\ASN1\Name
     {
         return $this->issuerName()->firstDN();
     }
@@ -141,10 +143,11 @@ class V2Form extends AttCertIssuer
     
     /**
      *
+     * {@inheritdoc}
      * @see \X509\AttributeCertificate\AttCertIssuer::identifiesPKC()
      * @return bool
      */
-    public function identifiesPKC(Certificate $cert)
+    public function identifiesPKC(Certificate $cert): bool
     {
         $name = $this->_issuerName->firstDN();
         if (!$cert->tbsCertificate()

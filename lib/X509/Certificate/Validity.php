@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use ASN1\Type\Constructed\Sequence;
@@ -68,7 +70,7 @@ class Validity
      *
      * @return Time
      */
-    public function notBefore()
+    public function notBefore(): Time
     {
         return $this->_notBefore;
     }
@@ -78,7 +80,7 @@ class Validity
      *
      * @return Time
      */
-    public function notAfter()
+    public function notAfter(): Time
     {
         return $this->_notAfter;
     }
@@ -88,7 +90,7 @@ class Validity
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         return new Sequence($this->_notBefore->toASN1(),
             $this->_notAfter->toASN1());

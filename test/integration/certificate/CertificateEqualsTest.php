@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;

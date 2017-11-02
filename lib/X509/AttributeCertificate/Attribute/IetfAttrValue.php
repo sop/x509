@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate\Attribute;
 
 use ASN1\Element;
@@ -35,7 +37,7 @@ class IetfAttrValue
      * @param string $value
      * @param int $type
      */
-    public function __construct($value, $type)
+    public function __construct(string $value, int $type)
     {
         $this->_type = $type;
         $this->_value = $value;
@@ -67,7 +69,7 @@ class IetfAttrValue
      * @param string $octets
      * @return self
      */
-    public static function fromOctets($octets)
+    public static function fromOctets(string $octets)
     {
         return new self($octets, Element::TYPE_OCTET_STRING);
     }
@@ -78,7 +80,7 @@ class IetfAttrValue
      * @param string $str
      * @return self
      */
-    public static function fromString($str)
+    public static function fromString(string $str)
     {
         return new self($str, Element::TYPE_UTF8_STRING);
     }
@@ -89,7 +91,7 @@ class IetfAttrValue
      * @param string $oid
      * @return self
      */
-    public static function fromOID($oid)
+    public static function fromOID(string $oid)
     {
         return new self($oid, Element::TYPE_OBJECT_IDENTIFIER);
     }
@@ -99,7 +101,7 @@ class IetfAttrValue
      *
      * @return int
      */
-    public function type()
+    public function type(): int
     {
         return $this->_type;
     }
@@ -109,9 +111,9 @@ class IetfAttrValue
      *
      * @return bool
      */
-    public function isOctets()
+    public function isOctets(): bool
     {
-        return $this->_type == Element::TYPE_OCTET_STRING;
+        return $this->_type === Element::TYPE_OCTET_STRING;
     }
     
     /**
@@ -119,9 +121,9 @@ class IetfAttrValue
      *
      * @return bool
      */
-    public function isOID()
+    public function isOID(): bool
     {
-        return $this->_type == Element::TYPE_OBJECT_IDENTIFIER;
+        return $this->_type === Element::TYPE_OBJECT_IDENTIFIER;
     }
     
     /**
@@ -129,9 +131,9 @@ class IetfAttrValue
      *
      * @return bool
      */
-    public function isString()
+    public function isString(): bool
     {
-        return $this->_type == Element::TYPE_UTF8_STRING;
+        return $this->_type === Element::TYPE_UTF8_STRING;
     }
     
     /**
@@ -139,7 +141,7 @@ class IetfAttrValue
      *
      * @return string
      */
-    public function value()
+    public function value(): string
     {
         return $this->_value;
     }
@@ -150,7 +152,7 @@ class IetfAttrValue
      * @throws \LogicException
      * @return Element
      */
-    public function toASN1()
+    public function toASN1(): Element
     {
         switch ($this->_type) {
             case Element::TYPE_OCTET_STRING:

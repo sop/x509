@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\DistributionPoint;
 
 use X501\ASN1\RDN;
@@ -36,7 +38,7 @@ class RelativeName extends DistributionPointName
      *
      * @return RDN
      */
-    public function rdn()
+    public function rdn(): RDN
     {
         return $this->_rdn;
     }
@@ -46,7 +48,7 @@ class RelativeName extends DistributionPointName
      * {@inheritdoc}
      * @return \ASN1\Type\Constructed\Set
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): \ASN1\Type\Constructed\Set
     {
         return $this->_rdn->toASN1();
     }

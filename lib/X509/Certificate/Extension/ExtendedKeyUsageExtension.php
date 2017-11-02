@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\UnspecifiedType;
@@ -56,9 +58,9 @@ class ExtendedKeyUsageExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param string ...$purposes
+     * @param string[] $purposes
      */
-    public function __construct($critical, ...$purposes)
+    public function __construct(bool $critical, ...$purposes)
     {
         parent::__construct(self::OID_EXT_KEY_USAGE, $critical);
         $this->_purposes = $purposes;
@@ -83,10 +85,10 @@ class ExtendedKeyUsageExtension extends Extension implements
      *
      * If multiple purposes are checked, all must be present.
      *
-     * @param string ...$oids
+     * @param string[] $oids
      * @return bool
      */
-    public function has(...$oids)
+    public function has(...$oids): bool
     {
         foreach ($oids as $oid) {
             if (!in_array($oid, $this->_purposes)) {
@@ -101,7 +103,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      *
      * @return string[]
      */
-    public function purposes()
+    public function purposes(): array
     {
         return $this->_purposes;
     }
@@ -111,7 +113,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array_map(
             function ($oid) {
@@ -126,7 +128,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_purposes);
     }
@@ -137,7 +139,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_purposes);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -25,7 +27,7 @@ class RFC822Name extends GeneralName
      *
      * @param string $email
      */
-    public function __construct($email)
+    public function __construct(string $email)
     {
         $this->_tag = self::TAG_RFC822_NAME;
         $this->_email = $email;
@@ -45,7 +47,7 @@ class RFC822Name extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_email;
     }
@@ -55,7 +57,7 @@ class RFC822Name extends GeneralName
      *
      * @return string
      */
-    public function email()
+    public function email(): string
     {
         return $this->_email;
     }

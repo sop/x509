@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\PathValidation;
 
 use Sop\CryptoBridge\Crypto;
@@ -268,7 +270,7 @@ class PathValidator
             $valid = $cert->verify($state->workingPublicKey(), $this->_crypto);
         } catch (\RuntimeException $e) {
             throw new PathValidationException(
-                "Failed to verify signature: " . $e->getMessage(), null, $e);
+                "Failed to verify signature: " . $e->getMessage(), 0, $e);
         }
         if (!$valid) {
             throw new PathValidationException(
@@ -472,7 +474,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _verifyMaxPathLength(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         if (!$cert->isSelfIssued()) {
             if ($state->maxPathLength() <= 0) {
@@ -508,7 +510,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _processNameConstraints(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         // @todo Implement
         return $state;
@@ -544,7 +546,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _processPathLengthContraint(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         $extensions = $cert->tbsCertificate()->extensions();
         if ($extensions->hasBasicConstraints()) {
@@ -564,7 +566,7 @@ class PathValidator
      * @param Certificate $cert
      * @return ValidatorState
      */
-    private function _processExtensions(ValidatorState $state, Certificate $cert)
+    private function _processExtensions(ValidatorState $state, Certificate $cert): ValidatorState
     {
         // @todo Implement
         return $state;
@@ -575,7 +577,7 @@ class PathValidator
      * @param ValidatorState $state
      * @return ValidatorState
      */
-    private function _calculatePolicyIntersection(ValidatorState $state)
+    private function _calculatePolicyIntersection(ValidatorState $state): ValidatorState
     {
         // (i) If the valid_policy_tree is NULL, the intersection is NULL
         if (!$state->hasValidPolicyTree()) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate\Attribute;
 
 use ASN1\Element;
@@ -37,7 +39,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
     /**
      * Constructor.
      *
-     * @param IetfAttrValue ...$values
+     * @param IetfAttrValue[] $values
      */
     public function __construct(IetfAttrValue ...$values)
     {
@@ -92,7 +94,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      *
      * @return bool
      */
-    public function hasPolicyAuthority()
+    public function hasPolicyAuthority(): bool
     {
         return isset($this->_policyAuthority);
     }
@@ -103,7 +105,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @throws \LogicException
      * @return GeneralNames
      */
-    public function policyAuthority()
+    public function policyAuthority(): GeneralNames
     {
         if (!$this->hasPolicyAuthority()) {
             throw new \LogicException("policyAuthority not set.");
@@ -116,7 +118,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      *
      * @return IetfAttrValue[]
      */
-    public function values()
+    public function values(): array
     {
         return $this->_values;
     }
@@ -127,7 +129,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @throws \LogicException
      * @return IetfAttrValue
      */
-    public function first()
+    public function first(): IetfAttrValue
     {
         if (!count($this->_values)) {
             throw new \LogicException("No values.");
@@ -140,7 +142,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_policyAuthority)) {
@@ -160,7 +162,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \X501\ASN1\AttributeValue\AttributeValue::stringValue()
      * @return string
      */
-    public function stringValue()
+    public function stringValue(): string
     {
         return "#" . bin2hex($this->toASN1()->toDER());
     }
@@ -170,7 +172,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \X501\ASN1\AttributeValue\AttributeValue::equalityMatchingRule()
      * @return BinaryMatch
      */
-    public function equalityMatchingRule()
+    public function equalityMatchingRule(): BinaryMatch
     {
         return new BinaryMatch();
     }
@@ -180,7 +182,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \X501\ASN1\AttributeValue\AttributeValue::rfc2253String()
      * @return string
      */
-    public function rfc2253String()
+    public function rfc2253String(): string
     {
         return $this->stringValue();
     }
@@ -190,7 +192,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \X501\ASN1\AttributeValue\AttributeValue::_transcodedString()
      * @return string
      */
-    protected function _transcodedString()
+    protected function _transcodedString(): string
     {
         return $this->stringValue();
     }
@@ -201,7 +203,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_values);
     }
@@ -212,7 +214,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_values);
     }

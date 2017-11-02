@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationRequest\Attribute;
 
 use ASN1\Type\UnspecifiedType;
@@ -50,7 +52,7 @@ class ExtensionRequestValue extends AttributeValue
      *
      * @return Extensions
      */
-    public function extensions()
+    public function extensions(): Extensions
     {
         return $this->_extensions;
     }
@@ -60,7 +62,7 @@ class ExtensionRequestValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
      * @return \ASN1\Type\Constructed\Sequence
      */
-    public function toASN1()
+    public function toASN1(): \ASN1\Type\Constructed\Sequence
     {
         return $this->_extensions->toASN1();
     }
@@ -70,7 +72,7 @@ class ExtensionRequestValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::stringValue()
      * @return string
      */
-    public function stringValue()
+    public function stringValue(): string
     {
         return "#" . bin2hex($this->toASN1()->toDER());
     }
@@ -80,7 +82,7 @@ class ExtensionRequestValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::equalityMatchingRule()
      * @return BinaryMatch
      */
-    public function equalityMatchingRule()
+    public function equalityMatchingRule(): BinaryMatch
     {
         return new BinaryMatch();
     }
@@ -90,7 +92,7 @@ class ExtensionRequestValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::rfc2253String()
      * @return string
      */
-    public function rfc2253String()
+    public function rfc2253String(): string
     {
         return $this->stringValue();
     }
@@ -100,7 +102,7 @@ class ExtensionRequestValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::_transcodedString()
      * @return string
      */
-    protected function _transcodedString()
+    protected function _transcodedString(): string
     {
         return $this->stringValue();
     }

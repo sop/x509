@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 class IPv4Address extends IPAddress
@@ -11,7 +13,7 @@ class IPv4Address extends IPAddress
      * @throws \InvalidArgumentException
      * @return self
      */
-    public static function fromOctets($octets)
+    public static function fromOctets(string $octets)
     {
         $mask = null;
         $bytes = unpack("C*", $octets);
@@ -33,7 +35,7 @@ class IPv4Address extends IPAddress
      *
      * {@inheritdoc}
      */
-    protected function _octets()
+    protected function _octets(): string
     {
         $bytes = array_map("intval", explode(".", $this->_ip));
         if (isset($this->_mask)) {

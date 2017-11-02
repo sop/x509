@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Type\Constructed\Sequence;
@@ -81,7 +83,7 @@ class AttributeCertificate
      * @param string $data
      * @return self
      */
-    public static function fromDER($data)
+    public static function fromDER(string $data)
     {
         return self::fromASN1(Sequence::fromDER($data));
     }
@@ -106,7 +108,7 @@ class AttributeCertificate
      *
      * @return AttributeCertificateInfo
      */
-    public function acinfo()
+    public function acinfo(): AttributeCertificateInfo
     {
         return $this->_acinfo;
     }
@@ -116,7 +118,7 @@ class AttributeCertificate
      *
      * @return SignatureAlgorithmIdentifier
      */
-    public function signatureAlgorithm()
+    public function signatureAlgorithm(): SignatureAlgorithmIdentifier
     {
         return $this->_signatureAlgorithm;
     }
@@ -126,7 +128,7 @@ class AttributeCertificate
      *
      * @return Signature
      */
-    public function signatureValue()
+    public function signatureValue(): Signature
     {
         return $this->_signatureValue;
     }
@@ -136,7 +138,7 @@ class AttributeCertificate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         return new Sequence($this->_acinfo->toASN1(),
             $this->_signatureAlgorithm->toASN1(),
@@ -148,7 +150,7 @@ class AttributeCertificate
      *
      * @return string
      */
-    public function toDER()
+    public function toDER(): string
     {
         return $this->toASN1()->toDER();
     }
@@ -158,7 +160,7 @@ class AttributeCertificate
      *
      * @return PEM
      */
-    public function toPEM()
+    public function toPEM(): PEM
     {
         return new PEM(PEM::TYPE_ATTRIBUTE_CERTIFICATE, $this->toDER());
     }
@@ -170,7 +172,7 @@ class AttributeCertificate
      * @param Certificate $cert Certificate
      * @return boolean
      */
-    public function isHeldBy(Certificate $cert)
+    public function isHeldBy(Certificate $cert): bool
     {
         if (!$this->_acinfo->holder()->identifiesPKC($cert)) {
             return false;
@@ -185,7 +187,7 @@ class AttributeCertificate
      * @param Certificate $cert Certificate
      * @return boolean
      */
-    public function isIssuedBy(Certificate $cert)
+    public function isIssuedBy(Certificate $cert): bool
     {
         if (!$this->_acinfo->issuer()->identifiesPKC($cert)) {
             return false;
@@ -200,7 +202,7 @@ class AttributeCertificate
      * @param Crypto|null $crypto Crypto engine, use default if not set
      * @return bool
      */
-    public function verify(PublicKeyInfo $pubkey_info, Crypto $crypto = null)
+    public function verify(PublicKeyInfo $pubkey_info, Crypto $crypto = null): bool
     {
         $crypto = $crypto ?: Crypto::getDefault();
         $data = $this->_acinfo->toASN1()->toDER();

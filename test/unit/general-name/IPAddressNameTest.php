@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use ASN1\Type\Primitive\OctetString;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
 use X509\GeneralName\GeneralName;

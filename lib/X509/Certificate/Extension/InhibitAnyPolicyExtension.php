@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\Primitive\Integer;
@@ -23,7 +25,7 @@ class InhibitAnyPolicyExtension extends Extension
      * @param bool $critical
      * @param int $skip_certs
      */
-    public function __construct($critical, $skip_certs)
+    public function __construct(bool $critical, $skip_certs)
     {
         parent::__construct(self::OID_INHIBIT_ANY_POLICY, $critical);
         $this->_skipCerts = $skip_certs;
@@ -54,7 +56,7 @@ class InhibitAnyPolicyExtension extends Extension
      * {@inheritdoc}
      * @return Integer
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): \ASN1\Type\Primitive\Integer
     {
         return new Integer($this->_skipCerts);
     }

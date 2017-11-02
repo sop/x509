@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use Sop\CryptoEncoding\PEM;
@@ -49,7 +51,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @param string $str
      * @return self
      */
-    public static function fromPEMString($str)
+    public static function fromPEMString(string $str)
     {
         $pems = PEMBundle::fromString($str)->all();
         return self::fromPEMs(...$pems);
@@ -61,7 +63,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      *
      * @return Certificate[]
      */
-    public function certificates()
+    public function certificates(): array
     {
         return $this->_certs;
     }
@@ -72,7 +74,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @throws \LogicException
      * @return Certificate
      */
-    public function endEntityCertificate()
+    public function endEntityCertificate(): Certificate
     {
         if (!count($this->_certs)) {
             throw new \LogicException("No certificates.");
@@ -86,7 +88,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @throws \LogicException
      * @return Certificate
      */
-    public function trustAnchorCertificate()
+    public function trustAnchorCertificate(): Certificate
     {
         if (!count($this->_certs)) {
             throw new \LogicException("No certificates.");
@@ -99,7 +101,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      *
      * @return CertificationPath
      */
-    public function certificationPath()
+    public function certificationPath(): CertificationPath
     {
         return CertificationPath::fromCertificateChain($this);
     }
@@ -109,7 +111,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    public function toPEMString()
+    public function toPEMString(): string
     {
         return implode("\n",
             array_map(
@@ -123,7 +125,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_certs);
     }
@@ -134,7 +136,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_certs);
     }

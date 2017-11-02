@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath;
 
 use Sop\CryptoBridge\Crypto;
@@ -88,7 +90,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      *
      * @return Certificate[]
      */
-    public function certificates()
+    public function certificates(): array
     {
         return $this->_certificates;
     }
@@ -99,7 +101,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @throws \LogicException If path is empty
      * @return Certificate
      */
-    public function trustAnchorCertificate()
+    public function trustAnchorCertificate(): Certificate
     {
         if (!count($this->_certificates)) {
             throw new \LogicException("No certificates.");
@@ -113,7 +115,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @throws \LogicException If path is empty
      * @return Certificate
      */
-    public function endEntityCertificate()
+    public function endEntityCertificate(): Certificate
     {
         if (!count($this->_certificates)) {
             throw new \LogicException("No certificates.");
@@ -126,7 +128,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      *
      * @return CertificateChain
      */
-    public function certificateChain()
+    public function certificateChain(): CertificateChain
     {
         return new CertificateChain(
             ...array_reverse($this->_certificates, false));
@@ -161,7 +163,8 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @throws Exception\PathValidationException
      * @return PathValidation\PathValidationResult
      */
-    public function validate(PathValidationConfig $config, Crypto $crypto = null)
+    public function validate(PathValidationConfig $config,
+         Crypto $crypto = null): PathValidation\PathValidationResult
     {
         $crypto = $crypto ?: Crypto::getDefault();
         $validator = new PathValidator($crypto, $config, ...$this->_certificates);
@@ -173,7 +176,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_certificates);
     }
@@ -184,7 +187,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_certificates);
     }

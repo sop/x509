@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
@@ -92,7 +94,7 @@ class IssuerSerial
      *
      * @return GeneralNames
      */
-    public function issuer()
+    public function issuer(): GeneralNames
     {
         return $this->_issuer;
     }
@@ -112,7 +114,7 @@ class IssuerSerial
      *
      * @return bool
      */
-    public function hasIssuerUID()
+    public function hasIssuerUID(): bool
     {
         return isset($this->_issuerUID);
     }
@@ -123,7 +125,7 @@ class IssuerSerial
      * @throws \LogicException
      * @return UniqueIdentifier
      */
-    public function issuerUID()
+    public function issuerUID(): UniqueIdentifier
     {
         if (!$this->hasIssuerUID()) {
             throw new \LogicException("issuerUID not set.");
@@ -136,7 +138,7 @@ class IssuerSerial
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array($this->_issuer->toASN1(), new Integer($this->_serial));
         if (isset($this->_issuerUID)) {
@@ -151,7 +153,7 @@ class IssuerSerial
      * @param Certificate $cert
      * @return boolean
      */
-    public function identifiesPKC(Certificate $cert)
+    public function identifiesPKC(Certificate $cert): bool
     {
         $tbs = $cert->tbsCertificate();
         if (!$tbs->issuer()->equals($this->_issuer->firstDN())) {
@@ -172,7 +174,7 @@ class IssuerSerial
      * @param Certificate $cert
      * @return boolean
      */
-    private function _checkUniqueID(Certificate $cert)
+    private function _checkUniqueID(Certificate $cert): bool
     {
         if (!$cert->tbsCertificate()->hasIssuerUniqueID()) {
             return false;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use ASN1\Element;
@@ -72,7 +74,7 @@ class Time
      *
      * @return \DateTimeImmutable
      */
-    public function dateTime()
+    public function dateTime(): \DateTimeImmutable
     {
         return $this->_dt;
     }
@@ -83,7 +85,7 @@ class Time
      * @throws \UnexpectedValueException
      * @return TimeType
      */
-    public function toASN1()
+    public function toASN1(): TimeType
     {
         $dt = $this->_dt;
         switch ($this->_type) {
@@ -94,8 +96,7 @@ class Time
                 // (rfc5280 4.1.2.5.2)
                 if ($dt->format("u") != 0) {
                     // remove fractional seconds (round down)
-                    $dt = \DateTimeImmutable::createFromFormat("Y-m-d H:i:s",
-                        $dt->format("Y-m-d H:i:s"), $dt->getTimezone());
+                    $dt = self::_roundDownFractionalSeconds($dt);
                 }
                 return new GeneralizedTime($dt);
         }
@@ -109,7 +110,7 @@ class Time
      * @param \DateTimeImmutable $dt
      * @return int Type tag
      */
-    protected static function _determineType(\DateTimeImmutable $dt)
+    protected static function _determineType(\DateTimeImmutable $dt): int
     {
         if ($dt->format("Y") >= 2050) {
             return Element::TYPE_GENERALIZED_TIME;

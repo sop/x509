@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -74,7 +76,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
      * @return bool
      */
-    public function has($tag)
+    public function has($tag): bool
     {
         return null !== $this->_findFirst($tag);
     }
@@ -86,7 +88,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @throws \OutOfBoundsException
      * @return GeneralName
      */
-    public function firstOf($tag)
+    public function firstOf($tag): GeneralName
     {
         $name = $this->_findFirst($tag);
         if (!$name) {
@@ -101,7 +103,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
      * @return GeneralName[]
      */
-    public function allOf($tag)
+    public function allOf($tag): array
     {
         $names = array_filter($this->_names,
             function (GeneralName $name) use ($tag) {
@@ -115,7 +117,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    public function firstDNS()
+    public function firstDNS(): string
     {
         $gn = $this->firstOf(GeneralName::TAG_DNS_NAME);
         if (!$gn instanceof DNSName) {
@@ -130,7 +132,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      *
      * @return \X501\ASN1\Name
      */
-    public function firstDN()
+    public function firstDN(): \X501\ASN1\Name
     {
         $gn = $this->firstOf(GeneralName::TAG_DIRECTORY_NAME);
         if (!$gn instanceof DirectoryName) {
@@ -145,7 +147,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    public function firstURI()
+    public function firstURI(): string
     {
         $gn = $this->firstOf(GeneralName::TAG_URI);
         if (!$gn instanceof UniformResourceIdentifier) {
@@ -161,7 +163,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         if (!count($this->_names)) {
             throw new \LogicException(
@@ -179,7 +181,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_names);
     }
@@ -190,7 +192,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_names);
     }

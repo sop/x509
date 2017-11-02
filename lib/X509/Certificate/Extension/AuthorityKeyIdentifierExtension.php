@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
@@ -22,21 +24,21 @@ class AuthorityKeyIdentifierExtension extends Extension
      * @var string|null $_keyIdentifier
      */
     protected $_keyIdentifier;
-    
+
     /**
      * Issuer name.
      *
      * @var GeneralNames|null $_authorityCertIssuer
      */
     protected $_authorityCertIssuer;
-    
+
     /**
      * Issuer serial number.
      *
      * @var int|string|null $_authorityCertSerialNumber
      */
     protected $_authorityCertSerialNumber;
-    
+
     /**
      * Constructor.
      *
@@ -45,7 +47,7 @@ class AuthorityKeyIdentifierExtension extends Extension
      * @param GeneralNames|null $issuer
      * @param int|string|null $serial
      */
-    public function __construct($critical, $keyIdentifier,
+    public function __construct(bool $critical, $keyIdentifier,
         GeneralNames $issuer = null, $serial = null)
     {
         parent::__construct(self::OID_AUTHORITY_KEY_IDENTIFIER, $critical);
@@ -53,7 +55,7 @@ class AuthorityKeyIdentifierExtension extends Extension
         $this->_authorityCertIssuer = $issuer;
         $this->_authorityCertSerialNumber = $serial;
     }
-    
+
     /**
      *
      * {@inheritdoc}
@@ -89,13 +91,13 @@ class AuthorityKeyIdentifierExtension extends Extension
         }
         return new self($critical, $keyIdentifier, $issuer, $serial);
     }
-    
+
     /**
      * Whether key identifier is present.
      *
      * @return bool
      */
-    public function hasKeyIdentifier()
+    public function hasKeyIdentifier(): bool
     {
         return isset($this->_keyIdentifier);
     }
@@ -106,7 +108,7 @@ class AuthorityKeyIdentifierExtension extends Extension
      * @throws \LogicException
      * @return string
      */
-    public function keyIdentifier()
+    public function keyIdentifier(): string
     {
         if (!$this->hasKeyIdentifier()) {
             throw new \LogicException("keyIdentifier not set.");
@@ -119,7 +121,7 @@ class AuthorityKeyIdentifierExtension extends Extension
      *
      * @return bool
      */
-    public function hasIssuer()
+    public function hasIssuer(): bool
     {
         return isset($this->_authorityCertIssuer);
     }
@@ -130,7 +132,7 @@ class AuthorityKeyIdentifierExtension extends Extension
      * @throws \LogicException
      * @return GeneralNames
      */
-    public function issuer()
+    public function issuer(): GeneralNames
     {
         if (!$this->hasIssuer()) {
             throw new \LogicException("authorityCertIssuer not set.");

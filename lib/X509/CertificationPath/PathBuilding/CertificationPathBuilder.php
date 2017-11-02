@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\PathBuilding;
 
 use X509\Certificate\Certificate;
@@ -41,7 +43,7 @@ class CertificationPathBuilder
      * @return CertificationPath[]
      */
     public function allPathsToTarget(Certificate $target,
-        CertificateBundle $intermediate = null)
+        CertificateBundle $intermediate = null): array
     {
         $paths = $this->_resolvePathsToTarget($target, $intermediate);
         // map paths to CertificationPath objects
@@ -63,7 +65,7 @@ class CertificationPathBuilder
      * @return array[] Array of arrays containing path certificates
      */
     private function _resolvePathsToTarget(Certificate $target,
-        CertificateBundle $intermediate = null)
+        CertificateBundle $intermediate = null): array
     {
         // array of possible paths
         $paths = array();
@@ -104,7 +106,7 @@ class CertificationPathBuilder
      * @return CertificationPath
      */
     public function shortestPathToTarget(Certificate $target,
-        CertificateBundle $intermediate = null)
+        CertificateBundle $intermediate = null): CertificationPath
     {
         $paths = $this->allPathsToTarget($target, $intermediate);
         if (!count($paths)) {
@@ -125,7 +127,7 @@ class CertificationPathBuilder
      * @return Certificate[]
      */
     protected function _findIssuers(Certificate $target,
-        CertificateBundle $bundle)
+        CertificateBundle $bundle): array
     {
         $issuers = array();
         $issuer_name = $target->tbsCertificate()->issuer();

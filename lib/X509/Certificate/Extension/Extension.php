@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\DERData;
@@ -159,7 +161,7 @@ abstract class Extension
      * @param string $oid Extension OID
      * @param bool $critical Whether extension is critical
      */
-    public function __construct($oid, $critical)
+    public function __construct(string $oid, bool $critical)
     {
         $this->_oid = $oid;
         $this->_critical = $critical;
@@ -198,7 +200,7 @@ abstract class Extension
      *
      * @return string
      */
-    public function oid()
+    public function oid(): string
     {
         return $this->_oid;
     }
@@ -208,7 +210,7 @@ abstract class Extension
      *
      * @return bool
      */
-    public function isCritical()
+    public function isCritical(): bool
     {
         return $this->_critical;
     }
@@ -218,7 +220,7 @@ abstract class Extension
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array(new ObjectIdentifier($this->_oid));
         if ($this->_critical) {

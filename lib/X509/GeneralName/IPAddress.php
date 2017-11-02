@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -43,7 +45,7 @@ abstract class IPAddress extends GeneralName
      * @param string $ip
      * @param string|null $mask
      */
-    public function __construct($ip, $mask = null)
+    public function __construct(string $ip, $mask = null)
     {
         $this->_tag = self::TAG_IP_ADDRESS;
         $this->_ip = $ip;
@@ -75,7 +77,7 @@ abstract class IPAddress extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_ip . (isset($this->_mask) ? "/" . $this->_mask : "");
     }
@@ -85,7 +87,7 @@ abstract class IPAddress extends GeneralName
      *
      * @return string
      */
-    public function address()
+    public function address(): string
     {
         return $this->_ip;
     }
@@ -95,7 +97,7 @@ abstract class IPAddress extends GeneralName
      *
      * @return string
      */
-    public function mask()
+    public function mask(): string
     {
         return $this->_mask;
     }

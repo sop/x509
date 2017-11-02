@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationRequest;
 
 use ASN1\Type\Constructed\Sequence;

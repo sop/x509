@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\UnspecifiedType;
@@ -24,7 +26,7 @@ class SubjectDirectoryAttributesExtension extends Extension implements
      * @param bool $critical
      * @param Attribute ...$attribs One or more Attribute objects
      */
-    public function __construct($critical, Attribute ...$attribs)
+    public function __construct(bool $critical, Attribute ...$attribs)
     {
         parent::__construct(self::OID_SUBJECT_DIRECTORY_ATTRIBUTES, $critical);
         $this->_attributes = $attribs;
@@ -53,7 +55,7 @@ class SubjectDirectoryAttributesExtension extends Extension implements
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         if (!count($this->_attributes)) {
             throw new \LogicException("No attributes");

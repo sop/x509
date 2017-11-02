@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
@@ -35,7 +37,7 @@ class BasicConstraintsExtension extends Extension
      * @param bool $ca
      * @param int|null $path_len
      */
-    public function __construct($critical, $ca, $path_len = null)
+    public function __construct(bool $critical, $ca, $path_len = null)
     {
         parent::__construct(self::OID_BASIC_CONSTRAINTS, $critical);
         $this->_ca = (bool) $ca;
@@ -71,7 +73,7 @@ class BasicConstraintsExtension extends Extension
      *
      * @return bool
      */
-    public function isCA()
+    public function isCA(): bool
     {
         return $this->_ca;
     }
@@ -81,7 +83,7 @@ class BasicConstraintsExtension extends Extension
      *
      * @return bool
      */
-    public function hasPathLen()
+    public function hasPathLen(): bool
     {
         return isset($this->_pathLen);
     }
@@ -105,7 +107,7 @@ class BasicConstraintsExtension extends Extension
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array();
         if ($this->_ca) {

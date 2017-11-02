@@ -15,18 +15,33 @@ trait DateTimeHelper
      * @throws \RuntimeException
      * @return \DateTimeImmutable
      */
-    private static function _createDateTime($time = null, $tz = null)
+    private static function _createDateTime($time = null, $tz = null): \DateTimeImmutable
     {
         try {
             if (!isset($tz)) {
                 $tz = date_default_timezone_get();
             }
-            return new \DateTimeImmutable($time, self::_createTimeZone($tz));
+
+            $dt = new \DateTimeImmutable($time, self::_createTimeZone($tz));
+            return self::_roundDownFractionalSeconds($dt);
         } catch (\Exception $e) {
             throw new \RuntimeException(
                 "Failed to create DateTime: " .
                      self::_getLastDateTimeImmutableErrorsStr(), 0, $e);
         }
+    }
+
+    /**
+     * Rounds a \DateTimeImmutable value such that fractional
+     * seconds are removed.
+     *
+     * @param \DateTimeImmutable $dt
+     * @return \DateTimeImmutable
+     */
+    private static function _roundDownFractionalSeconds(\DateTimeImmutable $dt): \DateTimeImmutable
+    {
+        return \DateTimeImmutable::createFromFormat("Y-m-d H:i:s",
+            $dt->format("Y-m-d H:i:s"), $dt->getTimezone());
     }
     
     /**

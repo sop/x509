@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate\Attribute;
 
 use ASN1\Element;
@@ -55,7 +57,7 @@ class RoleAttributeValue extends AttributeValue
      * @param GeneralNames|null $authority Issuing authority
      * @return self
      */
-    public static function fromString($role_name, GeneralNames $authority = null)
+    public static function fromString(string $role_name, GeneralNames $authority = null)
     {
         return new self(new UniformResourceIdentifier($role_name), $authority);
     }
@@ -87,7 +89,7 @@ class RoleAttributeValue extends AttributeValue
      *
      * @return bool
      */
-    public function hasRoleAuthority()
+    public function hasRoleAuthority(): bool
     {
         return isset($this->_roleAuthority);
     }
@@ -98,7 +100,7 @@ class RoleAttributeValue extends AttributeValue
      * @throws \LogicException
      * @return GeneralNames
      */
-    public function roleAuthority()
+    public function roleAuthority(): GeneralNames
     {
         if (!$this->hasRoleAuthority()) {
             throw new \LogicException("roleAuthority not set.");
@@ -111,7 +113,7 @@ class RoleAttributeValue extends AttributeValue
      *
      * @return GeneralName
      */
-    public function roleName()
+    public function roleName(): GeneralName
     {
         return $this->_roleName;
     }
@@ -121,7 +123,7 @@ class RoleAttributeValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_roleAuthority)) {
@@ -137,7 +139,7 @@ class RoleAttributeValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::stringValue()
      * @return string
      */
-    public function stringValue()
+    public function stringValue(): string
     {
         return "#" . bin2hex($this->toASN1()->toDER());
     }
@@ -147,7 +149,7 @@ class RoleAttributeValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::equalityMatchingRule()
      * @return BinaryMatch
      */
-    public function equalityMatchingRule()
+    public function equalityMatchingRule(): BinaryMatch
     {
         return new BinaryMatch();
     }
@@ -157,7 +159,7 @@ class RoleAttributeValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::rfc2253String()
      * @return string
      */
-    public function rfc2253String()
+    public function rfc2253String(): string
     {
         return $this->stringValue();
     }
@@ -167,7 +169,7 @@ class RoleAttributeValue extends AttributeValue
      * @see \X501\ASN1\AttributeValue\AttributeValue::_transcodedString()
      * @return string
      */
-    protected function _transcodedString()
+    protected function _transcodedString(): string
     {
         return $this->stringValue();
     }

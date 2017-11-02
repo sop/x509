@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\DistributionPoint;
 
 use ASN1\Element;
@@ -90,7 +92,7 @@ class DistributionPoint
      *
      * @return bool
      */
-    public function hasDistributionPointName()
+    public function hasDistributionPointName(): bool
     {
         return isset($this->_distributionPoint);
     }
@@ -101,7 +103,7 @@ class DistributionPoint
      * @throws \LogicException
      * @return DistributionPointName
      */
-    public function distributionPointName()
+    public function distributionPointName(): DistributionPointName
     {
         if (!$this->hasDistributionPointName()) {
             throw new \LogicException("distributionPoint not set.");
@@ -114,7 +116,7 @@ class DistributionPoint
      *
      * @return bool
      */
-    public function hasFullName()
+    public function hasFullName(): bool
     {
         return $this->distributionPointName()->tag() ==
              DistributionPointName::TAG_FULL_NAME;
@@ -126,7 +128,7 @@ class DistributionPoint
      * @throws \LogicException
      * @return FullName
      */
-    public function fullName()
+    public function fullName(): FullName
     {
         if (!$this->hasFullName()) {
             throw new \LogicException("fullName not set.");
@@ -139,7 +141,7 @@ class DistributionPoint
      *
      * @return bool
      */
-    public function hasRelativeName()
+    public function hasRelativeName(): bool
     {
         return $this->distributionPointName()->tag() ==
              DistributionPointName::TAG_RDN;
@@ -151,7 +153,7 @@ class DistributionPoint
      * @throws \LogicException
      * @return RelativeName
      */
-    public function relativeName()
+    public function relativeName(): RelativeName
     {
         if (!$this->hasRelativeName()) {
             throw new \LogicException("nameRelativeToCRLIssuer not set.");
@@ -164,7 +166,7 @@ class DistributionPoint
      *
      * @return bool
      */
-    public function hasReasons()
+    public function hasReasons(): bool
     {
         return isset($this->_reasons);
     }
@@ -175,7 +177,7 @@ class DistributionPoint
      * @throws \LogicException
      * @return ReasonFlags
      */
-    public function reasons()
+    public function reasons(): ReasonFlags
     {
         if (!$this->hasReasons()) {
             throw new \LogicException("reasons not set.");
@@ -188,7 +190,7 @@ class DistributionPoint
      *
      * @return bool
      */
-    public function hasCRLIssuer()
+    public function hasCRLIssuer(): bool
     {
         return isset($this->_issuer);
     }
@@ -199,7 +201,7 @@ class DistributionPoint
      * @throws \LogicException
      * @return GeneralNames
      */
-    public function crlIssuer()
+    public function crlIssuer(): GeneralNames
     {
         if (!$this->hasCRLIssuer()) {
             throw new \LogicException("crlIssuer not set.");
@@ -212,7 +214,7 @@ class DistributionPoint
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_distributionPoint)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -56,7 +58,7 @@ class DirectoryName extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_dn->toString();
     }
@@ -66,7 +68,7 @@ class DirectoryName extends GeneralName
      *
      * @return Name
      */
-    public function dn()
+    public function dn(): Name
     {
         return $this->_dn;
     }

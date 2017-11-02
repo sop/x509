@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\Extension;
+use X509\Certificate\Extension;
 
 /**
  * Implements <i>Extensions</i> ASN.1 type.
@@ -19,16 +21,16 @@ class Extensions implements \Countable, \IteratorAggregate
     /**
      * Extensions.
      *
-     * @var Extension[] $_extensions
+     * @var Extension\Extension[] $_extensions
      */
     protected $_extensions;
     
     /**
      * Constructor.
      *
-     * @param Extension ...$extensions Extension objects
+     * @param Extension\Extension[] ...$extensions Extension objects
      */
-    public function __construct(Extension ...$extensions)
+    public function __construct(Extension\Extension ...$extensions)
     {
         $this->_extensions = array();
         foreach ($extensions as $ext) {
@@ -46,7 +48,7 @@ class Extensions implements \Countable, \IteratorAggregate
     {
         $extensions = array_map(
             function (UnspecifiedType $el) {
-                return Extension::fromASN1($el->asSequence());
+                return Extension\Extension::fromASN1($el->asSequence());
             }, $seq->elements());
         return new self(...$extensions);
     }
@@ -56,7 +58,7 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array_values(
             array_map(
@@ -69,10 +71,10 @@ class Extensions implements \Countable, \IteratorAggregate
     /**
      * Get self with extensions added.
      *
-     * @param Extension ...$ext One or more extensions to add
+     * @param Extension\Extension ...$ext One or more extensions to add
      * @return self
      */
-    public function withExtensions(Extension ...$exts)
+    public function withExtensions(Extension\Extension ...$exts)
     {
         $obj = clone $this;
         foreach ($exts as $ext) {
@@ -87,7 +89,7 @@ class Extensions implements \Countable, \IteratorAggregate
      * @param string $oid Extensions OID
      * @return bool
      */
-    public function has($oid)
+    public function has(string $oid): bool
     {
         return isset($this->_extensions[$oid]);
     }
@@ -97,9 +99,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @param string $oid
      * @throws \LogicException If extension is not present
-     * @return Extension
+     * @return Extension\Extension
      */
-    public function get($oid)
+    public function get(string $oid): Extension\Extension
     {
         if (!$this->has($oid)) {
             throw new \LogicException("No extension by OID $oid.");
@@ -112,9 +114,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasAuthorityKeyIdentifier()
+    public function hasAuthorityKeyIdentifier(): bool
     {
-        return $this->has(Extension::OID_AUTHORITY_KEY_IDENTIFIER);
+        return $this->has(Extension\Extension::OID_AUTHORITY_KEY_IDENTIFIER);
     }
     
     /**
@@ -123,9 +125,11 @@ class Extensions implements \Countable, \IteratorAggregate
      * @throws \LogicException If extension is not present
      * @return \X509\Certificate\Extension\AuthorityKeyIdentifierExtension
      */
-    public function authorityKeyIdentifier()
+    public function authorityKeyIdentifier(): Extension\AuthorityKeyIdentifierExtension
     {
-        return $this->get(Extension::OID_AUTHORITY_KEY_IDENTIFIER);
+        /** @var Extension\AuthorityKeyIdentifierExtension $keyIdentifier */
+        $keyIdentifier = $this->get(Extension\Extension::OID_AUTHORITY_KEY_IDENTIFIER);
+        return $keyIdentifier;
     }
     
     /**
@@ -133,9 +137,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasSubjectKeyIdentifier()
+    public function hasSubjectKeyIdentifier(): bool
     {
-        return $this->has(Extension::OID_SUBJECT_KEY_IDENTIFIER);
+        return $this->has(Extension\Extension::OID_SUBJECT_KEY_IDENTIFIER);
     }
     
     /**
@@ -146,7 +150,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function subjectKeyIdentifier()
     {
-        return $this->get(Extension::OID_SUBJECT_KEY_IDENTIFIER);
+        /** @var Extension\SubjectKeyIdentifierExtension $subjectKeyIdentifier */
+        $subjectKeyIdentifier = $this->get(Extension\Extension::OID_SUBJECT_KEY_IDENTIFIER);
+        return $subjectKeyIdentifier;
     }
     
     /**
@@ -154,9 +160,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasKeyUsage()
+    public function hasKeyUsage(): bool
     {
-        return $this->has(Extension::OID_KEY_USAGE);
+        return $this->has(Extension\Extension::OID_KEY_USAGE);
     }
     
     /**
@@ -167,7 +173,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function keyUsage()
     {
-        return $this->get(Extension::OID_KEY_USAGE);
+        /** @var Extension\KeyUsageExtension $keyUsage */
+        $keyUsage = $this->get(Extension\Extension::OID_KEY_USAGE);
+        return $keyUsage;
     }
     
     /**
@@ -175,9 +183,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasCertificatePolicies()
+    public function hasCertificatePolicies(): bool
     {
-        return $this->has(Extension::OID_CERTIFICATE_POLICIES);
+        return $this->has(Extension\Extension::OID_CERTIFICATE_POLICIES);
     }
     
     /**
@@ -188,7 +196,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function certificatePolicies()
     {
-        return $this->get(Extension::OID_CERTIFICATE_POLICIES);
+        /** @var Extension\CertificatePoliciesExtension $certPolicies */
+        $certPolicies = $this->get(Extension\Extension::OID_CERTIFICATE_POLICIES);
+        return $certPolicies;
     }
     
     /**
@@ -196,9 +206,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasPolicyMappings()
+    public function hasPolicyMappings(): bool
     {
-        return $this->has(Extension::OID_POLICY_MAPPINGS);
+        return $this->has(Extension\Extension::OID_POLICY_MAPPINGS);
     }
     
     /**
@@ -209,7 +219,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function policyMappings()
     {
-        return $this->get(Extension::OID_POLICY_MAPPINGS);
+        /** @var Extension\PolicyMappingsExtension $policyMappings */
+        $policyMappings = $this->get(Extension\Extension::OID_POLICY_MAPPINGS);
+        return $policyMappings;
     }
     
     /**
@@ -217,9 +229,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasSubjectAlternativeName()
+    public function hasSubjectAlternativeName(): bool
     {
-        return $this->has(Extension::OID_SUBJECT_ALT_NAME);
+        return $this->has(Extension\Extension::OID_SUBJECT_ALT_NAME);
     }
     
     /**
@@ -230,7 +242,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function subjectAlternativeName()
     {
-        return $this->get(Extension::OID_SUBJECT_ALT_NAME);
+        /** @var Extension\SubjectAlternativeNameExtension $subjectAltName */
+        $subjectAltName = $this->get(Extension\Extension::OID_SUBJECT_ALT_NAME);
+        return $subjectAltName;
     }
     
     /**
@@ -238,9 +252,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasIssuerAlternativeName()
+    public function hasIssuerAlternativeName(): bool
     {
-        return $this->has(Extension::OID_ISSUER_ALT_NAME);
+        return $this->has(Extension\Extension::OID_ISSUER_ALT_NAME);
     }
     
     /**
@@ -250,7 +264,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function issuerAlternativeName()
     {
-        return $this->get(Extension::OID_ISSUER_ALT_NAME);
+        /** @var Extension\IssuerAlternativeNameExtension $issuerAltName */
+        $issuerAltName = $this->get(Extension\Extension::OID_ISSUER_ALT_NAME);
+        return $issuerAltName;
     }
     
     /**
@@ -258,9 +274,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasBasicConstraints()
+    public function hasBasicConstraints(): bool
     {
-        return $this->has(Extension::OID_BASIC_CONSTRAINTS);
+        return $this->has(Extension\Extension::OID_BASIC_CONSTRAINTS);
     }
     
     /**
@@ -271,7 +287,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function basicConstraints()
     {
-        return $this->get(Extension::OID_BASIC_CONSTRAINTS);
+        /** @var Extension\BasicConstraintsExtension $basicConstraints */
+        $basicConstraints = $this->get(Extension\Extension::OID_BASIC_CONSTRAINTS);
+        return $basicConstraints;
     }
     
     /**
@@ -279,9 +297,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasNameConstraints()
+    public function hasNameConstraints(): bool
     {
-        return $this->has(Extension::OID_NAME_CONSTRAINTS);
+        return $this->has(Extension\Extension::OID_NAME_CONSTRAINTS);
     }
     
     /**
@@ -292,7 +310,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function nameConstraints()
     {
-        return $this->get(Extension::OID_NAME_CONSTRAINTS);
+        /** @var Extension\NameConstraintsExtension $nameConstraints */
+        $nameConstraints = $this->get(Extension\Extension::OID_NAME_CONSTRAINTS);
+        return $nameConstraints;
     }
     
     /**
@@ -300,9 +320,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasPolicyConstraints()
+    public function hasPolicyConstraints(): bool
     {
-        return $this->has(Extension::OID_POLICY_CONSTRAINTS);
+        return $this->has(Extension\Extension::OID_POLICY_CONSTRAINTS);
     }
     
     /**
@@ -313,7 +333,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function policyConstraints()
     {
-        return $this->get(Extension::OID_POLICY_CONSTRAINTS);
+        /** @var Extension\PolicyConstraintsExtension $policyConstraints */
+        $policyConstraints = $this->get(Extension\Extension::OID_POLICY_CONSTRAINTS);
+        return $policyConstraints;
     }
     
     /**
@@ -321,9 +343,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasExtendedKeyUsage()
+    public function hasExtendedKeyUsage(): bool
     {
-        return $this->has(Extension::OID_EXT_KEY_USAGE);
+        return $this->has(Extension\Extension::OID_EXT_KEY_USAGE);
     }
     
     /**
@@ -334,7 +356,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function extendedKeyUsage()
     {
-        return $this->get(Extension::OID_EXT_KEY_USAGE);
+        /** @var Extension\ExtendedKeyUsageExtension $keyUsage */
+        $keyUsage = $this->get(Extension\Extension::OID_EXT_KEY_USAGE);
+        return $keyUsage;
     }
     
     /**
@@ -342,9 +366,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasCRLDistributionPoints()
+    public function hasCRLDistributionPoints(): bool
     {
-        return $this->has(Extension::OID_CRL_DISTRIBUTION_POINTS);
+        return $this->has(Extension\Extension::OID_CRL_DISTRIBUTION_POINTS);
     }
     
     /**
@@ -355,7 +379,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function crlDistributionPoints()
     {
-        return $this->get(Extension::OID_CRL_DISTRIBUTION_POINTS);
+        /** @var Extension\CRLDistributionPointsExtension $crlDist */
+        $crlDist = $this->get(Extension\Extension::OID_CRL_DISTRIBUTION_POINTS);
+        return $crlDist;
     }
     
     /**
@@ -363,9 +389,9 @@ class Extensions implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasInhibitAnyPolicy()
+    public function hasInhibitAnyPolicy(): bool
     {
-        return $this->has(Extension::OID_INHIBIT_ANY_POLICY);
+        return $this->has(Extension\Extension::OID_INHIBIT_ANY_POLICY);
     }
     
     /**
@@ -376,7 +402,9 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function inhibitAnyPolicy()
     {
-        return $this->get(Extension::OID_INHIBIT_ANY_POLICY);
+        /** @var Extension\InhibitAnyPolicyExtension $inhibitAny */
+        $inhibitAny = $this->get(Extension\Extension::OID_INHIBIT_ANY_POLICY);
+        return $inhibitAny;
     }
     
     /**
@@ -384,7 +412,7 @@ class Extensions implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_extensions);
     }
@@ -395,7 +423,7 @@ class Extensions implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->_extensions);
     }

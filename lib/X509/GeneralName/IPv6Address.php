@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 class IPv6Address extends IPAddress
@@ -11,7 +13,7 @@ class IPv6Address extends IPAddress
      * @throws \InvalidArgumentException
      * @return self
      */
-    public static function fromOctets($octets)
+    public static function fromOctets(string $octets)
     {
         $mask = null;
         $words = unpack("n*", $octets);
@@ -35,7 +37,7 @@ class IPv6Address extends IPAddress
      * @param int[] $words
      * @return string
      */
-    protected static function _wordsToIPv6String(array $words)
+    protected static function _wordsToIPv6String(array $words): string
     {
         $groups = array_map(
             function ($word) {
@@ -48,7 +50,7 @@ class IPv6Address extends IPAddress
      *
      * {@inheritdoc}
      */
-    protected function _octets()
+    protected function _octets(): string
     {
         $words = array_map("hexdec", explode(":", $this->_ip));
         if (isset($this->_mask)) {

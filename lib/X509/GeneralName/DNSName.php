@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -25,7 +27,7 @@ class DNSName extends GeneralName
      *
      * @param string $name Domain name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->_tag = self::TAG_DNS_NAME;
         $this->_name = $name;
@@ -45,7 +47,7 @@ class DNSName extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_name;
     }
@@ -55,7 +57,7 @@ class DNSName extends GeneralName
      *
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return $this->_name;
     }

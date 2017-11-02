@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use ASN1\Type\Primitive\BitString;
@@ -44,7 +46,7 @@ class UniqueIdentifier
      * @param string $str
      * @return self
      */
-    public static function fromString($str)
+    public static function fromString(string $str)
     {
         return new self(new BitString($str));
     }
@@ -54,7 +56,7 @@ class UniqueIdentifier
      *
      * @return string
      */
-    public function string()
+    public function string(): string
     {
         return $this->_uid->string();
     }
@@ -64,7 +66,7 @@ class UniqueIdentifier
      *
      * @return BitString
      */
-    public function bitString()
+    public function bitString(): BitString
     {
         return $this->_uid;
     }
@@ -74,7 +76,7 @@ class UniqueIdentifier
      *
      * @return BitString
      */
-    public function toASN1()
+    public function toASN1(): BitString
     {
         return $this->_uid;
     }

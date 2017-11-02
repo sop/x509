@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate;
 
 use ASN1\Type\UnspecifiedType;
@@ -46,7 +48,7 @@ class Attributes implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param Attribute ...$attribs
+     * @param Attribute[] $attribs
      */
     public function __construct(Attribute ...$attribs)
     {
@@ -56,7 +58,7 @@ class Attributes implements \Countable, \IteratorAggregate
     /**
      * Initialize from attribute values.
      *
-     * @param AttributeValue ...$values
+     * @param AttributeValue[] $values
      * @return self
      */
     public static function fromAttributeValues(AttributeValue ...$values)
@@ -98,7 +100,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasAccessIdentity()
+    public function hasAccessIdentity(): bool
     {
         return $this->has(AccessIdentityAttributeValue::OID);
     }
@@ -108,7 +110,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return AccessIdentityAttributeValue
      */
-    public function accessIdentity()
+    public function accessIdentity(): AccessIdentityAttributeValue
     {
         return $this->firstOf(AccessIdentityAttributeValue::OID)->first();
     }
@@ -118,7 +120,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasAuthenticationInformation()
+    public function hasAuthenticationInformation(): bool
     {
         return $this->has(AuthenticationInfoAttributeValue::OID);
     }
@@ -128,7 +130,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return AuthenticationInfoAttributeValue
      */
-    public function authenticationInformation()
+    public function authenticationInformation(): AuthenticationInfoAttributeValue
     {
         return $this->firstOf(AuthenticationInfoAttributeValue::OID)->first();
     }
@@ -138,7 +140,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasChargingIdentity()
+    public function hasChargingIdentity(): bool
     {
         return $this->has(ChargingIdentityAttributeValue::OID);
     }
@@ -148,7 +150,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return ChargingIdentityAttributeValue
      */
-    public function chargingIdentity()
+    public function chargingIdentity(): ChargingIdentityAttributeValue
     {
         return $this->firstOf(ChargingIdentityAttributeValue::OID)->first();
     }
@@ -158,7 +160,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasGroup()
+    public function hasGroup(): bool
     {
         return $this->has(GroupAttributeValue::OID);
     }
@@ -168,7 +170,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return GroupAttributeValue
      */
-    public function group()
+    public function group(): GroupAttributeValue
     {
         return $this->firstOf(GroupAttributeValue::OID)->first();
     }
@@ -178,7 +180,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return bool
      */
-    public function hasRole()
+    public function hasRole(): bool
     {
         return $this->has(AttributeType::OID_ROLE);
     }
@@ -188,7 +190,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return RoleAttributeValue
      */
-    public function role()
+    public function role(): RoleAttributeValue
     {
         return $this->firstOf(AttributeType::OID_ROLE)->first();
     }
@@ -198,7 +200,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return RoleAttributeValue[]
      */
-    public function roles()
+    public function roles(): array
     {
         return array_merge(array(),
             ...array_map(
@@ -212,7 +214,7 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array_map(
             function (Attribute $attr) {

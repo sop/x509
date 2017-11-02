@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate;
 
 use Sop\CryptoEncoding\PEM;
@@ -27,7 +29,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param Certificate ...$certs Certificate objects
+     * @param Certificate[] $certs Certificate objects
      */
     public function __construct(Certificate ...$certs)
     {
@@ -45,7 +47,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Initialize from PEMs.
      *
-     * @param PEM ...$pems PEM objects
+     * @param PEM[] $pems PEM objects
      * @return self
      */
     public static function fromPEMs(PEM ...$pems)
@@ -71,7 +73,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Get self with certificates added.
      *
-     * @param Certificate ...$cert
+     * @param Certificate[] $cert
      * @return self
      */
     public function withCertificates(Certificate ...$cert)
@@ -115,7 +117,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param Certificate $cert
      * @return bool
      */
-    public function contains(Certificate $cert)
+    public function contains(Certificate $cert): bool
     {
         $id = self::_getCertKeyId($cert);
         $map = $this->_getKeyIdMap();
@@ -137,7 +139,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param string $id
      * @return Certificate[]
      */
-    public function allBySubjectKeyIdentifier($id)
+    public function allBySubjectKeyIdentifier($id): array
     {
         $map = $this->_getKeyIdMap();
         if (!isset($map[$id])) {
@@ -151,7 +153,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      *
      * @return Certificate[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->_certs;
     }
@@ -161,7 +163,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      *
      * @return (Certificate[])[]
      */
-    private function _getKeyIdMap()
+    private function _getKeyIdMap(): array
     {
         // lazily build mapping
         if (!isset($this->_keyIdMap)) {
@@ -183,7 +185,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param Certificate $cert
      * @return string
      */
-    private static function _getCertKeyId(Certificate $cert)
+    private static function _getCertKeyId(Certificate $cert): string
     {
         $exts = $cert->tbsCertificate()->extensions();
         if ($exts->hasSubjectKeyIdentifier()) {
@@ -199,7 +201,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_certs);
     }
@@ -210,7 +212,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_certs);
     }

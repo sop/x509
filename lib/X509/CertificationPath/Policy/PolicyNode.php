@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\Policy;
 
 use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
@@ -53,7 +55,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * @param \X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo[] $qualifiers
      * @param string[] $expected_policies
      */
-    public function __construct($valid_policy, array $qualifiers,
+    public function __construct(string $valid_policy, array $qualifiers,
         array $expected_policies)
     {
         $this->_validPolicy = $valid_policy;
@@ -78,7 +80,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return string
      */
-    public function validPolicy()
+    public function validPolicy(): string
     {
         return $this->_validPolicy;
     }
@@ -88,7 +90,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return boolean
      */
-    public function isAnyPolicy()
+    public function isAnyPolicy(): bool
     {
         return PolicyInformation::OID_ANY_POLICY == $this->_validPolicy;
     }
@@ -98,7 +100,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return \X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo[]
      */
-    public function qualifiers()
+    public function qualifiers(): array
     {
         return $this->_qualifiers;
     }
@@ -109,7 +111,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * @param string $oid
      * @return boolean
      */
-    public function hasExpectedPolicy($oid)
+    public function hasExpectedPolicy($oid): bool
     {
         return in_array($oid, $this->_expectedPolicies);
     }
@@ -119,7 +121,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return string[]
      */
-    public function expectedPolicies()
+    public function expectedPolicies(): array
     {
         return $this->_expectedPolicies;
     }
@@ -140,7 +142,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * @param string $oid
      * @return boolean
      */
-    public function hasChildWithValidPolicy($oid)
+    public function hasChildWithValidPolicy($oid): bool
     {
         foreach ($this->_children as $node) {
             if ($node->validPolicy() == $oid) {
@@ -169,7 +171,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return PolicyNode[]
      */
-    public function children()
+    public function children(): array
     {
         return array_values($this->_children);
     }
@@ -194,7 +196,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return bool
      */
-    public function hasParent()
+    public function hasParent(): bool
     {
         return isset($this->_parent);
     }
@@ -214,7 +216,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return PolicyNode[]
      */
-    public function parents()
+    public function parents(): array
     {
         if (!$this->_parent) {
             return array();
@@ -244,7 +246,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return int
      */
-    public function nodeCount()
+    public function nodeCount(): int
     {
         $c = 1;
         foreach ($this->_children as $child) {
@@ -258,7 +260,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @see \Countable::count()
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_children);
     }
@@ -268,7 +270,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @see \IteratorAggregate::getIterator()
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_children);
     }

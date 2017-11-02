@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\Primitive\NullType;
@@ -16,7 +18,7 @@ class NoRevocationAvailableExtension extends Extension
      *
      * @param bool $critical
      */
-    public function __construct($critical)
+    public function __construct(bool $critical)
     {
         parent::__construct(self::OID_NO_REV_AVAIL, $critical);
     }
@@ -37,7 +39,7 @@ class NoRevocationAvailableExtension extends Extension
      * {@inheritdoc}
      * @return NullType
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): NullType
     {
         return new NullType();
     }

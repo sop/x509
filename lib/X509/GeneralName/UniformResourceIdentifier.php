@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
@@ -26,7 +28,7 @@ class UniformResourceIdentifier extends GeneralName
      *
      * @param string $uri
      */
-    public function __construct($uri)
+    public function __construct(string $uri)
     {
         $this->_tag = self::TAG_URI;
         $this->_uri = $uri;
@@ -46,7 +48,7 @@ class UniformResourceIdentifier extends GeneralName
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_uri;
     }
@@ -56,7 +58,7 @@ class UniformResourceIdentifier extends GeneralName
      *
      * @return string
      */
-    public function uri()
+    public function uri(): string
     {
         return $this->_uri;
     }

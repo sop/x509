@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 use X501\MatchingRule\MatchingRule;
 use X509\AttributeCertificate\Attribute\GroupAttributeValue;
 use X509\AttributeCertificate\Attribute\IetfAttrSyntax;

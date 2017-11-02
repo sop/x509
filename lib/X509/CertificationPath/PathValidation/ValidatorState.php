@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\CertificationPath\PathValidation;
 
 use ASN1\Element;
@@ -325,7 +327,7 @@ class ValidatorState
      *
      * @return int
      */
-    public function pathLength()
+    public function pathLength(): int
     {
         return $this->_pathLength;
     }
@@ -335,7 +337,7 @@ class ValidatorState
      *
      * @return int
      */
-    public function index()
+    public function index(): int
     {
         return $this->_index;
     }
@@ -345,7 +347,7 @@ class ValidatorState
      *
      * @return bool
      */
-    public function hasValidPolicyTree()
+    public function hasValidPolicyTree(): bool
     {
         return isset($this->_validPolicyTree);
     }
@@ -356,7 +358,7 @@ class ValidatorState
      * @throws \LogicException
      * @return PolicyTree
      */
-    public function validPolicyTree()
+    public function validPolicyTree(): PolicyTree
     {
         if (!$this->hasValidPolicyTree()) {
             throw new \LogicException("valid_policy_tree not set.");
@@ -399,7 +401,7 @@ class ValidatorState
      *
      * @return int
      */
-    public function inhibitAnyPolicy()
+    public function inhibitAnyPolicy(): int
     {
         return $this->_inhibitAnyPolicy;
     }
@@ -409,7 +411,7 @@ class ValidatorState
      *
      * @return int
      */
-    public function policyMapping()
+    public function policyMapping(): int
     {
         return $this->_policyMapping;
     }
@@ -419,7 +421,7 @@ class ValidatorState
      *
      * @return AlgorithmIdentifierType
      */
-    public function workingPublicKeyAlgorithm()
+    public function workingPublicKeyAlgorithm(): AlgorithmIdentifierType
     {
         return $this->_workingPublicKeyAlgorithm;
     }
@@ -429,7 +431,7 @@ class ValidatorState
      *
      * @return PublicKeyInfo
      */
-    public function workingPublicKey()
+    public function workingPublicKey(): PublicKeyInfo
     {
         return $this->_workingPublicKey;
     }
@@ -449,7 +451,7 @@ class ValidatorState
      *
      * @return Name
      */
-    public function workingIssuerName()
+    public function workingIssuerName(): Name
     {
         return $this->_workingIssuerName;
     }
@@ -459,7 +461,7 @@ class ValidatorState
      *
      * @return int
      */
-    public function maxPathLength()
+    public function maxPathLength(): int
     {
         return $this->_maxPathLength;
     }
@@ -469,7 +471,7 @@ class ValidatorState
      *
      * @return bool
      */
-    public function isFinal()
+    public function isFinal(): bool
     {
         return $this->_index == $this->_pathLength;
     }
@@ -480,7 +482,7 @@ class ValidatorState
      * @param Certificate[] $certificates Certificates in a certification path
      * @return PathValidationResult
      */
-    public function getResult(array $certificates)
+    public function getResult(array $certificates): PathValidationResult
     {
         return new PathValidationResult($certificates, $this->_validPolicyTree,
             $this->_workingPublicKey, $this->_workingPublicKeyAlgorithm,

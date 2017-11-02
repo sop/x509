@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension;
 
 use ASN1\Type\UnspecifiedType;
@@ -31,7 +33,7 @@ class CertificatePoliciesExtension extends Extension implements
     public function __construct($critical, PolicyInformation ...$policies)
     {
         parent::__construct(Extension::OID_CERTIFICATE_POLICIES, $critical);
-        $this->_policies = array();
+        $this->_policies = [];
         foreach ($policies as $policy) {
             $this->_policies[$policy->oid()] = $policy;
         }
@@ -62,7 +64,7 @@ class CertificatePoliciesExtension extends Extension implements
      * @param string $oid
      * @return bool
      */
-    public function has($oid)
+    public function has(string $oid): bool
     {
         return isset($this->_policies[$oid]);
     }
@@ -74,7 +76,7 @@ class CertificatePoliciesExtension extends Extension implements
      * @throws \LogicException
      * @return PolicyInformation
      */
-    public function get($oid)
+    public function get(string $oid): PolicyInformation
     {
         if (!$this->has($oid)) {
             throw new \LogicException("Not certificate policy by OID $oid.");
@@ -87,7 +89,7 @@ class CertificatePoliciesExtension extends Extension implements
      *
      * @return bool
      */
-    public function hasAnyPolicy()
+    public function hasAnyPolicy(): bool
     {
         return $this->has(PolicyInformation::OID_ANY_POLICY);
     }
@@ -98,7 +100,7 @@ class CertificatePoliciesExtension extends Extension implements
      * @throws \LogicException If anyPolicy is not present.
      * @return PolicyInformation
      */
-    public function anyPolicy()
+    public function anyPolicy(): PolicyInformation
     {
         if (!$this->hasAnyPolicy()) {
             throw new \LogicException("No anyPolicy.");
@@ -111,7 +113,7 @@ class CertificatePoliciesExtension extends Extension implements
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         if (!count($this->_policies)) {
             throw new \LogicException("No policies.");
@@ -129,7 +131,7 @@ class CertificatePoliciesExtension extends Extension implements
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_policies);
     }
@@ -140,7 +142,7 @@ class CertificatePoliciesExtension extends Extension implements
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_policies);
     }

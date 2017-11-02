@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\AttributeCertificate\Validation;
 
 use Sop\CryptoBridge\Crypto;
@@ -86,7 +88,7 @@ class ACValidator
             $holder = $path->validate($config, $this->_crypto)->certificate();
         } catch (PathValidationException $e) {
             throw new ACValidationException(
-                "Failed to validate holder PKC's certification path.", null, $e);
+                "Failed to validate holder PKC's certification path.", 0, $e);
         }
         if (!$this->_ac->isHeldBy($holder)) {
             throw new ACValidationException("Name mismatch of AC's holder PKC.");
@@ -109,7 +111,7 @@ class ACValidator
             $issuer = $path->validate($config, $this->_crypto)->certificate();
         } catch (PathValidationException $e) {
             throw new ACValidationException(
-                "Failed to validate issuer PKC's certification path.", null, $e);
+                "Failed to validate issuer PKC's certification path.", 0, $e);
         }
         if (!$this->_ac->isIssuedBy($issuer)) {
             throw new ACValidationException("Name mismatch of AC's issuer PKC.");

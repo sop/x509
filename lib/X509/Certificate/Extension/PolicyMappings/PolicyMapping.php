@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace X509\Certificate\Extension\PolicyMappings;
 
 use ASN1\Type\Constructed\Sequence;
@@ -61,7 +63,7 @@ class PolicyMapping
      *
      * @return string OID in dotted format
      */
-    public function issuerDomainPolicy()
+    public function issuerDomainPolicy(): string
     {
         return $this->_issuerDomainPolicy;
     }
@@ -71,7 +73,7 @@ class PolicyMapping
      *
      * @return string OID in dotted format
      */
-    public function subjectDomainPolicy()
+    public function subjectDomainPolicy(): string
     {
         return $this->_subjectDomainPolicy;
     }
@@ -81,7 +83,7 @@ class PolicyMapping
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         return new Sequence(new ObjectIdentifier($this->_issuerDomainPolicy),
             new ObjectIdentifier($this->_subjectDomainPolicy));
