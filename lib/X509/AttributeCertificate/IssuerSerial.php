@@ -61,7 +61,7 @@ class IssuerSerial
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq): self
+    public static function fromASN1(Sequence $seq): IssuerSerial
     {
         $issuer = GeneralNames::fromASN1($seq->at(0)->asSequence());
         $serial = $seq->at(1)
@@ -80,7 +80,7 @@ class IssuerSerial
      * @param Certificate $cert
      * @return self
      */
-    public static function fromPKC(Certificate $cert)
+    public static function fromPKC(Certificate $cert): IssuerSerial
     {
         $tbsCert = $cert->tbsCertificate();
         $issuer = new GeneralNames(new DirectoryName($tbsCert->issuer()));

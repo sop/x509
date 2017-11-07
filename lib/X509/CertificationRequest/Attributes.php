@@ -51,7 +51,7 @@ class Attributes implements \Countable, \IteratorAggregate
      * @param AttributeValue ...$values
      * @return self
      */
-    public static function fromAttributeValues(AttributeValue ...$values): self
+    public static function fromAttributeValues(AttributeValue ...$values): Attributes
     {
         $attribs = array_map(
             function (AttributeValue $value) {
@@ -66,7 +66,7 @@ class Attributes implements \Countable, \IteratorAggregate
      * @param Set $set
      * @return self
      */
-    public static function fromASN1(Set $set): self
+    public static function fromASN1(Set $set): Attributes
     {
         $attribs = array_map(
             function (UnspecifiedType $el) {

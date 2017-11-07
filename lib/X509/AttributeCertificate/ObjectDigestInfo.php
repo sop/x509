@@ -74,7 +74,7 @@ class ObjectDigestInfo
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq): self
+    public static function fromASN1(Sequence $seq): ObjectDigestInfo
     {
         $type = $seq->at(0)
             ->asEnumerated()

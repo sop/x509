@@ -42,7 +42,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(Sequence $seq): self
+    public static function fromASN1(Sequence $seq): GeneralNames
     {
         if (!count($seq)) {
             throw new \UnexpectedValueException(

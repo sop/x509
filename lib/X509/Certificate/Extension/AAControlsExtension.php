@@ -64,7 +64,7 @@ class AAControlsExtension extends Extension
         array $permitted = null, array $excluded = null, bool $permit_unspecified = true)
     {
         parent::__construct(self::OID_AA_CONTROLS, $critical);
-        $this->_pathLenConstraint = $path_len;
+        $this->_pathLenConstraint = isset($path_len) ? intval($path_len) : null;
         $this->_permittedAttrs = $permitted;
         $this->_excludedAttrs = $excluded;
         $this->_permitUnSpecified = $permit_unspecified;

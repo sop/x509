@@ -44,7 +44,7 @@ class Extensions implements \Countable, \IteratorAggregate
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq): self
+    public static function fromASN1(Sequence $seq): Extensions
     {
         $extensions = array_map(
             function (UnspecifiedType $el) {
@@ -74,7 +74,7 @@ class Extensions implements \Countable, \IteratorAggregate
      * @param Ext\Extension ...$exts One or more extensions to add
      * @return self
      */
-    public function withExtensions(Ext\Extension ...$exts): self
+    public function withExtensions(Ext\Extension ...$exts): Extensions
     {
         $obj = clone $this;
         foreach ($exts as $ext) {
