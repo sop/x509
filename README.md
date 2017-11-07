@@ -28,23 +28,22 @@ corresponding RFC's as a reference documentation.
     -   AC decoding and encoding
     -   AC signing
 
+## Requirements
+
+-   PHP >=7.0
+-   gmp
+-   [sop/asn1](https://github.com/sop/asn1)
+-   [sop/x501](https://github.com/sop/x501)
+-   [sop/crypto-types](https://github.com/sop/crypto-types)
+-   [sop/crypto-bridge](https://github.com/sop/crypto-bridge)
+-   [sop/crypto-encoding](https://github.com/sop/crypto-encoding)
+
 ## Installation
 
 This library is available on
 [Packagist](https://packagist.org/packages/sop/x509).
 
     composer require sop/x509
-
-### Dependencies
-
-Composer manages dependencies automatically.
-External libraries are listed here for reference.
-
--   [ASN.1](https://github.com/sop/asn1)
--   [X.501](https://github.com/sop/x501)
--   [CryptoTypes](https://github.com/sop/crypto-types)
--   [CryptoBridge](https://github.com/sop/crypto-bridge)
--   [CryptoEncoding](https://github.com/sop/crypto-encoding)
 
 ## Code examples
 
