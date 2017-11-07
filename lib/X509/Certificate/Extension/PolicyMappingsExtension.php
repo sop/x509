@@ -29,7 +29,7 @@ class PolicyMappingsExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param PolicyMapping[] $mappings One or more PolicyMapping objects
+     * @param PolicyMapping ...$mappings One or more PolicyMapping objects
      */
     public function __construct(bool $critical, PolicyMapping ...$mappings)
     {

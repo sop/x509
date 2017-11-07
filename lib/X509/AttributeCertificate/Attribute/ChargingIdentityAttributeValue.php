@@ -16,7 +16,7 @@ class ChargingIdentityAttributeValue extends IetfAttrSyntax
     /**
      * Constructor.
      *
-     * @param IetfAttrValue[] $values
+     * @param IetfAttrValue ...$values
      */
     public function __construct(IetfAttrValue ...$values)
     {

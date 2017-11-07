@@ -38,8 +38,8 @@ abstract class IetfAttrSyntax extends AttributeValue implements
     
     /**
      * Constructor.
-     *
-     * @param IetfAttrValue[] $values
+     * 
+     * @param IetfAttrValue ...$values
      */
     public function __construct(IetfAttrValue ...$values)
     {

@@ -48,7 +48,7 @@ class Attributes implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param Attribute[] $attribs
+     * @param Attribute ...$attribs
      */
     public function __construct(Attribute ...$attribs)
     {
@@ -58,7 +58,7 @@ class Attributes implements \Countable, \IteratorAggregate
     /**
      * Initialize from attribute values.
      *
-     * @param AttributeValue[] $values
+     * @param AttributeValue ...$values
      * @return self
      */
     public static function fromAttributeValues(AttributeValue ...$values): self

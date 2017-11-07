@@ -58,7 +58,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param string[] $purposes
+     * @param string ...$purposes
      */
     public function __construct(bool $critical, string ...$purposes)
     {
@@ -85,7 +85,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      *
      * If multiple purposes are checked, all must be present.
      *
-     * @param string[] $oids
+     * @param string ...$oids
      * @return bool
      */
     public function has(string ...$oids): bool

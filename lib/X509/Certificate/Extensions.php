@@ -28,7 +28,7 @@ class Extensions implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param Extension\Extension[] ...$extensions Extension objects
+     * @param Ext\Extension ...$extensions Extension objects
      */
     public function __construct(Ext\Extension ...$extensions)
     {
@@ -71,7 +71,7 @@ class Extensions implements \Countable, \IteratorAggregate
     /**
      * Get self with extensions added.
      *
-     * @param Extension\Extension ...$ext One or more extensions to add
+     * @param Ext\Extension ...$exts One or more extensions to add
      * @return self
      */
     public function withExtensions(Ext\Extension ...$exts): self

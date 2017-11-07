@@ -25,7 +25,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param GeneralSubtree[] $subtrees
+     * @param GeneralSubtree ...$subtrees
      */
     public function __construct(GeneralSubtree ...$subtrees)
     {

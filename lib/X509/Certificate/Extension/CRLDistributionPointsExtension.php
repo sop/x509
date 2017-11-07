@@ -28,7 +28,7 @@ class CRLDistributionPointsExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param DistributionPoint[] $distribution_points
+     * @param DistributionPoint ...$distribution_points
      */
     public function __construct(bool $critical,
         DistributionPoint ...$distribution_points)

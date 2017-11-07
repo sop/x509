@@ -36,7 +36,7 @@ class UniqueIdentifier
      * @param BitString $bs
      * @return self
      */
-    public static function fromASN1(BitString $bs): self
+    public static function fromASN1(BitString $bs): UniqueIdentifier
     {
         return new self($bs);
     }
@@ -47,7 +47,7 @@ class UniqueIdentifier
      * @param string $str
      * @return self
      */
-    public static function fromString(string $str): self
+    public static function fromString(string $str): UniqueIdentifier
     {
         return new self(new BitString($str));
     }

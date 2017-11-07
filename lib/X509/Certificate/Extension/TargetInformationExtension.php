@@ -40,7 +40,7 @@ class TargetInformationExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param Targets[] $targets
+     * @param Targets ...$targets
      */
     public function __construct(bool $critical, Targets ...$targets)
     {
@@ -53,7 +53,7 @@ class TargetInformationExtension extends Extension implements
      *
      * Extension criticality shall be set to true as specified by RFC 5755.
      *
-     * @param Target[] $target
+     * @param Target ...$target
      * @return TargetInformationExtension
      */
     public static function fromTargets(Target ...$target): self

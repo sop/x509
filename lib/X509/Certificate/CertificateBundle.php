@@ -29,7 +29,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Constructor.
      *
-     * @param Certificate[] $certs Certificate objects
+     * @param Certificate ...$certs Certificate objects
      */
     public function __construct(Certificate ...$certs)
     {
@@ -47,7 +47,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Initialize from PEMs.
      *
-     * @param PEM[] $pems PEM objects
+     * @param PEM ...$pems PEM objects
      * @return self
      */
     public static function fromPEMs(PEM ...$pems): self
@@ -73,7 +73,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Get self with certificates added.
      *
-     * @param Certificate[] $cert
+     * @param Certificate ...$cert
      * @return self
      */
     public function withCertificates(Certificate ...$cert): self

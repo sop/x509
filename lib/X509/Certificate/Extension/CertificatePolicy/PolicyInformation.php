@@ -41,7 +41,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * Constructor.
      *
      * @param string $oid
-     * @param PolicyQualifierInfo[] $qualifiers
+     * @param PolicyQualifierInfo ...$qualifiers
      */
     public function __construct(string $oid, PolicyQualifierInfo ...$qualifiers)
     {

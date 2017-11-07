@@ -34,7 +34,7 @@ class NoticeReference
      * Constructor.
      *
      * @param DisplayText $organization
-     * @param int[] $numbers
+     * @param int ...$numbers
      */
     public function __construct(DisplayText $organization, int ...$numbers)
     {
