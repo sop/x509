@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -59,7 +59,7 @@ class ObjectDigestInfo
      * @param AlgorithmIdentifierType $algo
      * @param BitString $digest
      */
-    public function __construct($type, AlgorithmIdentifierType $algo,
+    public function __construct(int $type, AlgorithmIdentifierType $algo,
         BitString $digest)
     {
         $this->_digestedObjectType = $type;
@@ -74,11 +74,11 @@ class ObjectDigestInfo
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $type = $seq->at(0)
             ->asEnumerated()
-            ->number();
+            ->intNumber();
         $oid = null;
         $idx = 1;
         if ($seq->has($idx, Element::TYPE_OBJECT_IDENTIFIER)) {

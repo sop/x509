@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate;
 
@@ -44,7 +44,7 @@ class Validity
      *
      * @param Sequence $seq
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $nb = Time::fromASN1($seq->at(0)->asTime());
         $na = Time::fromASN1($seq->at(1)->asTime());
@@ -59,7 +59,7 @@ class Validity
      * @param string|null $tz Timezone string
      * @return self
      */
-    public static function fromStrings($nb_date, $na_date, $tz = null)
+    public static function fromStrings($nb_date, $na_date, $tz = null): self
     {
         return new self(Time::fromString($nb_date, $tz),
             Time::fromString($na_date, $tz));

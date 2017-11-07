@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\NameConstraints;
 
@@ -38,7 +38,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $subtrees = array_map(
             function (UnspecifiedType $el) {

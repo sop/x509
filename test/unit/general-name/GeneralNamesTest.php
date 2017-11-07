@@ -1,7 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
+use ASN1\Type\TaggedType;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\NullType;
 use X509\GeneralName\DNSName;
@@ -210,11 +211,11 @@ class GeneralNamesTest_NameMockup extends GeneralName
     {
         $this->_tag = $tag;
     }
-    public function string()
+    public function string(): string
     {
         return "";
     }
-    protected function _choiceASN1()
+    protected function _choiceASN1(): TaggedType
     {
         return new NullType();
     }

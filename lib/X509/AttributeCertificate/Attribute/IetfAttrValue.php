@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Attribute;
 
@@ -50,7 +50,7 @@ class IetfAttrValue
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el)
+    public static function fromASN1(UnspecifiedType $el): self
     {
         switch ($el->tag()) {
             case Element::TYPE_OCTET_STRING:
@@ -69,7 +69,7 @@ class IetfAttrValue
      * @param string $octets
      * @return self
      */
-    public static function fromOctets(string $octets)
+    public static function fromOctets(string $octets): self
     {
         return new self($octets, Element::TYPE_OCTET_STRING);
     }
@@ -80,7 +80,7 @@ class IetfAttrValue
      * @param string $str
      * @return self
      */
-    public static function fromString(string $str)
+    public static function fromString(string $str): self
     {
         return new self($str, Element::TYPE_UTF8_STRING);
     }
@@ -91,7 +91,7 @@ class IetfAttrValue
      * @param string $oid
      * @return self
      */
-    public static function fromOID(string $oid)
+    public static function fromOID(string $oid): self
     {
         return new self($oid, Element::TYPE_OBJECT_IDENTIFIER);
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate;
 
@@ -50,7 +50,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param PEM[] $pems PEM objects
      * @return self
      */
-    public static function fromPEMs(PEM ...$pems)
+    public static function fromPEMs(PEM ...$pems): self
     {
         $certs = array_map(
             function ($pem) {
@@ -65,7 +65,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param PEMBundle $pem_bundle
      * @return self
      */
-    public static function fromPEMBundle(PEMBundle $pem_bundle)
+    public static function fromPEMBundle(PEMBundle $pem_bundle): self
     {
         return self::fromPEMs(...$pem_bundle->all());
     }
@@ -76,7 +76,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param Certificate[] $cert
      * @return self
      */
-    public function withCertificates(Certificate ...$cert)
+    public function withCertificates(Certificate ...$cert): self
     {
         $obj = clone $this;
         $obj->_certs = array_merge($obj->_certs, $cert);
@@ -89,7 +89,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param PEMBundle $pem_bundle
      * @return self
      */
-    public function withPEMBundle(PEMBundle $pem_bundle)
+    public function withPEMBundle(PEMBundle $pem_bundle): self
     {
         $certs = $this->_certs;
         foreach ($pem_bundle as $pem) {
@@ -104,7 +104,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param PEM $pem
      * @return self
      */
-    public function withPEM(PEM $pem)
+    public function withPEM(PEM $pem): self
     {
         $certs = $this->_certs;
         $certs[] = Certificate::fromPEM($pem);
@@ -139,7 +139,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
      * @param string $id
      * @return Certificate[]
      */
-    public function allBySubjectKeyIdentifier($id): array
+    public function allBySubjectKeyIdentifier(string $id): array
     {
         $map = $this->_getKeyIdMap();
         if (!isset($map[$id])) {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\NameConstraints;
 
@@ -46,7 +46,7 @@ class GeneralSubtree
      * @param int $min
      * @param int|null $max
      */
-    public function __construct(GeneralName $base, $min = 0, $max = null)
+    public function __construct(GeneralName $base, int $min = 0, $max = null)
     {
         $this->_base = $base;
         $this->_min = $min;
@@ -59,7 +59,7 @@ class GeneralSubtree
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $base = GeneralName::fromASN1($seq->at(0)->asTagged());
         $min = 0;
@@ -68,13 +68,13 @@ class GeneralSubtree
             $min = $seq->getTagged(0)
                 ->asImplicit(Element::TYPE_INTEGER)
                 ->asInteger()
-                ->number();
+                ->intNumber();
         }
         if ($seq->hasTagged(1)) {
             $max = $seq->getTagged(1)
                 ->asImplicit(Element::TYPE_INTEGER)
                 ->asInteger()
-                ->number();
+                ->intNumber();
         }
         return new self($base, $min, $max);
     }
@@ -84,7 +84,7 @@ class GeneralSubtree
      *
      * @return GeneralName
      */
-    public function base()
+    public function base(): GeneralName
     {
         return $this->_base;
     }
@@ -94,7 +94,7 @@ class GeneralSubtree
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array($this->_base->toASN1());
         if (isset($this->_min) && $this->_min != 0) {

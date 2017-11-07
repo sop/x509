@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -39,8 +39,10 @@ class PolicyConstraintsExtension extends Extension
         $inhibit_policy_mapping = null)
     {
         parent::__construct(self::OID_POLICY_CONSTRAINTS, $critical);
-        $this->_requireExplicitPolicy = $require_explicit_policy;
-        $this->_inhibitPolicyMapping = $inhibit_policy_mapping;
+        $this->_requireExplicitPolicy = isset($require_explicit_policy) ? intval(
+            $require_explicit_policy) : null;
+        $this->_inhibitPolicyMapping = isset($inhibit_policy_mapping) ? intval(
+            $inhibit_policy_mapping) : null;
     }
     
     /**
@@ -48,7 +50,7 @@ class PolicyConstraintsExtension extends Extension
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $seq = Sequence::fromDER($data);
         $require_explicit_policy = null;
@@ -57,13 +59,13 @@ class PolicyConstraintsExtension extends Extension
             $require_explicit_policy = $seq->getTagged(0)
                 ->asImplicit(Element::TYPE_INTEGER)
                 ->asInteger()
-                ->number();
+                ->intNumber();
         }
         if ($seq->hasTagged(1)) {
             $inhibit_policy_mapping = $seq->getTagged(1)
                 ->asImplicit(Element::TYPE_INTEGER)
                 ->asInteger()
-                ->number();
+                ->intNumber();
         }
         return new self($critical, $require_explicit_policy,
             $inhibit_policy_mapping);
@@ -85,7 +87,7 @@ class PolicyConstraintsExtension extends Extension
      * @throws \LogicException
      * @return int
      */
-    public function requireExplicitPolicy()
+    public function requireExplicitPolicy(): int
     {
         if (!$this->hasRequireExplicitPolicy()) {
             throw new \LogicException("requireExplicitPolicy not set.");
@@ -109,7 +111,7 @@ class PolicyConstraintsExtension extends Extension
      * @throws \LogicException
      * @return int
      */
-    public function inhibitPolicyMapping()
+    public function inhibitPolicyMapping(): int
     {
         if (!$this->hasInhibitPolicyMapping()) {
             throw new \LogicException("inhibitPolicyMapping not set.");
@@ -122,7 +124,7 @@ class PolicyConstraintsExtension extends Extension
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_requireExplicitPolicy)) {

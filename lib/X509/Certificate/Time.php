@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate;
 
@@ -50,7 +50,7 @@ class Time
      * @param TimeType $el
      * @return self
      */
-    public static function fromASN1(TimeType $el)
+    public static function fromASN1(TimeType $el): self
     {
         $obj = new self($el->dateTime());
         $obj->_type = $el->tag();
@@ -64,7 +64,7 @@ class Time
      * @param string|null $tz
      * @return self
      */
-    public static function fromString($time, $tz = null)
+    public static function fromString($time, $tz = null): self
     {
         return new self(self::_createDateTime($time, $tz));
     }

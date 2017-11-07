@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Feature;
 
@@ -27,7 +27,7 @@ trait AttributeContainer
      * @param string $name
      * @return Attribute|null
      */
-    protected function _findFirst($name)
+    protected function _findFirst(string $name)
     {
         $oid = AttributeType::attrNameToOID($name);
         foreach ($this->_attributes as $attr) {
@@ -44,7 +44,7 @@ trait AttributeContainer
      * @param string $name OID or attribute name
      * @return boolean
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return null !== $this->_findFirst($name);
     }
@@ -56,7 +56,7 @@ trait AttributeContainer
      * @throws \OutOfBoundsException
      * @return Attribute
      */
-    public function firstOf($name)
+    public function firstOf(string $name): Attribute
     {
         $attr = $this->_findFirst($name);
         if (!$attr) {
@@ -71,7 +71,7 @@ trait AttributeContainer
      * @param string $name OID or attribute name
      * @return Attribute[]
      */
-    public function allOf($name)
+    public function allOf(string $name): array
     {
         $oid = AttributeType::attrNameToOID($name);
         $attrs = array_filter($this->_attributes,
@@ -86,7 +86,7 @@ trait AttributeContainer
      *
      * @return Attribute[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->_attributes;
     }
@@ -97,7 +97,7 @@ trait AttributeContainer
      * @param Attribute ...$attribs
      * @return self
      */
-    public function withAdditional(Attribute ...$attribs)
+    public function withAdditional(Attribute ...$attribs): self
     {
         $obj = clone $this;
         foreach ($attribs as $attr) {
@@ -114,7 +114,7 @@ trait AttributeContainer
      * @param Attribute $attr
      * @return self
      */
-    public function withUnique(Attribute $attr)
+    public function withUnique(Attribute $attr): self
     {
         $obj = clone $this;
         $obj->_attributes = array_filter($obj->_attributes,
@@ -131,7 +131,7 @@ trait AttributeContainer
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_attributes);
     }
@@ -142,7 +142,7 @@ trait AttributeContainer
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_attributes);
     }

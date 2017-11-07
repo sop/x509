@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -44,7 +44,7 @@ abstract class AttCertIssuer
      * @param Name $name
      * @return self
      */
-    public static function fromName(Name $name)
+    public static function fromName(Name $name): self
     {
         return new V2Form(new GeneralNames(new DirectoryName($name)));
     }
@@ -55,7 +55,7 @@ abstract class AttCertIssuer
      * @param Certificate $cert
      * @return self
      */
-    public static function fromPKC(Certificate $cert)
+    public static function fromPKC(Certificate $cert): self
     {
         return self::fromName($cert->tbsCertificate()->subject());
     }
@@ -67,7 +67,7 @@ abstract class AttCertIssuer
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el)
+    public static function fromASN1(UnspecifiedType $el): self
     {
         if (!$el->isTagged()) {
             throw new \UnexpectedValueException("v1Form issuer not supported.");

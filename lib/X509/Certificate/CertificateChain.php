@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate;
 
@@ -36,7 +36,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @param PEM ...$pems
      * @return self
      */
-    public static function fromPEMs(PEM ...$pems)
+    public static function fromPEMs(PEM ...$pems): self
     {
         $certs = array_map(
             function (PEM $pem) {
@@ -51,7 +51,7 @@ class CertificateChain implements \Countable, \IteratorAggregate
      * @param string $str
      * @return self
      */
-    public static function fromPEMString(string $str)
+    public static function fromPEMString(string $str): self
     {
         $pems = PEMBundle::fromString($str)->all();
         return self::fromPEMs(...$pems);

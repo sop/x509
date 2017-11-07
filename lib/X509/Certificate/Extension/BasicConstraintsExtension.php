@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -37,11 +37,11 @@ class BasicConstraintsExtension extends Extension
      * @param bool $ca
      * @param int|null $path_len
      */
-    public function __construct(bool $critical, $ca, $path_len = null)
+    public function __construct(bool $critical, bool $ca, $path_len = null)
     {
         parent::__construct(self::OID_BASIC_CONSTRAINTS, $critical);
-        $this->_ca = (bool) $ca;
-        $this->_pathLen = $path_len;
+        $this->_ca = $ca;
+        $this->_pathLen = isset($path_len) ? intval($path_len) : null;
     }
     
     /**
@@ -49,7 +49,7 @@ class BasicConstraintsExtension extends Extension
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $seq = Sequence::fromDER($data);
         $ca = false;
@@ -63,7 +63,7 @@ class BasicConstraintsExtension extends Extension
         if ($seq->has($idx, Element::TYPE_INTEGER)) {
             $path_len = $seq->at($idx)
                 ->asInteger()
-                ->number();
+                ->intNumber();
         }
         return new self($critical, $ca, $path_len);
     }
@@ -94,7 +94,7 @@ class BasicConstraintsExtension extends Extension
      * @throws \LogicException
      * @return int
      */
-    public function pathLen()
+    public function pathLen(): int
     {
         if (!$this->hasPathLen()) {
             throw new \LogicException("pathLenConstraint not set.");

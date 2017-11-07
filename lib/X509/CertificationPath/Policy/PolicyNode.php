@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationPath\Policy;
 
@@ -9,6 +9,7 @@ use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
 /**
  * Policy node class for certification path validation.
  *
+ * @internal Mutable class used by PolicyTree
  * @link https://tools.ietf.org/html/rfc5280#section-6.1.2
  */
 class PolicyNode implements \IteratorAggregate, \Countable
@@ -69,7 +70,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return self
      */
-    public static function anyPolicyNode()
+    public static function anyPolicyNode(): self
     {
         return new self(PolicyInformation::OID_ANY_POLICY, array(),
             array(PolicyInformation::OID_ANY_POLICY));
@@ -111,7 +112,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * @param string $oid
      * @return boolean
      */
-    public function hasExpectedPolicy($oid): bool
+    public function hasExpectedPolicy(string $oid): bool
     {
         return in_array($oid, $this->_expectedPolicies);
     }
@@ -131,7 +132,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @param string ...$oids Policy OIDs
      */
-    public function setExpectedPolicies(...$oids)
+    public function setExpectedPolicies(string ...$oids)
     {
         $this->_expectedPolicies = $oids;
     }
@@ -142,7 +143,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * @param string $oid
      * @return boolean
      */
-    public function hasChildWithValidPolicy($oid): bool
+    public function hasChildWithValidPolicy(string $oid): bool
     {
         foreach ($this->_children as $node) {
             if ($node->validPolicy() == $oid) {
@@ -158,7 +159,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * @param PolicyNode $node
      * @return self
      */
-    public function addChild(PolicyNode $node)
+    public function addChild(PolicyNode $node): self
     {
         $id = spl_object_hash($node);
         $node->_parent = $this;
@@ -181,7 +182,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
      *
      * @return self The removed node
      */
-    public function remove()
+    public function remove(): self
     {
         if ($this->_parent) {
             $id = spl_object_hash($this);

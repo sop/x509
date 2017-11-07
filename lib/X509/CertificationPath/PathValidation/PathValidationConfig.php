@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationPath\PathValidation;
 
@@ -90,7 +90,7 @@ class PathValidationConfig
      * @param \DateTimeImmutable $dt Reference date and time
      * @param int $max_length Maximum certification path length
      */
-    public function __construct(\DateTimeImmutable $dt, $max_length)
+    public function __construct(\DateTimeImmutable $dt, int $max_length)
     {
         $this->_dateTime = $dt;
         $this->_maxLength = (int) $max_length;
@@ -105,7 +105,7 @@ class PathValidationConfig
      *
      * @return self
      */
-    public static function defaultConfig()
+    public static function defaultConfig(): self
     {
         return new self(new \DateTimeImmutable(), 3);
     }
@@ -116,7 +116,7 @@ class PathValidationConfig
      * @param int $length
      * @return self
      */
-    public function withMaxLength($length)
+    public function withMaxLength(int $length): self
     {
         $obj = clone $this;
         $obj->_maxLength = $length;
@@ -129,7 +129,7 @@ class PathValidationConfig
      * @param \DateTimeImmutable $dt
      * @return self
      */
-    public function withDateTime(\DateTimeImmutable $dt)
+    public function withDateTime(\DateTimeImmutable $dt): self
     {
         $obj = clone $this;
         $obj->_dateTime = $dt;
@@ -142,7 +142,7 @@ class PathValidationConfig
      * @param Certificate $ca
      * @return self
      */
-    public function withTrustAnchor(Certificate $ca)
+    public function withTrustAnchor(Certificate $ca): self
     {
         $obj = clone $this;
         $obj->_trustAnchor = $ca;
@@ -155,10 +155,10 @@ class PathValidationConfig
      * @param bool $flag
      * @return self
      */
-    public function withPolicyMappingInhibit($flag)
+    public function withPolicyMappingInhibit(bool $flag): self
     {
         $obj = clone $this;
-        $obj->_policyMappingInhibit = (bool) $flag;
+        $obj->_policyMappingInhibit = $flag;
         return $obj;
     }
     
@@ -168,10 +168,10 @@ class PathValidationConfig
      * @param bool $flag
      * @return self
      */
-    public function withExplicitPolicy($flag)
+    public function withExplicitPolicy(bool $flag): self
     {
         $obj = clone $this;
-        $obj->_explicitPolicy = (bool) $flag;
+        $obj->_explicitPolicy = $flag;
         return $obj;
     }
     
@@ -181,10 +181,10 @@ class PathValidationConfig
      * @param bool $flag
      * @return self
      */
-    public function withAnyPolicyInhibit($flag)
+    public function withAnyPolicyInhibit(bool $flag): self
     {
         $obj = clone $this;
-        $obj->_anyPolicyInhibit = (bool) $flag;
+        $obj->_anyPolicyInhibit = $flag;
         return $obj;
     }
     
@@ -194,7 +194,7 @@ class PathValidationConfig
      * @param string ...$policies List of policy OIDs
      * @return self
      */
-    public function withPolicySet(...$policies)
+    public function withPolicySet(string ...$policies): self
     {
         $obj = clone $this;
         $obj->_policySet = $policies;
@@ -206,7 +206,7 @@ class PathValidationConfig
      *
      * @return int
      */
-    public function maxLength()
+    public function maxLength(): int
     {
         return $this->_maxLength;
     }
@@ -216,7 +216,7 @@ class PathValidationConfig
      *
      * @return \DateTimeImmutable
      */
-    public function dateTime()
+    public function dateTime(): \DateTimeImmutable
     {
         return $this->_dateTime;
     }
@@ -226,7 +226,7 @@ class PathValidationConfig
      *
      * @return string[] Array of OID's
      */
-    public function policySet()
+    public function policySet(): array
     {
         return $this->_policySet;
     }
@@ -236,7 +236,7 @@ class PathValidationConfig
      *
      * @return bool
      */
-    public function hasTrustAnchor()
+    public function hasTrustAnchor(): bool
     {
         return isset($this->_trustAnchor);
     }
@@ -247,7 +247,7 @@ class PathValidationConfig
      * @throws \LogicException
      * @return Certificate
      */
-    public function trustAnchor()
+    public function trustAnchor(): Certificate
     {
         if (!$this->hasTrustAnchor()) {
             throw new \LogicException("No trust anchor.");
@@ -260,7 +260,7 @@ class PathValidationConfig
      *
      * @return bool
      */
-    public function policyMappingInhibit()
+    public function policyMappingInhibit(): bool
     {
         return $this->_policyMappingInhibit;
     }
@@ -270,7 +270,7 @@ class PathValidationConfig
      *
      * @return bool
      */
-    public function explicitPolicy()
+    public function explicitPolicy(): bool
     {
         return $this->_explicitPolicy;
     }
@@ -280,7 +280,7 @@ class PathValidationConfig
      *
      * @return bool
      */
-    public function anyPolicyInhibit()
+    public function anyPolicyInhibit(): bool
     {
         return $this->_anyPolicyInhibit;
     }

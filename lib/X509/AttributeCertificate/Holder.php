@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -59,7 +59,7 @@ class Holder
      * @param Certificate $cert
      * @return self
      */
-    public static function fromPKC(Certificate $cert)
+    public static function fromPKC(Certificate $cert): self
     {
         return new self(IssuerSerial::fromPKC($cert));
     }
@@ -69,7 +69,7 @@ class Holder
      *
      * @param Sequence $seq
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $cert_id = null;
         $entity_name = null;
@@ -103,7 +103,7 @@ class Holder
      * @param IssuerSerial $issuer
      * @return self
      */
-    public function withBaseCertificateID(IssuerSerial $issuer)
+    public function withBaseCertificateID(IssuerSerial $issuer): self
     {
         $obj = clone $this;
         $obj->_baseCertificateID = $issuer;
@@ -116,7 +116,7 @@ class Holder
      * @param GeneralNames $names
      * @return self
      */
-    public function withEntityName(GeneralNames $names)
+    public function withEntityName(GeneralNames $names): self
     {
         $obj = clone $this;
         $obj->_entityName = $names;
@@ -129,7 +129,7 @@ class Holder
      * @param ObjectDigestInfo $odi
      * @return self
      */
-    public function withObjectDigestInfo(ObjectDigestInfo $odi)
+    public function withObjectDigestInfo(ObjectDigestInfo $odi): self
     {
         $obj = clone $this;
         $obj->_objectDigestInfo = $odi;
@@ -141,7 +141,7 @@ class Holder
      *
      * @return bool
      */
-    public function hasBaseCertificateID()
+    public function hasBaseCertificateID(): bool
     {
         return isset($this->_baseCertificateID);
     }

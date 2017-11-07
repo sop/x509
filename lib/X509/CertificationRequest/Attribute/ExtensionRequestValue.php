@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationRequest\Attribute;
 
 use ASN1\Type\UnspecifiedType;
+use ASN1\Type\Constructed\Sequence;
 use X501\ASN1\AttributeValue\AttributeValue;
 use X501\MatchingRule\BinaryMatch;
 use X509\Certificate\Extensions;
@@ -42,7 +43,7 @@ class ExtensionRequestValue extends AttributeValue
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el)
+    public static function fromASN1(UnspecifiedType $el): self
     {
         return new self(Extensions::fromASN1($el->asSequence()));
     }
@@ -60,9 +61,9 @@ class ExtensionRequestValue extends AttributeValue
     /**
      *
      * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
-     * @return \ASN1\Type\Constructed\Sequence
+     * @return Sequence
      */
-    public function toASN1(): \ASN1\Type\Constructed\Sequence
+    public function toASN1(): Sequence
     {
         return $this->_extensions->toASN1();
     }

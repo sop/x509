@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\Target;
 
@@ -38,7 +38,7 @@ class TargetName extends Target
      * @param TaggedType $el
      * @return self
      */
-    public static function fromChosenASN1(TaggedType $el)
+    public static function fromChosenASN1(TaggedType $el): self
     {
         return new self(GeneralName::fromASN1($el));
     }
@@ -47,7 +47,7 @@ class TargetName extends Target
      *
      * {@inheritdoc}
      */
-    public function string()
+    public function string(): string
     {
         return $this->_name->string();
     }
@@ -57,7 +57,7 @@ class TargetName extends Target
      *
      * @return GeneralName
      */
-    public function name()
+    public function name(): GeneralName
     {
         return $this->_name;
     }
@@ -67,7 +67,7 @@ class TargetName extends Target
      * {@inheritdoc}
      * @return ExplicitlyTaggedType
      */
-    public function toASN1()
+    public function toASN1(): TaggedType
     {
         return new ExplicitlyTaggedType($this->_type, $this->_name->toASN1());
     }

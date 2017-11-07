@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationPath;
 
@@ -47,7 +47,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @param CertificateChain $chain
      * @return self
      */
-    public static function fromCertificateChain(CertificateChain $chain)
+    public static function fromCertificateChain(CertificateChain $chain): self
     {
         return new self(...array_reverse($chain->certificates(), false));
     }
@@ -62,7 +62,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @return self
      */
     public static function toTarget(Certificate $target,
-        CertificateBundle $trust_anchors, CertificateBundle $intermediate = null)
+        CertificateBundle $trust_anchors, CertificateBundle $intermediate = null): self
     {
         $builder = new CertificationPathBuilder($trust_anchors);
         return $builder->shortestPathToTarget($target, $intermediate);
@@ -79,7 +79,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @return self
      */
     public static function fromTrustAnchorToTarget(Certificate $trust_anchor,
-        Certificate $target, CertificateBundle $intermediate = null)
+        Certificate $target, CertificateBundle $intermediate = null): self
     {
         return self::toTarget($target, new CertificateBundle($trust_anchor),
             $intermediate);
@@ -141,7 +141,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @param Certificate ...$certs Certificates
      * @return true
      */
-    public function startsWith(Certificate ...$certs)
+    public function startsWith(Certificate ...$certs): bool
     {
         $n = count($certs);
         if ($n > count($this->_certificates)) {
@@ -163,8 +163,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      * @throws Exception\PathValidationException
      * @return PathValidation\PathValidationResult
      */
-    public function validate(PathValidationConfig $config,
-         Crypto $crypto = null): PathValidation\PathValidationResult
+    public function validate(PathValidationConfig $config, Crypto $crypto = null): PathValidation\PathValidationResult
     {
         $crypto = $crypto ?: Crypto::getDefault();
         $validator = new PathValidator($crypto, $config, ...$this->_certificates);

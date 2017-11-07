@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\DistributionPoint;
 
+use ASN1\Type\Constructed\Sequence;
 use X509\GeneralName\GeneralNames;
 use X509\GeneralName\UniformResourceIdentifier;
 
@@ -39,7 +40,7 @@ class FullName extends DistributionPointName
      * @param string $uri
      * @return self
      */
-    public static function fromURI(string $uri)
+    public static function fromURI(string $uri): self
     {
         return new self(new GeneralNames(new UniformResourceIdentifier($uri)));
     }
@@ -57,9 +58,9 @@ class FullName extends DistributionPointName
     /**
      *
      * {@inheritdoc}
-     * @return \ASN1\Type\Constructed\Sequence
+     * @return Sequence
      */
-    protected function _valueASN1(): \ASN1\Type\Constructed\Sequence
+    protected function _valueASN1(): Sequence
     {
         return $this->_names->toASN1();
     }

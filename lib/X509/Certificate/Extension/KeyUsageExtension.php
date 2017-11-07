@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -37,10 +37,10 @@ class KeyUsageExtension extends Extension
      * @param bool $critical
      * @param int $keyUsage
      */
-    public function __construct(bool $critical, $keyUsage)
+    public function __construct(bool $critical, int $keyUsage)
     {
         parent::__construct(self::OID_KEY_USAGE, $critical);
-        $this->_keyUsage = (int) $keyUsage;
+        $this->_keyUsage = $keyUsage;
     }
     
     /**
@@ -48,10 +48,10 @@ class KeyUsageExtension extends Extension
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         return new self($critical,
-            Flags::fromBitString(BitString::fromDER($data), 9)->number());
+            Flags::fromBitString(BitString::fromDER($data), 9)->intNumber());
     }
     
     /**
@@ -150,7 +150,7 @@ class KeyUsageExtension extends Extension
      * @param int $flag
      * @return boolean
      */
-    protected function _flagSet($flag): bool
+    protected function _flagSet(int $flag): bool
     {
         return (bool) ($this->_keyUsage & $flag);
     }

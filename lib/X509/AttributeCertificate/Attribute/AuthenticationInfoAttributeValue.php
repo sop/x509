@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Attribute;
 
@@ -23,7 +23,7 @@ class AuthenticationInfoAttributeValue extends SvceAuthInfo
      * @param string|null $auth_info
      */
     public function __construct(GeneralName $service, GeneralName $ident,
-        string $auth_info = null)
+        $auth_info = null)
     {
         parent::__construct($service, $ident, $auth_info);
         $this->_oid = self::OID;

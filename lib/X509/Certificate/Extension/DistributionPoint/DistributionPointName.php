@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\DistributionPoint;
 
@@ -42,7 +42,7 @@ abstract class DistributionPointName
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromTaggedType(TaggedType $el)
+    public static function fromTaggedType(TaggedType $el): self
     {
         switch ($el->tag()) {
             case self::TAG_FULL_NAME:
@@ -63,7 +63,7 @@ abstract class DistributionPointName
      *
      * @return int
      */
-    public function tag()
+    public function tag(): int
     {
         return $this->_tag;
     }
@@ -75,7 +75,6 @@ abstract class DistributionPointName
      */
     public function toASN1(): ImplicitlyTaggedType
     {
-        $element = $this->_valueASN1();
-        return new ImplicitlyTaggedType($this->_tag, $element);
+        return new ImplicitlyTaggedType($this->_tag, $this->_valueASN1());
     }
 }

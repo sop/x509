@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -55,7 +55,7 @@ class AttributeCertificateInfo
     /**
      * AC serial number.
      *
-     * @var int|string $_serialNumber
+     * @var string $_serialNumber
      */
     protected $_serialNumber;
     
@@ -113,11 +113,11 @@ class AttributeCertificateInfo
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $version = $seq->at(0)
             ->asInteger()
-            ->number();
+            ->intNumber();
         if ($version != self::VERSION_2) {
             throw new \UnexpectedValueException("Version must be 2.");
         }
@@ -154,7 +154,7 @@ class AttributeCertificateInfo
      * @param Holder $holder
      * @return self
      */
-    public function withHolder(Holder $holder)
+    public function withHolder(Holder $holder): self
     {
         $obj = clone $this;
         $obj->_holder = $holder;
@@ -167,7 +167,7 @@ class AttributeCertificateInfo
      * @param AttCertIssuer $issuer
      * @return self
      */
-    public function withIssuer(AttCertIssuer $issuer)
+    public function withIssuer(AttCertIssuer $issuer): self
     {
         $obj = clone $this;
         $obj->_issuer = $issuer;
@@ -180,7 +180,7 @@ class AttributeCertificateInfo
      * @param SignatureAlgorithmIdentifier $algo
      * @return self
      */
-    public function withSignature(SignatureAlgorithmIdentifier $algo)
+    public function withSignature(SignatureAlgorithmIdentifier $algo): self
     {
         $obj = clone $this;
         $obj->_signature = $algo;
@@ -193,10 +193,10 @@ class AttributeCertificateInfo
      * @param int|string $serial
      * @return self
      */
-    public function withSerialNumber($serial)
+    public function withSerialNumber($serial): self
     {
         $obj = clone $this;
-        $obj->_serialNumber = $serial;
+        $obj->_serialNumber = strval($serial);
         return $obj;
     }
     
@@ -206,7 +206,7 @@ class AttributeCertificateInfo
      * @param int $size Number of random bytes
      * @return self
      */
-    public function withRandomSerialNumber(int $size = 16)
+    public function withRandomSerialNumber(int $size = 16): self
     {
         // ensure that first byte is always non-zero and having first bit unset
         $num = gmp_init(mt_rand(1, 0x7f), 10);
@@ -223,7 +223,7 @@ class AttributeCertificateInfo
      * @param AttCertValidityPeriod $validity
      * @return self
      */
-    public function withValidity(AttCertValidityPeriod $validity)
+    public function withValidity(AttCertValidityPeriod $validity): self
     {
         $obj = clone $this;
         $obj->_attrCertValidityPeriod = $validity;
@@ -236,7 +236,7 @@ class AttributeCertificateInfo
      * @param Attributes $attribs
      * @return self
      */
-    public function withAttributes(Attributes $attribs)
+    public function withAttributes(Attributes $attribs): self
     {
         $obj = clone $this;
         $obj->_attributes = $attribs;
@@ -249,7 +249,7 @@ class AttributeCertificateInfo
      * @param UniqueIdentifier $uid
      * @return self
      */
-    public function withIssuerUniqueID(UniqueIdentifier $uid)
+    public function withIssuerUniqueID(UniqueIdentifier $uid): self
     {
         $obj = clone $this;
         $obj->_issuerUniqueID = $uid;
@@ -262,7 +262,7 @@ class AttributeCertificateInfo
      * @param Extensions $extensions
      * @return self
      */
-    public function withExtensions(Extensions $extensions)
+    public function withExtensions(Extensions $extensions): self
     {
         $obj = clone $this;
         $obj->_extensions = $extensions;
@@ -275,7 +275,7 @@ class AttributeCertificateInfo
      * @param Extension ...$exts One or more Extension objects
      * @return self
      */
-    public function withAdditionalExtensions(Extension ...$exts)
+    public function withAdditionalExtensions(Extension ...$exts): self
     {
         $obj = clone $this;
         $obj->_extensions = $obj->_extensions->withExtensions(...$exts);
@@ -348,9 +348,9 @@ class AttributeCertificateInfo
     /**
      * Get AC serial number.
      *
-     * @return int|string
+     * @return string
      */
-    public function serialNumber()
+    public function serialNumber(): string
     {
         if (!$this->hasSerialNumber()) {
             throw new \LogicException("serialNumber not set.");
@@ -446,7 +446,7 @@ class AttributeCertificateInfo
         $crypto = $crypto ?: Crypto::getDefault();
         $aci = clone $this;
         if (!isset($aci->_serialNumber)) {
-            $aci->_serialNumber = 0;
+            $aci->_serialNumber = "0";
         }
         $aci->_signature = $algo;
         $data = $aci->toASN1()->toDER();

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
@@ -48,7 +48,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromQualifierASN1(UnspecifiedType $el)
+    public static function fromQualifierASN1(UnspecifiedType $el): self
     {
         $seq = $el->asSequence();
         $ref = null;
@@ -68,7 +68,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      *
      * @return bool
      */
-    public function hasExplicitText()
+    public function hasExplicitText(): bool
     {
         return isset($this->_text);
     }
@@ -78,7 +78,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      *
      * @return DisplayText
      */
-    public function explicitText()
+    public function explicitText(): DisplayText
     {
         if (!$this->hasExplicitText()) {
             throw new \LogicException("explicitText not set.");
@@ -91,7 +91,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      *
      * @return bool
      */
-    public function hasNoticeRef()
+    public function hasNoticeRef(): bool
     {
         return isset($this->_ref);
     }
@@ -102,7 +102,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      * @throws \RuntimeException
      * @return NoticeReference
      */
-    public function noticeRef()
+    public function noticeRef(): NoticeReference
     {
         if (!$this->hasNoticeRef()) {
             throw new \LogicException("noticeRef not set.");
@@ -115,7 +115,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _qualifierASN1()
+    protected function _qualifierASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_ref)) {

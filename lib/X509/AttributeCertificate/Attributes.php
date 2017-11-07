@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -61,7 +61,7 @@ class Attributes implements \Countable, \IteratorAggregate
      * @param AttributeValue[] $values
      * @return self
      */
-    public static function fromAttributeValues(AttributeValue ...$values)
+    public static function fromAttributeValues(AttributeValue ...$values): self
     {
         $attribs = array_map(
             function (AttributeValue $value) {
@@ -76,7 +76,7 @@ class Attributes implements \Countable, \IteratorAggregate
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $attribs = array_map(
             function (UnspecifiedType $el) {

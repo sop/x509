@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -42,7 +42,7 @@ class PolicyMappingsExtension extends Extension implements
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $mappings = array_map(
             function (UnspecifiedType $el) {

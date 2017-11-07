@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
@@ -38,7 +38,7 @@ class CPSQualifier extends PolicyQualifierInfo
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromQualifierASN1(UnspecifiedType $el)
+    public static function fromQualifierASN1(UnspecifiedType $el): self
     {
         return new self($el->asString()->string());
     }

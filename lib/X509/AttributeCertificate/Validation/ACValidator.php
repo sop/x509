@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Validation;
 
@@ -63,7 +63,7 @@ class ACValidator
      * @throws ACValidationException If validation fails
      * @return AttributeCertificate Validated AC
      */
-    public function validate()
+    public function validate(): AttributeCertificate
     {
         $this->_validateHolder();
         $issuer = $this->_verifyIssuer();
@@ -79,7 +79,7 @@ class ACValidator
      * @throws ACValidationException
      * @return Certificate Certificate of the AC's holder
      */
-    private function _validateHolder()
+    private function _validateHolder(): Certificate
     {
         $path = $this->_config->holderPath();
         $config = PathValidationConfig::defaultConfig()->withMaxLength(
@@ -102,7 +102,7 @@ class ACValidator
      * @throws ACValidationException
      * @return Certificate Certificate of the AC's issuer
      */
-    private function _verifyIssuer()
+    private function _verifyIssuer(): Certificate
     {
         $path = $this->_config->issuerPath();
         $config = PathValidationConfig::defaultConfig()->withMaxLength(
@@ -186,7 +186,7 @@ class ACValidator
      * @param Targets $targets Set of eligible targets
      * @return boolean
      */
-    private function _hasMatchingTarget(Targets $targets)
+    private function _hasMatchingTarget(Targets $targets): bool
     {
         foreach ($this->_config->targets() as $target) {
             if ($targets->hasTarget($target)) {

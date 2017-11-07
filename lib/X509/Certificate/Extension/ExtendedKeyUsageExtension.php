@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -60,7 +60,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * @param bool $critical
      * @param string[] $purposes
      */
-    public function __construct(bool $critical, ...$purposes)
+    public function __construct(bool $critical, string ...$purposes)
     {
         parent::__construct(self::OID_EXT_KEY_USAGE, $critical);
         $this->_purposes = $purposes;
@@ -71,7 +71,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $purposes = array_map(
             function (UnspecifiedType $el) {
@@ -88,7 +88,7 @@ class ExtendedKeyUsageExtension extends Extension implements
      * @param string[] $oids
      * @return bool
      */
-    public function has(...$oids): bool
+    public function has(string ...$oids): bool
     {
         foreach ($oids as $oid) {
             if (!in_array($oid, $this->_purposes)) {

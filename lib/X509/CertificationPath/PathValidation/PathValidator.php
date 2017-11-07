@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationPath\PathValidation;
 
@@ -51,7 +51,7 @@ class PathValidator
      * @param Crypto $crypto Crypto engine
      * @param PathValidationConfig $config Validation config
      * @param Certificate ...$certificates Certificates from the trust anchor to
-     *            the end-entity certificate
+     *        the end-entity certificate
      */
     public function __construct(Crypto $crypto, PathValidationConfig $config,
         Certificate ...$certificates)
@@ -76,7 +76,7 @@ class PathValidator
      * @throws PathValidationException
      * @return PathValidationResult
      */
-    public function validate()
+    public function validate(): PathValidationResult
     {
         $n = count($this->_certificates);
         $state = ValidatorState::initialize($this->_config, $this->_trustAnchor,
@@ -109,7 +109,7 @@ class PathValidator
      * @throws PathValidationException
      * @return ValidatorState
      */
-    private function _processCertificate(ValidatorState $state, Certificate $cert)
+    private function _processCertificate(ValidatorState $state, Certificate $cert): ValidatorState
     {
         // (a.1) verify signature
         $this->_verifySignature($state, $cert);
@@ -155,7 +155,7 @@ class PathValidator
      * @param Certificate $cert
      * @return ValidatorState
      */
-    private function _prepareNext(ValidatorState $state, Certificate $cert)
+    private function _prepareNext(ValidatorState $state, Certificate $cert): ValidatorState
     {
         // (a)(b) if policy mappings extension is present
         $state = $this->_preparePolicyMappings($state, $cert);
@@ -195,8 +195,9 @@ class PathValidator
      * @param ValidatorState $state
      * @param Certificate $cert
      * @throws PathValidationException
+     * @return ValidatorState
      */
-    private function _wrapUp(ValidatorState $state, Certificate $cert)
+    private function _wrapUp(ValidatorState $state, Certificate $cert): ValidatorState
     {
         $tbs_cert = $cert->tbsCertificate();
         $extensions = $tbs_cert->extensions();
@@ -234,7 +235,7 @@ class PathValidator
      * @param Certificate $cert
      * @return ValidatorState
      */
-    private function _setPublicKeyState(ValidatorState $state, Certificate $cert)
+    private function _setPublicKeyState(ValidatorState $state, Certificate $cert): ValidatorState
     {
         $pk_info = $cert->tbsCertificate()->subjectPublicKeyInfo();
         // assign working_public_key
@@ -359,7 +360,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _preparePolicyMappings(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         $extensions = $cert->tbsCertificate()->extensions();
         if ($extensions->hasPolicyMappings()) {
@@ -384,7 +385,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _prepareNameConstraints(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         $extensions = $cert->tbsCertificate()->extensions();
         if ($extensions->hasNameConstraints()) {
@@ -399,7 +400,7 @@ class PathValidator
      * @param ValidatorState $state
      * @return ValidatorState
      */
-    private function _prepareNonSelfIssued(ValidatorState $state)
+    private function _prepareNonSelfIssued(ValidatorState $state): ValidatorState
     {
         // (h.1)
         if ($state->explicitPolicy() > 0) {
@@ -425,7 +426,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _preparePolicyConstraints(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         $extensions = $cert->tbsCertificate()->extensions();
         if (!$extensions->hasPolicyConstraints()) {
@@ -453,7 +454,7 @@ class PathValidator
      * @return ValidatorState
      */
     private function _prepareInhibitAnyPolicy(ValidatorState $state,
-        Certificate $cert)
+        Certificate $cert): ValidatorState
     {
         $extensions = $cert->tbsCertificate()->extensions();
         if ($extensions->hasInhibitAnyPolicy()) {

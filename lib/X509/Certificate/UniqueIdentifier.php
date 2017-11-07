@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate;
 
@@ -34,8 +34,9 @@ class UniqueIdentifier
      * Initialize from ASN.1.
      *
      * @param BitString $bs
+     * @return self
      */
-    public static function fromASN1(BitString $bs)
+    public static function fromASN1(BitString $bs): self
     {
         return new self($bs);
     }
@@ -46,7 +47,7 @@ class UniqueIdentifier
      * @param string $str
      * @return self
      */
-    public static function fromString(string $str)
+    public static function fromString(string $str): self
     {
         return new self(new BitString($str));
     }

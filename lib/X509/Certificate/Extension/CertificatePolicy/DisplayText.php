@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace X509\Certificate\Extension\CertificatePolicy;
 
 use ASN1\Element;
@@ -37,7 +39,7 @@ class DisplayText
      * @param string $text
      * @param int $tag
      */
-    public function __construct($text, $tag)
+    public function __construct(string $text, int $tag)
     {
         $this->_text = $text;
         $this->_tag = $tag;
@@ -49,7 +51,7 @@ class DisplayText
      * @param StringType $el
      * @return self
      */
-    public static function fromASN1(StringType $el)
+    public static function fromASN1(StringType $el): self
     {
         return new self($el->string(), $el->tag());
     }
@@ -60,7 +62,7 @@ class DisplayText
      * @param string $str
      * @return self
      */
-    public static function fromString($str)
+    public static function fromString(string $str): self
     {
         return new self($str, Element::TYPE_UTF8_STRING);
     }
@@ -70,7 +72,7 @@ class DisplayText
      *
      * @return string
      */
-    public function string()
+    public function string(): string
     {
         return $this->_text;
     }
@@ -81,7 +83,7 @@ class DisplayText
      * @throws \UnexpectedValueException
      * @return StringType
      */
-    public function toASN1()
+    public function toASN1(): StringType
     {
         switch ($this->_tag) {
             case Element::TYPE_IA5_STRING:

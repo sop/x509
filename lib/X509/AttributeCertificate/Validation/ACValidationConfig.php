@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Validation;
 
@@ -60,7 +60,7 @@ class ACValidationConfig
      *
      * @return CertificationPath
      */
-    public function holderPath()
+    public function holderPath(): CertificationPath
     {
         return $this->_holderPath;
     }
@@ -70,7 +70,7 @@ class ACValidationConfig
      *
      * @return CertificationPath
      */
-    public function issuerPath()
+    public function issuerPath(): CertificationPath
     {
         return $this->_issuerPath;
     }
@@ -81,7 +81,7 @@ class ACValidationConfig
      * @param \DateTimeImmutable $dt
      * @return self
      */
-    public function withEvaluationTime(\DateTimeImmutable $dt)
+    public function withEvaluationTime(\DateTimeImmutable $dt): self
     {
         $obj = clone $this;
         $obj->_evalTime = $dt;
@@ -93,7 +93,7 @@ class ACValidationConfig
      *
      * @return \DateTimeImmutable
      */
-    public function evaluationTime()
+    public function evaluationTime(): \DateTimeImmutable
     {
         return $this->_evalTime;
     }
@@ -104,7 +104,7 @@ class ACValidationConfig
      * @param Target ...$targets
      * @return self
      */
-    public function withTargets(Target ...$targets)
+    public function withTargets(Target ...$targets): self
     {
         $obj = clone $this;
         $obj->_targets = $targets;
@@ -116,7 +116,7 @@ class ACValidationConfig
      *
      * @return Target[]
      */
-    public function targets()
+    public function targets(): array
     {
         return $this->_targets;
     }

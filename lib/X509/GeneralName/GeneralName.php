@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\GeneralName;
 
@@ -38,14 +38,14 @@ abstract class GeneralName
      *
      * @return string
      */
-    abstract public function string();
+    abstract public function string(): string;
     
     /**
      * Get ASN.1 value in GeneralName CHOICE context.
      *
      * @return TaggedType
      */
-    abstract protected function _choiceASN1();
+    abstract protected function _choiceASN1(): TaggedType;
     
     /**
      * Initialize concrete object from the chosen ASN.1 element.
@@ -66,7 +66,7 @@ abstract class GeneralName
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(TaggedType $el)
+    public static function fromASN1(TaggedType $el): self
     {
         switch ($el->tag()) {
             // otherName
@@ -117,7 +117,7 @@ abstract class GeneralName
      *
      * @return int
      */
-    public function tag()
+    public function tag(): int
     {
         return $this->_tag;
     }
@@ -127,7 +127,7 @@ abstract class GeneralName
      *
      * @return Element
      */
-    public function toASN1()
+    public function toASN1(): Element
     {
         return $this->_choiceASN1();
     }
@@ -138,7 +138,7 @@ abstract class GeneralName
      * @param GeneralName $other GeneralName to compare to
      * @return boolean True if names are equal
      */
-    public function equals(GeneralName $other)
+    public function equals(GeneralName $other): bool
     {
         if ($this->_tag != $other->_tag) {
             return false;

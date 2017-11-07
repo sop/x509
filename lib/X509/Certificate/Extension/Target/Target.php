@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\Target;
 
@@ -36,7 +36,7 @@ abstract class Target
      *
      * @return string
      */
-    abstract public function string();
+    abstract public function string(): string;
     
     /**
      * Initialize concrete object from the chosen ASN.1 element.
@@ -57,7 +57,7 @@ abstract class Target
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(TaggedType $el)
+    public static function fromASN1(TaggedType $el): self
     {
         switch ($el->tag()) {
             case self::TYPE_NAME:
@@ -77,7 +77,7 @@ abstract class Target
      *
      * @return int
      */
-    public function type()
+    public function type(): int
     {
         return $this->_type;
     }
@@ -88,7 +88,7 @@ abstract class Target
      * @param Target $other
      * @return bool
      */
-    public function equals(Target $other)
+    public function equals(Target $other): bool
     {
         if ($this->_type != $other->_type) {
             return false;

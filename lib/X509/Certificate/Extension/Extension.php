@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -149,7 +149,7 @@ abstract class Extension
      * @throws \BadMethodCallException
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical)
     {
         throw new \BadMethodCallException(
             __FUNCTION__ . " must be implemented in derived class.");
@@ -173,7 +173,7 @@ abstract class Extension
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): Extension
     {
         $extnID = $seq->at(0)
             ->asObjectIdentifier()

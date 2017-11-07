@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\GeneralName;
 
+use ASN1\Type\TaggedType;
 use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
@@ -38,7 +39,7 @@ class RegisteredID extends GeneralName
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el)
+    public static function fromChosenASN1(UnspecifiedType $el): self
     {
         return new self($el->asObjectIdentifier()->oid());
     }
@@ -66,7 +67,7 @@ class RegisteredID extends GeneralName
      *
      * {@inheritdoc}
      */
-    protected function _choiceASN1()
+    protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag,
             new ObjectIdentifier($this->_oid));

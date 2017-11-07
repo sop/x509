@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\DistributionPoint;
 
@@ -37,7 +37,7 @@ class ReasonFlags
      *
      * @param int $flags
      */
-    public function __construct($flags)
+    public function __construct(int $flags)
     {
         $this->_flags = $flags;
     }
@@ -48,9 +48,9 @@ class ReasonFlags
      * @param BitString $bs
      * @return self
      */
-    public static function fromASN1(BitString $bs)
+    public static function fromASN1(BitString $bs): self
     {
-        return new self(Flags::fromBitString($bs, 9)->number());
+        return new self(Flags::fromBitString($bs, 9)->intNumber());
     }
     
     /**
@@ -150,7 +150,7 @@ class ReasonFlags
      * @param int $flag
      * @return boolean
      */
-    protected function _flagSet($flag): bool
+    protected function _flagSet(int $flag): bool
     {
         return (bool) ($this->_flags & $flag);
     }

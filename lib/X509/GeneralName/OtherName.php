@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\GeneralName;
 
 use ASN1\Element;
+use ASN1\Type\TaggedType;
 use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\ObjectIdentifier;
@@ -38,7 +39,7 @@ class OtherName extends GeneralName
      * @param string $type_id OID
      * @param Element $el
      */
-    public function __construct($type_id, Element $el)
+    public function __construct(string $type_id, Element $el)
     {
         $this->_tag = self::TAG_OTHER_NAME;
         $this->_type = $type_id;
@@ -50,7 +51,7 @@ class OtherName extends GeneralName
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el)
+    public static function fromChosenASN1(UnspecifiedType $el): self
     {
         $seq = $el->asSequence();
         $type_id = $seq->at(0)
@@ -61,7 +62,12 @@ class OtherName extends GeneralName
             ->asElement();
         return new self($type_id, $value);
     }
-    public function string()
+    
+    /**
+     *
+     * {@inheritdoc}
+     */
+    public function string(): string
     {
         return $this->_type . "/#" . bin2hex($this->_element->toDER());
     }
@@ -90,7 +96,7 @@ class OtherName extends GeneralName
      *
      * {@inheritdoc}
      */
-    protected function _choiceASN1()
+    protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag,
             new Sequence(new ObjectIdentifier($this->_type),

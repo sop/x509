@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -49,7 +49,7 @@ class AttCertValidityPeriod
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $nb = $seq->at(0)
             ->asGeneralizedTime()
@@ -68,7 +68,7 @@ class AttCertValidityPeriod
      * @param string|null $tz Timezone string
      * @return self
      */
-    public static function fromStrings($nb_date, $na_date, $tz = null)
+    public static function fromStrings($nb_date, $na_date, $tz = null): self
     {
         $nb = self::_createDateTime($nb_date, $tz);
         $na = self::_createDateTime($na_date, $tz);

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -24,28 +24,28 @@ class AuthorityKeyIdentifierExtension extends Extension
      * @var string|null $_keyIdentifier
      */
     protected $_keyIdentifier;
-
+    
     /**
      * Issuer name.
      *
      * @var GeneralNames|null $_authorityCertIssuer
      */
     protected $_authorityCertIssuer;
-
+    
     /**
      * Issuer serial number.
      *
-     * @var int|string|null $_authorityCertSerialNumber
+     * @var string|null $_authorityCertSerialNumber
      */
     protected $_authorityCertSerialNumber;
-
+    
     /**
      * Constructor.
      *
      * @param bool $critical Conforming CA's must mark as non-critical (false)
      * @param string|null $keyIdentifier
      * @param GeneralNames|null $issuer
-     * @param int|string|null $serial
+     * @param string|null $serial
      */
     public function __construct(bool $critical, $keyIdentifier,
         GeneralNames $issuer = null, $serial = null)
@@ -53,15 +53,15 @@ class AuthorityKeyIdentifierExtension extends Extension
         parent::__construct(self::OID_AUTHORITY_KEY_IDENTIFIER, $critical);
         $this->_keyIdentifier = $keyIdentifier;
         $this->_authorityCertIssuer = $issuer;
-        $this->_authorityCertSerialNumber = $serial;
+        $this->_authorityCertSerialNumber = isset($serial) ? strval($serial) : null;
     }
-
+    
     /**
      *
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $seq = Sequence::fromDER($data);
         $keyIdentifier = null;
@@ -91,7 +91,7 @@ class AuthorityKeyIdentifierExtension extends Extension
         }
         return new self($critical, $keyIdentifier, $issuer, $serial);
     }
-
+    
     /**
      * Whether key identifier is present.
      *
@@ -144,9 +144,9 @@ class AuthorityKeyIdentifierExtension extends Extension
      * Get serial number.
      *
      * @throws \LogicException
-     * @return int|string
+     * @return string Base 10 integer string
      */
-    public function serial()
+    public function serial(): string
     {
         // both issuer and serial must be present or both absent
         if (!$this->hasIssuer()) {
@@ -160,7 +160,7 @@ class AuthorityKeyIdentifierExtension extends Extension
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_keyIdentifier)) {

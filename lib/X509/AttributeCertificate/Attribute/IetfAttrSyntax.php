@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Attribute;
 
@@ -52,7 +52,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el)
+    public static function fromASN1(UnspecifiedType $el): self
     {
         $seq = $el->asSequence();
         $authority = null;
@@ -82,7 +82,7 @@ abstract class IetfAttrSyntax extends AttributeValue implements
      * @param GeneralNames $names
      * @return self
      */
-    public function withPolicyAuthority(GeneralNames $names)
+    public function withPolicyAuthority(GeneralNames $names): self
     {
         $obj = clone $this;
         $obj->_policyAuthority = $names;

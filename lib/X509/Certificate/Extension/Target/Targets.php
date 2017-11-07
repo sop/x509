@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\Target;
 
@@ -37,7 +37,7 @@ class Targets implements \Countable, \IteratorAggregate
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $targets = array_map(
             function (UnspecifiedType $el) {
@@ -51,7 +51,7 @@ class Targets implements \Countable, \IteratorAggregate
      *
      * @return Target[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->_targets;
     }
@@ -62,7 +62,7 @@ class Targets implements \Countable, \IteratorAggregate
      * @param int $type
      * @return Target[]
      */
-    protected function _allOfType($type)
+    protected function _allOfType(int $type): array
     {
         return array_values(
             array_filter($this->_targets,
@@ -76,7 +76,7 @@ class Targets implements \Countable, \IteratorAggregate
      *
      * @return Target[]
      */
-    public function nameTargets()
+    public function nameTargets(): array
     {
         return $this->_allOfType(Target::TYPE_NAME);
     }
@@ -86,7 +86,7 @@ class Targets implements \Countable, \IteratorAggregate
      *
      * @return Target[]
      */
-    public function groupTargets()
+    public function groupTargets(): array
     {
         return $this->_allOfType(Target::TYPE_GROUP);
     }
@@ -97,7 +97,7 @@ class Targets implements \Countable, \IteratorAggregate
      * @param Target $target
      * @return boolean
      */
-    public function hasTarget(Target $target)
+    public function hasTarget(Target $target): bool
     {
         foreach ($this->_allOfType($target->type()) as $t) {
             if ($target->equals($t)) {
@@ -112,7 +112,7 @@ class Targets implements \Countable, \IteratorAggregate
      *
      * @return Sequence
      */
-    public function toASN1()
+    public function toASN1(): Sequence
     {
         $elements = array_map(
             function (Target $target) {
@@ -126,7 +126,7 @@ class Targets implements \Countable, \IteratorAggregate
      * @see \Countable::count()
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_targets);
     }
@@ -137,7 +137,7 @@ class Targets implements \Countable, \IteratorAggregate
      * @see \IteratorAggregate::getIterator()
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_targets);
     }

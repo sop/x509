@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
@@ -36,7 +36,7 @@ class NoticeReference
      * @param DisplayText $organization
      * @param int[] $numbers
      */
-    public function __construct(DisplayText $organization, ...$numbers)
+    public function __construct(DisplayText $organization, int ...$numbers)
     {
         $this->_organization = $organization;
         $this->_numbers = $numbers;
@@ -48,12 +48,12 @@ class NoticeReference
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $org = DisplayText::fromASN1($seq->at(0)->asString());
         $numbers = array_map(
             function (UnspecifiedType $el) {
-                return $el->asInteger()->number();
+                return $el->asInteger()->intNumber();
             },
             $seq->at(1)
                 ->asSequence()

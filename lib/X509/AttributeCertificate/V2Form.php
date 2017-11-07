@@ -1,12 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
 use ASN1\Element;
+use ASN1\Type\TaggedType;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use X501\ASN1\Name;
 use X509\Certificate\Certificate;
 use X509\GeneralName\GeneralNames;
 
@@ -56,7 +58,7 @@ class V2Form extends AttCertIssuer
      * @param Sequence $seq
      * @return self
      */
-    public static function fromV2ASN1(Sequence $seq)
+    public static function fromV2ASN1(Sequence $seq): self
     {
         $issuer = null;
         $cert_id = null;
@@ -114,7 +116,7 @@ class V2Form extends AttCertIssuer
      *
      * @return \X501\ASN1\Name
      */
-    public function name(): \X501\ASN1\Name
+    public function name(): Name
     {
         return $this->issuerName()->firstDN();
     }
@@ -124,7 +126,7 @@ class V2Form extends AttCertIssuer
      * @see \X509\AttributeCertificate\AttCertIssuer::ASN1()
      * @return ImplicitlyTaggedType Tagged Sequence
      */
-    public function toASN1()
+    public function toASN1(): TaggedType
     {
         $elements = array();
         if (isset($this->_issuerName)) {

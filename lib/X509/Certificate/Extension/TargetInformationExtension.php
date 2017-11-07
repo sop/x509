@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -56,7 +56,7 @@ class TargetInformationExtension extends Extension implements
      * @param Target[] $target
      * @return TargetInformationExtension
      */
-    public static function fromTargets(Target ...$target)
+    public static function fromTargets(Target ...$target): self
     {
         return new self(true, new Targets(...$target));
     }
@@ -74,7 +74,7 @@ class TargetInformationExtension extends Extension implements
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $targets = array_map(
             function (UnspecifiedType $el) {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -30,7 +30,7 @@ class CertificatePoliciesExtension extends Extension implements
      * @param bool $critical
      * @param PolicyInformation ...$policies
      */
-    public function __construct($critical, PolicyInformation ...$policies)
+    public function __construct(bool $critical, PolicyInformation ...$policies)
     {
         parent::__construct(Extension::OID_CERTIFICATE_POLICIES, $critical);
         $this->_policies = [];
@@ -44,7 +44,7 @@ class CertificatePoliciesExtension extends Extension implements
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $policies = array_map(
             function (UnspecifiedType $el) {

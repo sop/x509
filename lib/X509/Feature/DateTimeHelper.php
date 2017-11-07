@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace X509\Feature;
 
 /**
@@ -17,11 +19,13 @@ trait DateTimeHelper
      */
     private static function _createDateTime($time = null, $tz = null): \DateTimeImmutable
     {
+        if (!isset($time)) {
+            $time = 'now';
+        }
+        if (!isset($tz)) {
+            $tz = date_default_timezone_get();
+        }
         try {
-            if (!isset($tz)) {
-                $tz = date_default_timezone_get();
-            }
-
             $dt = new \DateTimeImmutable($time, self::_createTimeZone($tz));
             return self::_roundDownFractionalSeconds($dt);
         } catch (\Exception $e) {
@@ -30,7 +34,7 @@ trait DateTimeHelper
                      self::_getLastDateTimeImmutableErrorsStr(), 0, $e);
         }
     }
-
+    
     /**
      * Rounds a \DateTimeImmutable value such that fractional
      * seconds are removed.
@@ -51,7 +55,7 @@ trait DateTimeHelper
      * @throws \UnexpectedValueException
      * @return \DateTimeZone
      */
-    private static function _createTimeZone($tz)
+    private static function _createTimeZone(string $tz): \DateTimeZone
     {
         try {
             return new \DateTimeZone($tz);
@@ -65,7 +69,7 @@ trait DateTimeHelper
      *
      * @return string
      */
-    private static function _getLastDateTimeImmutableErrorsStr()
+    private static function _getLastDateTimeImmutableErrorsStr(): string
     {
         $errors = \DateTimeImmutable::getLastErrors()["errors"];
         return implode(", ", $errors);

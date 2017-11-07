@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate;
 
@@ -29,7 +29,7 @@ class IssuerSerial
     /**
      * Serial number.
      *
-     * @var string|int $_serial
+     * @var string $_serial
      */
     protected $_serial;
     
@@ -51,7 +51,7 @@ class IssuerSerial
         UniqueIdentifier $uid = null)
     {
         $this->_issuer = $issuer;
-        $this->_serial = $serial;
+        $this->_serial = strval($serial);
         $this->_issuerUID = $uid;
     }
     
@@ -61,7 +61,7 @@ class IssuerSerial
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $issuer = GeneralNames::fromASN1($seq->at(0)->asSequence());
         $serial = $seq->at(1)
@@ -102,9 +102,9 @@ class IssuerSerial
     /**
      * Get serial number.
      *
-     * @return int|string
+     * @return string
      */
-    public function serial()
+    public function serial(): string
     {
         return $this->_serial;
     }

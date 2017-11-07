@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Attribute;
 
@@ -49,7 +49,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @param string|null $auth_info
      */
     public function __construct(GeneralName $service, GeneralName $ident,
-        string $auth_info = null)
+        $auth_info = null)
     {
         $this->_service = $service;
         $this->_ident = $ident;
@@ -61,7 +61,7 @@ abstract class SvceAuthInfo extends AttributeValue
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el)
+    public static function fromASN1(UnspecifiedType $el): self
     {
         $seq = $el->asSequence();
         $service = GeneralName::fromASN1($seq->at(0)->asTagged());

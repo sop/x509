@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -35,7 +35,7 @@ class UnknownExtension extends Extension
      *
      * {@inheritdoc}
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Element
     {
         return $this->_element;
     }

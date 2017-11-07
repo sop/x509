@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -50,7 +50,7 @@ class NameConstraintsExtension extends Extension
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $seq = Sequence::fromDER($data);
         $permitted = null;
@@ -123,7 +123,7 @@ class NameConstraintsExtension extends Extension
      * {@inheritdoc}
      * @return Sequence
      */
-    protected function _valueASN1()
+    protected function _valueASN1(): Sequence
     {
         $elements = array();
         if (isset($this->_permitted)) {

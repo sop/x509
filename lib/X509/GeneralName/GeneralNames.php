@@ -1,11 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\GeneralName;
 
 use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
+use X501\ASN1\Name;
 
 /**
  * Implements <i>GeneralNames</i> ASN.1 type.
@@ -41,7 +42,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         if (!count($seq)) {
             throw new \UnexpectedValueException(
@@ -60,7 +61,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @param int $tag
      * @return GeneralName|null
      */
-    protected function _findFirst($tag)
+    protected function _findFirst(int $tag)
     {
         foreach ($this->_names as $name) {
             if ($name->tag() == $tag) {
@@ -76,7 +77,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
      * @return bool
      */
-    public function has($tag): bool
+    public function has(int $tag): bool
     {
         return null !== $this->_findFirst($tag);
     }
@@ -88,7 +89,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @throws \OutOfBoundsException
      * @return GeneralName
      */
-    public function firstOf($tag): GeneralName
+    public function firstOf(int $tag): GeneralName
     {
         $name = $this->_findFirst($tag);
         if (!$name) {
@@ -103,7 +104,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
      * @return GeneralName[]
      */
-    public function allOf($tag): array
+    public function allOf(int $tag): array
     {
         $names = array_filter($this->_names,
             function (GeneralName $name) use ($tag) {
@@ -130,9 +131,9 @@ class GeneralNames implements \Countable, \IteratorAggregate
     /**
      * Get value of the first 'directoryName' type.
      *
-     * @return \X501\ASN1\Name
+     * @return Name
      */
-    public function firstDN(): \X501\ASN1\Name
+    public function firstDN(): Name
     {
         $gn = $this->firstOf(GeneralName::TAG_DIRECTORY_NAME);
         if (!$gn instanceof DirectoryName) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace X509\CertificationRequest;
 
 use ASN1\Element;
@@ -72,11 +74,11 @@ class CertificationRequestInfo
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $version = $seq->at(0)
             ->asInteger()
-            ->number();
+            ->intNumber();
         if ($version != self::VERSION_1) {
             throw new \UnexpectedValueException(
                 "Version $version not supported.");
@@ -109,7 +111,7 @@ class CertificationRequestInfo
      * @param Name $subject
      * @return self
      */
-    public function withSubject(Name $subject)
+    public function withSubject(Name $subject): self
     {
         $obj = clone $this;
         $obj->_subject = $subject;
@@ -165,7 +167,7 @@ class CertificationRequestInfo
      *
      * @param Attributes $attribs
      */
-    public function withAttributes(Attributes $attribs)
+    public function withAttributes(Attributes $attribs): self
     {
         $obj = clone $this;
         $obj->_attributes = $attribs;
@@ -178,7 +180,7 @@ class CertificationRequestInfo
      * @param Extensions $extensions Extensions to request
      * @return self
      */
-    public function withExtensionRequest(Extensions $extensions)
+    public function withExtensionRequest(Extensions $extensions): self
     {
         $obj = clone $this;
         if (!isset($obj->_attributes)) {
@@ -215,7 +217,7 @@ class CertificationRequestInfo
      * @return CertificationRequest
      */
     public function sign(SignatureAlgorithmIdentifier $algo,
-        PrivateKeyInfo $privkey_info, Crypto $crypto = null)
+        PrivateKeyInfo $privkey_info, Crypto $crypto = null): CertificationRequest
     {
         $crypto = $crypto ?: Crypto::getDefault();
         $data = $this->toASN1()->toDER();

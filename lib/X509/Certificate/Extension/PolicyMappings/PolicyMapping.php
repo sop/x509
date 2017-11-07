@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\PolicyMappings;
 
@@ -35,7 +35,7 @@ class PolicyMapping
      * @param string $issuer_policy OID of the issuer policy
      * @param string $subject_policy OID of the subject policy
      */
-    public function __construct($issuer_policy, $subject_policy)
+    public function __construct(string $issuer_policy, string $subject_policy)
     {
         $this->_issuerDomainPolicy = $issuer_policy;
         $this->_subjectDomainPolicy = $subject_policy;
@@ -47,7 +47,7 @@ class PolicyMapping
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $issuer_policy = $seq->at(0)
             ->asObjectIdentifier()

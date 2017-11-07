@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
@@ -58,7 +58,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @param Sequence $seq
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $oid = $seq->at(0)
             ->asObjectIdentifier()
@@ -124,7 +124,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      * @throws \OutOfBoundsException
      * @return PolicyQualifierInfo
      */
-    public function get($oid): PolicyQualifierInfo
+    public function get(string $oid): PolicyQualifierInfo
     {
         if (!$this->has($oid)) {
             throw new \LogicException("No $oid qualifier.");

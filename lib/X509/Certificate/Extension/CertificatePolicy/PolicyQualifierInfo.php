@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension\CertificatePolicy;
 
@@ -63,7 +63,7 @@ abstract class PolicyQualifierInfo
      * @throws \UnexpectedValueException
      * @return self
      */
-    public static function fromASN1(Sequence $seq)
+    public static function fromASN1(Sequence $seq): self
     {
         $oid = $seq->at(0)
             ->asObjectIdentifier()

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\AttributeCertificate\Attribute;
 
@@ -57,7 +57,8 @@ class RoleAttributeValue extends AttributeValue
      * @param GeneralNames|null $authority Issuing authority
      * @return self
      */
-    public static function fromString(string $role_name, GeneralNames $authority = null)
+    public static function fromString(string $role_name,
+        GeneralNames $authority = null): self
     {
         return new self(new UniformResourceIdentifier($role_name), $authority);
     }
@@ -67,7 +68,7 @@ class RoleAttributeValue extends AttributeValue
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el)
+    public static function fromASN1(UnspecifiedType $el): self
     {
         $seq = $el->asSequence();
         $authority = null;

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
@@ -60,8 +60,8 @@ class AAControlsExtension extends Extension
      * @param string[]|null $excluded
      * @param bool $permit_unspecified
      */
-    public function __construct(bool $critical, $path_len = null, array $permitted = null,
-        array $excluded = null, bool $permit_unspecified = true)
+    public function __construct(bool $critical, $path_len = null,
+        array $permitted = null, array $excluded = null, bool $permit_unspecified = true)
     {
         parent::__construct(self::OID_AA_CONTROLS, $critical);
         $this->_pathLenConstraint = $path_len;
@@ -75,7 +75,7 @@ class AAControlsExtension extends Extension
      * {@inheritdoc}
      * @return self
      */
-    protected static function _fromDER($data, $critical)
+    protected static function _fromDER(string $data, bool $critical): self
     {
         $seq = Sequence::fromDER($data);
         $path_len = null;
@@ -86,7 +86,7 @@ class AAControlsExtension extends Extension
         if ($seq->has($idx, Element::TYPE_INTEGER)) {
             $path_len = $seq->at($idx++)
                 ->asInteger()
-                ->number();
+                ->intNumber();
         }
         if ($seq->hasTagged(0)) {
             $attr_seq = $seq->getTagged(0)

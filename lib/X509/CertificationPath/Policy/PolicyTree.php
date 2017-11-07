@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationPath\Policy;
 
@@ -154,7 +154,7 @@ class PolicyTree
      * @param int $i Depth in range 1..n
      * @return PolicyInformation[]
      */
-    public function policiesAtDepth($i): array
+    public function policiesAtDepth(int $i): array
     {
         $policies = array();
         foreach ($this->_nodesAtDepth($i) as $node) {
@@ -332,7 +332,7 @@ class PolicyTree
      * @param int $depth
      * @return int The number of nodes left in a tree
      */
-    protected function _pruneTree($depth)
+    protected function _pruneTree(int $depth): int
     {
         for ($i = $depth; $i > 0; --$i) {
             foreach ($this->_nodesAtDepth($i) as $node) {
@@ -355,7 +355,7 @@ class PolicyTree
      * @param int $i
      * @return PolicyNode[]
      */
-    protected function _nodesAtDepth($i): array
+    protected function _nodesAtDepth(int $i): array
     {
         if (!$this->_root) {
             return array();

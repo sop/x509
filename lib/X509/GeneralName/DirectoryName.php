@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\GeneralName;
 
+use ASN1\Type\TaggedType;
 use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Tagged\ExplicitlyTaggedType;
 use X501\ASN1\Name;
@@ -38,7 +39,7 @@ class DirectoryName extends GeneralName
      * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el)
+    public static function fromChosenASN1(UnspecifiedType $el): self
     {
         return new self(Name::fromASN1($el->asSequence()));
     }
@@ -49,7 +50,7 @@ class DirectoryName extends GeneralName
      * @param string $str
      * @return self
      */
-    public static function fromDNString($str)
+    public static function fromDNString(string $str): self
     {
         return new self(Name::fromString($str));
     }
@@ -77,7 +78,7 @@ class DirectoryName extends GeneralName
      *
      * {@inheritdoc}
      */
-    protected function _choiceASN1()
+    protected function _choiceASN1(): TaggedType
     {
         // Name type is itself a CHOICE, so explicit tagging must be
         // employed to avoid ambiguities

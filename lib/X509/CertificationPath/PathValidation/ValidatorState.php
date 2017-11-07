@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace X509\CertificationPath\PathValidation;
 
@@ -186,7 +186,7 @@ class ValidatorState
      * @param int $index
      * @return self
      */
-    public function withIndex($index)
+    public function withIndex(int $index): self
     {
         $state = clone $this;
         $state->_index = $index;
@@ -199,7 +199,7 @@ class ValidatorState
      * @param PolicyTree $policy_tree
      * @return self
      */
-    public function withValidPolicyTree(PolicyTree $policy_tree)
+    public function withValidPolicyTree(PolicyTree $policy_tree): self
     {
         $state = clone $this;
         $state->_validPolicyTree = $policy_tree;
@@ -211,7 +211,7 @@ class ValidatorState
      *
      * @return self
      */
-    public function withoutValidPolicyTree()
+    public function withoutValidPolicyTree(): self
     {
         $state = clone $this;
         $state->_validPolicyTree = null;
@@ -224,7 +224,7 @@ class ValidatorState
      * @param int $num
      * @return self
      */
-    public function withExplicitPolicy($num)
+    public function withExplicitPolicy(int $num): self
     {
         $state = clone $this;
         $state->_explicitPolicy = $num;
@@ -237,7 +237,7 @@ class ValidatorState
      * @param int $num
      * @return self
      */
-    public function withInhibitAnyPolicy($num)
+    public function withInhibitAnyPolicy(int $num): self
     {
         $state = clone $this;
         $state->_inhibitAnyPolicy = $num;
@@ -250,7 +250,7 @@ class ValidatorState
      * @param int $num
      * @return self
      */
-    public function withPolicyMapping($num)
+    public function withPolicyMapping(int $num): self
     {
         $state = clone $this;
         $state->_policyMapping = $num;
@@ -263,7 +263,7 @@ class ValidatorState
      * @param AlgorithmIdentifierType $algo
      * @return self
      */
-    public function withWorkingPublicKeyAlgorithm(AlgorithmIdentifierType $algo)
+    public function withWorkingPublicKeyAlgorithm(AlgorithmIdentifierType $algo): self
     {
         $state = clone $this;
         $state->_workingPublicKeyAlgorithm = $algo;
@@ -276,7 +276,7 @@ class ValidatorState
      * @param PublicKeyInfo $pubkey_info
      * @return self
      */
-    public function withWorkingPublicKey(PublicKeyInfo $pubkey_info)
+    public function withWorkingPublicKey(PublicKeyInfo $pubkey_info): self
     {
         $state = clone $this;
         $state->_workingPublicKey = $pubkey_info;
@@ -289,7 +289,7 @@ class ValidatorState
      * @param Element|null $params
      * @return self
      */
-    public function withWorkingPublicKeyParameters(Element $params = null)
+    public function withWorkingPublicKeyParameters(Element $params = null): self
     {
         $state = clone $this;
         $state->_workingPublicKeyParameters = $params;
@@ -302,7 +302,7 @@ class ValidatorState
      * @param Name $issuer
      * @return self
      */
-    public function withWorkingIssuerName(Name $issuer)
+    public function withWorkingIssuerName(Name $issuer): self
     {
         $state = clone $this;
         $state->_workingIssuerName = $issuer;
@@ -315,7 +315,7 @@ class ValidatorState
      * @param int $length
      * @return self
      */
-    public function withMaxPathLength($length)
+    public function withMaxPathLength(int $length): self
     {
         $state = clone $this;
         $state->_maxPathLength = $length;
@@ -391,7 +391,7 @@ class ValidatorState
      *
      * @return int
      */
-    public function explicitPolicy()
+    public function explicitPolicy(): int
     {
         return $this->_explicitPolicy;
     }
