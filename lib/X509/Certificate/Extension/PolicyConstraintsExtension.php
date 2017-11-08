@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
+use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
@@ -52,7 +53,7 @@ class PolicyConstraintsExtension extends Extension
      */
     protected static function _fromDER(string $data, bool $critical): self
     {
-        $seq = Sequence::fromDER($data);
+        $seq = UnspecifiedType::fromDER($data)->asSequence();
         $require_explicit_policy = null;
         $inhibit_policy_mapping = null;
         if ($seq->hasTagged(0)) {

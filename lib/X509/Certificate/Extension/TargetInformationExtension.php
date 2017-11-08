@@ -79,7 +79,7 @@ class TargetInformationExtension extends Extension implements
         $targets = array_map(
             function (UnspecifiedType $el) {
                 return Targets::fromASN1($el->asSequence());
-            }, Sequence::fromDER($data)->elements());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         return new self($critical, ...$targets);
     }
     

@@ -42,7 +42,7 @@ class SubjectDirectoryAttributesExtension extends Extension implements
         $attribs = array_map(
             function (UnspecifiedType $el) {
                 return Attribute::fromASN1($el->asSequence());
-            }, Sequence::fromDER($data)->elements());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         if (!count($attribs)) {
             throw new \UnexpectedValueException(
                 "SubjectDirectoryAttributes must have at least one Attribute.");

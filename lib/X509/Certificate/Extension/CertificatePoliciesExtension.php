@@ -49,7 +49,7 @@ class CertificatePoliciesExtension extends Extension implements
         $policies = array_map(
             function (UnspecifiedType $el) {
                 return PolicyInformation::fromASN1($el->asSequence());
-            }, Sequence::fromDER($data)->elements());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         if (!count($policies)) {
             throw new \UnexpectedValueException(
                 "certificatePolicies must contain" .

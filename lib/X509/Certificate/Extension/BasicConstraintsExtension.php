@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace X509\Certificate\Extension;
 
 use ASN1\Element;
+use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Boolean;
 use ASN1\Type\Primitive\Integer;
@@ -51,7 +52,7 @@ class BasicConstraintsExtension extends Extension
      */
     protected static function _fromDER(string $data, bool $critical): self
     {
-        $seq = Sequence::fromDER($data);
+        $seq = UnspecifiedType::fromDER($data)->asSequence();
         $ca = false;
         $path_len = null;
         $idx = 0;

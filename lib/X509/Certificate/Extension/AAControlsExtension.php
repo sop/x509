@@ -77,7 +77,7 @@ class AAControlsExtension extends Extension
      */
     protected static function _fromDER(string $data, bool $critical): self
     {
-        $seq = Sequence::fromDER($data);
+        $seq = UnspecifiedType::fromDER($data)->asSequence();
         $path_len = null;
         $permitted = null;
         $excluded = null;

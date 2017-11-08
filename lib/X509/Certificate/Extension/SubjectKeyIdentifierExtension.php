@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
+use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Primitive\OctetString;
 
 /**
@@ -39,7 +40,8 @@ class SubjectKeyIdentifierExtension extends Extension
      */
     protected static function _fromDER(string $data, bool $critical): self
     {
-        return new self($critical, OctetString::fromDER($data)->string());
+        return new self($critical,
+            UnspecifiedType::fromDER($data)->asOctetString()->string());
     }
     
     /**

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
+use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Primitive\BitString;
 use ASN1\Util\Flags;
 
@@ -51,7 +52,8 @@ class KeyUsageExtension extends Extension
     protected static function _fromDER(string $data, bool $critical): self
     {
         return new self($critical,
-            Flags::fromBitString(BitString::fromDER($data), 9)->intNumber());
+            Flags::fromBitString(UnspecifiedType::fromDER($data)->asBitString(),
+                9)->intNumber());
     }
     
     /**

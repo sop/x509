@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace X509\Certificate;
 
+use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
 use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
@@ -84,7 +85,7 @@ class Certificate
      */
     public static function fromDER(string $data): self
     {
-        return self::fromASN1(Sequence::fromDER($data));
+        return self::fromASN1(UnspecifiedType::fromDER($data)->asSequence());
     }
     
     /**

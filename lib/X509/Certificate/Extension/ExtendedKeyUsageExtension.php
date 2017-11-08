@@ -76,7 +76,7 @@ class ExtendedKeyUsageExtension extends Extension implements
         $purposes = array_map(
             function (UnspecifiedType $el) {
                 return $el->asObjectIdentifier()->oid();
-            }, Sequence::fromDER($data)->elements());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         return new self($critical, ...$purposes);
     }
     

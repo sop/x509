@@ -47,7 +47,7 @@ class CRLDistributionPointsExtension extends Extension implements
         $dps = array_map(
             function (UnspecifiedType $el) {
                 return DistributionPoint::fromASN1($el->asSequence());
-            }, Sequence::fromDER($data)->elements());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         if (!count($dps)) {
             throw new \UnexpectedValueException(
                 "CRLDistributionPoints must have" .

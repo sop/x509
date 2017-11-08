@@ -47,7 +47,7 @@ class PolicyMappingsExtension extends Extension implements
         $mappings = array_map(
             function (UnspecifiedType $el) {
                 return PolicyMapping::fromASN1($el->asSequence());
-            }, Sequence::fromDER($data)->elements());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         if (!count($mappings)) {
             throw new \UnexpectedValueException(
                 "PolicyMappings must have at least one mapping.");

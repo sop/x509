@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
+use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
 use X509\GeneralName\GeneralNames;
 
@@ -41,7 +42,8 @@ class IssuerAlternativeNameExtension extends Extension
     protected static function _fromDER(string $data, bool $critical)
     {
         return new self($critical,
-            GeneralNames::fromASN1(Sequence::fromDER($data)));
+            GeneralNames::fromASN1(
+                UnspecifiedType::fromDER($data)->asSequence()));
     }
     
     /**
