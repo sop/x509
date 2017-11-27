@@ -1,12 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
 use ASN1\Type\Primitive\ObjectIdentifier;
 use ASN1\Type\Primitive\OctetString;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\CryptoEncoding\PEM;
+use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
 use X501\ASN1\Name;
 use X509\Certificate\Extensions;
 use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
@@ -43,6 +45,14 @@ class AuthorityKeyIdentifierTest extends PHPUnit_Framework_TestCase
             self::$_issuer, self::SERIAL);
         $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
         return $ext;
+    }
+    
+    public function testFromPKI()
+    {
+        $pki = PublicKeyInfo::fromPEM(
+            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/public_key.pem"));
+        $ext = AuthorityKeyIdentifierExtension::fromPublicKeyInfo($pki);
+        $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
     }
     
     /**

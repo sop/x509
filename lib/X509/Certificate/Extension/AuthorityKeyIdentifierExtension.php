@@ -10,6 +10,7 @@ use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Integer;
 use ASN1\Type\Primitive\OctetString;
 use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
 use X509\GeneralName\GeneralNames;
 
 /**
@@ -55,6 +56,17 @@ class AuthorityKeyIdentifierExtension extends Extension
         $this->_keyIdentifier = $keyIdentifier;
         $this->_authorityCertIssuer = $issuer;
         $this->_authorityCertSerialNumber = isset($serial) ? strval($serial) : null;
+    }
+    
+    /**
+     * Create from public key info.
+     *
+     * @param PublicKeyInfo $pki
+     * @return AuthorityKeyIdentifierExtension
+     */
+    public static function fromPublicKeyInfo(PublicKeyInfo $pki)
+    {
+        return new self(false, $pki->keyIdentifier());
     }
     
     /**
