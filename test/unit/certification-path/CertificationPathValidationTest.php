@@ -13,7 +13,7 @@ use X509\CertificationPath\PathValidation\PathValidator;
 /**
  * @group certification-path
  */
-class CertificationPathValidationTest extends PHPUnit_Framework_TestCase
+class CertificationPathValidationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CertificationPath

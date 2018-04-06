@@ -11,7 +11,7 @@ use X509\Certificate\Extension\Extension;
  * @group certificate
  * @group extension
  */
-class ExtendedKeyUsageTest extends PHPUnit_Framework_TestCase
+class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

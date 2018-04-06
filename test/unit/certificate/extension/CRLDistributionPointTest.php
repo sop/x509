@@ -19,7 +19,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group certificate
  * @group extension
  */
-class CRLDistributionPointTest extends PHPUnit_Framework_TestCase
+class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
 {
     const DP_URI = "urn:test";
     

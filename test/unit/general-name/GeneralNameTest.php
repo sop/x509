@@ -12,7 +12,7 @@ use X509\GeneralName\UniformResourceIdentifier;
 /**
  * @group general-name
  */
-class GeneralNameTest extends PHPUnit_Framework_TestCase
+class GeneralNameTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException UnexpectedValueException

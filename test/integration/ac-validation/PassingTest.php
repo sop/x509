@@ -24,7 +24,7 @@ use X509\GeneralName\DNSName;
 /**
  * @group ac-validation
  */
-class PassingACValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class PassingACValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_holderPath;
     

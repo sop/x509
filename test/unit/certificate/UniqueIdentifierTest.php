@@ -8,7 +8,7 @@ use X509\Certificate\UniqueIdentifier;
 /**
  * @group certificate
  */
-class UniqueIdentifierTest extends PHPUnit_Framework_TestCase
+class UniqueIdentifierTest extends \PHPUnit\Framework\TestCase
 {
     const UID = "urn:test";
     

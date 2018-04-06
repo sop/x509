@@ -13,7 +13,7 @@ use X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo;
  * @group extension
  * @group certificate-policy
  */
-class PolicyQualifierInfoTest extends PHPUnit_Framework_TestCase
+class PolicyQualifierInfoTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException UnexpectedValueException

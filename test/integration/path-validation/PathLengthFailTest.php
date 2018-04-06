@@ -18,7 +18,7 @@ use X509\CertificationPath\PathValidation\PathValidationResult;
  *
  * @group certification-path
  */
-class PathLengthFailValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class PathLengthFailValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

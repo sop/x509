@@ -16,7 +16,7 @@ use X509\GeneralName\DirectoryName;
  * @group certificate
  * @group extension
  */
-class TargetInformationTest extends PHPUnit_Framework_TestCase
+class TargetInformationTest extends \PHPUnit\Framework\TestCase
 {
     const NAME_DN = "cn=Target";
     

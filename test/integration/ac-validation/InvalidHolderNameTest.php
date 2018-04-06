@@ -23,7 +23,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group ac-validation
  */
-class InvalidHolderNameACValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class InvalidHolderNameACValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_holderPath;
     

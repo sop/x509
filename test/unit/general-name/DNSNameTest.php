@@ -11,7 +11,7 @@ use X509\GeneralName\GeneralName;
 /**
  * @group general-name
  */
-class DNSNameTest extends PHPUnit_Framework_TestCase
+class DNSNameTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

@@ -9,7 +9,7 @@ use X509\Certificate\Validity;
  * @group certificate
  * @group time
  */
-class ValidityTest extends PHPUnit_Framework_TestCase
+class ValidityTest extends \PHPUnit\Framework\TestCase
 {
     const NB = "2016-04-06 12:00:00";
     

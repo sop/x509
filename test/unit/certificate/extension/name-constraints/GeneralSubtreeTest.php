@@ -12,7 +12,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group extension
  * @group name-constraint
  */
-class GeneralSubtreeTest extends PHPUnit_Framework_TestCase
+class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
 {
     const URI = ".example.com";
     

@@ -14,7 +14,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group extension
  * @group target
  */
-class TargetGroupTest extends PHPUnit_Framework_TestCase
+class TargetGroupTest extends \PHPUnit\Framework\TestCase
 {
     const URI = "urn:test";
     

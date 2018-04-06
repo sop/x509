@@ -16,7 +16,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group ac
  * @group attribute
  */
-class AttributeCertificateAttributesTest extends PHPUnit_Framework_TestCase
+class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

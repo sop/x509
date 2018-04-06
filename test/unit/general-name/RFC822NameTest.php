@@ -11,7 +11,7 @@ use X509\GeneralName\RFC822Name;
 /**
  * @group general-name
  */
-class RFC822NameTest extends PHPUnit_Framework_TestCase
+class RFC822NameTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

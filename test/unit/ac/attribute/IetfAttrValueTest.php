@@ -11,7 +11,7 @@ use X509\AttributeCertificate\Attribute\IetfAttrValue;
  * @group ac
  * @group attribute
  */
-class IetfAttrValueTest extends PHPUnit_Framework_TestCase
+class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException UnexpectedValueException

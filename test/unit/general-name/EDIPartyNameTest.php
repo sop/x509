@@ -13,7 +13,7 @@ use X509\GeneralName\GeneralName;
 /**
  * @group general-name
  */
-class EDIPartyNameTest extends PHPUnit_Framework_TestCase
+class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

@@ -20,7 +20,7 @@ use X509\Certificate\Validity;
  * @group certificate
  * @group decode
  */
-class RefCertificateDecodeTest extends PHPUnit_Framework_TestCase
+class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      *

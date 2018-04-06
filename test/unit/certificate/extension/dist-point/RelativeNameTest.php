@@ -14,7 +14,7 @@ use X509\Certificate\Extension\DistributionPoint\RelativeName;
  * @group extension
  * @group distribution-point
  */
-class RelativeNameTest extends PHPUnit_Framework_TestCase
+class RelativeNameTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

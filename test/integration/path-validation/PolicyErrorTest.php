@@ -22,7 +22,7 @@ use X509\CertificationPath\PathValidation\PathValidationResult;
  *
  * @group certification-path
  */
-class CertificatePolicyErrorValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class CertificatePolicyErrorValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

@@ -12,7 +12,7 @@ use X509\GeneralName\GeneralNames;
  * @group extension
  * @group distribution-point
  */
-class FullNameTest extends PHPUnit_Framework_TestCase
+class FullNameTest extends \PHPUnit\Framework\TestCase
 {
     const URI = "urn:test";
     

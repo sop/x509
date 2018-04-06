@@ -17,7 +17,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group ac
  */
-class V2FormTest extends PHPUnit_Framework_TestCase
+class V2FormTest extends \PHPUnit\Framework\TestCase
 {
     private static $_issuerName;
     

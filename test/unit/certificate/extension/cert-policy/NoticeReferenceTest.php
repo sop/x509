@@ -11,7 +11,7 @@ use X509\Certificate\Extension\CertificatePolicy\NoticeReference;
  * @group extension
  * @group certificate-policy
  */
-class NoticeReferenceTest extends PHPUnit_Framework_TestCase
+class NoticeReferenceTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

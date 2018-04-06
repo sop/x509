@@ -22,7 +22,7 @@ use X509\GeneralName\DirectoryName;
  *
  * @group certification-path
  */
-class NameConstraintsValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class NameConstraintsValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

@@ -10,7 +10,7 @@ use X509\AttributeCertificate\Attribute\IetfAttrSyntax;
  * @group ac
  * @group attribute
  */
-class IetfAttrSyntaxTest extends PHPUnit_Framework_TestCase
+class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateEmpty()
     {

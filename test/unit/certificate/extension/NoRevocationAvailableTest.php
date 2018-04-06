@@ -10,7 +10,7 @@ use X509\Certificate\Extension\NoRevocationAvailableExtension;
  * @group certificate
  * @group extension
  */
-class NoRevocationAvailableTest extends PHPUnit_Framework_TestCase
+class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

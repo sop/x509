@@ -23,7 +23,7 @@ use X509\GeneralName\DNSName;
 /**
  * @group ac-validation
  */
-class TargetMismatchACValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class TargetMismatchACValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_holderPath;
     

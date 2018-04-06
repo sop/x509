@@ -17,7 +17,7 @@ use X509\CertificationPath\PathValidation\PathValidationConfig;
  *
  * @group certification-path
  */
-class BasicConstraintsMissingValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class BasicConstraintsMissingValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

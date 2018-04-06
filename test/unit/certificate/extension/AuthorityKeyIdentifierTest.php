@@ -20,7 +20,7 @@ use X509\GeneralName\GeneralNames;
  * @group certificate
  * @group extension
  */
-class AuthorityKeyIdentifierTest extends PHPUnit_Framework_TestCase
+class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
 {
     const KEY_ID = "test-id";
     

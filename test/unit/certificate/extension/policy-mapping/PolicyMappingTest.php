@@ -10,7 +10,7 @@ use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
  * @group extension
  * @group policy-mapping
  */
-class PolicyMappingTest extends PHPUnit_Framework_TestCase
+class PolicyMappingTest extends \PHPUnit\Framework\TestCase
 {
     const ISSUER_POLICY = "1.3.6.1.3.1";
     

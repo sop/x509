@@ -14,7 +14,7 @@ use X509\CertificationRequest\Attribute\ExtensionRequestValue;
  * @group csr
  * @group attribute
  */
-class CSRAttributesTest extends PHPUnit_Framework_TestCase
+class CSRAttributesTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

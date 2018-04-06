@@ -15,7 +15,7 @@ use X509\Certificate\Extension\KeyUsageExtension;
 /**
  * @group certificate
  */
-class CertificateVersionTest extends PHPUnit_Framework_TestCase
+class CertificateVersionTest extends \PHPUnit\Framework\TestCase
 {
     private static $_privateKeyInfo;
     

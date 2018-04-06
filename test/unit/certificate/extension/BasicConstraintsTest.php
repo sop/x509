@@ -11,7 +11,7 @@ use X509\Certificate\Extension\Extension;
  * @group certificate
  * @group extension
  */
-class BasicConstraintsTest extends PHPUnit_Framework_TestCase
+class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

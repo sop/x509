@@ -15,7 +15,7 @@ use X509\Certificate\Extension\CertificatePolicy\DisplayText;
  * @group extension
  * @group certificate-policy
  */
-class DisplayTextTest extends PHPUnit_Framework_TestCase
+class DisplayTextTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

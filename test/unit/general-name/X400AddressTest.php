@@ -13,7 +13,7 @@ use X509\GeneralName\X400Address;
 /**
  * @group general-name
  */
-class X400AddressTest extends PHPUnit_Framework_TestCase
+class X400AddressTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

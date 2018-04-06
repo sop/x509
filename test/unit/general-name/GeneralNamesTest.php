@@ -14,7 +14,7 @@ use X509\GeneralName\UniformResourceIdentifier;
 /**
  * @group general-name
  */
-class GeneralNamesTest extends PHPUnit_Framework_TestCase
+class GeneralNamesTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

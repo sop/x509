@@ -11,7 +11,7 @@ use X509\Certificate\Extension\PolicyConstraintsExtension;
  * @group certificate
  * @group extension
  */
-class PolicyConstraintsTest extends PHPUnit_Framework_TestCase
+class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

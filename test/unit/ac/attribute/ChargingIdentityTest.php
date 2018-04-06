@@ -14,7 +14,7 @@ use X509\GeneralName\GeneralNames;
  * @group ac
  * @group attribute
  */
-class ChargingIdentityAttributeTest extends PHPUnit_Framework_TestCase
+class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
 {
     const AUTHORITY_DN = "cn=Authority Name";
     

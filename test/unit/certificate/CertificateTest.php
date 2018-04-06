@@ -18,7 +18,7 @@ use X509\Certificate\Validity;
 /**
  * @group certificate
  */
-class CertificateTest extends PHPUnit_Framework_TestCase
+class CertificateTest extends \PHPUnit\Framework\TestCase
 {
     private static $_privateKeyInfo;
     

@@ -12,7 +12,7 @@ use X509\GeneralName\IPv6Address;
 /**
  * @group general-name
  */
-class IPv6AddressNameTest extends PHPUnit_Framework_TestCase
+class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
 {
     const ADDR = "0000:0000:0000:0000:0000:0000:0000:0001";
     

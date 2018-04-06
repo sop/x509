@@ -21,7 +21,7 @@ use X509\CertificationPath\PathValidation\PathValidationConfig;
  *
  * @group certification-path
  */
-class PolicyMappingAnyPolicyValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class PolicyMappingAnyPolicyValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

@@ -16,7 +16,7 @@ use X509\CertificationRequest\CertificationRequestInfo;
 /**
  * @group csr
  */
-class CertificationRequestTest extends PHPUnit_Framework_TestCase
+class CertificationRequestTest extends \PHPUnit\Framework\TestCase
 {
     private static $_subject;
     

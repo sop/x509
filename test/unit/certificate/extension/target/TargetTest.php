@@ -15,7 +15,7 @@ use X509\GeneralName\RFC822Name;
  * @group extension
  * @group target
  */
-class TargetTest extends PHPUnit_Framework_TestCase
+class TargetTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException BadMethodCallException

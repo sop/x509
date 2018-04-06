@@ -10,7 +10,7 @@ use X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
  * @group extension
  * @group certificate-policy
  */
-class CPSQualifierTest extends PHPUnit_Framework_TestCase
+class CPSQualifierTest extends \PHPUnit\Framework\TestCase
 {
     const URI = "urn:test";
     

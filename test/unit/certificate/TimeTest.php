@@ -11,7 +11,7 @@ use X509\Certificate\Time;
  * @group certificate
  * @group time
  */
-class TimeTest extends PHPUnit_Framework_TestCase
+class TimeTest extends \PHPUnit\Framework\TestCase
 {
     const TIME = "2016-04-06 12:00:00";
     

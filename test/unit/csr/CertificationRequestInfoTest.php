@@ -20,7 +20,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group csr
  */
-class CertificationRequestInfoTest extends PHPUnit_Framework_TestCase
+class CertificationRequestInfoTest extends \PHPUnit\Framework\TestCase
 {
     const SAN_DN = "cn=Alt Name";
     

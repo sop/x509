@@ -16,7 +16,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group certificate
  * @group extension
  */
-class FreshestCRLTest extends PHPUnit_Framework_TestCase
+class FreshestCRLTest extends \PHPUnit\Framework\TestCase
 {
     private static $_dp;
     

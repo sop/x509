@@ -13,7 +13,7 @@ use X509\GeneralName\GeneralNames;
  * @group certificate
  * @group extension
  */
-class IssuerAlternativeNameTest extends PHPUnit_Framework_TestCase
+class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
 {
     const DN = "cn=Alt name";
     

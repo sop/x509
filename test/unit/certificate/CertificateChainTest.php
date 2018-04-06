@@ -10,7 +10,7 @@ use X509\CertificationPath\CertificationPath;
 /**
  * @group certificate
  */
-class CertificateChainTest extends PHPUnit_Framework_TestCase
+class CertificateChainTest extends \PHPUnit\Framework\TestCase
 {
     private static $_pems;
     

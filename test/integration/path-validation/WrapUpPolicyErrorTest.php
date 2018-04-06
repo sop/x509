@@ -21,7 +21,7 @@ use X509\CertificationPath\PathValidation\PathValidationResult;
  *
  * @group certification-path
  */
-class WrapUpCertificatePolicyErrorValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class WrapUpCertificatePolicyErrorValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

@@ -9,7 +9,7 @@ use X509\CertificationPath\PathValidation\PathValidationConfig;
 /**
  * @group certification-path
  */
-class PathValidationConfigTest extends PHPUnit_Framework_TestCase
+class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

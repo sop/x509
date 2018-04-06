@@ -28,7 +28,7 @@ use X509\GeneralName\UniformResourceIdentifier;
 /**
  * @group ac
  */
-class AttributeCertificateInfoTest extends PHPUnit_Framework_TestCase
+class AttributeCertificateInfoTest extends \PHPUnit\Framework\TestCase
 {
     const ISSUER_DN = "cn=Issuer";
     

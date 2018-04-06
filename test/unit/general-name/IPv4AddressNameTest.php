@@ -12,7 +12,7 @@ use X509\GeneralName\IPv4Address;
 /**
  * @group general-name
  */
-class IPv4AddressNameTest extends PHPUnit_Framework_TestCase
+class IPv4AddressNameTest extends \PHPUnit\Framework\TestCase
 {
     const ADDR = "127.0.0.1";
     

@@ -19,7 +19,7 @@ use X509\GeneralName\GeneralNames;
  * @group extension
  * @group distribution-point
  */
-class DistributionPointTest extends PHPUnit_Framework_TestCase
+class DistributionPointTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateWithFullName()
     {

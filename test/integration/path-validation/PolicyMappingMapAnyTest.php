@@ -22,7 +22,7 @@ use X509\CertificationPath\Policy\PolicyTree;
 /**
  * @group certification-path
  */
-class PolicyMappingMapAnyValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class PolicyMappingMapAnyValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

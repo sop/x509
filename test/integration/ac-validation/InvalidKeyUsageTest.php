@@ -25,7 +25,7 @@ use X509\CertificationPath\CertificationPath;
 /**
  * @group ac-validation
  */
-class InvalidKeyUsageACValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class InvalidKeyUsageACValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_holderPath;
     

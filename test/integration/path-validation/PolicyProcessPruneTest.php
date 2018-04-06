@@ -21,7 +21,7 @@ use X509\CertificationPath\PathValidation\PathValidationConfig;
  *
  * @group certification-path
  */
-class CertificatePolicyProcessPruneValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class CertificatePolicyProcessPruneValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

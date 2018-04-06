@@ -11,7 +11,7 @@ use X509\CertificationPath\PathBuilding\CertificationPathBuilder;
 /**
  * @group certification-path
  */
-class CertificationPathBuildingTest extends PHPUnit_Framework_TestCase
+class CertificationPathBuildingTest extends \PHPUnit\Framework\TestCase
 {
     private static $_ca;
     

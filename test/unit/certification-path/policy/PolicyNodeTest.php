@@ -7,7 +7,7 @@ use X509\CertificationPath\Policy\PolicyNode;
 /**
  * @group certification-path
  */
-class PolicyNodeTest extends PHPUnit_Framework_TestCase
+class PolicyNodeTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

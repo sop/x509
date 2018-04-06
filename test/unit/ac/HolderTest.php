@@ -14,7 +14,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group ac
  */
-class HolderTest extends PHPUnit_Framework_TestCase
+class HolderTest extends \PHPUnit\Framework\TestCase
 {
     private static $_issuerSerial;
     

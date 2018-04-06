@@ -11,7 +11,7 @@ use X509\GeneralName\RegisteredID;
 /**
  * @group general-name
  */
-class RegisteredIDNameTest extends PHPUnit_Framework_TestCase
+class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

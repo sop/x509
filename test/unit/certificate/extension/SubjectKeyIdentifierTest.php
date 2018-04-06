@@ -11,7 +11,7 @@ use X509\Certificate\Extension\SubjectKeyIdentifierExtension;
  * @group certificate
  * @group extension
  */
-class SubjectKeyIdentifierTest extends PHPUnit_Framework_TestCase
+class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
 {
     const KEY_ID = "test-id";
     

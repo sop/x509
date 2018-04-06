@@ -11,7 +11,7 @@ use X509\Certificate\Extension\InhibitAnyPolicyExtension;
  * @group certificate
  * @group extension
  */
-class InhibitAnyPolicyTest extends PHPUnit_Framework_TestCase
+class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

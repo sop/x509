@@ -8,7 +8,7 @@ use X509\AttributeCertificate\AttCertValidityPeriod;
 /**
  * @group ac
  */
-class AttCertValidityPeriodTest extends PHPUnit_Framework_TestCase
+class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
 {
     private static $_nb;
     

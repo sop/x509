@@ -10,7 +10,7 @@ use X509\Certificate\Extension\DistributionPoint\ReasonFlags;
  * @group extension
  * @group distribution-point
  */
-class ReasonFlagsTest extends PHPUnit_Framework_TestCase
+class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
 {
     const URI = "urn:test";
     

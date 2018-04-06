@@ -12,7 +12,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group ac
  * @group attribute
  */
-class AccessIdentityAttributeTest extends PHPUnit_Framework_TestCase
+class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
 {
     const SERVICE_URI = "urn:service";
     

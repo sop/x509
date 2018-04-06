@@ -12,7 +12,7 @@ use X509\AttributeCertificate\ObjectDigestInfo;
 /**
  * @group ac
  */
-class ObjectDigestInfoTest extends PHPUnit_Framework_TestCase
+class ObjectDigestInfoTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

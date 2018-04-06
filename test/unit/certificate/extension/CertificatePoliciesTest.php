@@ -19,7 +19,7 @@ use X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
  * @group certificate
  * @group extension
  */
-class CertificatePoliciesTest extends PHPUnit_Framework_TestCase
+class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
 {
     const INFO_OID = "1.3.6.1.3";
     

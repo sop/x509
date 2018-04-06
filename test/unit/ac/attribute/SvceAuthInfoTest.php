@@ -11,7 +11,7 @@ use X509\GeneralName\DirectoryName;
  * @group ac
  * @group attribute
  */
-class SvceAuthInfoTest extends PHPUnit_Framework_TestCase
+class SvceAuthInfoTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateWithoutAuthInfo()
     {

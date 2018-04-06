@@ -15,7 +15,7 @@ use X509\Certificate\Certificate;
  * @group ac
  * @group decode
  */
-class RefACDecodeTest extends PHPUnit_Framework_TestCase
+class RefACDecodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      *

@@ -20,7 +20,7 @@ use X509\Certificate\Extension\UnknownExtension;
 /**
  * @group certificate
  */
-class TBSCertificateTest extends PHPUnit_Framework_TestCase
+class TBSCertificateTest extends \PHPUnit\Framework\TestCase
 {
     private static $_subject;
     

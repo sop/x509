@@ -12,7 +12,7 @@ use X509\GeneralName\OtherName;
 /**
  * @group general-name
  */
-class OtherNameTest extends PHPUnit_Framework_TestCase
+class OtherNameTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

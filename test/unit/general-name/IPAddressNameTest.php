@@ -10,7 +10,7 @@ use X509\GeneralName\IPAddress;
 /**
  * @group general-name
  */
-class IPAddressNameTest extends PHPUnit_Framework_TestCase
+class IPAddressNameTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException UnexpectedValueException

@@ -20,7 +20,7 @@ use X509\CertificationPath\CertificationPath;
 /**
  * @group ac-validation
  */
-class ValidityACValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class ValidityACValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_holderPath;
     

@@ -12,7 +12,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group certificate
  * @group extension
  */
-class AuthorityInformationAccessTest extends PHPUnit_Framework_TestCase
+class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

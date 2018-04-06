@@ -15,7 +15,7 @@ use X509\Certificate\Validity;
 /**
  * @group certificate
  */
-class CertificateBundleTest extends PHPUnit_Framework_TestCase
+class CertificateBundleTest extends \PHPUnit\Framework\TestCase
 {
     private static $_pem1;
     

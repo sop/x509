@@ -15,7 +15,7 @@ use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
  * @group certificate
  * @group extension
  */
-class PolicyMappingsTest extends PHPUnit_Framework_TestCase
+class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
 {
     const ISSUER_POLICY_OID = "1.3.6.1.3.1";
     

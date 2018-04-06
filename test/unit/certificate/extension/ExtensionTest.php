@@ -11,7 +11,7 @@ use X509\Certificate\Extension\UnknownExtension;
  * @group certificate
  * @group extension
  */
-class ExtensionTest extends PHPUnit_Framework_TestCase
+class ExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      *

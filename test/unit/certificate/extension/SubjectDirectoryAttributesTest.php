@@ -16,7 +16,7 @@ use X509\Certificate\Extension\SubjectDirectoryAttributesExtension;
  * @group certificate
  * @group extension
  */
-class SubjectDirectoryAttributesTest extends PHPUnit_Framework_TestCase
+class SubjectDirectoryAttributesTest extends \PHPUnit\Framework\TestCase
 {
     const CN = "Test";
     

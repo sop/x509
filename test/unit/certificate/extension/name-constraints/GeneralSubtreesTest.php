@@ -13,7 +13,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group extension
  * @group name-constraint
  */
-class GeneralSubtreesTest extends PHPUnit_Framework_TestCase
+class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

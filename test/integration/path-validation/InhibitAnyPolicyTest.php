@@ -19,7 +19,7 @@ use X509\CertificationPath\PathValidation\PathValidationResult;
  *
  * @group certification-path
  */
-class InhibitAnyPolicyValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class InhibitAnyPolicyValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

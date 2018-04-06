@@ -8,7 +8,7 @@ use X509\CertificationPath\Policy\PolicyTree;
 /**
  * @group certification-path
  */
-class PolicyTreeTest extends PHPUnit_Framework_TestCase
+class PolicyTreeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Cover edge case where root node is pruned.

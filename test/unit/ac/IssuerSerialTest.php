@@ -12,7 +12,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group ac
  */
-class IssuerSerialTest extends PHPUnit_Framework_TestCase
+class IssuerSerialTest extends \PHPUnit\Framework\TestCase
 {
     private static $_issuer;
     

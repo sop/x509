@@ -27,7 +27,7 @@ use X509\GeneralName\UniformResourceIdentifier;
 /**
  * @group ac
  */
-class AttributeCertificateTest extends PHPUnit_Framework_TestCase
+class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
 {
     private static $_acPem;
     

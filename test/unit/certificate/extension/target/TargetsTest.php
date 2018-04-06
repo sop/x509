@@ -15,7 +15,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group extension
  * @group target
  */
-class TargetsTest extends PHPUnit_Framework_TestCase
+class TargetsTest extends \PHPUnit\Framework\TestCase
 {
     private static $_name;
     

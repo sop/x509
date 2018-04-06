@@ -11,7 +11,7 @@ use X509\Certificate\Extension\DistributionPoint\DistributionPointName;
  * @group extension
  * @group distribution-point
  */
-class DistributionPointNameTest extends PHPUnit_Framework_TestCase
+class DistributionPointNameTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException UnexpectedValueException

@@ -21,7 +21,7 @@ use X509\CertificationRequest\Attribute\ExtensionRequestValue;
  * @group csr
  * @group decode
  */
-class RefCSRDecodeTest extends PHPUnit_Framework_TestCase
+class RefCSRDecodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      *

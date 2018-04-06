@@ -11,7 +11,7 @@ use X509\CertificationPath\PathValidation\ValidatorState;
 /**
  * @group certification-path
  */
-class ValidatorStateTest extends PHPUnit_Framework_TestCase
+class ValidatorStateTest extends \PHPUnit\Framework\TestCase
 {
     private static $_ca;
     

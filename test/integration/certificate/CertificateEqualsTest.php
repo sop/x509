@@ -10,7 +10,7 @@ use X509\Certificate\Certificate;
 /**
  * @group certificate
  */
-class CertificateEqualsIntegrationTest extends PHPUnit_Framework_TestCase
+class CertificateEqualsIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_cert1;
     

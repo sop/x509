@@ -16,7 +16,7 @@ use X509\CertificationPath\PathValidation\PathValidationConfig;
  *
  * @group certification-path
  */
-class IssuerMismatchValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class IssuerMismatchValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

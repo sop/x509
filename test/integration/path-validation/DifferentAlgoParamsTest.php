@@ -18,7 +18,7 @@ use X509\CertificationPath\PathValidation\PathValidationResult;
  *
  * @group certification-path
  */
-class DifferentAlgoParamsValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class DifferentAlgoParamsValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     const CA_NAME = "cn=CA";
     

@@ -12,7 +12,7 @@ use X509\CertificationRequest\Attribute\ExtensionRequestValue;
  * @group csr
  * @group attribute
  */
-class ExtensionRequestTest extends PHPUnit_Framework_TestCase
+class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

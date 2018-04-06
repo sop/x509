@@ -12,7 +12,7 @@ use X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
  * @group extension
  * @group certificate-policy
  */
-class UserNoticeQualifierTest extends PHPUnit_Framework_TestCase
+class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

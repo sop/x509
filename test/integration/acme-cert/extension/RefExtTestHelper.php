@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Sop\CryptoEncoding\PEM;
 use X509\Certificate\Certificate;
 
-abstract class RefExtTestHelper extends PHPUnit_Framework_TestCase
+abstract class RefExtTestHelper extends \PHPUnit\Framework\TestCase
 {
     protected static $_extensions;
     

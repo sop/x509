@@ -24,7 +24,7 @@ use X509\CertificationRequest\CertificationRequestInfo;
 /**
  * @group workflow
  */
-class RequestToCertTest extends PHPUnit_Framework_TestCase
+class RequestToCertTest extends \PHPUnit\Framework\TestCase
 {
     private static $_issuerKey;
     

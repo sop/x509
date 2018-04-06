@@ -15,7 +15,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group certificate
  * @group extension
  */
-class NameConstraintsTest extends PHPUnit_Framework_TestCase
+class NameConstraintsTest extends \PHPUnit\Framework\TestCase
 {
     const PERMITTED_URI = ".example.com";
     

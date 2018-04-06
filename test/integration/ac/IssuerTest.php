@@ -10,7 +10,7 @@ use X509\Certificate\Certificate;
 /**
  * @group ac
  */
-class AttCertIssuerIntegrationTest extends PHPUnit_Framework_TestCase
+class AttCertIssuerIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_pkc;
     

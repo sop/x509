@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Sop\CryptoEncoding\PEM;
 use X509\AttributeCertificate\AttributeCertificate;
 
-abstract class RefACExtTestHelper extends PHPUnit_Framework_TestCase
+abstract class RefACExtTestHelper extends \PHPUnit\Framework\TestCase
 {
     protected static $_extensions;
     

@@ -11,7 +11,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group ac
  */
-class AttCertIssuerTest extends PHPUnit_Framework_TestCase
+class AttCertIssuerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @expectedException UnexpectedValueException

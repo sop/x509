@@ -10,7 +10,7 @@ use X509\Certificate\Extension\Extension;
  * @group certificate
  * @group extension
  */
-class AAControlsTest extends PHPUnit_Framework_TestCase
+class AAControlsTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {

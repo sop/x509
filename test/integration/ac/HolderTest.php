@@ -12,7 +12,7 @@ use X509\GeneralName\GeneralNames;
 /**
  * @group ac
  */
-class HolderIntegrationTest extends PHPUnit_Framework_TestCase
+class HolderIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_pkc;
     

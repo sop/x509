@@ -11,7 +11,7 @@ use X509\GeneralName\UniformResourceIdentifier;
  * @group extension
  * @group access-description
  */
-class SubjectAccessDescriptionTest extends PHPUnit_Framework_TestCase
+class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
 {
     const URI = "urn:test";
     public function testCreate()

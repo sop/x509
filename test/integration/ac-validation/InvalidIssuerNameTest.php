@@ -21,7 +21,7 @@ use X509\CertificationPath\CertificationPath;
 /**
  * @group ac-validation
  */
-class InvalidIssuerNameACValidationIntegrationTest extends PHPUnit_Framework_TestCase
+class InvalidIssuerNameACValidationIntegrationTest extends \PHPUnit\Framework\TestCase
 {
     private static $_holderPath;
     
