@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
@@ -88,7 +87,10 @@ abstract class Extension
     const OID_HOLDER_NAME_CONSTRAINTS = "2.5.29.69";
     
     // OID's from private certificate extensions arc
+    const OID_AUTHORITY_INFORMATION_ACCESS = "1.3.6.1.5.5.7.1.1";
     const OID_AA_CONTROLS = "1.3.6.1.5.5.7.1.6";
+    const OID_SUBJECT_INFORMATION_ACCESS = "1.3.6.1.5.5.7.1.11";
+    const OID_LOGOTYPE = "1.3.6.1.5.5.7.1.12";
     
     /**
      * Mapping from extension ID to implementation class name.
@@ -117,6 +119,40 @@ abstract class Extension
         self::OID_NO_REV_AVAIL => NoRevocationAvailableExtension::class,
         self::OID_TARGET_INFORMATION => TargetInformationExtension::class,
         self::OID_AA_CONTROLS => AAControlsExtension::class
+        /* @formatter:on */
+    );
+    
+    /**
+     * Mapping from extensions ID to short name.
+     *
+     * @internal
+     *
+     * @var array
+     */
+    const MAP_OID_TO_NAME = array(
+        /* @formatter:off */
+        self::OID_AUTHORITY_KEY_IDENTIFIER => "authorityKeyIdentifier",
+        self::OID_SUBJECT_KEY_IDENTIFIER => "subjectKeyIdentifier",
+        self::OID_KEY_USAGE => "keyUsage",
+        self::OID_PRIVATE_KEY_USAGE_PERIOD => "privateKeyUsagePeriod",
+        self::OID_CERTIFICATE_POLICIES => "certificatePolicies",
+        self::OID_POLICY_MAPPINGS => "policyMappings",
+        self::OID_SUBJECT_ALT_NAME => "subjectAltName",
+        self::OID_ISSUER_ALT_NAME => "issuerAltName",
+        self::OID_SUBJECT_DIRECTORY_ATTRIBUTES => "subjectDirectoryAttributes",
+        self::OID_BASIC_CONSTRAINTS => "basicConstraints",
+        self::OID_NAME_CONSTRAINTS => "nameConstraints",
+        self::OID_POLICY_CONSTRAINTS => "policyConstraints",
+        self::OID_EXT_KEY_USAGE => "extKeyUsage",
+        self::OID_CRL_DISTRIBUTION_POINTS => "cRLDistributionPoints",
+        self::OID_INHIBIT_ANY_POLICY => "inhibitAnyPolicy",
+        self::OID_FRESHEST_CRL => "freshestCRL",
+        self::OID_NO_REV_AVAIL => "noRevAvail",
+        self::OID_TARGET_INFORMATION => "targetInformation",
+        self::OID_AUTHORITY_INFORMATION_ACCESS => "authorityInfoAccess",
+        self::OID_AA_CONTROLS => "aaControls",
+        self::OID_SUBJECT_INFORMATION_ACCESS => "subjectInfoAccess",
+        self::OID_LOGOTYPE => "logotype"
         /* @formatter:on */
     );
     
@@ -228,5 +264,27 @@ abstract class Extension
         }
         $elements[] = new OctetString($this->_valueASN1()->toDER());
         return new Sequence(...$elements);
+    }
+    
+    /**
+     * Get short name of the extension.
+     *
+     * @return string
+     */
+    public function extensionName(): string
+    {
+        if (array_key_exists($this->_oid, self::MAP_OID_TO_NAME)) {
+            return self::MAP_OID_TO_NAME[$this->_oid];
+        }
+        return $this->oid();
+    }
+    
+    /**
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->extensionName();
     }
 }
