@@ -118,6 +118,7 @@ abstract class Extension
         self::OID_FRESHEST_CRL => FreshestCRLExtension::class,
         self::OID_NO_REV_AVAIL => NoRevocationAvailableExtension::class,
         self::OID_TARGET_INFORMATION => TargetInformationExtension::class,
+        self::OID_AUTHORITY_INFORMATION_ACCESS => AuthorityInformationAccessExtension::class,
         self::OID_AA_CONTROLS => AAControlsExtension::class
         /* @formatter:on */
     );
