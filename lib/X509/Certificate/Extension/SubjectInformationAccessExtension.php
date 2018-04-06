@@ -6,21 +6,21 @@ namespace X509\Certificate\Extension;
 use ASN1\Type\UnspecifiedType;
 use ASN1\Type\Constructed\Sequence;
 use X509\Certificate\Extension\AccessDescription\AccessDescription;
-use X509\Certificate\Extension\AccessDescription\AuthorityAccessDescription;
+use X509\Certificate\Extension\AccessDescription\SubjectAccessDescription;
 
 /**
- * Implements 'Authority Information Access' extension.
+ * Implements 'Subject Information Access' extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.2.1
+ * @link https://tools.ietf.org/html/rfc5280#section-4.2.2.2
  */
-class AuthorityInformationAccessExtension extends Extension implements 
+class SubjectInformationAccessExtension extends Extension implements 
     \Countable,
     \IteratorAggregate
 {
     /**
      * Access descriptions.
      *
-     * @var AuthorityAccessDescription[]
+     * @var SubjectAccessDescription[]
      */
     private $_accessDescriptions;
     
@@ -28,12 +28,12 @@ class AuthorityInformationAccessExtension extends Extension implements
      * Constructor.
      *
      * @param bool $critical
-     * @param AuthorityAccessDescription ...$access
+     * @param SubjectAccessDescription ...$access
      */
     public function __construct(bool $critical,
-        AuthorityAccessDescription ...$access)
+        SubjectAccessDescription ...$access)
     {
-        parent::__construct(self::OID_AUTHORITY_INFORMATION_ACCESS, $critical);
+        parent::__construct(self::OID_SUBJECT_INFORMATION_ACCESS, $critical);
         $this->_accessDescriptions = $access;
     }
     
@@ -46,7 +46,7 @@ class AuthorityInformationAccessExtension extends Extension implements
     {
         $access = array_map(
             function (UnspecifiedType $el) {
-                return AuthorityAccessDescription::fromASN1($el->asSequence());
+                return SubjectAccessDescription::fromASN1($el->asSequence());
             }, UnspecifiedType::fromDER($data)->asSequence()->elements());
         return new self($critical, ...$access);
     }
@@ -54,7 +54,7 @@ class AuthorityInformationAccessExtension extends Extension implements
     /**
      * Get the access descriptions.
      *
-     * @return AuthorityAccessDescription[]
+     * @return SubjectAccessDescription[]
      */
     public function accessDescriptions(): array
     {
@@ -90,7 +90,7 @@ class AuthorityInformationAccessExtension extends Extension implements
      * Get iterator for access descriptions.
      *
      * @see \IteratorAggregate::getIterator()
-     * @return \ArrayIterator List of AuthorityAccessDescription objects
+     * @return \ArrayIterator List of SubjectAccessDescription objects
      */
     public function getIterator(): \ArrayIterator
     {
