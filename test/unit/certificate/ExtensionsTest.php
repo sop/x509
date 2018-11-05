@@ -56,7 +56,7 @@ class ExtensionsTest extends \PHPUnit\Framework\TestCase
      */
     public function testRecoded(Extensions $ref, Extensions $new)
     {
-        $this->assertEquals($ref, $new);
+        $this->assertEquals($ref->toASN1(), $new->toASN1());
     }
     
     /**

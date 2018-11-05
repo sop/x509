@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace X509\Certificate\Extension;
 
-use ASN1\DERData;
 use ASN1\Element;
 use ASN1\Type\Constructed\Sequence;
 use ASN1\Type\Primitive\Boolean;
@@ -230,7 +229,7 @@ abstract class Extension
             $cls = self::MAP_OID_TO_CLASS[$extnID];
             return $cls::_fromDER($data, $critical);
         }
-        return new UnknownExtension($extnID, $critical, new DERData($data));
+        return UnknownExtension::fromRawString($extnID, $critical, $data);
     }
     
     /**
@@ -264,8 +263,18 @@ abstract class Extension
         if ($this->_critical) {
             $elements[] = new Boolean(true);
         }
-        $elements[] = new OctetString($this->_valueASN1()->toDER());
+        $elements[] = $this->_extnValue();
         return new Sequence(...$elements);
+    }
+    
+    /**
+     * Get the extnValue element.
+     *
+     * @return OctetString
+     */
+    protected function _extnValue(): OctetString
+    {
+        return new OctetString($this->_valueASN1()->toDER());
     }
     
     /**
