@@ -143,7 +143,7 @@ class CertificationPath implements \Countable, \IteratorAggregate
      *
      * @param Certificate ...$certs Certificates
      *
-     * @return true
+     * @return bool
      */
     public function startsWith(Certificate ...$certs): bool
     {
