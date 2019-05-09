@@ -339,7 +339,8 @@ class PolicyTree
             }
         }
         // if root has no children left
-        if (empty($this->_root)) {
+        assert(isset($this->_root), new \RuntimeException('_root is null'));
+        if (!count($this->_root)) {
             $this->_root = null;
             return 0;
         }
