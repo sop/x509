@@ -339,7 +339,7 @@ class PolicyTree
             }
         }
         // if root has no children left
-        if (!count($this->_root)) {
+        if (empty($this->_root)) {
             $this->_root = null;
             return 0;
         }
