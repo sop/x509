@@ -121,6 +121,16 @@ class AuthorityKeyIdentifierExtension extends Extension
     }
 
     /**
+     * Whether serial is present.
+     *
+     * @return bool
+     */
+    public function hasSerial(): bool
+    {
+        return isset($this->_authorityCertSerialNumber);
+    }
+
+    /**
      * Get serial number.
      *
      * @throws \LogicException If not set
@@ -129,8 +139,7 @@ class AuthorityKeyIdentifierExtension extends Extension
      */
     public function serial(): string
     {
-        // both issuer and serial must be present or both absent
-        if (!$this->hasIssuer()) {
+        if (!$this->hasSerial()) {
             throw new \LogicException('authorityCertSerialNumber not set.');
         }
         return $this->_authorityCertSerialNumber;
