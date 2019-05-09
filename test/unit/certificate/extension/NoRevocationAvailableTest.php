@@ -1,16 +1,19 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\NoRevocationAvailableExtension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\NoRevocationAvailableExtension;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
+class NoRevocationAvailableTest extends TestCase
 {
     public function testCreate()
     {
@@ -18,7 +21,7 @@ class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NoRevocationAvailableExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -28,7 +31,7 @@ class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_NO_REV_AVAIL, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -38,7 +41,7 @@ class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -50,7 +53,7 @@ class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -62,7 +65,7 @@ class NoRevocationAvailableTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NoRevocationAvailableExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode

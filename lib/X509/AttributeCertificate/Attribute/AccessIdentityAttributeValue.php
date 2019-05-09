@@ -2,19 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate\Attribute;
+namespace Sop\X509\AttributeCertificate\Attribute;
 
-use X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\GeneralName;
 
 /**
  * Implements value for 'Access Identity' attribute.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.4.2
+ * @see https://tools.ietf.org/html/rfc5755#section-4.4.2
  */
 class AccessIdentityAttributeValue extends SvceAuthInfo
 {
-    const OID = "1.3.6.1.5.5.7.10.2";
-    
+    const OID = '1.3.6.1.5.5.7.10.2';
+
     /**
      * Constructor.
      *

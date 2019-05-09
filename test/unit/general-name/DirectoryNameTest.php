@@ -1,26 +1,29 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ExplicitTagging;
-use X501\ASN1\Name;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralName;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ExplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X501\ASN1\Name;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralName;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class DirectoryNameTest extends \PHPUnit\Framework\TestCase
+class DirectoryNameTest extends TestCase
 {
     public function testCreate()
     {
-        $name = DirectoryName::fromDNString("cn=Test");
+        $name = DirectoryName::fromDNString('cn=Test');
         $this->assertInstanceOf(DirectoryName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -32,7 +35,7 @@ class DirectoryNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -43,7 +46,7 @@ class DirectoryNameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_DIRECTORY_NAME, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -55,7 +58,7 @@ class DirectoryNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DirectoryName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -67,7 +70,7 @@ class DirectoryNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -75,9 +78,9 @@ class DirectoryNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testString(DirectoryName $name)
     {
-        $this->assertEquals("cn=Test", $name->string());
+        $this->assertEquals('cn=Test', $name->string());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,6 +88,6 @@ class DirectoryNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testDN(DirectoryName $name)
     {
-        $this->assertEquals(Name::fromString("cn=Test"), $name->dn());
+        $this->assertEquals(Name::fromString('cn=Test'), $name->dn());
     }
 }

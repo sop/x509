@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\PolicyConstraintsExtension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\PolicyConstraintsExtension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
+class PolicyConstraintsTest extends TestCase
 {
     public function testCreate()
     {
@@ -19,7 +22,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -29,7 +32,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_POLICY_CONSTRAINTS, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -39,7 +42,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -51,7 +54,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -63,7 +66,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -75,7 +78,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,7 +88,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(2, $ext->requireExplicitPolicy());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -95,7 +98,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(3, $ext->inhibitPolicyMapping());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -107,7 +110,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasPolicyConstraints());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -118,14 +121,14 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->policyConstraints();
         $this->assertInstanceOf(PolicyConstraintsExtension::class, $ext);
     }
-    
+
     public function testCreateEmpty()
     {
         $ext = new PolicyConstraintsExtension(false);
         $this->assertInstanceOf(PolicyConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -137,7 +140,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncodeEmpty
      *
@@ -149,7 +152,7 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreateEmpty
      * @depends testDecodeEmpty
@@ -161,26 +164,26 @@ class PolicyConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param PolicyConstraintsExtension $ext
      */
     public function testNoRequireExplicitFail(PolicyConstraintsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->requireExplicitPolicy();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param PolicyConstraintsExtension $ext
      */
     public function testNoInhibitMappingFail(PolicyConstraintsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->inhibitPolicyMapping();
     }
 }

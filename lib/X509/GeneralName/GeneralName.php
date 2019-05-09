@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace X509\GeneralName;
+namespace Sop\X509\GeneralName;
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\UnspecifiedType;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\TaggedType;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>GeneralName</i> CHOICE with implicit tagging.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.6
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */
 abstract class GeneralName
 {
@@ -25,45 +25,51 @@ abstract class GeneralName
     const TAG_URI = 6;
     const TAG_IP_ADDRESS = 7;
     const TAG_REGISTERED_ID = 8;
-    
+
     /**
      * Chosen tag.
      *
-     * @var int $_tag
+     * @var int
      */
     protected $_tag;
-    
+
+    /**
+     * Get general name as a string.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->string();
+    }
+
     /**
      * Get string value of the type.
      *
      * @return string
      */
     abstract public function string(): string;
-    
-    /**
-     * Get ASN.1 value in GeneralName CHOICE context.
-     *
-     * @return TaggedType
-     */
-    abstract protected function _choiceASN1(): TaggedType;
-    
+
     /**
      * Initialize concrete object from the chosen ASN.1 element.
      *
      * @param UnspecifiedType $el
+     *
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el)
+    public static function fromChosenASN1(UnspecifiedType $el): GeneralName
     {
         throw new \BadMethodCallException(
-            __FUNCTION__ . " must be implemented in the derived class.");
+            __FUNCTION__ . ' must be implemented in the derived class.');
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param TaggedType $el
+     *
      * @throws \UnexpectedValueException
+     *
      * @return self
      */
     public static function fromASN1(TaggedType $el): self
@@ -109,9 +115,9 @@ abstract class GeneralName
                     $el->asImplicit(Element::TYPE_OBJECT_IDENTIFIER));
         }
         throw new \UnexpectedValueException(
-            "GeneralName type " . $el->tag() . " not supported.");
+            'GeneralName type ' . $el->tag() . ' not supported.');
     }
-    
+
     /**
      * Get type tag.
      *
@@ -121,7 +127,7 @@ abstract class GeneralName
     {
         return $this->_tag;
     }
-    
+
     /**
      * Generate ASN.1 element.
      *
@@ -131,31 +137,29 @@ abstract class GeneralName
     {
         return $this->_choiceASN1();
     }
-    
+
     /**
      * Check whether GeneralName is equal to other.
      *
      * @param GeneralName $other GeneralName to compare to
-     * @return boolean True if names are equal
+     *
+     * @return bool True if names are equal
      */
     public function equals(GeneralName $other): bool
     {
-        if ($this->_tag != $other->_tag) {
+        if ($this->_tag !== $other->_tag) {
             return false;
         }
-        if ($this->_choiceASN1()->toDER() != $other->_choiceASN1()->toDER()) {
+        if ($this->_choiceASN1()->toDER() !== $other->_choiceASN1()->toDER()) {
             return false;
         }
         return true;
     }
-    
+
     /**
-     * Get general name as a string.
+     * Get ASN.1 value in GeneralName CHOICE context.
      *
-     * @return string
+     * @return TaggedType
      */
-    public function __toString()
-    {
-        return $this->string();
-    }
+    abstract protected function _choiceASN1(): TaggedType;
 }

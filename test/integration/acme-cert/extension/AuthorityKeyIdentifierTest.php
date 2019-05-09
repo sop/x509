@@ -1,24 +1,26 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\Asymmetric\RSA\RSAPrivateKey;
-use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
-use X509\GeneralName\GeneralName;
+use Sop\X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
+use Sop\X509\GeneralName\GeneralName;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return AuthorityKeyIdentifierExtension
      */
     public function testAuthorityKeyIdentifier()
@@ -27,7 +29,7 @@ class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
         $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testAuthorityKeyIdentifier
      *
@@ -37,13 +39,13 @@ class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
         AuthorityKeyIdentifierExtension $aki)
     {
         $pem = PEM::fromFile(
-            TEST_ASSETS_DIR . "/certs/keys/acme-interm-rsa.pem");
+            TEST_ASSETS_DIR . '/certs/keys/acme-interm-rsa.pem');
         $keyid = RSAPrivateKey::fromPEM($pem)->publicKey()
             ->publicKeyInfo()
             ->keyIdentifier();
         $this->assertEquals($keyid, $aki->keyIdentifier());
     }
-    
+
     /**
      * @depends testAuthorityKeyIdentifier
      *
@@ -56,7 +58,7 @@ class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
             ->firstOf(GeneralName::TAG_DIRECTORY_NAME)
             ->dn()
             ->toString();
-        $this->assertEquals("o=ACME Ltd.,c=FI,cn=ACME Root CA", $issuer_dn);
+        $this->assertEquals('o=ACME Ltd.,c=FI,cn=ACME Root CA', $issuer_dn);
         $this->assertEquals(1, $aki->serial());
     }
 }

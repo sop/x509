@@ -2,28 +2,28 @@
 
 declare(strict_types = 1);
 
-namespace X509\GeneralName;
+namespace Sop\X509\GeneralName;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Primitive\IA5String;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
-use ASN1\Type\TaggedType;
+use Sop\ASN1\Type\Primitive\IA5String;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\TaggedType;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>uniformResourceIdentifier</i> CHOICE type of
  * <i>GeneralName</i>.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.6
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */
 class UniformResourceIdentifier extends GeneralName
 {
     /**
      * URI.
      *
-     * @var string $_uri
+     * @var string
      */
     protected $_uri;
-    
+
     /**
      * Constructor.
      *
@@ -34,26 +34,25 @@ class UniformResourceIdentifier extends GeneralName
         $this->_tag = self::TAG_URI;
         $this->_uri = $uri;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el): self
+    public static function fromChosenASN1(UnspecifiedType $el): GeneralName
     {
         return new self($el->asIA5String()->string());
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     public function string(): string
     {
         return $this->_uri;
     }
-    
+
     /**
      * Get URI.
      *
@@ -63,9 +62,8 @@ class UniformResourceIdentifier extends GeneralName
     {
         return $this->_uri;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     protected function _choiceASN1(): TaggedType

@@ -1,19 +1,22 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Primitive\BitString;
-use X509\Certificate\Extension\DistributionPoint\ReasonFlags;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Primitive\BitString;
+use Sop\X509\Certificate\Extension\DistributionPoint\ReasonFlags;
 
 /**
  * @group certificate
  * @group extension
  * @group distribution-point
+ *
+ * @internal
  */
-class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
+class ReasonFlagsTest extends TestCase
 {
-    const URI = "urn:test";
-    
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $reasons = new ReasonFlags(
@@ -23,7 +26,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ReasonFlags::class, $reasons);
         return $reasons;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -35,7 +38,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(BitString::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -47,7 +50,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ReasonFlags::class, $reasons);
         return $reasons;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -59,7 +62,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -69,7 +72,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($reasons->isKeyCompromise());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -79,7 +82,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($reasons->isCACompromise());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -89,7 +92,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($reasons->isAffiliationChanged());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -99,7 +102,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($reasons->isSuperseded());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -109,7 +112,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($reasons->isCessationOfOperation());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -119,7 +122,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($reasons->isCertificateHold());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -129,7 +132,7 @@ class ReasonFlagsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($reasons->isPrivilegeWithdrawn());
     }
-    
+
     /**
      * @depends testCreate
      *

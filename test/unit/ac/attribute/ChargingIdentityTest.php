@@ -1,29 +1,32 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
-use X509\AttributeCertificate\Attribute\IetfAttrValue;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\IetfAttrValue;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
+class ChargingIdentityAttributeTest extends TestCase
 {
-    const AUTHORITY_DN = "cn=Authority Name";
-    
-    const OCTETS_VAL = "octet string";
-    
-    const OID_VAL = "1.3.6.1.3.1";
-    
-    const UTF8_VAL = "UTF-8 string";
-    
+    const AUTHORITY_DN = 'cn=Authority Name';
+
+    const OCTETS_VAL = 'octet string';
+
+    const OID_VAL = '1.3.6.1.3.1';
+
+    const UTF8_VAL = 'UTF-8 string';
+
     public function testCreate()
     {
         $value = new ChargingIdentityAttributeValue(
@@ -35,7 +38,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ChargingIdentityAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -47,7 +50,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -60,7 +63,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ChargingIdentityAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -72,7 +75,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -82,7 +85,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(ChargingIdentityAttributeValue::OID, $value->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -94,7 +97,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
             $value->policyAuthority()
                 ->firstDN());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -104,7 +107,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(3, $value);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -112,14 +115,14 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(ChargingIdentityAttributeValue $value)
     {
-        $values = array();
+        $values = [];
         foreach ($value as $val) {
             $values[] = $val;
         }
         $this->assertCount(3, $values);
         $this->assertContainsOnlyInstancesOf(IetfAttrValue::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -129,7 +132,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::OCTETS_VAL, $value->values()[0]);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -139,7 +142,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::OID_VAL, $value->values()[1]);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -149,7 +152,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::UTF8_VAL, $value->values()[2]);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -161,7 +164,7 @@ class ChargingIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($attribs->hasChargingIdentity());
         return $attribs;
     }
-    
+
     /**
      * @depends testAttributes
      *

@@ -2,30 +2,31 @@
 
 declare(strict_types = 1);
 
-namespace X509\CertificationRequest\Attribute;
+namespace Sop\X509\CertificationRequest\Attribute;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X501\MatchingRule\BinaryMatch;
-use X509\Certificate\Extensions;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X501\MatchingRule\BinaryMatch;
+use Sop\X501\MatchingRule\MatchingRule;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * Implements value for 'Extension request' attribute.
  *
- * @link https://tools.ietf.org/html/rfc2985#page-17
+ * @see https://tools.ietf.org/html/rfc2985#page-17
  */
 class ExtensionRequestValue extends AttributeValue
 {
-    const OID = "1.2.840.113549.1.9.14";
-    
+    const OID = '1.2.840.113549.1.9.14';
+
     /**
      * Extensions.
      *
-     * @var Extensions $_extensions
+     * @var Extensions
      */
     protected $_extensions;
-    
+
     /**
      * Constructor.
      *
@@ -36,18 +37,17 @@ class ExtensionRequestValue extends AttributeValue
         $this->_extensions = $extensions;
         $this->_oid = self::OID;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::fromASN1()
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el): self
+    public static function fromASN1(UnspecifiedType $el): AttributeValue
     {
         return new self(Extensions::fromASN1($el->asSequence()));
     }
-    
+
     /**
      * Get requested extensions.
      *
@@ -57,51 +57,41 @@ class ExtensionRequestValue extends AttributeValue
     {
         return $this->_extensions;
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
-     * @return Sequence
+     * {@inheritdoc}
      */
-    public function toASN1(): Sequence
+    public function toASN1(): Element
     {
         return $this->_extensions->toASN1();
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::stringValue()
-     * @return string
+     * {@inheritdoc}
      */
     public function stringValue(): string
     {
-        return "#" . bin2hex($this->toASN1()->toDER());
+        return '#' . bin2hex($this->toASN1()->toDER());
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::equalityMatchingRule()
-     * @return BinaryMatch
+     * {@inheritdoc}
      */
-    public function equalityMatchingRule(): BinaryMatch
+    public function equalityMatchingRule(): MatchingRule
     {
         return new BinaryMatch();
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::rfc2253String()
-     * @return string
+     * {@inheritdoc}
      */
     public function rfc2253String(): string
     {
         return $this->stringValue();
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::_transcodedString()
-     * @return string
+     * {@inheritdoc}
      */
     protected function _transcodedString(): string
     {

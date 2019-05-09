@@ -2,27 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\DistributionPoint;
+namespace Sop\X509\Certificate\Extension\DistributionPoint;
 
-use ASN1\Type\Constructed\Sequence;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use Sop\ASN1\Element;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * Implements 'fullName' ASN.1 CHOICE type of <i>DistributionPointName</i>
  * used by 'CRL Distribution Points' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.13
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.13
  */
 class FullName extends DistributionPointName
 {
     /**
      * Names.
      *
-     * @var GeneralNames $_names
+     * @var GeneralNames
      */
     protected $_names;
-    
+
     /**
      * Constructor.
      *
@@ -33,18 +33,19 @@ class FullName extends DistributionPointName
         $this->_tag = self::TAG_FULL_NAME;
         $this->_names = $names;
     }
-    
+
     /**
      * Initialize with a single URI.
      *
      * @param string $uri
+     *
      * @return self
      */
     public static function fromURI(string $uri): self
     {
         return new self(new GeneralNames(new UniformResourceIdentifier($uri)));
     }
-    
+
     /**
      * Get names.
      *
@@ -54,13 +55,11 @@ class FullName extends DistributionPointName
     {
         return $this->_names;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return Sequence
      */
-    protected function _valueASN1(): Sequence
+    protected function _valueASN1(): Element
     {
         return $this->_names->toASN1();
     }

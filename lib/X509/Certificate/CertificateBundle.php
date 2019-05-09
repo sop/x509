@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate;
+namespace Sop\X509\Certificate;
 
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoEncoding\PEMBundle;
@@ -15,17 +15,17 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     /**
      * Certificates.
      *
-     * @var Certificate[] $_certs
+     * @var Certificate[]
      */
     protected $_certs;
-    
+
     /**
      * Mapping from public key id to array of certificates.
      *
      * @var null|(Certificate[])[]
      */
     private $_keyIdMap;
-    
+
     /**
      * Constructor.
      *
@@ -35,7 +35,7 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     {
         $this->_certs = $certs;
     }
-    
+
     /**
      * Reset internal cached variables on clone.
      */
@@ -43,11 +43,12 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     {
         $this->_keyIdMap = null;
     }
-    
+
     /**
      * Initialize from PEMs.
      *
      * @param PEM ...$pems PEM objects
+     *
      * @return self
      */
     public static function fromPEMs(PEM ...$pems): self
@@ -58,22 +59,24 @@ class CertificateBundle implements \Countable, \IteratorAggregate
             }, $pems);
         return new self(...$certs);
     }
-    
+
     /**
      * Initialize from PEM bundle.
      *
      * @param PEMBundle $pem_bundle
+     *
      * @return self
      */
     public static function fromPEMBundle(PEMBundle $pem_bundle): self
     {
         return self::fromPEMs(...$pem_bundle->all());
     }
-    
+
     /**
      * Get self with certificates added.
      *
      * @param Certificate ...$cert
+     *
      * @return self
      */
     public function withCertificates(Certificate ...$cert): self
@@ -82,11 +85,12 @@ class CertificateBundle implements \Countable, \IteratorAggregate
         $obj->_certs = array_merge($obj->_certs, $cert);
         return $obj;
     }
-    
+
     /**
      * Get self with certificates from PEMBundle added.
      *
      * @param PEMBundle $pem_bundle
+     *
      * @return self
      */
     public function withPEMBundle(PEMBundle $pem_bundle): self
@@ -97,11 +101,12 @@ class CertificateBundle implements \Countable, \IteratorAggregate
         }
         return new self(...$certs);
     }
-    
+
     /**
      * Get self with single certificate from PEM added.
      *
      * @param PEM $pem
+     *
      * @return self
      */
     public function withPEM(PEM $pem): self
@@ -110,11 +115,12 @@ class CertificateBundle implements \Countable, \IteratorAggregate
         $certs[] = Certificate::fromPEM($pem);
         return new self(...$certs);
     }
-    
+
     /**
      * Check whether bundle contains a given certificate.
      *
      * @param Certificate $cert
+     *
      * @return bool
      */
     public function contains(Certificate $cert): bool
@@ -132,22 +138,23 @@ class CertificateBundle implements \Countable, \IteratorAggregate
         }
         return false;
     }
-    
+
     /**
      * Get all certificates that have given subject key identifier.
      *
      * @param string $id
+     *
      * @return Certificate[]
      */
     public function allBySubjectKeyIdentifier(string $id): array
     {
         $map = $this->_getKeyIdMap();
         if (!isset($map[$id])) {
-            return array();
+            return [];
         }
         return $map[$id];
     }
-    
+
     /**
      * Get all certificates in a bundle.
      *
@@ -157,7 +164,29 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     {
         return $this->_certs;
     }
-    
+
+    /**
+     * @see \Countable::count()
+     *
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->_certs);
+    }
+
+    /**
+     * Get iterator for certificates.
+     *
+     * @see \IteratorAggregate::getIterator()
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->_certs);
+    }
+
     /**
      * Get certificate mapping by public key id.
      *
@@ -167,22 +196,23 @@ class CertificateBundle implements \Countable, \IteratorAggregate
     {
         // lazily build mapping
         if (!isset($this->_keyIdMap)) {
-            $this->_keyIdMap = array();
+            $this->_keyIdMap = [];
             foreach ($this->_certs as $cert) {
                 $id = self::_getCertKeyId($cert);
                 if (!isset($this->_keyIdMap[$id])) {
-                    $this->_keyIdMap[$id] = array();
+                    $this->_keyIdMap[$id] = [];
                 }
                 array_push($this->_keyIdMap[$id], $cert);
             }
         }
         return $this->_keyIdMap;
     }
-    
+
     /**
      * Get public key id for the certificate.
      *
      * @param Certificate $cert
+     *
      * @return string
      */
     private static function _getCertKeyId(Certificate $cert): string
@@ -191,29 +221,6 @@ class CertificateBundle implements \Countable, \IteratorAggregate
         if ($exts->hasSubjectKeyIdentifier()) {
             return $exts->subjectKeyIdentifier()->keyIdentifier();
         }
-        return $cert->tbsCertificate()
-            ->subjectPublicKeyInfo()
-            ->keyIdentifier();
-    }
-    
-    /**
-     *
-     * @see \Countable::count()
-     * @return int
-     */
-    public function count(): int
-    {
-        return count($this->_certs);
-    }
-    
-    /**
-     * Get iterator for certificates.
-     *
-     * @see \IteratorAggregate::getIterator()
-     * @return \ArrayIterator
-     */
-    public function getIterator(): \ArrayIterator
-    {
-        return new \ArrayIterator($this->_certs);
+        return $cert->tbsCertificate()->subjectPublicKeyInfo()->keyIdentifier();
     }
 }

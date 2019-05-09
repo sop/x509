@@ -1,15 +1,18 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
+use PHPUnit\Framework\TestCase;
 use Sop\CryptoEncoding\PEM;
-use X509\Certificate\Certificate;
-use X509\CertificationPath\PathValidation\PathValidationConfig;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\CertificationPath\PathValidation\PathValidationConfig;
 
 /**
  * @group certification-path
+ *
+ * @internal
  */
-class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
+class PathValidationConfigTest extends TestCase
 {
     public function testCreate()
     {
@@ -17,7 +20,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PathValidationConfig::class, $config);
         return $config;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -27,7 +30,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(3, $config->maxLength());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -37,7 +40,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(DateTimeImmutable::class, $config->dateTime());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -45,9 +48,9 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
      */
     public function testPolicySet(PathValidationConfig $config)
     {
-        $this->assertContainsOnly("string", $config->policySet());
+        $this->assertContainsOnly('string', $config->policySet());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -58,7 +61,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
         $config = $config->withMaxLength(5);
         $this->assertInstanceOf(PathValidationConfig::class, $config);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -69,7 +72,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
         $config = $config->withDateTime(new DateTimeImmutable());
         $this->assertInstanceOf(PathValidationConfig::class, $config);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -79,11 +82,11 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
     {
         $config = $config->withTrustAnchor(
             Certificate::fromPEM(
-                PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem")));
+                PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ca.pem')));
         $this->assertInstanceOf(PathValidationConfig::class, $config);
         return $config;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -95,7 +98,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PathValidationConfig::class, $config);
         return $config;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -107,7 +110,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PathValidationConfig::class, $config);
         return $config;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -119,7 +122,7 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PathValidationConfig::class, $config);
         return $config;
     }
-    
+
     /**
      * @depends testWithTrustAnchor
      *
@@ -129,18 +132,18 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(Certificate::class, $config->trustAnchor());
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param PathValidationConfig $config
      */
     public function testTrustAnchorFail(PathValidationConfig $config)
     {
+        $this->expectException(\LogicException::class);
         $config->trustAnchor();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -148,9 +151,9 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
      */
     public function testPolicyMappingInhibit(PathValidationConfig $config)
     {
-        $this->assertInternalType("bool", $config->policyMappingInhibit());
+        $this->assertIsBool($config->policyMappingInhibit());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -158,9 +161,9 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
      */
     public function testExplicitPolicy(PathValidationConfig $config)
     {
-        $this->assertInternalType("bool", $config->explicitPolicy());
+        $this->assertIsBool($config->explicitPolicy());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -168,6 +171,6 @@ class PathValidationConfigTest extends \PHPUnit\Framework\TestCase
      */
     public function testAnyPolicyInhibit(PathValidationConfig $config)
     {
-        $this->assertInternalType("bool", $config->anyPolicyInhibit());
+        $this->assertIsBool($config->anyPolicyInhibit());
     }
 }

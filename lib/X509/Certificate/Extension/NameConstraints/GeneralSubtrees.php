@@ -2,26 +2,26 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\NameConstraints;
+namespace Sop\X509\Certificate\Extension\NameConstraints;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>GeneralSubtrees</i> ASN.1 type used by
  * 'Name Constraints' certificate extension.
  *
- * @link @link https://tools.ietf.org/html/rfc5280#section-4.2.1.10
+ * @see @link https://tools.ietf.org/html/rfc5280#section-4.2.1.10
  */
 class GeneralSubtrees implements \Countable, \IteratorAggregate
 {
     /**
      * Subtrees.
      *
-     * @var GeneralSubtree[] $_subtrees
+     * @var GeneralSubtree[]
      */
     protected $_subtrees;
-    
+
     /**
      * Constructor.
      *
@@ -31,11 +31,12 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
     {
         $this->_subtrees = $subtrees;
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): self
@@ -46,11 +47,11 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
             }, $seq->elements());
         if (!count($subtrees)) {
             throw new \UnexpectedValueException(
-                "GeneralSubtrees must contain at least one GeneralSubtree.");
+                'GeneralSubtrees must contain at least one GeneralSubtree.');
         }
         return new self(...$subtrees);
     }
-    
+
     /**
      * Get all subtrees.
      *
@@ -60,7 +61,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
     {
         return $this->_subtrees;
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -69,7 +70,7 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
     public function toASN1(): Sequence
     {
         if (!count($this->_subtrees)) {
-            throw new \LogicException("No subtrees.");
+            throw new \LogicException('No subtrees.');
         }
         $elements = array_map(
             function (GeneralSubtree $gs) {
@@ -77,21 +78,22 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
             }, $this->_subtrees);
         return new Sequence(...$elements);
     }
-    
+
     /**
-     *
      * @see \Countable::count()
+     *
      * @return int
      */
     public function count(): int
     {
         return count($this->_subtrees);
     }
-    
+
     /**
      * Get iterator for subtrees.
      *
      * @see \IteratorAggregate::getIterator()
+     *
      * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator

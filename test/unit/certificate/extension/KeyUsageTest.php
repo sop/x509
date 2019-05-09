@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\KeyUsageExtension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\KeyUsageExtension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class KeyUsageTest extends \PHPUnit\Framework\TestCase
+class KeyUsageTest extends TestCase
 {
     public function testCreate()
     {
@@ -21,7 +24,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(KeyUsageExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -31,7 +34,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_KEY_USAGE, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -41,7 +44,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -53,7 +56,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -65,7 +68,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(KeyUsageExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -77,7 +80,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -87,7 +90,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isDigitalSignature());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -97,7 +100,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isNonRepudiation());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -107,7 +110,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isKeyEncipherment());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -117,7 +120,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isDataEncipherment());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -127,7 +130,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isKeyAgreement());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -137,7 +140,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isKeyCertSign());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -147,7 +150,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isCRLSign());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -157,7 +160,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isEncipherOnly());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -167,7 +170,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isDecipherOnly());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -179,7 +182,7 @@ class KeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasKeyUsage());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *

@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\ExtendedKeyUsageExtension;
-use X509\Certificate\Extension\Extension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\ExtendedKeyUsageExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
+class ExtendedKeyUsageTest extends TestCase
 {
     public function testCreate()
     {
@@ -21,7 +24,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExtendedKeyUsageExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -31,7 +34,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_EXT_KEY_USAGE, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -41,7 +44,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -53,7 +56,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -65,7 +68,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExtendedKeyUsageExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -77,7 +80,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -89,7 +92,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
             $ext->has(ExtendedKeyUsageExtension::OID_SERVER_AUTH,
                 ExtendedKeyUsageExtension::OID_CLIENT_AUTH));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -100,7 +103,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(
             $ext->has(ExtendedKeyUsageExtension::OID_TIME_STAMPING));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -108,9 +111,9 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
      */
     public function testPurposes(ExtendedKeyUsageExtension $ext)
     {
-        $this->assertContainsOnly("string", $ext->purposes());
+        $this->assertContainsOnly('string', $ext->purposes());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -120,7 +123,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -128,13 +131,13 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(ExtendedKeyUsageExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $oid) {
             $values[] = $oid;
         }
-        $this->assertContainsOnly("string", $values);
+        $this->assertContainsOnly('string', $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -146,7 +149,7 @@ class ExtendedKeyUsageTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasExtendedKeyUsage());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *

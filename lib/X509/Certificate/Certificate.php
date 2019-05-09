@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate;
+namespace Sop\X509\Certificate;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
 use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\AlgorithmIdentifier;
@@ -16,37 +16,37 @@ use Sop\CryptoTypes\Signature\Signature;
 /**
  * Implements <i>Certificate</i> ASN.1 type.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.1
+ * @see https://tools.ietf.org/html/rfc5280#section-4.1
  */
 class Certificate
 {
     /**
      * "To be signed" certificate information.
      *
-     * @var TBSCertificate $_tbsCertificate
+     * @var TBSCertificate
      */
     protected $_tbsCertificate;
-    
+
     /**
      * Signature algorithm.
      *
-     * @var SignatureAlgorithmIdentifier $_signatureAlgorithm
+     * @var SignatureAlgorithmIdentifier
      */
     protected $_signatureAlgorithm;
-    
+
     /**
      * Signature value.
      *
-     * @var Signature $_signatureValue
+     * @var Signature
      */
     protected $_signatureValue;
-    
+
     /**
      * Constructor.
      *
-     * @param TBSCertificate $tbsCert
+     * @param TBSCertificate               $tbsCert
      * @param SignatureAlgorithmIdentifier $algo
-     * @param Signature $signature
+     * @param Signature                    $signature
      */
     public function __construct(TBSCertificate $tbsCert,
         SignatureAlgorithmIdentifier $algo, Signature $signature)
@@ -55,11 +55,22 @@ class Certificate
         $this->_signatureAlgorithm = $algo;
         $this->_signatureValue = $signature;
     }
-    
+
+    /**
+     * Get certificate as a PEM formatted string.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->toPEM()->string();
+    }
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): self
@@ -68,41 +79,42 @@ class Certificate
         $algo = AlgorithmIdentifier::fromASN1($seq->at(1)->asSequence());
         if (!$algo instanceof SignatureAlgorithmIdentifier) {
             throw new \UnexpectedValueException(
-                "Unsupported signature algorithm " . $algo->oid() . ".");
+                'Unsupported signature algorithm ' . $algo->oid() . '.');
         }
         $signature = Signature::fromSignatureData(
-            $seq->at(2)
-                ->asBitString()
-                ->string(), $algo);
+            $seq->at(2)->asBitString()->string(), $algo);
         return new self($tbsCert, $algo, $signature);
     }
-    
+
     /**
      * Initialize from DER.
      *
      * @param string $data
+     *
      * @return self
      */
     public static function fromDER(string $data): self
     {
         return self::fromASN1(UnspecifiedType::fromDER($data)->asSequence());
     }
-    
+
     /**
      * Initialize from PEM.
      *
      * @param PEM $pem
+     *
      * @throws \UnexpectedValueException
+     *
      * @return self
      */
     public static function fromPEM(PEM $pem): self
     {
-        if ($pem->type() != PEM::TYPE_CERTIFICATE) {
-            throw new \UnexpectedValueException("Invalid PEM type.");
+        if (PEM::TYPE_CERTIFICATE != $pem->type()) {
+            throw new \UnexpectedValueException('Invalid PEM type.');
         }
         return self::fromDER($pem->data());
     }
-    
+
     /**
      * Get certificate information.
      *
@@ -112,7 +124,7 @@ class Certificate
     {
         return $this->_tbsCertificate;
     }
-    
+
     /**
      * Get signature algorithm.
      *
@@ -122,7 +134,7 @@ class Certificate
     {
         return $this->_signatureAlgorithm;
     }
-    
+
     /**
      * Get signature value.
      *
@@ -132,7 +144,7 @@ class Certificate
     {
         return $this->_signatureValue;
     }
-    
+
     /**
      * Check whether certificate is self-issued.
      *
@@ -143,11 +155,12 @@ class Certificate
         return $this->_tbsCertificate->subject()->equals(
             $this->_tbsCertificate->issuer());
     }
-    
+
     /**
      * Check whether certificate is semantically equal to another.
      *
      * @param Certificate $cert Certificate to compare to
+     *
      * @return bool
      */
     public function equals(Certificate $cert): bool
@@ -155,46 +168,7 @@ class Certificate
         return $this->_hasEqualSerialNumber($cert) &&
              $this->_hasEqualPublicKey($cert) && $this->_hasEqualSubject($cert);
     }
-    
-    /**
-     * Check whether certificate has serial number equal to another.
-     *
-     * @param Certificate $cert
-     * @return bool
-     */
-    private function _hasEqualSerialNumber(Certificate $cert): bool
-    {
-        $sn1 = $this->_tbsCertificate->serialNumber();
-        $sn2 = $cert->_tbsCertificate->serialNumber();
-        return $sn1 == $sn2;
-    }
-    
-    /**
-     * Check whether certificate has public key equal to another.
-     *
-     * @param Certificate $cert
-     * @return bool
-     */
-    private function _hasEqualPublicKey(Certificate $cert): bool
-    {
-        $kid1 = $this->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
-        $kid2 = $cert->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
-        return $kid1 == $kid2;
-    }
-    
-    /**
-     * Check whether certificate has subject equal to another.
-     *
-     * @param Certificate $cert
-     * @return bool
-     */
-    private function _hasEqualSubject(Certificate $cert): bool
-    {
-        $dn1 = $this->_tbsCertificate->subject();
-        $dn2 = $cert->_tbsCertificate->subject();
-        return $dn1->equals($dn2);
-    }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -206,7 +180,7 @@ class Certificate
             $this->_signatureAlgorithm->toASN1(),
             $this->_signatureValue->bitString());
     }
-    
+
     /**
      * Get certificate as a DER.
      *
@@ -216,7 +190,7 @@ class Certificate
     {
         return $this->toASN1()->toDER();
     }
-    
+
     /**
      * Get certificate as a PEM.
      *
@@ -226,29 +200,62 @@ class Certificate
     {
         return new PEM(PEM::TYPE_CERTIFICATE, $this->toDER());
     }
-    
+
     /**
      * Verify certificate signature.
      *
      * @param PublicKeyInfo $pubkey_info Issuer's public key
-     * @param Crypto|null $crypto Crypto engine, use default if not set
+     * @param null|Crypto   $crypto      Crypto engine, use default if not set
+     *
      * @return bool True if certificate signature is valid
      */
-    public function verify(PublicKeyInfo $pubkey_info, Crypto $crypto = null): bool
+    public function verify(PublicKeyInfo $pubkey_info, ?Crypto $crypto = null): bool
     {
-        $crypto = $crypto ?: Crypto::getDefault();
+        $crypto = $crypto ?? Crypto::getDefault();
         $data = $this->_tbsCertificate->toASN1()->toDER();
         return $crypto->verify($data, $this->_signatureValue, $pubkey_info,
             $this->_signatureAlgorithm);
     }
-    
+
     /**
-     * Get certificate as a PEM formatted string.
+     * Check whether certificate has serial number equal to another.
      *
-     * @return string
+     * @param Certificate $cert
+     *
+     * @return bool
      */
-    public function __toString()
+    private function _hasEqualSerialNumber(Certificate $cert): bool
     {
-        return $this->toPEM()->string();
+        $sn1 = $this->_tbsCertificate->serialNumber();
+        $sn2 = $cert->_tbsCertificate->serialNumber();
+        return $sn1 == $sn2;
+    }
+
+    /**
+     * Check whether certificate has public key equal to another.
+     *
+     * @param Certificate $cert
+     *
+     * @return bool
+     */
+    private function _hasEqualPublicKey(Certificate $cert): bool
+    {
+        $kid1 = $this->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
+        $kid2 = $cert->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
+        return $kid1 == $kid2;
+    }
+
+    /**
+     * Check whether certificate has subject equal to another.
+     *
+     * @param Certificate $cert
+     *
+     * @return bool
+     */
+    private function _hasEqualSubject(Certificate $cert): bool
+    {
+        $dn1 = $this->_tbsCertificate->subject();
+        $dn2 = $cert->_tbsCertificate->subject();
+        return $dn1->equals($dn2);
     }
 }

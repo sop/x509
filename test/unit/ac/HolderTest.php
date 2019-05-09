@@ -1,44 +1,47 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\BitString;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\BitString;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
-use X509\AttributeCertificate\Holder;
-use X509\AttributeCertificate\IssuerSerial;
-use X509\AttributeCertificate\ObjectDigestInfo;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use Sop\X509\AttributeCertificate\Holder;
+use Sop\X509\AttributeCertificate\IssuerSerial;
+use Sop\X509\AttributeCertificate\ObjectDigestInfo;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group ac
+ *
+ * @internal
  */
-class HolderTest extends \PHPUnit\Framework\TestCase
+class HolderTest extends TestCase
 {
     private static $_issuerSerial;
-    
+
     private static $_subject;
-    
+
     private static $_odi;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
         self::$_issuerSerial = new IssuerSerial(
-            new GeneralNames(DirectoryName::fromDNString("cn=Test")), 1);
+            new GeneralNames(DirectoryName::fromDNString('cn=Test')), 1);
         self::$_subject = new GeneralNames(
-            DirectoryName::fromDNString("cn=Subject"));
+            DirectoryName::fromDNString('cn=Subject'));
         self::$_odi = new ObjectDigestInfo(ObjectDigestInfo::TYPE_PUBLIC_KEY,
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), new BitString(""));
+            new SHA1WithRSAEncryptionAlgorithmIdentifier(), new BitString(''));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_issuerSerial = null;
         self::$_subject = null;
         self::$_odi = null;
     }
-    
+
     public function testCreate()
     {
         $holder = new Holder(self::$_issuerSerial, self::$_subject);
@@ -46,7 +49,7 @@ class HolderTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Holder::class, $holder);
         return $holder;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -58,7 +61,7 @@ class HolderTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -70,7 +73,7 @@ class HolderTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Holder::class, $holder);
         return $holder;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -82,7 +85,7 @@ class HolderTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -92,7 +95,7 @@ class HolderTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_issuerSerial, $holder->baseCertificateID());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -102,7 +105,7 @@ class HolderTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_subject, $holder->entityName());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -112,52 +115,46 @@ class HolderTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_odi, $holder->objectDigestInfo());
     }
-    
+
     public function testWithBaseCertificateID()
     {
         $holder = new Holder();
         $holder = $holder->withBaseCertificateID(self::$_issuerSerial);
         $this->assertInstanceOf(Holder::class, $holder);
     }
-    
+
     public function testWithEntityName()
     {
         $holder = new Holder();
         $holder = $holder->withEntityName(self::$_subject);
         $this->assertInstanceOf(Holder::class, $holder);
     }
-    
+
     public function testWithObjectDigestInfo()
     {
         $holder = new Holder();
         $holder = $holder->withObjectDigestInfo(self::$_odi);
         $this->assertInstanceOf(Holder::class, $holder);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoBaseCertificateIDFail()
     {
         $holder = new Holder();
+        $this->expectException(\LogicException::class);
         $holder->baseCertificateID();
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoEntityNameFail()
     {
         $holder = new Holder();
+        $this->expectException(\LogicException::class);
         $holder->entityName();
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoObjectDigestInfoFail()
     {
         $holder = new Holder();
+        $this->expectException(\LogicException::class);
         $holder->objectDigestInfo();
     }
 }

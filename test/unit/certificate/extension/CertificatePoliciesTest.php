@@ -1,49 +1,52 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\ObjectIdentifier;
-use ASN1\Type\Primitive\OctetString;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\CertificatePoliciesExtension;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
-use X509\Certificate\Extension\CertificatePolicy\DisplayText;
-use X509\Certificate\Extension\CertificatePolicy\NoticeReference;
-use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
-use X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo;
-use X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\X509\Certificate\Extension\CertificatePoliciesExtension;
+use Sop\X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
+use Sop\X509\Certificate\Extension\CertificatePolicy\DisplayText;
+use Sop\X509\Certificate\Extension\CertificatePolicy\NoticeReference;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo;
+use Sop\X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
+class CertificatePoliciesTest extends TestCase
 {
-    const INFO_OID = "1.3.6.1.3";
-    
-    const CPS_URI = "urn:test";
-    
-    const NOTICE_TXT = "Notice";
-    
-    const REF_ORG = "ACME Ltd.";
-    
+    const INFO_OID = '1.3.6.1.3';
+
+    const CPS_URI = 'urn:test';
+
+    const NOTICE_TXT = 'Notice';
+
+    const REF_ORG = 'ACME Ltd.';
+
     public function testCreateCPS()
     {
-        $qual = new CPSQualifier("urn:test");
+        $qual = new CPSQualifier('urn:test');
         $this->assertInstanceOf(PolicyQualifierInfo::class, $qual);
         return $qual;
     }
-    
+
     public function testCreateNotice()
     {
-        $qual = new UserNoticeQualifier(DisplayText::fromString("Notice"),
+        $qual = new UserNoticeQualifier(DisplayText::fromString('Notice'),
             new NoticeReference(DisplayText::fromString(self::REF_ORG), 1, 2, 3));
         $this->assertInstanceOf(PolicyQualifierInfo::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreateCPS
      * @depends testCreateNotice
@@ -58,7 +61,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyInformation::class, $info);
         return $info;
     }
-    
+
     /**
      * @depends testCreatePolicyInfo
      *
@@ -67,11 +70,11 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     public function testCreate(PolicyInformation $info)
     {
         $ext = new CertificatePoliciesExtension(true, $info,
-            new PolicyInformation("1.3.6.1.3.10"));
+            new PolicyInformation('1.3.6.1.3.10'));
         $this->assertInstanceOf(CertificatePoliciesExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -81,7 +84,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_CERTIFICATE_POLICIES, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -91,7 +94,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -103,7 +106,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -115,7 +118,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificatePoliciesExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -127,7 +130,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -137,7 +140,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -145,42 +148,40 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(CertificatePoliciesExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $info) {
             $values[] = $info;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(PolicyInformation::class, $values);
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param CertificatePoliciesExtension $ext
      */
     public function testGetFail(CertificatePoliciesExtension $ext)
     {
-        $ext->get("1.2.3");
+        $this->expectException(\LogicException::class);
+        $ext->get('1.2.3');
     }
-    
+
     public function testHasAnyPolicy()
     {
         $ext = new CertificatePoliciesExtension(true,
             new PolicyInformation(PolicyInformation::OID_ANY_POLICY));
         $this->assertTrue($ext->hasAnyPolicy());
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testAnyPolicyFail()
     {
         $ext = new CertificatePoliciesExtension(true,
-            new PolicyInformation("1.3.6.1.3"));
+            new PolicyInformation('1.3.6.1.3'));
+        $this->expectException(\LogicException::class);
         $ext->anyPolicy();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -192,7 +193,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyInformation::class, $info);
         return $info;
     }
-    
+
     /**
      * @depends testInfo
      *
@@ -202,7 +203,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $info);
     }
-    
+
     /**
      * @depends testInfo
      *
@@ -210,14 +211,14 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
      */
     public function testInfoIterator(PolicyInformation $info)
     {
-        $values = array();
+        $values = [];
         foreach ($info as $qual) {
             $values[] = $qual;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(PolicyQualifierInfo::class, $values);
     }
-    
+
     /**
      * @depends testInfo
      *
@@ -229,7 +230,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CPSQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCPS
      *
@@ -239,7 +240,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::CPS_URI, $cps->uri());
     }
-    
+
     /**
      * @depends testInfo
      *
@@ -251,7 +252,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UserNoticeQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testUserNotice
      *
@@ -261,7 +262,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::NOTICE_TXT, $notice->explicitText());
     }
-    
+
     /**
      * @depends testUserNotice
      *
@@ -273,7 +274,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NoticeReference::class, $ref);
         return $ref;
     }
-    
+
     /**
      * @depends testUserNoticeRef
      *
@@ -283,7 +284,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::REF_ORG, $ref->organization());
     }
-    
+
     /**
      * @depends testUserNoticeRef
      *
@@ -293,7 +294,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals([1, 2, 3], $ref->numbers());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -305,7 +306,7 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasCertificatePolicies());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -316,25 +317,21 @@ class CertificatePoliciesTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->certificatePolicies();
         $this->assertInstanceOf(CertificatePoliciesExtension::class, $ext);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEncodeEmptyFail()
     {
         $ext = new CertificatePoliciesExtension(false);
+        $this->expectException(\LogicException::class);
         $ext->toASN1();
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testDecodeEmptyFail()
     {
         $seq = new Sequence();
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_CERTIFICATE_POLICIES),
             new OctetString($seq->toDER()));
+        $this->expectException(\UnexpectedValueException::class);
         CertificatePoliciesExtension::fromASN1($ext_seq);
     }
 }

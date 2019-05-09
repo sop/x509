@@ -1,28 +1,31 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\PolicyMappings\PolicyMapping;
 
 /**
  * @group certificate
  * @group extension
  * @group policy-mapping
+ *
+ * @internal
  */
-class PolicyMappingTest extends \PHPUnit\Framework\TestCase
+class PolicyMappingTest extends TestCase
 {
-    const ISSUER_POLICY = "1.3.6.1.3.1";
-    
-    const SUBJECT_POLICY = "1.3.6.1.3.2";
-    
+    const ISSUER_POLICY = '1.3.6.1.3.1';
+
+    const SUBJECT_POLICY = '1.3.6.1.3.2';
+
     public function testCreate()
     {
         $mapping = new PolicyMapping(self::ISSUER_POLICY, self::SUBJECT_POLICY);
         $this->assertInstanceOf(PolicyMapping::class, $mapping);
         return $mapping;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -34,7 +37,7 @@ class PolicyMappingTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -46,7 +49,7 @@ class PolicyMappingTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyMapping::class, $mapping);
         return $mapping;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -58,7 +61,7 @@ class PolicyMappingTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -68,7 +71,7 @@ class PolicyMappingTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::ISSUER_POLICY, $mapping->issuerDomainPolicy());
     }
-    
+
     /**
      * @depends testCreate
      *

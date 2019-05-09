@@ -1,53 +1,56 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\NullType;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\NullType;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
-use X501\ASN1\Name;
-use X509\Certificate\Certificate;
-use X509\Certificate\Extensions;
-use X509\Certificate\TBSCertificate;
-use X509\Certificate\UniqueIdentifier;
-use X509\Certificate\Validity;
-use X509\Certificate\Extension\BasicConstraintsExtension;
-use X509\Certificate\Extension\UnknownExtension;
+use Sop\X501\ASN1\Name;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\Extension\BasicConstraintsExtension;
+use Sop\X509\Certificate\Extension\UnknownExtension;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\Certificate\TBSCertificate;
+use Sop\X509\Certificate\UniqueIdentifier;
+use Sop\X509\Certificate\Validity;
 
 /**
  * @group certificate
+ *
+ * @internal
  */
-class TBSCertificateTest extends \PHPUnit\Framework\TestCase
+class TBSCertificateTest extends TestCase
 {
     private static $_subject;
-    
+
     private static $_privateKeyInfo;
-    
+
     private static $_issuer;
-    
+
     private static $_validity;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_subject = Name::fromString("cn=Subject");
+        self::$_subject = Name::fromString('cn=Subject');
         self::$_privateKeyInfo = PrivateKeyInfo::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
-        self::$_issuer = Name::fromString("cn=Issuer");
-        self::$_validity = Validity::fromStrings("2016-04-26 12:00:00",
-            "2016-04-26 13:00:00");
+            PEM::fromFile(TEST_ASSETS_DIR . '/rsa/private_key.pem'));
+        self::$_issuer = Name::fromString('cn=Issuer');
+        self::$_validity = Validity::fromStrings('2016-04-26 12:00:00',
+            '2016-04-26 13:00:00');
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_subject = null;
         self::$_privateKeyInfo = null;
         self::$_issuer = null;
         self::$_validity = null;
     }
-    
+
     public function testCreate()
     {
         $tc = new TBSCertificate(self::$_subject,
@@ -56,7 +59,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(TBSCertificate::class, $tc);
         return $tc;
     }
-    
+
     public function testCreateWithAll()
     {
         $tc = new TBSCertificate(self::$_subject,
@@ -65,14 +68,14 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withVersion(TBSCertificate::VERSION_3)
             ->withSerialNumber(1)
             ->withSignature(new SHA1WithRSAEncryptionAlgorithmIdentifier())
-            ->withIssuerUniqueID(UniqueIdentifier::fromString("issuer"))
-            ->withSubjectUniqueID(UniqueIdentifier::fromString("subject"))
+            ->withIssuerUniqueID(UniqueIdentifier::fromString('issuer'))
+            ->withSubjectUniqueID(UniqueIdentifier::fromString('subject'))
             ->withAdditionalExtensions(
             new BasicConstraintsExtension(true, false));
         $this->assertInstanceOf(TBSCertificate::class, $tc);
         return $tc;
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -84,7 +87,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithAll
      *
@@ -96,7 +99,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(TBSCertificate::class, $tc);
         return $tc;
     }
-    
+
     /**
      * @depends testCreateWithAll
      * @depends testDecodeWithAll
@@ -108,7 +111,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -118,7 +121,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(TBSCertificate::VERSION_3, $tc->version());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -128,7 +131,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(1, $tc->serialNumber());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -139,7 +142,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             $tc->signature());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -149,7 +152,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_issuer, $tc->issuer());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -159,7 +162,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_validity, $tc->validity());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -169,7 +172,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_subject, $tc->subject());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -180,7 +183,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(self::$_privateKeyInfo->publicKeyInfo(),
             $tc->subjectPublicKeyInfo());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -188,11 +191,11 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
      */
     public function testIssuerUniqueID(TBSCertificate $tc)
     {
-        $this->assertEquals("issuer",
+        $this->assertEquals('issuer',
             $tc->issuerUniqueID()
                 ->string());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -200,11 +203,11 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
      */
     public function testSubjectUniqueID(TBSCertificate $tc)
     {
-        $this->assertEquals("subject",
+        $this->assertEquals('subject',
             $tc->subjectUniqueID()
                 ->string());
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -214,7 +217,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(Extensions::class, $tc->extensions());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -225,7 +228,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withVersion(TBSCertificate::VERSION_1);
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -236,7 +239,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withSerialNumber(123);
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -248,7 +251,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $bin = gmp_export(gmp_init($tc->serialNumber(), 10), 1);
         $this->assertEquals(16, strlen($bin));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -259,7 +262,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withSignature(new SHA1WithRSAEncryptionAlgorithmIdentifier());
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -270,7 +273,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withIssuer(self::$_issuer);
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -281,7 +284,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withValidity(self::$_validity);
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -292,7 +295,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withSubject(self::$_subject);
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -304,7 +307,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
             self::$_privateKeyInfo->publicKeyInfo());
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -312,10 +315,10 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
      */
     public function testWithIssuerUniqueID(TBSCertificate $tc)
     {
-        $tc = $tc->withIssuerUniqueID(UniqueIdentifier::fromString("uid"));
+        $tc = $tc->withIssuerUniqueID(UniqueIdentifier::fromString('uid'));
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -323,10 +326,10 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
      */
     public function testWithSubjectUniqueID(TBSCertificate $tc)
     {
-        $tc = $tc->withSubjectUniqueID(UniqueIdentifier::fromString("uid"));
+        $tc = $tc->withSubjectUniqueID(UniqueIdentifier::fromString('uid'));
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -337,7 +340,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tc = $tc->withExtensions(new Extensions());
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -346,65 +349,65 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
     public function testWithAdditionalExtensions(TBSCertificate $tc)
     {
         $tc = $tc->withAdditionalExtensions(
-            new UnknownExtension("1.3.6.1.3", false, new NullType()));
+            new UnknownExtension('1.3.6.1.3', false, new NullType()));
         $this->assertInstanceOf(TBSCertificate::class, $tc);
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param TBSCertificate $tc
      */
     public function testNoVersionFail(TBSCertificate $tc)
     {
+        $this->expectException(\LogicException::class);
         $tc->version();
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param TBSCertificate $tc
      */
     public function testNoSerialFail(TBSCertificate $tc)
     {
+        $this->expectException(\LogicException::class);
         $tc->serialNumber();
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param TBSCertificate $tc
      */
     public function testNoSignatureFail(TBSCertificate $tc)
     {
+        $this->expectException(\LogicException::class);
         $tc->signature();
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param TBSCertificate $tc
      */
     public function testNoIssuerUniqueIDFail(TBSCertificate $tc)
     {
+        $this->expectException(\LogicException::class);
         $tc->issuerUniqueID();
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException LogicException
      *
      * @param TBSCertificate $tc
      */
     public function testNoSubjectUniqueIDFail(TBSCertificate $tc)
     {
+        $this->expectException(\LogicException::class);
         $tc->subjectUniqueID();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -416,7 +419,7 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
             self::$_privateKeyInfo);
         $this->assertInstanceOf(Certificate::class, $cert);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -431,18 +434,18 @@ class TBSCertificateTest extends \PHPUnit\Framework\TestCase
         $tbs_cert = TBSCertificate::fromASN1($seq);
         $this->assertInstanceOf(TBSCertificate::class, $tbs_cert);
     }
-    
+
     /**
      * @depends testCreateWithAll
-     * @expectedException UnexpectedValueException
      *
      * @param TBSCertificate $tc
      */
     public function testInvalidAlgoFail(TBSCertificate $tc)
     {
         $seq = $tc->toASN1();
-        $algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+        $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(2, $algo->toASN1());
+        $this->expectException(\UnexpectedValueException::class);
         TBSCertificate::fromASN1($seq);
     }
 }

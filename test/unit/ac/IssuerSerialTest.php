@@ -1,42 +1,45 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\BitString;
-use X509\AttributeCertificate\IssuerSerial;
-use X509\Certificate\UniqueIdentifier;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\BitString;
+use Sop\X509\AttributeCertificate\IssuerSerial;
+use Sop\X509\Certificate\UniqueIdentifier;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group ac
+ *
+ * @internal
  */
-class IssuerSerialTest extends \PHPUnit\Framework\TestCase
+class IssuerSerialTest extends TestCase
 {
     private static $_issuer;
-    
+
     private static $_uid;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_issuer = new GeneralNames(DirectoryName::fromDNString("cn=Test"));
-        self::$_uid = new UniqueIdentifier(new BitString(hex2bin("ff")));
+        self::$_issuer = new GeneralNames(DirectoryName::fromDNString('cn=Test'));
+        self::$_uid = new UniqueIdentifier(new BitString(hex2bin('ff')));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_issuer = null;
         self::$_uid = null;
     }
-    
+
     public function testCreate()
     {
         $iss_ser = new IssuerSerial(self::$_issuer, 1, self::$_uid);
         $this->assertInstanceOf(IssuerSerial::class, $iss_ser);
         return $iss_ser;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -48,7 +51,7 @@ class IssuerSerialTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -60,7 +63,7 @@ class IssuerSerialTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IssuerSerial::class, $iss_ser);
         return $iss_ser;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -72,7 +75,7 @@ class IssuerSerialTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -82,7 +85,7 @@ class IssuerSerialTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_issuer, $is->issuer());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -92,7 +95,7 @@ class IssuerSerialTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(1, $is->serial());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -102,13 +105,11 @@ class IssuerSerialTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_uid, $is->issuerUID());
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoIssuerUIDFail()
     {
         $is = new IssuerSerial(self::$_issuer, 1);
+        $this->expectException(\LogicException::class);
         $is->issuerUID();
     }
 }

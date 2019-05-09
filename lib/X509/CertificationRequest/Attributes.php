@@ -2,26 +2,26 @@
 
 declare(strict_types = 1);
 
-namespace X509\CertificationRequest;
+namespace Sop\X509\CertificationRequest;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Set;
-use X501\ASN1\Attribute;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X509\CertificationRequest\Attribute\ExtensionRequestValue;
-use X509\Feature\AttributeContainer;
+use Sop\ASN1\Type\Constructed\Set;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X501\ASN1\Attribute;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X509\CertificationRequest\Attribute\ExtensionRequestValue;
+use Sop\X509\Feature\AttributeContainer;
 
 /**
  * Implements <i>Attributes</i> ASN.1 type as a <i>SET OF Attribute</i>.
  *
  * Used in <i>CertificationRequestInfo</i>.
  *
- * @link https://tools.ietf.org/html/rfc2986#section-4
+ * @see https://tools.ietf.org/html/rfc2986#section-4
  */
 class Attributes implements \Countable, \IteratorAggregate
 {
     use AttributeContainer;
-    
+
     /**
      * Mapping from OID to attribute value class name.
      *
@@ -29,12 +29,10 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @var array
      */
-    const MAP_OID_TO_CLASS = array(
-        /* @formatter:off */
-        ExtensionRequestValue::OID => ExtensionRequestValue::class
-        /* @formatter:on */
-    );
-    
+    const MAP_OID_TO_CLASS = [
+        ExtensionRequestValue::OID => ExtensionRequestValue::class,
+    ];
+
     /**
      * Constructor.
      *
@@ -44,11 +42,12 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         $this->_attributes = $attribs;
     }
-    
+
     /**
      * Initialize from attribute values.
      *
      * @param AttributeValue ...$values
+     *
      * @return self
      */
     public static function fromAttributeValues(AttributeValue ...$values): Attributes
@@ -59,11 +58,12 @@ class Attributes implements \Countable, \IteratorAggregate
             }, $values);
         return new self(...$attribs);
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Set $set
+     *
      * @return self
      */
     public static function fromASN1(Set $set): Attributes
@@ -84,7 +84,7 @@ class Attributes implements \Countable, \IteratorAggregate
             }, $attribs);
         return new self(...$attribs);
     }
-    
+
     /**
      * Check whether extension request attribute is present.
      *
@@ -94,21 +94,22 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->has(ExtensionRequestValue::OID);
     }
-    
+
     /**
      * Get extension request attribute value.
      *
      * @throws \LogicException
+     *
      * @return ExtensionRequestValue
      */
     public function extensionRequest(): ExtensionRequestValue
     {
         if (!$this->hasExtensionRequest()) {
-            throw new \LogicException("No extension request attribute.");
+            throw new \LogicException('No extension request attribute.');
         }
         return $this->firstOf(ExtensionRequestValue::OID)->first();
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *

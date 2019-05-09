@@ -1,26 +1,29 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
 
 /**
  * @group certificate
  * @group extension
  * @group certificate-policy
+ *
+ * @internal
  */
-class CPSQualifierTest extends \PHPUnit\Framework\TestCase
+class CPSQualifierTest extends TestCase
 {
-    const URI = "urn:test";
-    
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $qual = new CPSQualifier(self::URI);
         $this->assertInstanceOf(CPSQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -32,7 +35,7 @@ class CPSQualifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -44,7 +47,7 @@ class CPSQualifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CPSQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -56,7 +59,7 @@ class CPSQualifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -66,7 +69,7 @@ class CPSQualifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::URI, $qual->uri());
     }
-    
+
     /**
      * @depends testCreate
      *

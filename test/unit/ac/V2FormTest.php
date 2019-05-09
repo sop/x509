@@ -1,44 +1,47 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\BitString;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\BitString;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
-use X509\AttributeCertificate\AttCertIssuer;
-use X509\AttributeCertificate\IssuerSerial;
-use X509\AttributeCertificate\ObjectDigestInfo;
-use X509\AttributeCertificate\V2Form;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use Sop\X509\AttributeCertificate\AttCertIssuer;
+use Sop\X509\AttributeCertificate\IssuerSerial;
+use Sop\X509\AttributeCertificate\ObjectDigestInfo;
+use Sop\X509\AttributeCertificate\V2Form;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group ac
+ *
+ * @internal
  */
-class V2FormTest extends \PHPUnit\Framework\TestCase
+class V2FormTest extends TestCase
 {
     private static $_issuerName;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
         self::$_issuerName = new GeneralNames(
-            DirectoryName::fromDNString("cn=Test"));
+            DirectoryName::fromDNString('cn=Test'));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_issuerName = null;
     }
-    
+
     public function testCreate()
     {
         $issuer = new V2Form(self::$_issuerName);
         $this->assertInstanceOf(AttCertIssuer::class, $issuer);
         return $issuer;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -50,7 +53,7 @@ class V2FormTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitlyTaggedType::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -62,7 +65,7 @@ class V2FormTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(V2Form::class, $issuer);
         return $issuer;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -74,7 +77,7 @@ class V2FormTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -84,16 +87,14 @@ class V2FormTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_issuerName, $issuer->issuerName());
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoIssuerNameFail()
     {
         $issuer = new V2Form();
+        $this->expectException(\LogicException::class);
         $issuer->issuerName();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -101,14 +102,14 @@ class V2FormTest extends \PHPUnit\Framework\TestCase
      */
     public function testName(V2Form $issuer)
     {
-        $this->assertEquals("cn=Test", $issuer->name());
+        $this->assertEquals('cn=Test', $issuer->name());
     }
-    
+
     public function testDecodeWithAll()
     {
         $iss_ser = new IssuerSerial(self::$_issuerName, 1);
         $odi = new ObjectDigestInfo(ObjectDigestInfo::TYPE_PUBLIC_KEY,
-            new SHA1WithRSAEncryptionAlgorithmIdentifier(), new BitString(""));
+            new SHA1WithRSAEncryptionAlgorithmIdentifier(), new BitString(''));
         $el = new ImplicitlyTaggedType(0,
             new Sequence(self::$_issuerName->toASN1(),
                 new ImplicitlyTaggedType(0, $iss_ser->toASN1()),
@@ -117,7 +118,7 @@ class V2FormTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(V2Form::class, $issuer);
         return $issuer;
     }
-    
+
     /**
      * @depends testDecodeWithAll
      *

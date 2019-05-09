@@ -1,27 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\CertificatePolicy\DisplayText;
-use X509\Certificate\Extension\CertificatePolicy\NoticeReference;
-use X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\CertificatePolicy\DisplayText;
+use Sop\X509\Certificate\Extension\CertificatePolicy\NoticeReference;
+use Sop\X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
 
 /**
  * @group certificate
  * @group extension
  * @group certificate-policy
+ *
+ * @internal
  */
-class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
+class UserNoticeQualifierTest extends TestCase
 {
     public function testCreate()
     {
-        $qual = new UserNoticeQualifier(DisplayText::fromString("test"),
-            new NoticeReference(DisplayText::fromString("org"), 1, 2, 3));
+        $qual = new UserNoticeQualifier(DisplayText::fromString('test'),
+            new NoticeReference(DisplayText::fromString('org'), 1, 2, 3));
         $this->assertInstanceOf(UserNoticeQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -33,7 +36,7 @@ class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -45,7 +48,7 @@ class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UserNoticeQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -58,7 +61,7 @@ class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -68,7 +71,7 @@ class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(DisplayText::class, $qual->explicitText());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -78,32 +81,33 @@ class UserNoticeQualifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(NoticeReference::class, $qual->noticeRef());
     }
+
     public function testCreateEmpty()
     {
         $qual = new UserNoticeQualifier();
         $this->assertInstanceOf(UserNoticeQualifier::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param UserNoticeQualifier $qual
      */
     public function testExplicitTextFail(UserNoticeQualifier $qual)
     {
+        $this->expectException(\LogicException::class);
         $qual->explicitText();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param UserNoticeQualifier $qual
      */
     public function testNoticeRefFail(UserNoticeQualifier $qual)
     {
+        $this->expectException(\LogicException::class);
         $qual->noticeRef();
     }
 }

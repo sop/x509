@@ -1,35 +1,38 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeTypeAndValue;
-use X501\ASN1\RDN;
-use X501\ASN1\AttributeValue\CommonNameValue;
-use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
-use X509\Certificate\Extension\DistributionPoint\DistributionPointName;
-use X509\Certificate\Extension\DistributionPoint\FullName;
-use X509\Certificate\Extension\DistributionPoint\ReasonFlags;
-use X509\Certificate\Extension\DistributionPoint\RelativeName;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeTypeAndValue;
+use Sop\X501\ASN1\AttributeValue\CommonNameValue;
+use Sop\X501\ASN1\RDN;
+use Sop\X509\Certificate\Extension\DistributionPoint\DistributionPoint;
+use Sop\X509\Certificate\Extension\DistributionPoint\DistributionPointName;
+use Sop\X509\Certificate\Extension\DistributionPoint\FullName;
+use Sop\X509\Certificate\Extension\DistributionPoint\ReasonFlags;
+use Sop\X509\Certificate\Extension\DistributionPoint\RelativeName;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group certificate
  * @group extension
  * @group distribution-point
+ *
+ * @internal
  */
-class DistributionPointTest extends \PHPUnit\Framework\TestCase
+class DistributionPointTest extends TestCase
 {
     public function testCreateWithFullName()
     {
-        $dp = new DistributionPoint(FullName::fromURI("urn:test"),
+        $dp = new DistributionPoint(FullName::fromURI('urn:test'),
             new ReasonFlags(ReasonFlags::KEY_COMPROMISE),
-            new GeneralNames(DirectoryName::fromDNString("cn=Issuer")));
+            new GeneralNames(DirectoryName::fromDNString('cn=Issuer')));
         $this->assertInstanceOf(DistributionPoint::class, $dp);
         return $dp;
     }
-    
+
     /**
      * @depends testCreateWithFullName
      *
@@ -41,7 +44,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithFullName
      *
@@ -53,7 +56,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DistributionPoint::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreateWithFullName
      * @depends testDecodeWithFullName
@@ -66,7 +69,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateWithFullName
      *
@@ -77,7 +80,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DistributionPointName::class,
             $dp->distributionPointName());
     }
-    
+
     /**
      * @depends testCreateWithFullName
      *
@@ -87,18 +90,18 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(FullName::class, $dp->fullName());
     }
-    
+
     /**
      * @depends testCreateWithFullName
-     * @expectedException LogicException
      *
      * @param DistributionPoint $dp
      */
     public function testRelativeNameFail(DistributionPoint $dp)
     {
+        $this->expectException(\LogicException::class);
         $dp->relativeName();
     }
-    
+
     /**
      * @depends testCreateWithFullName
      *
@@ -108,7 +111,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(ReasonFlags::class, $dp->reasons());
     }
-    
+
     /**
      * @depends testCreateWithFullName
      *
@@ -118,18 +121,18 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(GeneralNames::class, $dp->crlIssuer());
     }
-    
+
     public function testCreateWithRelativeName()
     {
         $dp = new DistributionPoint(
             new RelativeName(
                 new RDN(
                     AttributeTypeAndValue::fromAttributeValue(
-                        new CommonNameValue("Test")))));
+                        new CommonNameValue('Test')))));
         $this->assertInstanceOf(DistributionPoint::class, $dp);
         return $dp;
     }
-    
+
     /**
      * @depends testCreateWithRelativeName
      *
@@ -141,7 +144,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithRelativeName
      *
@@ -153,7 +156,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DistributionPoint::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreateWithRelativeName
      * @depends testDecodeWithRelativeName
@@ -166,7 +169,7 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateWithRelativeName
      *
@@ -176,55 +179,55 @@ class DistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(RelativeName::class, $dp->relativeName());
     }
-    
+
     /**
      * @depends testCreateWithRelativeName
-     * @expectedException LogicException
      *
      * @param DistributionPoint $dp
      */
     public function testFullNameFail(DistributionPoint $dp)
     {
+        $this->expectException(\LogicException::class);
         $dp->fullName();
     }
-    
+
     public function testCreateEmpty()
     {
         $dp = new DistributionPoint();
         $this->assertInstanceOf(DistributionPoint::class, $dp);
         return $dp;
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param DistributionPoint $dp
      */
     public function testDistributionPointNameFail(DistributionPoint $dp)
     {
+        $this->expectException(\LogicException::class);
         $dp->distributionPointName();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param DistributionPoint $dp
      */
     public function testReasonsFail(DistributionPoint $dp)
     {
+        $this->expectException(\LogicException::class);
         $dp->reasons();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param DistributionPoint $dp
      */
     public function testCRLIssuerFail(DistributionPoint $dp)
     {
+        $this->expectException(\LogicException::class);
         $dp->crlIssuer();
     }
 }

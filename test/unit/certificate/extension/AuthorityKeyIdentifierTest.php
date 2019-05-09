@@ -2,43 +2,46 @@
 
 declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\Integer;
-use ASN1\Type\Primitive\ObjectIdentifier;
-use ASN1\Type\Primitive\OctetString;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\Integer;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
-use X501\ASN1\Name;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
-use X509\Certificate\Extension\Extension;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use Sop\X501\ASN1\Name;
+use Sop\X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
+class AuthorityKeyIdentifierTest extends TestCase
 {
-    const KEY_ID = "test-id";
-    
+    const KEY_ID = 'test-id';
+
     const SERIAL = 42;
-    
+
     private static $_issuer;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
         self::$_issuer = new GeneralNames(
-            new DirectoryName(Name::fromString("cn=Issuer")));
+            new DirectoryName(Name::fromString('cn=Issuer')));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_issuer = null;
     }
-    
+
     public function testCreate()
     {
         $ext = new AuthorityKeyIdentifierExtension(true, self::KEY_ID,
@@ -46,15 +49,15 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
         return $ext;
     }
-    
+
     public function testFromPKI()
     {
         $pki = PublicKeyInfo::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/public_key.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/rsa/public_key.pem'));
         $ext = AuthorityKeyIdentifierExtension::fromPublicKeyInfo($pki);
         $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -64,7 +67,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_AUTHORITY_KEY_IDENTIFIER, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -74,7 +77,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -86,7 +89,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -99,7 +102,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -111,7 +114,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -121,7 +124,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::KEY_ID, $ext->keyIdentifier());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -131,7 +134,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_issuer, $ext->issuer());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -141,7 +144,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::SERIAL, $ext->serial());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -153,7 +156,7 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasAuthorityKeyIdentifier());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -164,53 +167,43 @@ class AuthorityKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->authorityKeyIdentifier();
         $this->assertInstanceOf(AuthorityKeyIdentifierExtension::class, $ext);
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testDecodeIssuerXorSerialFail()
     {
-        $seq = new Sequence(new ImplicitlyTaggedType(0, new OctetString("")),
+        $seq = new Sequence(new ImplicitlyTaggedType(0, new OctetString('')),
             new ImplicitlyTaggedType(2, new Integer(1)));
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_AUTHORITY_KEY_IDENTIFIER),
             new OctetString($seq->toDER()));
+        $this->expectException(\UnexpectedValueException::class);
         AuthorityKeyIdentifierExtension::fromASN1($ext_seq);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEncodeIssuerXorSerialFail()
     {
-        $ext = new AuthorityKeyIdentifierExtension(false, "", null, 1);
+        $ext = new AuthorityKeyIdentifierExtension(false, '', null, 1);
+        $this->expectException(\LogicException::class);
         $ext->toASN1();
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoKeyIdentifierFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, null);
+        $this->expectException(\LogicException::class);
         $ext->keyIdentifier();
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoIssuerFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, null);
+        $this->expectException(\LogicException::class);
         $ext->issuer();
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoSerialFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, null);
+        $this->expectException(\LogicException::class);
         $ext->serial();
     }
 }

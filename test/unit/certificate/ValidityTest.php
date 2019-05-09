@@ -1,27 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Validity;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Validity;
 
 /**
  * @group certificate
  * @group time
+ *
+ * @internal
  */
-class ValidityTest extends \PHPUnit\Framework\TestCase
+class ValidityTest extends TestCase
 {
-    const NB = "2016-04-06 12:00:00";
-    
-    const NA = "2016-04-06 13:00:00";
-    
+    const NB = '2016-04-06 12:00:00';
+
+    const NA = '2016-04-06 13:00:00';
+
     public function testCreate()
     {
         $validity = Validity::fromStrings(self::NB, self::NA);
         $this->assertInstanceOf(Validity::class, $validity);
         return $validity;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -33,7 +36,7 @@ class ValidityTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -45,7 +48,7 @@ class ValidityTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Validity::class, $validity);
         return $validity;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -57,7 +60,7 @@ class ValidityTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -69,7 +72,7 @@ class ValidityTest extends \PHPUnit\Framework\TestCase
             $validity->notBefore()
                 ->dateTime());
     }
-    
+
     /**
      * @depends testCreate
      *

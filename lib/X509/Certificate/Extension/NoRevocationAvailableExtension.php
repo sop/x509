@@ -2,14 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension;
+namespace Sop\X509\Certificate\Extension;
 
-use ASN1\Type\Primitive\NullType;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\NullType;
 
 /**
  * Implements 'No Revocation Available' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.3.6
+ * @see https://tools.ietf.org/html/rfc5755#section-4.3.6
  */
 class NoRevocationAvailableExtension extends Extension
 {
@@ -22,24 +23,20 @@ class NoRevocationAvailableExtension extends Extension
     {
         parent::__construct(self::OID_NO_REV_AVAIL, $critical);
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return self
      */
-    protected static function _fromDER(string $data, bool $critical): self
+    protected static function _fromDER(string $data, bool $critical): Extension
     {
         NullType::fromDER($data);
         return new self($critical);
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return NullType
      */
-    protected function _valueASN1(): NullType
+    protected function _valueASN1(): Element
     {
         return new NullType();
     }

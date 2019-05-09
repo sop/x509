@@ -2,24 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate;
+namespace Sop\X509\Certificate;
 
-use ASN1\Type\Primitive\BitString;
+use Sop\ASN1\Type\Primitive\BitString;
 
 /**
  * Implements <i>UniqueIdentifier</i> ASN.1 type.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.1.2.8
+ * @see https://tools.ietf.org/html/rfc5280#section-4.1.2.8
  */
 class UniqueIdentifier
 {
     /**
      * Identifier.
      *
-     * @var BitString $_uid
+     * @var BitString
      */
     protected $_uid;
-    
+
     /**
      * Constructor.
      *
@@ -29,29 +29,31 @@ class UniqueIdentifier
     {
         $this->_uid = $bs;
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param BitString $bs
+     *
      * @return self
      */
     public static function fromASN1(BitString $bs): UniqueIdentifier
     {
         return new self($bs);
     }
-    
+
     /**
      * Initialize from string.
      *
      * @param string $str
+     *
      * @return self
      */
     public static function fromString(string $str): UniqueIdentifier
     {
         return new self(new BitString($str));
     }
-    
+
     /**
      * Get unique identifier as a string.
      *
@@ -61,7 +63,7 @@ class UniqueIdentifier
     {
         return $this->_uid->string();
     }
-    
+
     /**
      * Get unique identifier as a bit string.
      *
@@ -71,7 +73,7 @@ class UniqueIdentifier
     {
         return $this->_uid;
     }
-    
+
     /**
      * Get ASN.1 element.
      *

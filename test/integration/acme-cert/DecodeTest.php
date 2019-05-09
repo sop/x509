@@ -1,43 +1,46 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
+use PHPUnit\Framework\TestCase;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKey;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
 use Sop\CryptoTypes\Signature\Signature;
-use X501\ASN1\Name;
-use X509\Certificate\Certificate;
-use X509\Certificate\Extensions;
-use X509\Certificate\TBSCertificate;
-use X509\Certificate\Validity;
+use Sop\X501\ASN1\Name;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\Certificate\TBSCertificate;
+use Sop\X509\Certificate\Validity;
 
 /**
  * Decodes reference certificate acme-rsa.pem.
  *
  * @group certificate
  * @group decode
+ *
+ * @internal
  */
-class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
+class RefCertificateDecodeTest extends TestCase
 {
     /**
-     *
      * @return Certificate
      */
     public function testCert()
     {
-        $pem = PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem");
+        $pem = PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-rsa.pem');
         $cert = Certificate::fromPEM($pem);
         $this->assertInstanceOf(Certificate::class, $cert);
         return $cert;
     }
-    
+
     /**
      * @depends testCert
      *
      * @param Certificate $cert
+     *
      * @return TBSCertificate
      */
     public function testTBSCertificate(Certificate $cert)
@@ -46,11 +49,12 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(TBSCertificate::class, $tbsCert);
         return $tbsCert;
     }
-    
+
     /**
      * @depends testCert
      *
      * @param Certificate $cert
+     *
      * @return AlgorithmIdentifier
      */
     public function testSignatureAlgorithm(Certificate $cert)
@@ -59,7 +63,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SignatureAlgorithmIdentifier::class, $algo);
         return $algo;
     }
-    
+
     /**
      * @depends testSignatureAlgorithm
      *
@@ -70,11 +74,12 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(AlgorithmIdentifier::OID_SHA1_WITH_RSA_ENCRYPTION,
             $algo->oid());
     }
-    
+
     /**
      * @depends testCert
      *
      * @param Certificate $cert
+     *
      * @return Signature
      */
     public function testSignature(Certificate $cert)
@@ -83,7 +88,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Signature::class, $signature);
         return $signature;
     }
-    
+
     /**
      * @depends testSignature
      *
@@ -92,11 +97,11 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
     public function testSignatureValue(Signature $sig)
     {
         $expected = hex2bin(
-            trim(file_get_contents(TEST_ASSETS_DIR . "/certs/acme-rsa.pem.sig")));
+            trim(file_get_contents(TEST_ASSETS_DIR . '/certs/acme-rsa.pem.sig')));
         $this->assertEquals($expected, $sig->bitString()
             ->string());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
@@ -106,7 +111,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(TBSCertificate::VERSION_3, $tbsCert->version());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
@@ -116,7 +121,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(42, $tbsCert->serialNumber());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
@@ -128,11 +133,12 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
             $tbsCert->signature()
                 ->oid());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
      * @param TBSCertificate $tbsCert
+     *
      * @return Name
      */
     public function testIssuer(TBSCertificate $tbsCert)
@@ -141,7 +147,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Name::class, $issuer);
         return $issuer;
     }
-    
+
     /**
      * @depends testIssuer
      *
@@ -149,14 +155,15 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
      */
     public function testIssuerDN(Name $name)
     {
-        $this->assertEquals("o=ACME Ltd.,c=FI,cn=ACME Intermediate CA",
+        $this->assertEquals('o=ACME Ltd.,c=FI,cn=ACME Intermediate CA',
             $name->toString());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
      * @param TBSCertificate $tbsCert
+     *
      * @return Validity
      */
     public function testValidity(TBSCertificate $tbsCert)
@@ -165,7 +172,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Validity::class, $validity);
         return $validity;
     }
-    
+
     /**
      * @depends testValidity
      *
@@ -175,11 +182,11 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
     {
         $str = $validity->notBefore()
             ->dateTime()
-            ->setTimezone(new \DateTimeZone("GMT"))
-            ->format("M j H:i:s Y T");
-        $this->assertEquals("Jan 1 12:00:00 2016 GMT", $str);
+            ->setTimezone(new \DateTimeZone('GMT'))
+            ->format('M j H:i:s Y T');
+        $this->assertEquals('Jan 1 12:00:00 2016 GMT', $str);
     }
-    
+
     /**
      * @depends testValidity
      *
@@ -189,15 +196,16 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
     {
         $str = $validity->notAfter()
             ->dateTime()
-            ->setTimezone(new \DateTimeZone("GMT"))
-            ->format("M j H:i:s Y T");
-        $this->assertEquals("Jan 2 15:04:05 2026 GMT", $str);
+            ->setTimezone(new \DateTimeZone('GMT'))
+            ->format('M j H:i:s Y T');
+        $this->assertEquals('Jan 2 15:04:05 2026 GMT', $str);
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
      * @param TBSCertificate $tbsCert
+     *
      * @return Name
      */
     public function testSubject(TBSCertificate $tbsCert)
@@ -206,7 +214,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Name::class, $subject);
         return $subject;
     }
-    
+
     /**
      * @depends testSubject
      *
@@ -214,13 +222,14 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
      */
     public function testSubjectDN(Name $name)
     {
-        $this->assertEquals("o=ACME Ltd.,c=FI,cn=example.com", $name->toString());
+        $this->assertEquals('o=ACME Ltd.,c=FI,cn=example.com', $name->toString());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
      * @param TBSCertificate $tbsCert
+     *
      * @return PublicKeyInfo
      */
     public function testSubjectPublicKeyInfo(TBSCertificate $tbsCert)
@@ -229,7 +238,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PublicKeyInfo::class, $pki);
         return $pki;
     }
-    
+
     /**
      * @depends testSubjectPublicKeyInfo
      *
@@ -241,7 +250,7 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
             $pki->algorithmIdentifier()
                 ->oid());
     }
-    
+
     /**
      * @depends testSubjectPublicKeyInfo
      *
@@ -250,14 +259,15 @@ class RefCertificateDecodeTest extends \PHPUnit\Framework\TestCase
     public function testPublicKey(PublicKeyInfo $pki)
     {
         $pk = PrivateKey::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/keys/acme-rsa.pem"))->publicKey();
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/keys/acme-rsa.pem'))->publicKey();
         $this->assertEquals($pk, $pki->publicKey());
     }
-    
+
     /**
      * @depends testTBSCertificate
      *
      * @param TBSCertificate $tbsCert
+     *
      * @return Extensions
      */
     public function testExtensions(TBSCertificate $tbsCert)

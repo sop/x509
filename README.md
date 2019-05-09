@@ -30,7 +30,7 @@ corresponding RFC's as a reference documentation.
 
 ## Requirements
 
--   PHP >=7.0
+-   PHP >=7.2
 -   gmp
 -   [sop/asn1](https://github.com/sop/asn1)
 -   [sop/x501](https://github.com/sop/x501)

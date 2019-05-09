@@ -1,17 +1,19 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\TargetInformationExtension;
-use X509\Certificate\Extension\Target\Target;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\Target\Target;
+use Sop\X509\Certificate\Extension\TargetInformationExtension;
 
-require_once __DIR__ . "/RefACExtTestHelper.php";
+require_once __DIR__ . '/RefACExtTestHelper.php';
 
 /**
  * @group ac
  * @group decode
  * @group extension
+ *
+ * @internal
  */
 class TargetInformationExtensionDecodeTest extends RefACExtTestHelper
 {
@@ -21,7 +23,7 @@ class TargetInformationExtensionDecodeTest extends RefACExtTestHelper
         $this->assertInstanceOf(TargetInformationExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testExtension
      *
@@ -32,7 +34,7 @@ class TargetInformationExtensionDecodeTest extends RefACExtTestHelper
         $targets = $ti->targets();
         $this->assertCount(3, $targets);
     }
-    
+
     /**
      * @depends testExtension
      *
@@ -44,7 +46,7 @@ class TargetInformationExtensionDecodeTest extends RefACExtTestHelper
             function (Target $target) {
                 return $target->string();
             }, $ti->targets()->all());
-        $this->assertEquals(array("urn:test", "*.example.com", "urn:another"),
-            $vals, "", 0.0, 10, true);
+        $this->assertEqualsCanonicalizing(
+            ['urn:test', '*.example.com', 'urn:another'], $vals);
     }
 }

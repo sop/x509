@@ -1,28 +1,31 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\NameConstraints\GeneralSubtree;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtree;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
  * @group name-constraint
+ *
+ * @internal
  */
-class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
+class GeneralSubtreeTest extends TestCase
 {
-    const URI = ".example.com";
-    
+    const URI = '.example.com';
+
     public function testCreate()
     {
         $subtree = new GeneralSubtree(new UniformResourceIdentifier(self::URI));
         $this->assertInstanceOf(GeneralSubtree::class, $subtree);
         return $subtree;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -34,7 +37,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -46,7 +49,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtree::class, $subtree);
         return $subtree;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -58,7 +61,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -69,7 +72,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
         $base = $subtree->base();
         $this->assertInstanceOf(GeneralName::class, $base);
     }
-    
+
     public function testCreateWithAll()
     {
         $subtree = new GeneralSubtree(new UniformResourceIdentifier(self::URI), 1,
@@ -77,7 +80,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtree::class, $subtree);
         return $subtree;
     }
-    
+
     /**
      * @depends testCreateWithAll
      *
@@ -89,7 +92,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithAll
      *
@@ -101,7 +104,7 @@ class GeneralSubtreeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtree::class, $subtree);
         return $subtree;
     }
-    
+
     /**
      * @depends testCreateWithAll
      * @depends testDecodeWithAll

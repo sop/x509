@@ -1,21 +1,23 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\BasicConstraintsExtension;
+use Sop\X509\Certificate\Extension\BasicConstraintsExtension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefBasicConstraintsTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return BasicConstraintsExtension
      */
     public function testBasicConstraintsExtension()
@@ -24,7 +26,7 @@ class RefBasicConstraintsTest extends RefExtTestHelper
         $this->assertInstanceOf(BasicConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testBasicConstraintsExtension
      *
@@ -34,7 +36,7 @@ class RefBasicConstraintsTest extends RefExtTestHelper
     {
         $this->assertTrue($bc->isCA());
     }
-    
+
     /**
      * @depends testBasicConstraintsExtension
      *

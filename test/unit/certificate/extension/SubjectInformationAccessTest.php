@@ -1,18 +1,21 @@
 <?php
+
 declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\SubjectInformationAccessExtension;
-use X509\Certificate\Extension\AccessDescription\SubjectAccessDescription;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\AccessDescription\SubjectAccessDescription;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\SubjectInformationAccessExtension;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
- *
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
+class SubjectInformationAccessTest extends TestCase
 {
     public function testCreate()
     {
@@ -22,13 +25,12 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
                 new UniformResourceIdentifier('urn:test')),
             new SubjectAccessDescription(
                 SubjectAccessDescription::OID_METHOD_TIME_STAMPING,
-                new UniformResourceIdentifier("https://ts.example.com/")));
+                new UniformResourceIdentifier('https://ts.example.com/')));
         $this->assertInstanceOf(SubjectInformationAccessExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param Extension $ext
@@ -38,9 +40,8 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(Extension::OID_SUBJECT_INFORMATION_ACCESS,
             $ext->oid());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param Extension $ext
@@ -49,9 +50,8 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isCritical());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param Extension $ext
@@ -62,9 +62,8 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
-     *
      * @depends testEncode
      *
      * @param string $der
@@ -76,9 +75,8 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubjectInformationAccessExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
-     *
      * @depends testCreate
      * @depends testDecode
      *
@@ -89,9 +87,8 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectInformationAccessExtension $ext
@@ -102,9 +99,8 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertContainsOnlyInstancesOf(SubjectAccessDescription::class,
             $ext->accessDescriptions());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectInformationAccessExtension $ext
@@ -113,16 +109,15 @@ class SubjectInformationAccessTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectInformationAccessExtension $ext
      */
     public function testIterator(SubjectInformationAccessExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $desc) {
             $values[] = $desc;
         }

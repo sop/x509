@@ -1,16 +1,19 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X501\MatchingRule\MatchingRule;
-use X509\AttributeCertificate\Attribute\GroupAttributeValue;
-use X509\AttributeCertificate\Attribute\IetfAttrSyntax;
+use PHPUnit\Framework\TestCase;
+use Sop\X501\MatchingRule\MatchingRule;
+use Sop\X509\AttributeCertificate\Attribute\GroupAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\IetfAttrSyntax;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
+class IetfAttrSyntaxTest extends TestCase
 {
     public function testCreateEmpty()
     {
@@ -18,29 +21,29 @@ class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IetfAttrSyntax::class, $val);
         return $val;
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param IetfAttrSyntax $val
      */
     public function testNoPolicyAuthorityFail(IetfAttrSyntax $val)
     {
+        $this->expectException(\LogicException::class);
         $val->policyAuthority();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param IetfAttrSyntax $val
      */
     public function testNoValuesFirstFail(IetfAttrSyntax $val)
     {
+        $this->expectException(\LogicException::class);
         $val->first();
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -48,9 +51,9 @@ class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
      */
     public function testStringValue(IetfAttrSyntax $val)
     {
-        $this->assertInternalType("string", $val->stringValue());
+        $this->assertIsString($val->stringValue());
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -61,7 +64,7 @@ class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(MatchingRule::class,
             $val->equalityMatchingRule());
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -69,9 +72,9 @@ class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
      */
     public function testRFC2253String(IetfAttrSyntax $val)
     {
-        $this->assertInternalType("string", $val->rfc2253String());
+        $this->assertIsString($val->rfc2253String());
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -79,6 +82,6 @@ class IetfAttrSyntaxTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(IetfAttrSyntax $val)
     {
-        $this->assertInternalType("string", strval($val));
+        $this->assertIsString(strval($val));
     }
 }

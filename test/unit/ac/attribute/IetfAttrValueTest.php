@@ -1,42 +1,41 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Primitive\NullType;
-use X509\AttributeCertificate\Attribute\IetfAttrValue;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\NullType;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X509\AttributeCertificate\Attribute\IetfAttrValue;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
+class IetfAttrValueTest extends TestCase
 {
-    /**
-     * @expectedException UnexpectedValueException
-     */
     public function testFromUnsupportedTypeFail()
     {
+        $this->expectException(\UnexpectedValueException::class);
         IetfAttrValue::fromASN1(new UnspecifiedType(new NullType()));
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testToUnsupportedTypeFail()
     {
-        $val = new IetfAttrValue("", Element::TYPE_NULL);
+        $val = new IetfAttrValue('', Element::TYPE_NULL);
+        $this->expectException(\LogicException::class);
         $val->toASN1();
     }
-    
+
     public function testCreateOctetString()
     {
-        $val = IetfAttrValue::fromOctets("test");
+        $val = IetfAttrValue::fromOctets('test');
         $this->assertInstanceOf(IetfAttrValue::class, $val);
         return $val;
     }
-    
+
     /**
      * @depends testCreateOctetString
      *
@@ -46,7 +45,7 @@ class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Element::TYPE_OCTET_STRING, $val->type());
     }
-    
+
     /**
      * @depends testCreateOctetString
      *
@@ -56,7 +55,7 @@ class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($val->isOctets());
     }
-    
+
     /**
      * @depends testCreateOctetString
      *
@@ -64,16 +63,16 @@ class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
      */
     public function testValue(IetfAttrValue $val)
     {
-        $this->assertEquals("test", $val->value());
+        $this->assertEquals('test', $val->value());
     }
-    
+
     public function testCreateUTF8String()
     {
-        $val = IetfAttrValue::fromString("test");
+        $val = IetfAttrValue::fromString('test');
         $this->assertInstanceOf(IetfAttrValue::class, $val);
         return $val;
     }
-    
+
     /**
      * @depends testCreateUTF8String
      *
@@ -83,7 +82,7 @@ class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Element::TYPE_UTF8_STRING, $val->type());
     }
-    
+
     /**
      * @depends testCreateUTF8String
      *
@@ -93,14 +92,14 @@ class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($val->isString());
     }
-    
+
     public function testCreateOID()
     {
-        $val = IetfAttrValue::fromOID("1.3.6.1.3");
+        $val = IetfAttrValue::fromOID('1.3.6.1.3');
         $this->assertInstanceOf(IetfAttrValue::class, $val);
         return $val;
     }
-    
+
     /**
      * @depends testCreateOID
      *
@@ -110,7 +109,7 @@ class IetfAttrValueTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Element::TYPE_OBJECT_IDENTIFIER, $val->type());
     }
-    
+
     /**
      * @depends testCreateOID
      *

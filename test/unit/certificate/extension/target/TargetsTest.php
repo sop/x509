@@ -1,47 +1,50 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\Target\Target;
-use X509\Certificate\Extension\Target\TargetGroup;
-use X509\Certificate\Extension\Target\TargetName;
-use X509\Certificate\Extension\Target\Targets;
-use X509\GeneralName\DNSName;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Target\Target;
+use Sop\X509\Certificate\Extension\Target\TargetGroup;
+use Sop\X509\Certificate\Extension\Target\TargetName;
+use Sop\X509\Certificate\Extension\Target\Targets;
+use Sop\X509\GeneralName\DNSName;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
  * @group target
+ *
+ * @internal
  */
-class TargetsTest extends \PHPUnit\Framework\TestCase
+class TargetsTest extends TestCase
 {
     private static $_name;
-    
+
     private static $_group;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
         self::$_name = new TargetName(
-            new UniformResourceIdentifier("urn:target"));
+            new UniformResourceIdentifier('urn:target'));
         self::$_group = new TargetGroup(
-            new UniformResourceIdentifier("urn:group"));
+            new UniformResourceIdentifier('urn:group'));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_name = null;
         self::$_group = null;
     }
-    
+
     public function testCreate()
     {
         $targets = new Targets(self::$_name, self::$_group);
         $this->assertInstanceOf(Targets::class, $targets);
         return $targets;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -53,7 +56,7 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -65,7 +68,7 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Targets::class, $targets);
         return $targets;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -77,7 +80,7 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -87,7 +90,7 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertContainsOnlyInstancesOf(Target::class, $targets->all());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -97,7 +100,7 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $targets);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -105,13 +108,13 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(Targets $targets)
     {
-        $values = array();
+        $values = [];
         foreach ($targets as $target) {
             $values[] = $target;
         }
         $this->assertContainsOnlyInstancesOf(Target::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -121,7 +124,7 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($targets->hasTarget(self::$_name));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -130,6 +133,6 @@ class TargetsTest extends \PHPUnit\Framework\TestCase
     public function testHasNoTarget(Targets $targets)
     {
         $this->assertFalse(
-            $targets->hasTarget(new TargetName(new DNSName("nope"))));
+            $targets->hasTarget(new TargetName(new DNSName('nope'))));
     }
 }

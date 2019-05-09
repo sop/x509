@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension;
+namespace Sop\X509\Certificate\Extension;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use X509\GeneralName\GeneralNames;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * Implements 'Issuer Alternative Name' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.7
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.7
  */
 class IssuerAlternativeNameExtension extends Extension
 {
@@ -21,11 +21,11 @@ class IssuerAlternativeNameExtension extends Extension
      * @var GeneralNames
      */
     protected $_names;
-    
+
     /**
      * Constructor.
      *
-     * @param bool $critical
+     * @param bool         $critical
      * @param GeneralNames $names
      */
     public function __construct(bool $critical, GeneralNames $names)
@@ -33,19 +33,7 @@ class IssuerAlternativeNameExtension extends Extension
         parent::__construct(self::OID_ISSUER_ALT_NAME, $critical);
         $this->_names = $names;
     }
-    
-    /**
-     *
-     * {@inheritdoc}
-     * @return self
-     */
-    protected static function _fromDER(string $data, bool $critical)
-    {
-        return new self($critical,
-            GeneralNames::fromASN1(
-                UnspecifiedType::fromDER($data)->asSequence()));
-    }
-    
+
     /**
      * Get names.
      *
@@ -55,13 +43,21 @@ class IssuerAlternativeNameExtension extends Extension
     {
         return $this->_names;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return Sequence
      */
-    protected function _valueASN1(): Sequence
+    protected static function _fromDER(string $data, bool $critical): Extension
+    {
+        return new self($critical,
+            GeneralNames::fromASN1(
+                UnspecifiedType::fromDER($data)->asSequence()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _valueASN1(): Element
     {
         return $this->_names->toASN1();
     }

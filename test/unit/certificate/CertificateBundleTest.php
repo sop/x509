@@ -1,46 +1,49 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
+use PHPUnit\Framework\TestCase;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoEncoding\PEMBundle;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA1WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
-use X501\ASN1\Name;
-use X509\Certificate\Certificate;
-use X509\Certificate\CertificateBundle;
-use X509\Certificate\TBSCertificate;
-use X509\Certificate\Validity;
+use Sop\X501\ASN1\Name;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\CertificateBundle;
+use Sop\X509\Certificate\TBSCertificate;
+use Sop\X509\Certificate\Validity;
 
 /**
  * @group certificate
+ *
+ * @internal
  */
-class CertificateBundleTest extends \PHPUnit\Framework\TestCase
+class CertificateBundleTest extends TestCase
 {
     private static $_pem1;
-    
+
     private static $_cert1;
-    
+
     private static $_pem2;
-    
+
     private static $_cert2;
-    
+
     private static $_pem3;
-    
+
     private static $_cert3;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_pem1 = PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem");
+        self::$_pem1 = PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ca.pem');
         self::$_cert1 = Certificate::fromPEM(self::$_pem1);
         self::$_pem2 = PEM::fromFile(
-            TEST_ASSETS_DIR . "/certs/acme-interm-rsa.pem");
+            TEST_ASSETS_DIR . '/certs/acme-interm-rsa.pem');
         self::$_cert2 = Certificate::fromPEM(self::$_pem2);
-        self::$_pem3 = PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem");
+        self::$_pem3 = PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-rsa.pem');
         self::$_cert3 = Certificate::fromPEM(self::$_pem3);
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_pem1 = null;
         self::$_cert1 = null;
@@ -49,14 +52,14 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
         self::$_pem3 = null;
         self::$_cert3 = null;
     }
-    
+
     public function testCreate()
     {
         $bundle = new CertificateBundle(self::$_cert1, self::$_cert2);
         $this->assertInstanceOf(CertificateBundle::class, $bundle);
         return $bundle;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -66,7 +69,7 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $bundle);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -76,7 +79,7 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $bundle->all());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -84,14 +87,14 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(CertificateBundle $bundle)
     {
-        $values = array();
+        $values = [];
         foreach ($bundle as $cert) {
             $values[] = $cert;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(Certificate::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -101,29 +104,29 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($bundle->contains(self::$_cert1));
     }
-    
+
     public function testDoesNotContain()
     {
         $bundle = new CertificateBundle(self::$_cert1, self::$_cert2);
         $this->assertFalse($bundle->contains(self::$_cert3));
     }
-    
+
     public function testContainsSubjectMismatch()
     {
         $priv_key_info = PrivateKeyInfo::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
-        $tc = new TBSCertificate(Name::fromString("cn=Subject"),
-            $priv_key_info->publicKeyInfo(), Name::fromString("cn=Issuer 1"),
+            PEM::fromFile(TEST_ASSETS_DIR . '/rsa/private_key.pem'));
+        $tc = new TBSCertificate(Name::fromString('cn=Subject'),
+            $priv_key_info->publicKeyInfo(), Name::fromString('cn=Issuer 1'),
             Validity::fromStrings(null, null));
         $cert1 = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             $priv_key_info);
-        $tc = $tc->withSubject(Name::fromString("cn=Issuer 2"));
+        $tc = $tc->withSubject(Name::fromString('cn=Issuer 2'));
         $cert2 = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             $priv_key_info);
         $bundle = new CertificateBundle($cert1);
         $this->assertFalse($bundle->contains($cert2));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -138,7 +141,7 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
         $certs = $bundle->allBySubjectKeyIdentifier($id);
         $this->assertCount(1, $certs);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -149,7 +152,7 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
         $bundle = $bundle->withPEM(self::$_pem3);
         $this->assertCount(3, $bundle);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -160,7 +163,7 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
         $bundle = $bundle->withPEMBundle(new PEMBundle(self::$_pem3));
         $this->assertCount(3, $bundle);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -171,30 +174,30 @@ class CertificateBundleTest extends \PHPUnit\Framework\TestCase
         $bundle = $bundle->withCertificates(Certificate::fromPEM(self::$_pem3));
         $this->assertCount(3, $bundle);
     }
-    
+
     public function testFromPEMBundle()
     {
         $bundle = CertificateBundle::fromPEMBundle(
             new PEMBundle(self::$_pem1, self::$_pem2));
         $this->assertInstanceOf(CertificateBundle::class, $bundle);
     }
-    
+
     public function testFromPEMs()
     {
         $bundle = CertificateBundle::fromPEMs(self::$_pem1, self::$_pem2);
         $this->assertInstanceOf(CertificateBundle::class, $bundle);
     }
-    
+
     public function testSearchBySubjectKeyHavingNoID()
     {
         $priv_key_info = PrivateKeyInfo::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
-        $tc = new TBSCertificate(Name::fromString("cn=Subject"),
-            $priv_key_info->publicKeyInfo(), Name::fromString("cn=Issuer"),
+            PEM::fromFile(TEST_ASSETS_DIR . '/rsa/private_key.pem'));
+        $tc = new TBSCertificate(Name::fromString('cn=Subject'),
+            $priv_key_info->publicKeyInfo(), Name::fromString('cn=Issuer'),
             Validity::fromStrings(null, null));
         $cert = $tc->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             $priv_key_info);
         $bundle = new CertificateBundle($cert);
-        $this->assertEmpty($bundle->allBySubjectKeyIdentifier("nope"));
+        $this->assertEmpty($bundle->allBySubjectKeyIdentifier('nope'));
     }
 }

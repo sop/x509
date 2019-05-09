@@ -1,23 +1,26 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
+class AccessIdentityAttributeTest extends TestCase
 {
-    const SERVICE_URI = "urn:service";
-    
-    const IDENT_URI = "urn:username";
-    
+    const SERVICE_URI = 'urn:service';
+
+    const IDENT_URI = 'urn:username';
+
     public function testCreate()
     {
         $value = new AccessIdentityAttributeValue(
@@ -26,7 +29,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AccessIdentityAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -38,7 +41,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -51,7 +54,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AccessIdentityAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -63,7 +66,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -73,7 +76,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(AccessIdentityAttributeValue::OID, $value->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -83,7 +86,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::SERVICE_URI, $value->service());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -93,7 +96,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::IDENT_URI, $value->ident());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -105,7 +108,7 @@ class AccessIdentityAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($attribs->hasAccessIdentity());
         return $attribs;
     }
-    
+
     /**
      * @depends testAttributes
      *

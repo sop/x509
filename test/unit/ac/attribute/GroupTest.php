@@ -1,25 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Attribute\GroupAttributeValue;
-use X509\AttributeCertificate\Attribute\IetfAttrValue;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\GroupAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\IetfAttrValue;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class GroupAttributeTest extends \PHPUnit\Framework\TestCase
+class GroupAttributeTest extends TestCase
 {
-    const AUTHORITY_DN = "cn=Authority Name";
-    
-    const GROUP_NAME = "administrators";
-    
+    const AUTHORITY_DN = 'cn=Authority Name';
+
+    const GROUP_NAME = 'administrators';
+
     public function testCreate()
     {
         $value = new GroupAttributeValue(
@@ -29,7 +32,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GroupAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -41,7 +44,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -54,7 +57,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GroupAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -66,7 +69,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -76,7 +79,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(GroupAttributeValue::OID, $value->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -88,7 +91,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
             $value->policyAuthority()
                 ->firstDN());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -98,7 +101,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(1, $value);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -108,7 +111,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::GROUP_NAME, $value->first());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -120,7 +123,7 @@ class GroupAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($attribs->hasGroup());
         return $attribs;
     }
-    
+
     /**
      * @depends testAttributes
      *

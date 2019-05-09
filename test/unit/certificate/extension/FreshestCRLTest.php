@@ -1,46 +1,49 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\FreshestCRLExtension;
-use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
-use X509\Certificate\Extension\DistributionPoint\FullName;
-use X509\Certificate\Extension\DistributionPoint\ReasonFlags;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\DistributionPoint\DistributionPoint;
+use Sop\X509\Certificate\Extension\DistributionPoint\FullName;
+use Sop\X509\Certificate\Extension\DistributionPoint\ReasonFlags;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\FreshestCRLExtension;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class FreshestCRLTest extends \PHPUnit\Framework\TestCase
+class FreshestCRLTest extends TestCase
 {
     private static $_dp;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
         $name = new FullName(
-            new GeneralNames(new UniformResourceIdentifier("urn:test")));
+            new GeneralNames(new UniformResourceIdentifier('urn:test')));
         $reasons = new ReasonFlags(ReasonFlags::PRIVILEGE_WITHDRAWN);
-        $issuer = new GeneralNames(DirectoryName::fromDNString("cn=Issuer"));
+        $issuer = new GeneralNames(DirectoryName::fromDNString('cn=Issuer'));
         self::$_dp = new DistributionPoint($name, $reasons, $issuer);
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_dp = null;
     }
-    
+
     public function testCreate()
     {
         $ext = new FreshestCRLExtension(false, self::$_dp);
         $this->assertInstanceOf(FreshestCRLExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -50,7 +53,7 @@ class FreshestCRLTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_FRESHEST_CRL, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -60,7 +63,7 @@ class FreshestCRLTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -72,7 +75,7 @@ class FreshestCRLTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -84,7 +87,7 @@ class FreshestCRLTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(FreshestCRLExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode

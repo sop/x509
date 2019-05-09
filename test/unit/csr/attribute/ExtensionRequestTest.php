@@ -1,18 +1,21 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X501\MatchingRule\MatchingRule;
-use X509\Certificate\Extensions;
-use X509\CertificationRequest\Attribute\ExtensionRequestValue;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X501\MatchingRule\MatchingRule;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\CertificationRequest\Attribute\ExtensionRequestValue;
 
 /**
  * @group csr
  * @group attribute
+ *
+ * @internal
  */
-class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
+class ExtensionRequestTest extends TestCase
 {
     public function testCreate()
     {
@@ -20,7 +23,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExtensionRequestValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -32,7 +35,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -45,7 +48,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExtensionRequestValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -57,7 +60,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -67,7 +70,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(ExtensionRequestValue::OID, $value->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -77,7 +80,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(Extensions::class, $value->extensions());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,9 +88,9 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
      */
     public function testStringValue(ExtensionRequestValue $value)
     {
-        $this->assertInternalType("string", $value->stringValue());
+        $this->assertIsString($value->stringValue());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -98,7 +101,7 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(MatchingRule::class,
             $value->equalityMatchingRule());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -106,9 +109,9 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
      */
     public function testRFC2253String(ExtensionRequestValue $value)
     {
-        $this->assertInternalType("string", $value->rfc2253String());
+        $this->assertIsString($value->rfc2253String());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -116,6 +119,6 @@ class ExtensionRequestTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(ExtensionRequestValue $value)
     {
-        $this->assertInternalType("string", strval($value));
+        $this->assertIsString(strval($value));
     }
 }

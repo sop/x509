@@ -2,29 +2,30 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension;
+namespace Sop\X509\Certificate\Extension;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Primitive\OctetString;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements 'Subject Key Identifier' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.2
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.2
  */
 class SubjectKeyIdentifierExtension extends Extension
 {
     /**
      * Key identifier.
      *
-     * @var string $_keyIdentifier
+     * @var string
      */
     protected $_keyIdentifier;
-    
+
     /**
      * Constructor.
      *
-     * @param bool $critical
+     * @param bool   $critical
      * @param string $keyIdentifier
      */
     public function __construct(bool $critical, string $keyIdentifier)
@@ -32,18 +33,7 @@ class SubjectKeyIdentifierExtension extends Extension
         parent::__construct(self::OID_SUBJECT_KEY_IDENTIFIER, $critical);
         $this->_keyIdentifier = $keyIdentifier;
     }
-    
-    /**
-     *
-     * {@inheritdoc}
-     * @return self
-     */
-    protected static function _fromDER(string $data, bool $critical): self
-    {
-        return new self($critical,
-            UnspecifiedType::fromDER($data)->asOctetString()->string());
-    }
-    
+
     /**
      * Get key identifier.
      *
@@ -53,13 +43,20 @@ class SubjectKeyIdentifierExtension extends Extension
     {
         return $this->_keyIdentifier;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return OctetString
      */
-    protected function _valueASN1(): OctetString
+    protected static function _fromDER(string $data, bool $critical): Extension
+    {
+        return new self($critical,
+            UnspecifiedType::fromDER($data)->asOctetString()->string());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _valueASN1(): Element
     {
         return new OctetString($this->_keyIdentifier);
     }

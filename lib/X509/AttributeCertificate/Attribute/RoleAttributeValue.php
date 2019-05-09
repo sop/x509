@@ -2,89 +2,89 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate\Attribute;
+namespace Sop\X509\AttributeCertificate\Attribute;
 
-use ASN1\Element;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Tagged\ExplicitlyTaggedType;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
-use X501\ASN1\AttributeType;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X501\MatchingRule\BinaryMatch;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Tagged\ExplicitlyTaggedType;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X501\ASN1\AttributeType;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X501\MatchingRule\BinaryMatch;
+use Sop\X501\MatchingRule\MatchingRule;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * Implements value for 'Role' attribute.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.4.5
+ * @see https://tools.ietf.org/html/rfc5755#section-4.4.5
  */
 class RoleAttributeValue extends AttributeValue
 {
     /**
      * Issuing authority.
      *
-     * @var GeneralNames $_roleAuthority
+     * @var null|GeneralNames
      */
     protected $_roleAuthority;
-    
+
     /**
      * Role name.
      *
-     * @var GeneralName $_roleName
+     * @var GeneralName
      */
     protected $_roleName;
-    
+
     /**
      * Constructor.
      *
-     * @param GeneralName $name Role name
-     * @param GeneralNames|null $authority Issuing authority
+     * @param GeneralName       $name      Role name
+     * @param null|GeneralNames $authority Issuing authority
      */
-    public function __construct(GeneralName $name, GeneralNames $authority = null)
+    public function __construct(GeneralName $name,
+        ?GeneralNames $authority = null)
     {
         $this->_roleAuthority = $authority;
         $this->_roleName = $name;
         $this->_oid = AttributeType::OID_ROLE;
     }
-    
+
     /**
      * Initialize from a role string.
      *
-     * @param string $role_name Role name in URI format
-     * @param GeneralNames|null $authority Issuing authority
+     * @param string            $role_name Role name in URI format
+     * @param null|GeneralNames $authority Issuing authority
+     *
      * @return self
      */
     public static function fromString(string $role_name,
-        GeneralNames $authority = null): self
+        ?GeneralNames $authority = null): self
     {
         return new self(new UniformResourceIdentifier($role_name), $authority);
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromASN1(UnspecifiedType $el): self
+    public static function fromASN1(UnspecifiedType $el): AttributeValue
     {
         $seq = $el->asSequence();
         $authority = null;
         if ($seq->hasTagged(0)) {
             $authority = GeneralNames::fromASN1(
-                $seq->getTagged(0)
-                    ->asImplicit(Element::TYPE_SEQUENCE)
+                $seq->getTagged(0)->asImplicit(Element::TYPE_SEQUENCE)
                     ->asSequence());
         }
-        $name = GeneralName::fromASN1(
-            $seq->getTagged(1)
-                ->asExplicit()
-                ->asTagged());
+        $name = GeneralName::fromASN1($seq->getTagged(1)
+            ->asExplicit()->asTagged());
         return new self($name, $authority);
     }
-    
+
     /**
      * Check whether issuing authority is present.
      *
@@ -94,21 +94,22 @@ class RoleAttributeValue extends AttributeValue
     {
         return isset($this->_roleAuthority);
     }
-    
+
     /**
      * Get issuing authority.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return GeneralNames
      */
     public function roleAuthority(): GeneralNames
     {
         if (!$this->hasRoleAuthority()) {
-            throw new \LogicException("roleAuthority not set.");
+            throw new \LogicException('roleAuthority not set.');
         }
         return $this->_roleAuthority;
     }
-    
+
     /**
      * Get role name.
      *
@@ -118,57 +119,48 @@ class RoleAttributeValue extends AttributeValue
     {
         return $this->_roleName;
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::toASN1()
-     * @return Sequence
+     * {@inheritdoc}
      */
-    public function toASN1(): Sequence
+    public function toASN1(): Element
     {
-        $elements = array();
+        $elements = [];
         if (isset($this->_roleAuthority)) {
-            $elements[] = new ImplicitlyTaggedType(0,
-                $this->_roleAuthority->toASN1());
+            $elements[] = new ImplicitlyTaggedType(
+                0, $this->_roleAuthority->toASN1());
         }
-        $elements[] = new ExplicitlyTaggedType(1, $this->_roleName->toASN1());
+        $elements[] = new ExplicitlyTaggedType(
+            1, $this->_roleName->toASN1());
         return new Sequence(...$elements);
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::stringValue()
-     * @return string
+     * {@inheritdoc}
      */
     public function stringValue(): string
     {
-        return "#" . bin2hex($this->toASN1()->toDER());
+        return '#' . bin2hex($this->toASN1()->toDER());
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::equalityMatchingRule()
-     * @return BinaryMatch
+     * {@inheritdoc}
      */
-    public function equalityMatchingRule(): BinaryMatch
+    public function equalityMatchingRule(): MatchingRule
     {
         return new BinaryMatch();
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::rfc2253String()
-     * @return string
+     * {@inheritdoc}
      */
     public function rfc2253String(): string
     {
         return $this->stringValue();
     }
-    
+
     /**
-     *
-     * @see \X501\ASN1\AttributeValue\AttributeValue::_transcodedString()
-     * @return string
+     * {@inheritdoc}
      */
     protected function _transcodedString(): string
     {

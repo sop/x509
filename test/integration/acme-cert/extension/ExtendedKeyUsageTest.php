@@ -1,22 +1,24 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\ExtendedKeyUsageExtension;
-use X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\ExtendedKeyUsageExtension;
+use Sop\X509\Certificate\Extension\Extension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefExtendedKeyUsageTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return ExtendedKeyUsageExtension
      */
     public function testExtendedKeyUsageExtension()
@@ -25,7 +27,7 @@ class RefExtendedKeyUsageTest extends RefExtTestHelper
         $this->assertInstanceOf(ExtendedKeyUsageExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testExtendedKeyUsageExtension
      *

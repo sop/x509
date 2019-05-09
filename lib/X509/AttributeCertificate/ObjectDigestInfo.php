@@ -2,62 +2,62 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate;
+namespace Sop\X509\AttributeCertificate;
 
-use ASN1\Element;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\BitString;
-use ASN1\Type\Primitive\Enumerated;
-use ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\BitString;
+use Sop\ASN1\Type\Primitive\Enumerated;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 
 /**
  * Implements <i>ObjectDigestInfo</i> ASN.1 type.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.1
- * @link https://tools.ietf.org/html/rfc5755#section-7.3
+ * @see https://tools.ietf.org/html/rfc5755#section-4.1
+ * @see https://tools.ietf.org/html/rfc5755#section-7.3
  */
 class ObjectDigestInfo
 {
     const TYPE_PUBLIC_KEY = 0;
     const TYPE_PUBLIC_KEY_CERT = 1;
     const TYPE_OTHER_OBJECT_TYPES = 2;
-    
+
     /**
      * Object type.
      *
-     * @var int $_digestedObjectType
+     * @var int
      */
     protected $_digestedObjectType;
-    
+
     /**
      * OID of other object type.
      *
-     * @var string|null $_otherObjectTypeID
+     * @var null|string
      */
     protected $_otherObjectTypeID;
-    
+
     /**
      * Digest algorithm.
      *
-     * @var AlgorithmIdentifierType $_digestAlgorithm
+     * @var AlgorithmIdentifierType
      */
     protected $_digestAlgorithm;
-    
+
     /**
      * Object digest.
      *
-     * @var BitString $_objectDigest
+     * @var BitString
      */
     protected $_objectDigest;
-    
+
     /**
      * Constructor.
      *
-     * @param int $type
+     * @param int                     $type
      * @param AlgorithmIdentifierType $algo
-     * @param BitString $digest
+     * @param BitString               $digest
      */
     public function __construct(int $type, AlgorithmIdentifierType $algo,
         BitString $digest)
@@ -67,24 +67,21 @@ class ObjectDigestInfo
         $this->_digestAlgorithm = $algo;
         $this->_objectDigest = $digest;
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): ObjectDigestInfo
     {
-        $type = $seq->at(0)
-            ->asEnumerated()
-            ->intNumber();
+        $idx = 0;
         $oid = null;
-        $idx = 1;
+        $type = $seq->at($idx++)->asEnumerated()->intNumber();
         if ($seq->has($idx, Element::TYPE_OBJECT_IDENTIFIER)) {
-            $oid = $seq->at($idx++)
-                ->asObjectIdentifier()
-                ->oid();
+            $oid = $seq->at($idx++)->asObjectIdentifier()->oid();
         }
         $algo = AlgorithmIdentifier::fromASN1($seq->at($idx++)->asSequence());
         $digest = $seq->at($idx)->asBitString();
@@ -92,7 +89,7 @@ class ObjectDigestInfo
         $obj->_otherObjectTypeID = $oid;
         return $obj;
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -100,7 +97,7 @@ class ObjectDigestInfo
      */
     public function toASN1(): Sequence
     {
-        $elements = array(new Enumerated($this->_digestedObjectType));
+        $elements = [new Enumerated($this->_digestedObjectType)];
         if (isset($this->_otherObjectTypeID)) {
             $elements[] = new ObjectIdentifier($this->_otherObjectTypeID);
         }

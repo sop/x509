@@ -1,25 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\AAControlsExtension;
-use X509\Certificate\Extension\Extension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\AAControlsExtension;
+use Sop\X509\Certificate\Extension\Extension;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class AAControlsTest extends \PHPUnit\Framework\TestCase
+class AAControlsTest extends TestCase
 {
     public function testCreate()
     {
-        $ext = new AAControlsExtension(true, 3, array("1.2.3.4"),
-            array("1.2.3.5", "1.2.3.6"), false);
+        $ext = new AAControlsExtension(true, 3, ['1.2.3.4'],
+            ['1.2.3.5', '1.2.3.6'], false);
         $this->assertInstanceOf(AAControlsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -29,7 +32,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_AA_CONTROLS, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -39,7 +42,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -51,7 +54,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -63,7 +66,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AAControlsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -75,7 +78,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,7 +88,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(3, $ext->pathLen());
     }
-    
+
     /**
      * @depends testDecode
      *
@@ -93,9 +96,9 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
      */
     public function testPermitted(AAControlsExtension $ext)
     {
-        $this->assertEquals(array("1.2.3.4"), $ext->permittedAttrs());
+        $this->assertEquals(['1.2.3.4'], $ext->permittedAttrs());
     }
-    
+
     /**
      * @depends testDecode
      *
@@ -103,9 +106,9 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
      */
     public function testExcluded(AAControlsExtension $ext)
     {
-        $this->assertEquals(array("1.2.3.5", "1.2.3.6"), $ext->excludedAttrs());
+        $this->assertEquals(['1.2.3.5', '1.2.3.6'], $ext->excludedAttrs());
     }
-    
+
     /**
      * @depends testDecode
      *
@@ -115,14 +118,14 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->permitUnspecified());
     }
-    
+
     public function testCreateEmpty()
     {
         $ext = new AAControlsExtension(false);
         $this->assertInstanceOf(AAControlsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -134,7 +137,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncodeEmpty
      *
@@ -146,7 +149,7 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AAControlsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreateEmpty
      * @depends testDecodeEmpty
@@ -158,37 +161,37 @@ class AAControlsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param AAControlsExtension $ext
      */
     public function testNoPathLenFail(AAControlsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->pathLen();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param AAControlsExtension $ext
      */
     public function testNoPermittedAttrsFail(AAControlsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->permittedAttrs();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param AAControlsExtension $ext
      */
     public function testNoExcludedAttrsFail(AAControlsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->excludedAttrs();
     }
 }

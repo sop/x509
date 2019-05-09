@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\InhibitAnyPolicyExtension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\InhibitAnyPolicyExtension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
+class InhibitAnyPolicyTest extends TestCase
 {
     public function testCreate()
     {
@@ -19,7 +22,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(InhibitAnyPolicyExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -29,7 +32,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_INHIBIT_ANY_POLICY, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -39,7 +42,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -51,7 +54,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -63,7 +66,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(InhibitAnyPolicyExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -75,7 +78,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,7 +88,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(3, $ext->skipCerts());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -97,7 +100,7 @@ class InhibitAnyPolicyTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasInhibitAnyPolicy());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *

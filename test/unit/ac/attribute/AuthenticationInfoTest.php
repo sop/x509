@@ -1,25 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
+class AuthenticationInfoAttributeTest extends TestCase
 {
-    const SERVICE_URI = "urn:service";
-    
-    const IDENT_URI = "urn:username";
-    
-    const AUTH_INFO = "password";
-    
+    const SERVICE_URI = 'urn:service';
+
+    const IDENT_URI = 'urn:username';
+
+    const AUTH_INFO = 'password';
+
     public function testCreate()
     {
         $value = new AuthenticationInfoAttributeValue(
@@ -28,7 +31,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthenticationInfoAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -40,7 +43,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -53,7 +56,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthenticationInfoAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -65,7 +68,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -75,7 +78,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(AuthenticationInfoAttributeValue::OID, $value->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,7 +88,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::SERVICE_URI, $value->service());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -95,7 +98,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::IDENT_URI, $value->ident());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -105,7 +108,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::AUTH_INFO, $value->authInfo());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -117,7 +120,7 @@ class AuthenticationInfoAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($attribs->hasAuthenticationInformation());
         return $attribs;
     }
-    
+
     /**
      * @depends testAttributes
      *

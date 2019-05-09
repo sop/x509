@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate\Validation\Exception;
+namespace Sop\X509\AttributeCertificate\Validation\Exception;
 
-use X509\Exception\X509ValidationException;
+use Sop\X509\Exception\X509ValidationException;
 
 class ACValidationException extends X509ValidationException
 {

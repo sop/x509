@@ -2,53 +2,54 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\CertificatePolicy;
+namespace Sop\X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Element;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>UserNotice</i> ASN.1 type used by
  * 'Certificate Policies' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.4
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */
 class UserNoticeQualifier extends PolicyQualifierInfo
 {
     /**
      * Explicit notice text.
      *
-     * @var DisplayText $_text
+     * @var null|DisplayText
      */
     protected $_text;
-    
+
     /**
      * Notice reference.
      *
-     * @var NoticeReference $_ref
+     * @var null|NoticeReference
      */
     protected $_ref;
-    
+
     /**
      * Constructor.
      *
-     * @param DisplayText|null $text
-     * @param NoticeReference|null $ref
+     * @param null|DisplayText     $text
+     * @param null|NoticeReference $ref
      */
-    public function __construct(DisplayText $text = null, NoticeReference $ref = null)
+    public function __construct(?DisplayText $text = null,
+        ?NoticeReference $ref = null)
     {
         $this->_oid = self::OID_UNOTICE;
         $this->_text = $text;
         $this->_ref = $ref;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromQualifierASN1(UnspecifiedType $el): self
+    public static function fromQualifierASN1(UnspecifiedType $el): PolicyQualifierInfo
     {
         $seq = $el->asSequence();
         $ref = null;
@@ -62,7 +63,7 @@ class UserNoticeQualifier extends PolicyQualifierInfo
         }
         return new self($text, $ref);
     }
-    
+
     /**
      * Whether explicit text is present.
      *
@@ -72,20 +73,22 @@ class UserNoticeQualifier extends PolicyQualifierInfo
     {
         return isset($this->_text);
     }
-    
+
     /**
      * Get explicit text.
+     *
+     * @throws \LogicException If not set
      *
      * @return DisplayText
      */
     public function explicitText(): DisplayText
     {
         if (!$this->hasExplicitText()) {
-            throw new \LogicException("explicitText not set.");
+            throw new \LogicException('explicitText not set.');
         }
         return $this->_text;
     }
-    
+
     /**
      * Whether notice reference is present.
      *
@@ -95,29 +98,28 @@ class UserNoticeQualifier extends PolicyQualifierInfo
     {
         return isset($this->_ref);
     }
-    
+
     /**
      * Get notice reference.
      *
-     * @throws \RuntimeException
+     * @throws \LogicException If not set
+     *
      * @return NoticeReference
      */
     public function noticeRef(): NoticeReference
     {
         if (!$this->hasNoticeRef()) {
-            throw new \LogicException("noticeRef not set.");
+            throw new \LogicException('noticeRef not set.');
         }
         return $this->_ref;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return Sequence
      */
-    protected function _qualifierASN1(): Sequence
+    protected function _qualifierASN1(): Element
     {
-        $elements = array();
+        $elements = [];
         if (isset($this->_ref)) {
             $elements[] = $this->_ref->toASN1();
         }

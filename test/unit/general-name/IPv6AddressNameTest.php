@@ -1,23 +1,26 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ImplicitTagging;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\IPAddress;
-use X509\GeneralName\IPv6Address;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\IPAddress;
+use Sop\X509\GeneralName\IPv6Address;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
+class IPv6AddressNameTest extends TestCase
 {
-    const ADDR = "0000:0000:0000:0000:0000:0000:0000:0001";
-    
-    const MASK = "ffff:ffff:ffff:ffff:ffff:ffff:ffff:0000";
-    
+    const ADDR = '0000:0000:0000:0000:0000:0000:0000:0001';
+
+    const MASK = 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:0000';
+
     public function testCreate()
     {
         // @todo implement compressed form handling
@@ -25,7 +28,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IPAddress::class, $ip);
         return $ip;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -37,7 +40,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -48,7 +51,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_IP_ADDRESS, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -60,7 +63,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IPAddress::class, $ip);
         return $ip;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -72,7 +75,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -82,14 +85,14 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::ADDR, $ip->address());
     }
-    
+
     public function testCreateWithMask()
     {
         $ip = new IPv6Address(self::ADDR, self::MASK);
         $this->assertInstanceOf(IPAddress::class, $ip);
         return $ip;
     }
-    
+
     /**
      * @depends testCreateWithMask
      *
@@ -101,7 +104,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithMask
      *
@@ -113,7 +116,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IPAddress::class, $ip);
         return $ip;
     }
-    
+
     /**
      * @depends testCreateWithMask
      * @depends testDecodeWithMask
@@ -125,7 +128,7 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateWithMask
      *
@@ -135,12 +138,10 @@ class IPv6AddressNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::MASK, $ip->mask());
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testInvalidOctetLength()
     {
-        IPv6Address::fromOctets("");
+        $this->expectException(\UnexpectedValueException::class);
+        IPv6Address::fromOctets('');
     }
 }

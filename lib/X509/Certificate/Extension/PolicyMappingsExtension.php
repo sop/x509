@@ -2,33 +2,32 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension;
+namespace Sop\X509\Certificate\Extension;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
-use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
+use Sop\X509\Certificate\Extension\PolicyMappings\PolicyMapping;
 
 /**
  * Implements 'Policy Mappings' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.5
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.5
  */
-class PolicyMappingsExtension extends Extension implements 
-    \Countable,
-    \IteratorAggregate
+class PolicyMappingsExtension extends Extension implements \Countable, \IteratorAggregate
 {
     /**
      * Policy mappings.
      *
-     * @var PolicyMapping[] $_mappings
+     * @var PolicyMapping[]
      */
     protected $_mappings;
-    
+
     /**
      * Constructor.
      *
-     * @param bool $critical
+     * @param bool          $critical
      * @param PolicyMapping ...$mappings One or more PolicyMapping objects
      */
     public function __construct(bool $critical, PolicyMapping ...$mappings)
@@ -36,42 +35,7 @@ class PolicyMappingsExtension extends Extension implements
         parent::__construct(self::OID_POLICY_MAPPINGS, $critical);
         $this->_mappings = $mappings;
     }
-    
-    /**
-     *
-     * {@inheritdoc}
-     * @return self
-     */
-    protected static function _fromDER(string $data, bool $critical): self
-    {
-        $mappings = array_map(
-            function (UnspecifiedType $el) {
-                return PolicyMapping::fromASN1($el->asSequence());
-            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
-        if (!count($mappings)) {
-            throw new \UnexpectedValueException(
-                "PolicyMappings must have at least one mapping.");
-        }
-        return new self($critical, ...$mappings);
-    }
-    
-    /**
-     *
-     * {@inheritdoc}
-     * @return Sequence
-     */
-    protected function _valueASN1(): Sequence
-    {
-        if (!count($this->_mappings)) {
-            throw new \LogicException("No mappings.");
-        }
-        $elements = array_map(
-            function (PolicyMapping $mapping) {
-                return $mapping->toASN1();
-            }, $this->_mappings);
-        return new Sequence(...$elements);
-    }
-    
+
     /**
      * Get all mappings.
      *
@@ -81,7 +45,7 @@ class PolicyMappingsExtension extends Extension implements
     {
         return $this->_mappings;
     }
-    
+
     /**
      * Get mappings flattened into a single array of arrays of subject domains
      * keyed by issuer domain.
@@ -94,27 +58,28 @@ class PolicyMappingsExtension extends Extension implements
      */
     public function flattenedMappings(): array
     {
-        $mappings = array();
+        $mappings = [];
         foreach ($this->_mappings as $mapping) {
             $idp = $mapping->issuerDomainPolicy();
             if (!isset($mappings[$idp])) {
-                $mappings[$idp] = array();
+                $mappings[$idp] = [];
             }
             array_push($mappings[$idp], $mapping->subjectDomainPolicy());
         }
         return $mappings;
     }
-    
+
     /**
      * Get all subject domain policy OIDs that are mapped to given issuer
      * domain policy OID.
      *
      * @param string $oid Issuer domain policy
+     *
      * @return string[] List of OIDs in dotted format
      */
     public function issuerMappings(string $oid): array
     {
-        $oids = array();
+        $oids = [];
         foreach ($this->_mappings as $mapping) {
             if ($mapping->issuerDomainPolicy() == $oid) {
                 $oids[] = $mapping->subjectDomainPolicy();
@@ -122,7 +87,7 @@ class PolicyMappingsExtension extends Extension implements
         }
         return $oids;
     }
-    
+
     /**
      * Get all mapped issuer domain policy OIDs.
      *
@@ -136,7 +101,7 @@ class PolicyMappingsExtension extends Extension implements
             }, $this->_mappings);
         return array_values(array_unique($idps));
     }
-    
+
     /**
      * Check whether policy mappings have anyPolicy mapped.
      *
@@ -148,37 +113,68 @@ class PolicyMappingsExtension extends Extension implements
     public function hasAnyPolicyMapping(): bool
     {
         foreach ($this->_mappings as $mapping) {
-            if ($mapping->issuerDomainPolicy() ==
-                 PolicyInformation::OID_ANY_POLICY) {
+            if (PolicyInformation::OID_ANY_POLICY === $mapping->issuerDomainPolicy()) {
                 return true;
             }
-            if ($mapping->subjectDomainPolicy() ==
-                 PolicyInformation::OID_ANY_POLICY) {
+            if (PolicyInformation::OID_ANY_POLICY === $mapping->subjectDomainPolicy()) {
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
      * Get the number of mappings.
      *
      * @see \Countable::count()
+     *
      * @return int
      */
     public function count(): int
     {
         return count($this->_mappings);
     }
-    
+
     /**
      * Get iterator for policy mappings.
      *
      * @see \IteratorAggregate::getIterator()
+     *
      * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_mappings);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function _fromDER(string $data, bool $critical): Extension
+    {
+        $mappings = array_map(
+            function (UnspecifiedType $el) {
+                return PolicyMapping::fromASN1($el->asSequence());
+            }, UnspecifiedType::fromDER($data)->asSequence()->elements());
+        if (!count($mappings)) {
+            throw new \UnexpectedValueException(
+                'PolicyMappings must have at least one mapping.');
+        }
+        return new self($critical, ...$mappings);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _valueASN1(): Element
+    {
+        if (!count($this->_mappings)) {
+            throw new \LogicException('No mappings.');
+        }
+        $elements = array_map(
+            function (PolicyMapping $mapping) {
+                return $mapping->toASN1();
+            }, $this->_mappings);
+        return new Sequence(...$elements);
     }
 }

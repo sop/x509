@@ -1,20 +1,23 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Set;
-use X501\ASN1\Attribute;
-use X501\ASN1\AttributeType;
-use X501\ASN1\AttributeValue\CommonNameValue;
-use X509\Certificate\Extensions;
-use X509\CertificationRequest\Attributes;
-use X509\CertificationRequest\Attribute\ExtensionRequestValue;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Set;
+use Sop\X501\ASN1\Attribute;
+use Sop\X501\ASN1\AttributeType;
+use Sop\X501\ASN1\AttributeValue\CommonNameValue;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\CertificationRequest\Attribute\ExtensionRequestValue;
+use Sop\X509\CertificationRequest\Attributes;
 
 /**
  * @group csr
  * @group attribute
+ *
+ * @internal
  */
-class CSRAttributesTest extends \PHPUnit\Framework\TestCase
+class CSRAttributesTest extends TestCase
 {
     public function testCreate()
     {
@@ -23,7 +26,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Attributes::class, $attribs);
         return $attribs;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -35,7 +38,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Set::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -47,7 +50,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Attributes::class, $attribs);
         return $attribs;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -59,7 +62,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -70,7 +73,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExtensionRequestValue::class,
             $attribs->extensionRequest());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -80,7 +83,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertContainsOnlyInstancesOf(Attribute::class, $attribs->all());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -90,7 +93,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(1, $attribs);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -98,33 +101,31 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(Attributes $attribs)
     {
-        $values = array();
+        $values = [];
         foreach ($attribs as $attr) {
             $values[] = $attr;
         }
         $this->assertContainsOnlyInstancesOf(Attribute::class, $values);
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException UnexpectedValueException
      *
      * @param Attributes $attribs
      */
     public function testFirstOfFail(Attributes $attribs)
     {
-        $attribs->firstOf("1.3.6.1.3");
+        $this->expectException(\UnexpectedValueException::class);
+        $attribs->firstOf('1.3.6.1.3');
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoExtensionRequestFail()
     {
         $attribs = new Attributes();
+        $this->expectException(\LogicException::class);
         $attribs->extensionRequest();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -133,11 +134,11 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
     public function testWithAdditional(Attributes $attribs)
     {
         $attribs = $attribs->withAdditional(
-            Attribute::fromAttributeValues(new CommonNameValue("Test")));
+            Attribute::fromAttributeValues(new CommonNameValue('Test')));
         $this->assertCount(2, $attribs);
         return $attribs;
     }
-    
+
     /**
      * @depends testWithAdditional
      *
@@ -149,7 +150,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Set::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithAdditional
      *
@@ -161,7 +162,7 @@ class CSRAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Attributes::class, $attribs);
         return $attribs;
     }
-    
+
     /**
      * @depends testDecodeWithAdditional
      *

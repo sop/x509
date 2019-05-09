@@ -1,25 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\CertificatePolicy\DisplayText;
-use X509\Certificate\Extension\CertificatePolicy\NoticeReference;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\CertificatePolicy\DisplayText;
+use Sop\X509\Certificate\Extension\CertificatePolicy\NoticeReference;
 
 /**
  * @group certificate
  * @group extension
  * @group certificate-policy
+ *
+ * @internal
  */
-class NoticeReferenceTest extends \PHPUnit\Framework\TestCase
+class NoticeReferenceTest extends TestCase
 {
     public function testCreate()
     {
-        $ref = new NoticeReference(DisplayText::fromString("org"), 1, 2, 3);
+        $ref = new NoticeReference(DisplayText::fromString('org'), 1, 2, 3);
         $this->assertInstanceOf(NoticeReference::class, $ref);
         return $ref;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -31,7 +34,7 @@ class NoticeReferenceTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -43,7 +46,7 @@ class NoticeReferenceTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NoticeReference::class, $ref);
         return $ref;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -55,7 +58,7 @@ class NoticeReferenceTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -63,10 +66,10 @@ class NoticeReferenceTest extends \PHPUnit\Framework\TestCase
      */
     public function testOrganization(NoticeReference $ref)
     {
-        $this->assertEquals("org", $ref->organization()
+        $this->assertEquals('org', $ref->organization()
             ->string());
     }
-    
+
     /**
      * @depends testCreate
      *

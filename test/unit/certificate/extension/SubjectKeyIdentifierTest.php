@@ -1,27 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\SubjectKeyIdentifierExtension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\SubjectKeyIdentifierExtension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
+class SubjectKeyIdentifierTest extends TestCase
 {
-    const KEY_ID = "test-id";
-    
+    const KEY_ID = 'test-id';
+
     public function testCreate()
     {
         $ext = new SubjectKeyIdentifierExtension(true, self::KEY_ID);
         $this->assertInstanceOf(SubjectKeyIdentifierExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -31,7 +34,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_SUBJECT_KEY_IDENTIFIER, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -41,7 +44,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -53,7 +56,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -65,7 +68,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubjectKeyIdentifierExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -77,7 +80,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -87,7 +90,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::KEY_ID, $ext->keyIdentifier());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -99,7 +102,7 @@ class SubjectKeyIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasSubjectKeyIdentifier());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *

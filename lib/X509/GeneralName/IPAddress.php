@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace X509\GeneralName;
+namespace Sop\X509\GeneralName;
 
-use ASN1\Type\TaggedType;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Primitive\OctetString;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\TaggedType;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>iPAddress</i> CHOICE type of <i>GeneralName</i>.
@@ -15,50 +15,43 @@ use ASN1\Type\Tagged\ImplicitlyTaggedType;
  * Concrete classes <code>IPv4Address</code> and <code>IPv6Address</code>
  * furthermore implement the parsing semantics.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.6
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */
 abstract class IPAddress extends GeneralName
 {
     /**
      * IP address.
      *
-     * @var string $_ip
+     * @var string
      */
     protected $_ip;
-    
+
     /**
      * Subnet mask.
      *
-     * @var string|null $_mask
+     * @var null|string
      */
     protected $_mask;
-    
-    /**
-     * Get octet representation of the IP address.
-     *
-     * @return string
-     */
-    abstract protected function _octets();
-    
+
     /**
      * Constructor.
      *
-     * @param string $ip
-     * @param string|null $mask
+     * @param string      $ip
+     * @param null|string $mask
      */
-    public function __construct(string $ip, $mask = null)
+    public function __construct(string $ip, ?string $mask = null)
     {
         $this->_tag = self::TAG_IP_ADDRESS;
         $this->_ip = $ip;
         $this->_mask = $mask;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el): self
+    public static function fromChosenASN1(UnspecifiedType $el): GeneralName
     {
         $octets = $el->asOctetString()->string();
         switch (strlen($octets)) {
@@ -70,19 +63,18 @@ abstract class IPAddress extends GeneralName
                 return IPv6Address::fromOctets($octets);
             default:
                 throw new \UnexpectedValueException(
-                    "Invalid octet length for IP address.");
+                    'Invalid octet length for IP address.');
         }
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     public function string(): string
     {
-        return $this->_ip . (isset($this->_mask) ? "/" . $this->_mask : "");
+        return $this->_ip . (isset($this->_mask) ? '/' . $this->_mask : '');
     }
-    
+
     /**
      * Get IP address as a string.
      *
@@ -92,7 +84,7 @@ abstract class IPAddress extends GeneralName
     {
         return $this->_ip;
     }
-    
+
     /**
      * Get subnet mask as a string.
      *
@@ -102,9 +94,15 @@ abstract class IPAddress extends GeneralName
     {
         return $this->_mask;
     }
-    
+
     /**
+     * Get octet representation of the IP address.
      *
+     * @return string
+     */
+    abstract protected function _octets(): string;
+
+    /**
      * {@inheritdoc}
      */
     protected function _choiceASN1(): TaggedType

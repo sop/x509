@@ -1,23 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\NameConstraintsExtension;
-use X509\Certificate\Extension\NameConstraints\GeneralSubtrees;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtrees;
+use Sop\X509\Certificate\Extension\NameConstraintsExtension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefNameConstraintsTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return NameConstraintsExtension
      */
     public function testNameConstraintsExtension()
@@ -26,11 +28,12 @@ class RefNameConstraintsTest extends RefExtTestHelper
         $this->assertInstanceOf(NameConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testNameConstraintsExtension
      *
      * @param NameConstraintsExtension $bc
+     *
      * @return GeneralSubtrees
      */
     public function testNameConstraintPermittedSubtrees(
@@ -40,7 +43,7 @@ class RefNameConstraintsTest extends RefExtTestHelper
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     /**
      * @depends testNameConstraintPermittedSubtrees
      *
@@ -48,7 +51,7 @@ class RefNameConstraintsTest extends RefExtTestHelper
      */
     public function testNameConstraintPermittedDomain(GeneralSubtrees $gs)
     {
-        $this->assertEquals(".example.com",
+        $this->assertEquals('.example.com',
             $gs->all()[0]->base()
                 ->name());
     }

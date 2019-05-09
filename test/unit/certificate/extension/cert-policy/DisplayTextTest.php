@@ -1,29 +1,32 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\StringType;
-use ASN1\Type\Primitive\BMPString;
-use ASN1\Type\Primitive\IA5String;
-use ASN1\Type\Primitive\UTF8String;
-use ASN1\Type\Primitive\VisibleString;
-use X509\Certificate\Extension\CertificatePolicy\DisplayText;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\BMPString;
+use Sop\ASN1\Type\Primitive\IA5String;
+use Sop\ASN1\Type\Primitive\UTF8String;
+use Sop\ASN1\Type\Primitive\VisibleString;
+use Sop\ASN1\Type\StringType;
+use Sop\X509\Certificate\Extension\CertificatePolicy\DisplayText;
 
 /**
  * @group certificate
  * @group extension
  * @group certificate-policy
+ *
+ * @internal
  */
-class DisplayTextTest extends \PHPUnit\Framework\TestCase
+class DisplayTextTest extends TestCase
 {
     public function testCreate()
     {
-        $dt = DisplayText::fromString("test");
+        $dt = DisplayText::fromString('test');
         $this->assertInstanceOf(DisplayText::class, $dt);
         return $dt;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -35,7 +38,7 @@ class DisplayTextTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(StringType::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -47,7 +50,7 @@ class DisplayTextTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DisplayText::class, $qual);
         return $qual;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -59,7 +62,7 @@ class DisplayTextTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -67,42 +70,40 @@ class DisplayTextTest extends \PHPUnit\Framework\TestCase
      */
     public function testString(DisplayText $dt)
     {
-        $this->assertEquals("test", $dt->string());
+        $this->assertEquals('test', $dt->string());
     }
-    
+
     public function testEncodeIA5String()
     {
-        $dt = new DisplayText("", Element::TYPE_IA5_STRING);
+        $dt = new DisplayText('', Element::TYPE_IA5_STRING);
         $this->assertInstanceOf(IA5String::class, $dt->toASN1());
     }
-    
+
     public function testEncodeVisibleString()
     {
-        $dt = new DisplayText("", Element::TYPE_VISIBLE_STRING);
+        $dt = new DisplayText('', Element::TYPE_VISIBLE_STRING);
         $this->assertInstanceOf(VisibleString::class, $dt->toASN1());
     }
-    
+
     public function testEncodeBMPString()
     {
-        $dt = new DisplayText("", Element::TYPE_BMP_STRING);
+        $dt = new DisplayText('', Element::TYPE_BMP_STRING);
         $this->assertInstanceOf(BMPString::class, $dt->toASN1());
     }
-    
+
     public function testEncodeUTF8String()
     {
-        $dt = new DisplayText("", Element::TYPE_UTF8_STRING);
+        $dt = new DisplayText('', Element::TYPE_UTF8_STRING);
         $this->assertInstanceOf(UTF8String::class, $dt->toASN1());
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testEncodeUnsupportedTypeFail()
     {
-        $dt = new DisplayText("", Element::TYPE_NULL);
+        $dt = new DisplayText('', Element::TYPE_NULL);
+        $this->expectException(\UnexpectedValueException::class);
         $dt->toASN1();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -110,6 +111,6 @@ class DisplayTextTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(DisplayText $dt)
     {
-        $this->assertInternalType("string", strval($dt));
+        $this->assertIsString(strval($dt));
     }
 }

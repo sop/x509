@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace X509\CertificationPath\Exception;
+namespace Sop\X509\CertificationPath\Exception;
 
-use X509\Exception\X509ValidationException;
+use Sop\X509\Exception\X509ValidationException;
 
 /**
  * Exception thrown on certification path validation errors.

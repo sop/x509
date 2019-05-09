@@ -2,71 +2,81 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\CertificatePolicy;
+namespace Sop\X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Element;
-use ASN1\Type\StringType;
-use ASN1\Type\Primitive\BMPString;
-use ASN1\Type\Primitive\IA5String;
-use ASN1\Type\Primitive\UTF8String;
-use ASN1\Type\Primitive\VisibleString;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\BMPString;
+use Sop\ASN1\Type\Primitive\IA5String;
+use Sop\ASN1\Type\Primitive\UTF8String;
+use Sop\ASN1\Type\Primitive\VisibleString;
+use Sop\ASN1\Type\StringType;
 
 /**
  * Implements <i>DisplayText</i> ASN.1 CHOICE type used by
  * 'Certificate Policies' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.4
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */
 class DisplayText
 {
     /**
      * Text.
      *
-     * @var string $_text
+     * @var string
      */
     protected $_text;
-    
+
     /**
      * Element tag.
      *
-     * @var int $_tag
+     * @var int
      */
     protected $_tag;
-    
+
     /**
      * Constructor.
      *
      * @param string $text
-     * @param int $tag
+     * @param int    $tag
      */
     public function __construct(string $text, int $tag)
     {
         $this->_text = $text;
         $this->_tag = $tag;
     }
-    
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->string();
+    }
+
     /**
      * Initialize from ASN.1.
      *
      * @param StringType $el
+     *
      * @return self
      */
     public static function fromASN1(StringType $el): self
     {
         return new self($el->string(), $el->tag());
     }
-    
+
     /**
      * Initialize from a UTF-8 string.
      *
      * @param string $str
+     *
      * @return self
      */
     public static function fromString(string $str): self
     {
         return new self($str, Element::TYPE_UTF8_STRING);
     }
-    
+
     /**
      * Get the text.
      *
@@ -76,11 +86,12 @@ class DisplayText
     {
         return $this->_text;
     }
-    
+
     /**
      * Generate ASN.1 element.
      *
      * @throws \UnexpectedValueException
+     *
      * @return StringType
      */
     public function toASN1(): StringType
@@ -96,16 +107,7 @@ class DisplayText
                 return new UTF8String($this->_text);
             default:
                 throw new \UnexpectedValueException(
-                    "Type " . Element::tagToName($this->_tag) . " not supported.");
+                    'Type ' . Element::tagToName($this->_tag) . ' not supported.');
         }
-    }
-    
-    /**
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->string();
     }
 }

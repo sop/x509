@@ -1,45 +1,48 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
+use PHPUnit\Framework\TestCase;
 use Sop\CryptoEncoding\PEM;
-use X509\Certificate\Certificate;
-use X509\Certificate\CertificateBundle;
-use X509\Certificate\CertificateChain;
-use X509\CertificationPath\CertificationPath;
-use X509\CertificationPath\PathValidation\PathValidationConfig;
-use X509\CertificationPath\PathValidation\PathValidationResult;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\CertificateBundle;
+use Sop\X509\Certificate\CertificateChain;
+use Sop\X509\CertificationPath\CertificationPath;
+use Sop\X509\CertificationPath\PathValidation\PathValidationConfig;
+use Sop\X509\CertificationPath\PathValidation\PathValidationResult;
 
 /**
  * @group certification-path
+ *
+ * @internal
  */
-class CertificationPathTest extends \PHPUnit\Framework\TestCase
+class CertificationPathTest extends TestCase
 {
     private static $_certs;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_certs = array(
+        self::$_certs = [
             Certificate::fromPEM(
-                PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem")),
+                PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ca.pem')),
             Certificate::fromPEM(
-                PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-interm-rsa.pem")),
+                PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-interm-rsa.pem')),
             Certificate::fromPEM(
-                PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem")));
+                PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-rsa.pem')), ];
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_certs = null;
     }
-    
+
     public function testCreate()
     {
         $path = new CertificationPath(...self::$_certs);
         $this->assertInstanceOf(CertificationPath::class, $path);
         return $path;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -49,7 +52,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(3, $path);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -57,14 +60,14 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(CertificationPath $path)
     {
-        $values = array();
+        $values = [];
         foreach ($path as $cert) {
             $values[] = $cert;
         }
         $this->assertCount(3, $values);
         $this->assertContainsOnlyInstancesOf(Certificate::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -75,14 +78,14 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
         $result = $path->validate(PathValidationConfig::defaultConfig());
         $this->assertInstanceOf(PathValidationResult::class, $result);
     }
-    
+
     public function testFromTrustAnchorToTarget()
     {
         $path = CertificationPath::fromTrustAnchorToTarget(self::$_certs[0],
             self::$_certs[2], new CertificateBundle(...self::$_certs));
         $this->assertInstanceOf(CertificationPath::class, $path);
     }
-    
+
     public function testFromCertificateChain()
     {
         $chain = new CertificateChain(...array_reverse(self::$_certs, false));
@@ -90,7 +93,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificationPath::class, $path);
         return $path;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testFromCertificateChain
@@ -103,7 +106,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $path);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -114,16 +117,14 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
         $cert = $path->trustAnchorCertificate();
         $this->assertEquals(self::$_certs[0], $cert);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testTrustAnchorFail()
     {
         $path = new CertificationPath();
+        $this->expectException(\LogicException::class);
         $path->trustAnchorCertificate();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -134,16 +135,14 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
         $cert = $path->endEntityCertificate();
         $this->assertEquals(self::$_certs[2], $cert);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEndEntityFail()
     {
         $path = new CertificationPath();
+        $this->expectException(\LogicException::class);
         $path->endEntityCertificate();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -154,7 +153,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
         $chain = $path->certificateChain();
         $this->assertInstanceOf(CertificateChain::class, $chain);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -164,7 +163,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($path->startsWith(self::$_certs[0]));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -175,7 +174,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(
             $path->startsWith(...array_slice(self::$_certs, 0, 2, false)));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -185,7 +184,7 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($path->startsWith(...self::$_certs));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -195,9 +194,9 @@ class CertificationPathTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse(
             $path->startsWith(
-                ...array_merge(self::$_certs, array(self::$_certs[0]))));
+                ...array_merge(self::$_certs, [self::$_certs[0]])));
     }
-    
+
     /**
      * @depends testCreate
      *

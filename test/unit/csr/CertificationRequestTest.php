@@ -1,40 +1,43 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
 use Sop\CryptoTypes\Signature\Signature;
-use X501\ASN1\Name;
-use X509\CertificationRequest\CertificationRequest;
-use X509\CertificationRequest\CertificationRequestInfo;
+use Sop\X501\ASN1\Name;
+use Sop\X509\CertificationRequest\CertificationRequest;
+use Sop\X509\CertificationRequest\CertificationRequestInfo;
 
 /**
  * @group csr
+ *
+ * @internal
  */
-class CertificationRequestTest extends \PHPUnit\Framework\TestCase
+class CertificationRequestTest extends TestCase
 {
     private static $_subject;
-    
+
     private static $_privateKeyInfo;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_subject = Name::fromString("cn=Subject");
+        self::$_subject = Name::fromString('cn=Subject');
         self::$_privateKeyInfo = PrivateKeyInfo::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/rsa/private_key.pem'));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_subject = null;
         self::$_privateKeyInfo = null;
     }
-    
+
     public function testCreate()
     {
         $pkinfo = self::$_privateKeyInfo->publicKeyInfo();
@@ -47,7 +50,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificationRequest::class, $cr);
         return $cr;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -59,7 +62,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -71,7 +74,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificationRequest::class, $cr);
         return $cr;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -84,7 +87,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -95,7 +98,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificationRequestInfo::class,
             $cr->certificationRequestInfo());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -107,7 +110,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
             SHA256WithRSAEncryptionAlgorithmIdentifier::class,
             $cr->signatureAlgorithm());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -117,7 +120,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(Signature::class, $cr->signature());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -127,21 +130,21 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($cr->verify());
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException UnexpectedValueException
      *
      * @param CertificationRequest $cr
      */
     public function testInvalidAlgoFail(CertificationRequest $cr)
     {
         $seq = $cr->toASN1();
-        $algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+        $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(1, $algo->toASN1());
+        $this->expectException(\UnexpectedValueException::class);
         CertificationRequest::fromASN1($seq);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -153,7 +156,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PEM::class, $pem);
         return $pem;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -161,9 +164,9 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(CertificationRequest $cr)
     {
-        $this->assertInternalType("string", strval($cr));
+        $this->assertIsString(strval($cr));
     }
-    
+
     /**
      * @depends testToPEM
      *
@@ -173,7 +176,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(PEM::TYPE_CERTIFICATE_REQUEST, $pem->type());
     }
-    
+
     /**
      * @depends testToPEM
      *
@@ -185,7 +188,7 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificationRequest::class, $cr);
         return $cr;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testFromPEM
@@ -198,12 +201,10 @@ class CertificationRequestTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testFromInvalidPEMFail()
     {
-        CertificationRequest::fromPEM(new PEM("nope", ""));
+        $this->expectException(\UnexpectedValueException::class);
+        CertificationRequest::fromPEM(new PEM('nope', ''));
     }
 }

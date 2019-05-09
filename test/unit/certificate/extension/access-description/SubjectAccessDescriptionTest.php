@@ -1,19 +1,23 @@
 <?php
+
 declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\AccessDescription\SubjectAccessDescription;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\AccessDescription\SubjectAccessDescription;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
- *
  * @group certificate
  * @group extension
  * @group access-description
+ *
+ * @internal
  */
-class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
+class SubjectAccessDescriptionTest extends TestCase
 {
-    const URI = "urn:test";
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $desc = new SubjectAccessDescription(
@@ -22,9 +26,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubjectAccessDescription::class, $desc);
         return $desc;
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectAccessDescription $desc
@@ -35,9 +38,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
-     *
      * @depends testEncode
      *
      * @param string $data
@@ -48,9 +50,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubjectAccessDescription::class, $desc);
         return $desc;
     }
-    
+
     /**
-     *
      * @depends testCreate
      * @depends testDecode
      *
@@ -62,9 +63,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectAccessDescription $desc
@@ -73,9 +73,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($desc->isCARepositoryMethod());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectAccessDescription $desc
@@ -84,9 +83,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($desc->isTimeStampingMethod());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectAccessDescription $desc
@@ -96,9 +94,8 @@ class SubjectAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(SubjectAccessDescription::OID_METHOD_CA_REPOSITORY,
             $desc->accessMethod());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param SubjectAccessDescription $desc

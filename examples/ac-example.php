@@ -1,71 +1,73 @@
 <?php
 /**
  * Create attribute certificate.
- * 
+ *
  * php ac-example.php
  */
+
+declare(strict_types = 1);
 
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\AlgorithmIdentifier\Hash\SHA256AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SignatureAlgorithmIdentifierFactory;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
-use X501\ASN1\Attribute;
-use X501\ASN1\Name;
-use X509\AttributeCertificate\AttCertIssuer;
-use X509\AttributeCertificate\AttCertValidityPeriod;
-use X509\AttributeCertificate\AttributeCertificateInfo;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Holder;
-use X509\AttributeCertificate\IssuerSerial;
-use X509\AttributeCertificate\Attribute\RoleAttributeValue;
-use X509\AttributeCertificate\Validation\ACValidationConfig;
-use X509\AttributeCertificate\Validation\ACValidator;
-use X509\Certificate\TBSCertificate;
-use X509\Certificate\Validity;
-use X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
-use X509\Certificate\Extension\BasicConstraintsExtension;
-use X509\Certificate\Extension\KeyUsageExtension;
-use X509\Certificate\Extension\SubjectKeyIdentifierExtension;
-use X509\Certificate\Extension\TargetInformationExtension;
-use X509\Certificate\Extension\Target\TargetName;
-use X509\CertificationPath\CertificationPath;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use Sop\X501\ASN1\Attribute;
+use Sop\X501\ASN1\Name;
+use Sop\X509\AttributeCertificate\AttCertIssuer;
+use Sop\X509\AttributeCertificate\AttCertValidityPeriod;
+use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
+use Sop\X509\AttributeCertificate\AttributeCertificateInfo;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\AttributeCertificate\Holder;
+use Sop\X509\AttributeCertificate\IssuerSerial;
+use Sop\X509\AttributeCertificate\Validation\ACValidationConfig;
+use Sop\X509\AttributeCertificate\Validation\ACValidator;
+use Sop\X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
+use Sop\X509\Certificate\Extension\BasicConstraintsExtension;
+use Sop\X509\Certificate\Extension\KeyUsageExtension;
+use Sop\X509\Certificate\Extension\SubjectKeyIdentifierExtension;
+use Sop\X509\Certificate\Extension\Target\TargetName;
+use Sop\X509\Certificate\Extension\TargetInformationExtension;
+use Sop\X509\Certificate\TBSCertificate;
+use Sop\X509\Certificate\Validity;
+use Sop\X509\CertificationPath\CertificationPath;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
-require dirname(__DIR__) . "/vendor/autoload.php";
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 // CA private key
 openssl_pkey_export(
     openssl_pkey_new(
-        ["private_key_type" => OPENSSL_KEYTYPE_RSA,
-            "private_key_bits" => 2048]), $pkey);
+        ['private_key_type' => OPENSSL_KEYTYPE_RSA,
+            'private_key_bits' => 2048, ]), $pkey);
 $ca_private_key = PrivateKeyInfo::fromPEM(PEM::fromString($pkey));
 // Issuer private key
 openssl_pkey_export(
     openssl_pkey_new(
-        ["private_key_type" => OPENSSL_KEYTYPE_RSA,
-            "private_key_bits" => 2048]), $pkey);
+        ['private_key_type' => OPENSSL_KEYTYPE_RSA,
+            'private_key_bits' => 2048, ]), $pkey);
 $issuer_private_key = PrivateKeyInfo::fromPEM(PEM::fromString($pkey));
 // Holder private key
 openssl_pkey_export(
     openssl_pkey_new(
-        ["private_key_type" => OPENSSL_KEYTYPE_RSA,
-            "private_key_bits" => 2048]), $pkey);
+        ['private_key_type' => OPENSSL_KEYTYPE_RSA,
+            'private_key_bits' => 2048, ]), $pkey);
 $holder_private_key = PrivateKeyInfo::fromPEM(PEM::fromString($pkey));
 
 // create trust anchor certificate (self signed)
 $tbs_cert = new TBSCertificate(
-    Name::fromString("cn=CA"),
+    Name::fromString('cn=CA'),
     $ca_private_key->publicKeyInfo(),
-    Name::fromString("cn=CA"),
-    Validity::fromStrings("now", "now + 1 year"));
+    Name::fromString('cn=CA'),
+    Validity::fromStrings('now', 'now + 1 year'));
 $tbs_cert = $tbs_cert->withRandomSerialNumber()
     ->withAdditionalExtensions(
         new BasicConstraintsExtension(true, true),
-        new SubjectKeyIdentifierExtension(false, 
+        new SubjectKeyIdentifierExtension(false,
             $ca_private_key->publicKeyInfo()->keyIdentifier()),
         new KeyUsageExtension(true,
-            KeyUsageExtension::DIGITAL_SIGNATURE | 
+            KeyUsageExtension::DIGITAL_SIGNATURE |
             KeyUsageExtension::KEY_CERT_SIGN));
 $algo = SignatureAlgorithmIdentifierFactory::algoForAsymmetricCrypto(
     $ca_private_key->algorithmIdentifier(),
@@ -74,10 +76,10 @@ $ca_cert = $tbs_cert->sign($algo, $ca_private_key);
 
 // create AC issuer certificate
 $tbs_cert = new TBSCertificate(
-    Name::fromString("cn=Issuer"), 
-    $issuer_private_key->publicKeyInfo(), 
+    Name::fromString('cn=Issuer'),
+    $issuer_private_key->publicKeyInfo(),
     new Name(),
-    Validity::fromStrings("now", "now + 6 months"));
+    Validity::fromStrings('now', 'now + 6 months'));
 $tbs_cert = $tbs_cert->withIssuerCertificate($ca_cert)
     ->withRandomSerialNumber()
     ->withAdditionalExtensions(
@@ -93,10 +95,10 @@ $issuer_cert = $tbs_cert->sign($algo, $ca_private_key);
 
 // create AC holder certificate
 $tbs_cert = new TBSCertificate(
-    Name::fromString("cn=Holder, gn=John, sn=Doe"), 
-    $holder_private_key->publicKeyInfo(), 
+    Name::fromString('cn=Holder, gn=John, sn=Doe'),
+    $holder_private_key->publicKeyInfo(),
     new Name(),
-    Validity::fromStrings("now", "now + 6 months"));
+    Validity::fromStrings('now', 'now + 6 months'));
 $tbs_cert = $tbs_cert->withIssuerCertificate($ca_cert)
     ->withRandomSerialNumber()
     ->withAdditionalExtensions(
@@ -111,23 +113,23 @@ $holder_cert = $tbs_cert->sign($algo, $ca_private_key);
 
 // named authority that grants the attributes
 $authority = new GeneralNames(
-    new UniformResourceIdentifier("uri:trusted_authority"));
+    new UniformResourceIdentifier('uri:trusted_authority'));
 // role attribute
 $attribs = new Attributes(
     Attribute::fromAttributeValues(
-        RoleAttributeValue::fromString("role-name", $authority)));
+        RoleAttributeValue::fromString('role-name', $authority)));
 $aci = new AttributeCertificateInfo(
     // holder is identified by the holder's public key certificate
     new Holder(IssuerSerial::fromPKC($holder_cert)),
     AttCertIssuer::fromPKC($issuer_cert),
-    AttCertValidityPeriod::fromStrings("now - 1 hour", "now + 3 months"),
+    AttCertValidityPeriod::fromStrings('now - 1 hour', 'now + 3 months'),
     $attribs);
 $aci = $aci->withRandomSerialNumber()
     ->withAdditionalExtensions(
         // named target identifier
         TargetInformationExtension::fromTargets(
             new TargetName(
-                new UniformResourceIdentifier("uri:target_identifier"))),
+                new UniformResourceIdentifier('uri:target_identifier'))),
         // key identifier of the AC issuer
         new AuthorityKeyIdentifierExtension(false,
             $issuer_cert->tbsCertificate()
@@ -143,7 +145,7 @@ $holder_path = new CertificationPath($ca_cert, $holder_cert);
 $issuer_path = new CertificationPath($ca_cert, $issuer_cert);
 $validator_config = new ACValidationConfig($holder_path, $issuer_path);
 // targetting must match
-$target = new TargetName(new UniformResourceIdentifier("uri:target_identifier"));
+$target = new TargetName(new UniformResourceIdentifier('uri:target_identifier'));
 $validator_config = $validator_config->withTargets($target);
 $validator = new ACValidator($ac, $validator_config);
 if ($validator->validate()) {
@@ -151,10 +153,10 @@ if ($validator->validate()) {
 }
 
 fprintf(STDERR, "Root certificate:\n");
-echo "$ca_cert\n";
+echo "{$ca_cert}\n";
 fprintf(STDERR, "Issuer certificate:\n");
-echo "$issuer_cert\n";
+echo "{$issuer_cert}\n";
 fprintf(STDERR, "Holder certificate:\n");
-echo "$holder_cert\n";
+echo "{$holder_cert}\n";
 fprintf(STDERR, "Attribute certificate:\n");
-echo "$ac\n";
+echo "{$ac}\n";

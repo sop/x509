@@ -1,19 +1,22 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Tagged\ImplicitTagging;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
-use X509\GeneralName\EDIPartyName;
-use X509\GeneralName\GeneralName;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\EDIPartyName;
+use Sop\X509\GeneralName\GeneralName;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
+class EDIPartyNameTest extends TestCase
 {
     public function testCreate()
     {
@@ -23,7 +26,7 @@ class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(EDIPartyName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -35,7 +38,7 @@ class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -46,7 +49,7 @@ class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_EDI_PARTY_NAME, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -58,7 +61,7 @@ class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(EDIPartyName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -70,7 +73,7 @@ class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -78,6 +81,6 @@ class EDIPartyNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testString(EDIPartyName $name)
     {
-        $this->assertInternalType("string", $name->string());
+        $this->assertIsString($name->string());
     }
 }

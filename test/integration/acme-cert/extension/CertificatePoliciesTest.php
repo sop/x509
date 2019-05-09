@@ -1,27 +1,29 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\CertificatePoliciesExtension;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
-use X509\Certificate\Extension\CertificatePolicy\NoticeReference;
-use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
-use X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo;
-use X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
+use Sop\X509\Certificate\Extension\CertificatePoliciesExtension;
+use Sop\X509\Certificate\Extension\CertificatePolicy\CPSQualifier;
+use Sop\X509\Certificate\Extension\CertificatePolicy\NoticeReference;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyQualifierInfo;
+use Sop\X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
+use Sop\X509\Certificate\Extension\Extension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefCertificatePoliciesTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return CertificatePoliciesExtension
      */
     public function testCertificatePoliciesExtension()
@@ -30,24 +32,26 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
         $this->assertInstanceOf(CertificatePoliciesExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCertificatePoliciesExtension
      *
      * @param CertificatePoliciesExtension $cpe
+     *
      * @return PolicyInformation
      */
     public function testPolicyInformation(CertificatePoliciesExtension $cpe)
     {
-        $pi = $cpe->get("1.3.6.1.4.1.45710.2.2.1");
+        $pi = $cpe->get('1.3.6.1.4.1.45710.2.2.1');
         $this->assertInstanceOf(PolicyInformation::class, $pi);
         return $pi;
     }
-    
+
     /**
      * @depends testPolicyInformation
      *
      * @param PolicyInformation $pi
+     *
      * @return CPSQualifier
      */
     public function testPolicyCPSQualifier(PolicyInformation $pi)
@@ -56,7 +60,7 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
         $this->assertInstanceOf(CPSQualifier::class, $cps);
         return $cps;
     }
-    
+
     /**
      * @depends testPolicyCPSQualifier
      *
@@ -64,13 +68,14 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
      */
     public function testPolicyCPSQualifierURI(CPSQualifier $cps)
     {
-        $this->assertEquals("http://example.com/cps.html", $cps->uri());
+        $this->assertEquals('http://example.com/cps.html', $cps->uri());
     }
-    
+
     /**
      * @depends testPolicyInformation
      *
      * @param PolicyInformation $pi
+     *
      * @return UserNoticeQualifier
      */
     public function testPolicyUserNoticeQualifier(PolicyInformation $pi)
@@ -79,7 +84,7 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
         $this->assertInstanceOf(UserNoticeQualifier::class, $un);
         return $un;
     }
-    
+
     /**
      * @depends testPolicyUserNoticeQualifier
      *
@@ -87,15 +92,16 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
      */
     public function testPolicyUserNoticeQualifierText(UserNoticeQualifier $un)
     {
-        $this->assertEquals("All your base are belong to us!",
+        $this->assertEquals('All your base are belong to us!',
             $un->explicitText()
                 ->string());
     }
-    
+
     /**
      * @depends testPolicyUserNoticeQualifier
      *
      * @param UserNoticeQualifier $un
+     *
      * @return NoticeReference
      */
     public function testPolicyUserNoticeQualifierRef(UserNoticeQualifier $un)
@@ -104,7 +110,7 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
         $this->assertInstanceOf(NoticeReference::class, $ref);
         return $ref;
     }
-    
+
     /**
      * @depends testPolicyUserNoticeQualifierRef
      *
@@ -113,11 +119,11 @@ class RefCertificatePoliciesTest extends RefExtTestHelper
     public function testPolicyUserNoticeQualifierOrganization(
         NoticeReference $ref)
     {
-        $this->assertEquals("Toaplan Co., Ltd.",
+        $this->assertEquals('Toaplan Co., Ltd.',
             $ref->organization()
                 ->string());
     }
-    
+
     /**
      * @depends testPolicyUserNoticeQualifierRef
      *

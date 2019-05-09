@@ -1,22 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\IssuerAlternativeNameExtension;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\IssuerAlternativeNameExtension;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
+class IssuerAlternativeNameTest extends TestCase
 {
-    const DN = "cn=Alt name";
-    
+    const DN = 'cn=Alt name';
+
     public function testCreate()
     {
         $ext = new IssuerAlternativeNameExtension(true,
@@ -24,7 +27,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IssuerAlternativeNameExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -34,7 +37,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_ISSUER_ALT_NAME, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -44,7 +47,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -56,7 +59,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -68,7 +71,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IssuerAlternativeNameExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -80,7 +83,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -91,7 +94,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(self::DN, $ext->names()
             ->firstDN());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -103,7 +106,7 @@ class IssuerAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasIssuerAlternativeName());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *

@@ -2,38 +2,38 @@
 
 declare(strict_types = 1);
 
-namespace X509\CertificationPath\PathValidation;
+namespace Sop\X509\CertificationPath\PathValidation;
 
-use ASN1\Element;
+use Sop\ASN1\Element;
 use Sop\CryptoTypes\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
-use X501\ASN1\Name;
-use X509\Certificate\Certificate;
-use X509\CertificationPath\Policy\PolicyNode;
-use X509\CertificationPath\Policy\PolicyTree;
+use Sop\X501\ASN1\Name;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\CertificationPath\Policy\PolicyNode;
+use Sop\X509\CertificationPath\Policy\PolicyTree;
 
 /**
  * State class for the certification path validation process.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-6.1.1
- * @link https://tools.ietf.org/html/rfc5280#section-6.1.2
+ * @see https://tools.ietf.org/html/rfc5280#section-6.1.1
+ * @see https://tools.ietf.org/html/rfc5280#section-6.1.2
  */
 class ValidatorState
 {
     /**
      * Length of the certification path (n).
      *
-     * @var int $_pathLength
+     * @var int
      */
     protected $_pathLength;
-    
+
     /**
      * Current index in the certification path in the range of 1..n (i).
      *
-     * @var int $_index
+     * @var int
      */
     protected $_index;
-    
+
     /**
      * Valid policy tree (valid_policy_tree).
      *
@@ -42,10 +42,10 @@ class ValidatorState
      * the certification path validation.
      * Once the tree is set to NULL, policy processing ceases.
      *
-     * @var PolicyTree|null $_validPolicyTree
+     * @var null|PolicyTree
      */
     protected $_validPolicyTree;
-    
+
     /**
      * Permitted subtrees (permitted_subtrees).
      *
@@ -53,10 +53,10 @@ class ValidatorState
      * which all subject names in subsequent certificates in the certification
      * path must fall.
      *
-     * @var mixed $_permittedSubtrees
+     * @var mixed
      */
     protected $_permittedSubtrees;
-    
+
     /**
      * Excluded subtrees (excluded_subtrees).
      *
@@ -64,102 +64,105 @@ class ValidatorState
      * which no subject name in subsequent certificates in the certification
      * path may fall.
      *
-     * @var mixed $_excludedSubtrees
+     * @var mixed
      */
     protected $_excludedSubtrees;
-    
+
     /**
      * Explicit policy (explicit_policy).
      *
      * An integer that indicates if a non-NULL valid_policy_tree is required.
      *
-     * @var int $_explicitPolicy
+     * @var int
      */
     protected $_explicitPolicy;
-    
+
     /**
      * Inhibit anyPolicy (inhibit_anyPolicy).
      *
      * An integer that indicates whether the anyPolicy policy identifier is
      * considered a match.
      *
-     * @var int $_inhibitAnyPolicy
+     * @var int
      */
     protected $_inhibitAnyPolicy;
-    
+
     /**
      * Policy mapping (policy_mapping).
      *
      * An integer that indicates if policy mapping is permitted.
      *
-     * @var int $_policyMapping
+     * @var int
      */
     protected $_policyMapping;
-    
+
     /**
      * Working public key algorithm (working_public_key_algorithm).
      *
      * The digital signature algorithm used to verify the signature of a
      * certificate.
      *
-     * @var AlgorithmIdentifierType $_workingPublicKeyAlgorithm
+     * @var AlgorithmIdentifierType
      */
     protected $_workingPublicKeyAlgorithm;
-    
+
     /**
      * Working public key (working_public_key).
      *
      * The public key used to verify the signature of a certificate.
      *
-     * @var PublicKeyInfo $_workingPublicKey
+     * @var PublicKeyInfo
      */
     protected $_workingPublicKey;
-    
+
     /**
      * Working public key parameters (working_public_key_parameters).
      *
      * Parameters associated with the current public key that may be required to
      * verify a signature.
      *
-     * @var Element|null $_workingPublicKeyParameters
+     * @var null|Element
      */
     protected $_workingPublicKeyParameters;
-    
+
     /**
      * Working issuer name (working_issuer_name).
      *
      * The issuer distinguished name expected in the next certificate in the
      * chain.
      *
-     * @var Name $_workingIssuerName
+     * @var Name
      */
     protected $_workingIssuerName;
-    
+
     /**
      * Maximum certification path length (max_path_length).
      *
-     * @var int $_maxPathLength
+     * @var int
      */
     protected $_maxPathLength;
-    
+
     /**
      * Constructor.
      */
     protected function __construct()
     {
     }
-    
+
     /**
      * Initialize variables according to RFC 5280 6.1.2.
      *
-     * @link https://tools.ietf.org/html/rfc5280#section-6.1.2
+     * @see https://tools.ietf.org/html/rfc5280#section-6.1.2
+     *
      * @param PathValidationConfig $config
-     * @param Certificate $trust_anchor Trust anchor certificate
-     * @param int $n Number of certificates in the certification path
+     * @param Certificate          $trust_anchor Trust anchor certificate
+     * @param int                  $n            Number of certificates
+     *                                           in the certification path
+     *
      * @return self
      */
     public static function initialize(PathValidationConfig $config,
-        Certificate $trust_anchor, $n)
+        Certificate $trust_anchor, int $n): self
     {
         $state = new self();
         $state->_pathLength = $n;
@@ -179,11 +182,12 @@ class ValidatorState
         $state->_maxPathLength = $config->maxLength();
         return $state;
     }
-    
+
     /**
      * Get self with current certification path index set.
      *
      * @param int $index
+     *
      * @return self
      */
     public function withIndex(int $index): self
@@ -192,11 +196,12 @@ class ValidatorState
         $state->_index = $index;
         return $state;
     }
-    
+
     /**
      * Get self with valid_policy_tree.
      *
      * @param PolicyTree $policy_tree
+     *
      * @return self
      */
     public function withValidPolicyTree(PolicyTree $policy_tree): self
@@ -205,7 +210,7 @@ class ValidatorState
         $state->_validPolicyTree = $policy_tree;
         return $state;
     }
-    
+
     /**
      * Get self with valid_policy_tree set to null.
      *
@@ -217,11 +222,12 @@ class ValidatorState
         $state->_validPolicyTree = null;
         return $state;
     }
-    
+
     /**
      * Get self with explicit_policy.
      *
      * @param int $num
+     *
      * @return self
      */
     public function withExplicitPolicy(int $num): self
@@ -230,11 +236,12 @@ class ValidatorState
         $state->_explicitPolicy = $num;
         return $state;
     }
-    
+
     /**
      * Get self with inhibit_anyPolicy.
      *
      * @param int $num
+     *
      * @return self
      */
     public function withInhibitAnyPolicy(int $num): self
@@ -243,11 +250,12 @@ class ValidatorState
         $state->_inhibitAnyPolicy = $num;
         return $state;
     }
-    
+
     /**
      * Get self with policy_mapping.
      *
      * @param int $num
+     *
      * @return self
      */
     public function withPolicyMapping(int $num): self
@@ -256,11 +264,12 @@ class ValidatorState
         $state->_policyMapping = $num;
         return $state;
     }
-    
+
     /**
      * Get self with working_public_key_algorithm.
      *
      * @param AlgorithmIdentifierType $algo
+     *
      * @return self
      */
     public function withWorkingPublicKeyAlgorithm(AlgorithmIdentifierType $algo): self
@@ -269,11 +278,12 @@ class ValidatorState
         $state->_workingPublicKeyAlgorithm = $algo;
         return $state;
     }
-    
+
     /**
      * Get self with working_public_key.
      *
      * @param PublicKeyInfo $pubkey_info
+     *
      * @return self
      */
     public function withWorkingPublicKey(PublicKeyInfo $pubkey_info): self
@@ -282,24 +292,26 @@ class ValidatorState
         $state->_workingPublicKey = $pubkey_info;
         return $state;
     }
-    
+
     /**
      * Get self with working_public_key_parameters.
      *
-     * @param Element|null $params
+     * @param null|Element $params
+     *
      * @return self
      */
-    public function withWorkingPublicKeyParameters(Element $params = null): self
+    public function withWorkingPublicKeyParameters(?Element $params = null): self
     {
         $state = clone $this;
         $state->_workingPublicKeyParameters = $params;
         return $state;
     }
-    
+
     /**
      * Get self with working_issuer_name.
      *
      * @param Name $issuer
+     *
      * @return self
      */
     public function withWorkingIssuerName(Name $issuer): self
@@ -308,11 +320,12 @@ class ValidatorState
         $state->_workingIssuerName = $issuer;
         return $state;
     }
-    
+
     /**
      * Get self with max_path_length.
      *
      * @param int $length
+     *
      * @return self
      */
     public function withMaxPathLength(int $length): self
@@ -321,7 +334,7 @@ class ValidatorState
         $state->_maxPathLength = $length;
         return $state;
     }
-    
+
     /**
      * Get the certification path length (n).
      *
@@ -331,7 +344,7 @@ class ValidatorState
     {
         return $this->_pathLength;
     }
-    
+
     /**
      * Get the current index in certification path in the range of 1..n.
      *
@@ -341,7 +354,7 @@ class ValidatorState
     {
         return $this->_index;
     }
-    
+
     /**
      * Check whether valid_policy_tree is present.
      *
@@ -351,21 +364,22 @@ class ValidatorState
     {
         return isset($this->_validPolicyTree);
     }
-    
+
     /**
      * Get valid_policy_tree.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return PolicyTree
      */
     public function validPolicyTree(): PolicyTree
     {
         if (!$this->hasValidPolicyTree()) {
-            throw new \LogicException("valid_policy_tree not set.");
+            throw new \LogicException('valid_policy_tree not set.');
         }
         return $this->_validPolicyTree;
     }
-    
+
     /**
      * Get permitted_subtrees.
      *
@@ -375,7 +389,7 @@ class ValidatorState
     {
         return $this->_permittedSubtrees;
     }
-    
+
     /**
      * Get excluded_subtrees.
      *
@@ -385,7 +399,7 @@ class ValidatorState
     {
         return $this->_excludedSubtrees;
     }
-    
+
     /**
      * Get explicit_policy.
      *
@@ -395,7 +409,7 @@ class ValidatorState
     {
         return $this->_explicitPolicy;
     }
-    
+
     /**
      * Get inhibit_anyPolicy.
      *
@@ -405,7 +419,7 @@ class ValidatorState
     {
         return $this->_inhibitAnyPolicy;
     }
-    
+
     /**
      * Get policy_mapping.
      *
@@ -415,7 +429,7 @@ class ValidatorState
     {
         return $this->_policyMapping;
     }
-    
+
     /**
      * Get working_public_key_algorithm.
      *
@@ -425,7 +439,7 @@ class ValidatorState
     {
         return $this->_workingPublicKeyAlgorithm;
     }
-    
+
     /**
      * Get working_public_key.
      *
@@ -435,17 +449,17 @@ class ValidatorState
     {
         return $this->_workingPublicKey;
     }
-    
+
     /**
      * Get working_public_key_parameters.
      *
-     * @return Element|null
+     * @return null|Element
      */
-    public function workingPublicKeyParameters()
+    public function workingPublicKeyParameters(): ?Element
     {
         return $this->_workingPublicKeyParameters;
     }
-    
+
     /**
      * Get working_issuer_name.
      *
@@ -455,7 +469,7 @@ class ValidatorState
     {
         return $this->_workingIssuerName;
     }
-    
+
     /**
      * Get maximum certification path length.
      *
@@ -465,7 +479,7 @@ class ValidatorState
     {
         return $this->_maxPathLength;
     }
-    
+
     /**
      * Check whether processing the final certificate of the certification path.
      *
@@ -473,13 +487,14 @@ class ValidatorState
      */
     public function isFinal(): bool
     {
-        return $this->_index == $this->_pathLength;
+        return $this->_index === $this->_pathLength;
     }
-    
+
     /**
      * Get the path validation result.
      *
      * @param Certificate[] $certificates Certificates in a certification path
+     *
      * @return PathValidationResult
      */
     public function getResult(array $certificates): PathValidationResult
@@ -488,14 +503,15 @@ class ValidatorState
             $this->_workingPublicKey, $this->_workingPublicKeyAlgorithm,
             $this->_workingPublicKeyParameters);
     }
-    
+
     /**
      * Get ASN.1 parameters from algorithm identifier.
      *
      * @param AlgorithmIdentifierType $algo
-     * @return Element|null ASN.1 element or null if parameters are omitted
+     *
+     * @return null|Element ASN.1 element or null if parameters are omitted
      */
-    public static function getAlgorithmParameters(AlgorithmIdentifierType $algo)
+    public static function getAlgorithmParameters(AlgorithmIdentifierType $algo): ?Element
     {
         $seq = $algo->toASN1();
         return $seq->has(1) ? $seq->at(1)->asElement() : null;

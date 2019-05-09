@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\AccessDescription;
+namespace Sop\X509\Certificate\Extension\AccessDescription;
 
 /**
- *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.2.1
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.2.1
  */
 class AuthorityAccessDescription extends AccessDescription
 {
@@ -14,9 +14,9 @@ class AuthorityAccessDescription extends AccessDescription
      *
      * @var string
      */
-    const OID_METHOD_OSCP = "1.3.6.1.5.5.7.48.1";
-    const OID_METHOD_CA_ISSUERS = "1.3.6.1.5.5.7.48.2";
-    
+    const OID_METHOD_OSCP = '1.3.6.1.5.5.7.48.1';
+    const OID_METHOD_CA_ISSUERS = '1.3.6.1.5.5.7.48.2';
+
     /**
      * Check whether access method is OSCP.
      *
@@ -26,7 +26,7 @@ class AuthorityAccessDescription extends AccessDescription
     {
         return self::OID_METHOD_OSCP === $this->_accessMethod;
     }
-    
+
     /**
      * Check whether access method is CA issuers.
      *

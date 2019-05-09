@@ -2,104 +2,104 @@
 
 declare(strict_types = 1);
 
-namespace X509\CertificationPath\PathValidation;
+namespace Sop\X509\CertificationPath\PathValidation;
 
-use X509\Certificate\Certificate;
-use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
 
 /**
  * Configuration for the certification path validation process.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-6.1.1
+ * @see https://tools.ietf.org/html/rfc5280#section-6.1.1
  */
 class PathValidationConfig
 {
     /**
      * Maximum allowed certification path length.
      *
-     * @var int $_maxLength
+     * @var int
      */
     protected $_maxLength;
-    
+
     /**
      * Reference time.
      *
-     * @var \DateTimeImmutable $_dateTime
+     * @var \DateTimeImmutable
      */
     protected $_dateTime;
-    
+
     /**
      * List of acceptable policy identifiers.
      *
-     * @var string[] $_policySet
+     * @var string[]
      */
     protected $_policySet;
-    
+
     /**
      * Trust anchor certificate.
      *
      * If not set, path validation uses the first certificate of the path.
      *
-     * @var Certificate|null $_trustAnchor
+     * @var null|Certificate
      */
     protected $_trustAnchor;
-    
+
     /**
      * Whether policy mapping in inhibited.
      *
      * Setting this to true disallows policy mapping.
      *
-     * @var bool $_policyMappingInhibit
+     * @var bool
      */
     protected $_policyMappingInhibit;
-    
+
     /**
      * Whether the path must be valid for at least one policy in the
      * initial policy set.
      *
-     * @var bool $_explicitPolicy
+     * @var bool
      */
     protected $_explicitPolicy;
-    
+
     /**
      * Whether anyPolicy OID processing should be inhibited.
      *
      * Setting this to true disallows the usage of anyPolicy.
      *
-     * @var bool $_anyPolicyInhibit
+     * @var bool
      */
     protected $_anyPolicyInhibit;
-    
+
     /**
-     *
      * @todo Implement
-     * @var mixed $_permittedSubtrees
+     *
+     * @var mixed
      */
     protected $_permittedSubtrees;
-    
+
     /**
-     *
      * @todo Implement
-     * @var mixed $_excludedSubtrees
+     *
+     * @var mixed
      */
     protected $_excludedSubtrees;
-    
+
     /**
      * Constructor.
      *
-     * @param \DateTimeImmutable $dt Reference date and time
-     * @param int $max_length Maximum certification path length
+     * @param \DateTimeImmutable $dt         Reference date and time
+     * @param int                $max_length Maximum certification path length
      */
     public function __construct(\DateTimeImmutable $dt, int $max_length)
     {
         $this->_dateTime = $dt;
-        $this->_maxLength = (int) $max_length;
-        $this->_policySet = array((string) PolicyInformation::OID_ANY_POLICY);
+        $this->_maxLength = $max_length;
+        $this->_policySet = [PolicyInformation::OID_ANY_POLICY];
         $this->_policyMappingInhibit = false;
         $this->_explicitPolicy = false;
         $this->_anyPolicyInhibit = false;
     }
-    
+
     /**
      * Get default configuration.
      *
@@ -109,11 +109,12 @@ class PathValidationConfig
     {
         return new self(new \DateTimeImmutable(), 3);
     }
-    
+
     /**
      * Get self with maximum path length.
      *
      * @param int $length
+     *
      * @return self
      */
     public function withMaxLength(int $length): self
@@ -122,11 +123,12 @@ class PathValidationConfig
         $obj->_maxLength = $length;
         return $obj;
     }
-    
+
     /**
      * Get self with reference date and time.
      *
      * @param \DateTimeImmutable $dt
+     *
      * @return self
      */
     public function withDateTime(\DateTimeImmutable $dt): self
@@ -135,11 +137,12 @@ class PathValidationConfig
         $obj->_dateTime = $dt;
         return $obj;
     }
-    
+
     /**
      * Get self with trust anchor certificate.
      *
      * @param Certificate $ca
+     *
      * @return self
      */
     public function withTrustAnchor(Certificate $ca): self
@@ -148,11 +151,12 @@ class PathValidationConfig
         $obj->_trustAnchor = $ca;
         return $obj;
     }
-    
+
     /**
      * Get self with initial-policy-mapping-inhibit set.
      *
      * @param bool $flag
+     *
      * @return self
      */
     public function withPolicyMappingInhibit(bool $flag): self
@@ -161,11 +165,12 @@ class PathValidationConfig
         $obj->_policyMappingInhibit = $flag;
         return $obj;
     }
-    
+
     /**
      * Get self with initial-explicit-policy set.
      *
      * @param bool $flag
+     *
      * @return self
      */
     public function withExplicitPolicy(bool $flag): self
@@ -174,11 +179,12 @@ class PathValidationConfig
         $obj->_explicitPolicy = $flag;
         return $obj;
     }
-    
+
     /**
      * Get self with initial-any-policy-inhibit set.
      *
      * @param bool $flag
+     *
      * @return self
      */
     public function withAnyPolicyInhibit(bool $flag): self
@@ -187,11 +193,12 @@ class PathValidationConfig
         $obj->_anyPolicyInhibit = $flag;
         return $obj;
     }
-    
+
     /**
      * Get self with user-initial-policy-set set to policy OIDs.
      *
      * @param string ...$policies List of policy OIDs
+     *
      * @return self
      */
     public function withPolicySet(string ...$policies): self
@@ -200,7 +207,7 @@ class PathValidationConfig
         $obj->_policySet = $policies;
         return $obj;
     }
-    
+
     /**
      * Get maximum certification path length.
      *
@@ -210,7 +217,7 @@ class PathValidationConfig
     {
         return $this->_maxLength;
     }
-    
+
     /**
      * Get reference date and time.
      *
@@ -220,7 +227,7 @@ class PathValidationConfig
     {
         return $this->_dateTime;
     }
-    
+
     /**
      * Get user-initial-policy-set.
      *
@@ -230,7 +237,7 @@ class PathValidationConfig
     {
         return $this->_policySet;
     }
-    
+
     /**
      * Check whether trust anchor certificate is set.
      *
@@ -240,21 +247,22 @@ class PathValidationConfig
     {
         return isset($this->_trustAnchor);
     }
-    
+
     /**
      * Get trust anchor certificate.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return Certificate
      */
     public function trustAnchor(): Certificate
     {
         if (!$this->hasTrustAnchor()) {
-            throw new \LogicException("No trust anchor.");
+            throw new \LogicException('No trust anchor.');
         }
         return $this->_trustAnchor;
     }
-    
+
     /**
      * Get initial-policy-mapping-inhibit.
      *
@@ -264,7 +272,7 @@ class PathValidationConfig
     {
         return $this->_policyMappingInhibit;
     }
-    
+
     /**
      * Get initial-explicit-policy.
      *
@@ -274,7 +282,7 @@ class PathValidationConfig
     {
         return $this->_explicitPolicy;
     }
-    
+
     /**
      * Get initial-any-policy-inhibit.
      *

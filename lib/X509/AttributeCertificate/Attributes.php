@@ -2,32 +2,32 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate;
+namespace Sop\X509\AttributeCertificate;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\Attribute;
-use X501\ASN1\AttributeType;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
-use X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
-use X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
-use X509\AttributeCertificate\Attribute\GroupAttributeValue;
-use X509\AttributeCertificate\Attribute\RoleAttributeValue;
-use X509\Feature\AttributeContainer;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X501\ASN1\Attribute;
+use Sop\X501\ASN1\AttributeType;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\GroupAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
+use Sop\X509\Feature\AttributeContainer;
 
 /**
  * Implements <i>Attributes</i> ASN.1 type as a <i>SEQUENCE OF Attribute</i>.
  *
  * Used in <i>AttributeCertificateInfo</i>.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.1
- * @link https://tools.ietf.org/html/rfc5755#section-4.2.7
+ * @see https://tools.ietf.org/html/rfc5755#section-4.1
+ * @see https://tools.ietf.org/html/rfc5755#section-4.2.7
  */
 class Attributes implements \Countable, \IteratorAggregate
 {
     use AttributeContainer;
-    
+
     /**
      * Mapping from OID to attribute value class name.
      *
@@ -35,16 +35,14 @@ class Attributes implements \Countable, \IteratorAggregate
      *
      * @var array
      */
-    const MAP_OID_TO_CLASS = array(
-        /* @formatter:off */
+    const MAP_OID_TO_CLASS = [
         AccessIdentityAttributeValue::OID => AccessIdentityAttributeValue::class,
         AuthenticationInfoAttributeValue::OID => AuthenticationInfoAttributeValue::class,
         ChargingIdentityAttributeValue::OID => ChargingIdentityAttributeValue::class,
         GroupAttributeValue::OID => GroupAttributeValue::class,
-        AttributeType::OID_ROLE => RoleAttributeValue::class
-        /* @formatter:on */
-    );
-    
+        AttributeType::OID_ROLE => RoleAttributeValue::class,
+    ];
+
     /**
      * Constructor.
      *
@@ -54,11 +52,12 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         $this->_attributes = $attribs;
     }
-    
+
     /**
      * Initialize from attribute values.
      *
      * @param AttributeValue ...$values
+     *
      * @return self
      */
     public static function fromAttributeValues(AttributeValue ...$values): self
@@ -69,11 +68,12 @@ class Attributes implements \Countable, \IteratorAggregate
             }, $values);
         return new self(...$attribs);
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): self
@@ -94,7 +94,7 @@ class Attributes implements \Countable, \IteratorAggregate
             }, $attribs);
         return new self(...$attribs);
     }
-    
+
     /**
      * Check whether 'Access Identity' attribute is present.
      *
@@ -104,7 +104,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->has(AccessIdentityAttributeValue::OID);
     }
-    
+
     /**
      * Get the first 'Access Identity' attribute value.
      *
@@ -114,7 +114,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->firstOf(AccessIdentityAttributeValue::OID)->first();
     }
-    
+
     /**
      * Check whether 'Service Authentication Information' attribute is present.
      *
@@ -124,7 +124,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->has(AuthenticationInfoAttributeValue::OID);
     }
-    
+
     /**
      * Get the first 'Service Authentication Information' attribute value.
      *
@@ -134,7 +134,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->firstOf(AuthenticationInfoAttributeValue::OID)->first();
     }
-    
+
     /**
      * Check whether 'Charging Identity' attribute is present.
      *
@@ -144,7 +144,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->has(ChargingIdentityAttributeValue::OID);
     }
-    
+
     /**
      * Get the first 'Charging Identity' attribute value.
      *
@@ -154,7 +154,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->firstOf(ChargingIdentityAttributeValue::OID)->first();
     }
-    
+
     /**
      * Check whether 'Group' attribute is present.
      *
@@ -164,7 +164,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->has(GroupAttributeValue::OID);
     }
-    
+
     /**
      * Get the first 'Group' attribute value.
      *
@@ -174,7 +174,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->firstOf(GroupAttributeValue::OID)->first();
     }
-    
+
     /**
      * Check whether 'Role' attribute is present.
      *
@@ -184,7 +184,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->has(AttributeType::OID_ROLE);
     }
-    
+
     /**
      * Get the first 'Role' attribute value.
      *
@@ -194,7 +194,7 @@ class Attributes implements \Countable, \IteratorAggregate
     {
         return $this->firstOf(AttributeType::OID_ROLE)->first();
     }
-    
+
     /**
      * Get all 'Role' attribute values.
      *
@@ -202,13 +202,13 @@ class Attributes implements \Countable, \IteratorAggregate
      */
     public function roles(): array
     {
-        return array_merge(array(),
+        return array_merge([],
             ...array_map(
                 function (Attribute $attr) {
                     return $attr->values();
                 }, $this->allOf(AttributeType::OID_ROLE)));
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *

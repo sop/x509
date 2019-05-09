@@ -1,30 +1,33 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ExplicitTagging;
-use X509\Certificate\Extension\Target\Target;
-use X509\Certificate\Extension\Target\TargetName;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Tagged\ExplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\Certificate\Extension\Target\Target;
+use Sop\X509\Certificate\Extension\Target\TargetName;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
  * @group target
+ *
+ * @internal
  */
-class TargetNameTest extends \PHPUnit\Framework\TestCase
+class TargetNameTest extends TestCase
 {
-    const URI = "urn:test";
-    
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $target = new TargetName(new UniformResourceIdentifier(self::URI));
         $this->assertInstanceOf(TargetName::class, $target);
         return $target;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -36,7 +39,7 @@ class TargetNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ExplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -48,7 +51,7 @@ class TargetNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(TargetName::class, $target);
         return $target;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -60,7 +63,7 @@ class TargetNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -70,7 +73,7 @@ class TargetNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Target::TYPE_NAME, $target->type());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -81,7 +84,7 @@ class TargetNameTest extends \PHPUnit\Framework\TestCase
         $name = $target->name();
         $this->assertInstanceOf(GeneralName::class, $name);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -89,6 +92,6 @@ class TargetNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testString(TargetName $target)
     {
-        $this->assertInternalType("string", $target->string());
+        $this->assertIsString($target->string());
     }
 }

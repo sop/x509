@@ -1,23 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X501\ASN1\AttributeType;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\SubjectDirectoryAttributesExtension;
+use Sop\X501\ASN1\AttributeType;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\SubjectDirectoryAttributesExtension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefSubjectDirectoryAttributesTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return SubjectDirectoryAttributesExtension
      */
     public function testSubjectDirectoryAttributesExtension()
@@ -27,7 +29,7 @@ class RefSubjectDirectoryAttributesTest extends RefExtTestHelper
         $this->assertInstanceOf(SubjectDirectoryAttributesExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testSubjectDirectoryAttributesExtension
      *
@@ -38,6 +40,6 @@ class RefSubjectDirectoryAttributesTest extends RefExtTestHelper
         $desc = $sda->firstOf(AttributeType::OID_DESCRIPTION)
             ->first()
             ->stringValue();
-        $this->assertEquals("A Company Manufacturing Everything", $desc);
+        $this->assertEquals('A Company Manufacturing Everything', $desc);
     }
 }

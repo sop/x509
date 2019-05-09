@@ -2,73 +2,49 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension;
+namespace Sop\X509\Certificate\Extension;
 
-use ASN1\Element;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\Boolean;
-use ASN1\Type\Primitive\Integer;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\Boolean;
+use Sop\ASN1\Type\Primitive\Integer;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements 'Basic Constraints' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.9
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.9
  */
 class BasicConstraintsExtension extends Extension
 {
     /**
      * Whether certificate is a CA.
      *
-     * @var boolean $_ca
+     * @var bool
      */
     protected $_ca;
-    
+
     /**
      * Maximum certification path length.
      *
-     * @var int|null $_pathLen
+     * @var null|int
      */
     protected $_pathLen;
-    
+
     /**
      * Constructor.
      *
-     * @param bool $critical
-     * @param bool $ca
-     * @param int|null $path_len
+     * @param bool     $critical
+     * @param bool     $ca
+     * @param null|int $path_len
      */
-    public function __construct(bool $critical, bool $ca, $path_len = null)
+    public function __construct(bool $critical, bool $ca, ?int $path_len = null)
     {
         parent::__construct(self::OID_BASIC_CONSTRAINTS, $critical);
         $this->_ca = $ca;
-        $this->_pathLen = isset($path_len) ? intval($path_len) : null;
+        $this->_pathLen = $path_len;
     }
-    
-    /**
-     *
-     * {@inheritdoc}
-     * @return self
-     */
-    protected static function _fromDER(string $data, bool $critical): self
-    {
-        $seq = UnspecifiedType::fromDER($data)->asSequence();
-        $ca = false;
-        $path_len = null;
-        $idx = 0;
-        if ($seq->has($idx, Element::TYPE_BOOLEAN)) {
-            $ca = $seq->at($idx++)
-                ->asBoolean()
-                ->value();
-        }
-        if ($seq->has($idx, Element::TYPE_INTEGER)) {
-            $path_len = $seq->at($idx)
-                ->asInteger()
-                ->intNumber();
-        }
-        return new self($critical, $ca, $path_len);
-    }
-    
+
     /**
      * Whether certificate is a CA.
      *
@@ -78,7 +54,7 @@ class BasicConstraintsExtension extends Extension
     {
         return $this->_ca;
     }
-    
+
     /**
      * Whether path length is present.
      *
@@ -88,29 +64,46 @@ class BasicConstraintsExtension extends Extension
     {
         return isset($this->_pathLen);
     }
-    
+
     /**
      * Get path length.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return int
      */
     public function pathLen(): int
     {
         if (!$this->hasPathLen()) {
-            throw new \LogicException("pathLenConstraint not set.");
+            throw new \LogicException('pathLenConstraint not set.');
         }
         return $this->_pathLen;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return Sequence
      */
-    protected function _valueASN1(): Sequence
+    protected static function _fromDER(string $data, bool $critical): Extension
     {
-        $elements = array();
+        $seq = UnspecifiedType::fromDER($data)->asSequence();
+        $ca = false;
+        $path_len = null;
+        $idx = 0;
+        if ($seq->has($idx, Element::TYPE_BOOLEAN)) {
+            $ca = $seq->at($idx++)->asBoolean()->value();
+        }
+        if ($seq->has($idx, Element::TYPE_INTEGER)) {
+            $path_len = $seq->at($idx)->asInteger()->intNumber();
+        }
+        return new self($critical, $ca, $path_len);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _valueASN1(): Element
+    {
+        $elements = [];
         if ($this->_ca) {
             $elements[] = new Boolean(true);
         }

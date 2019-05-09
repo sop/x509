@@ -2,26 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\CertificatePolicy;
+namespace Sop\X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Primitive\IA5String;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\IA5String;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>CPSuri</i> ASN.1 type used by
  * 'Certificate Policies' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.4
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */
 class CPSQualifier extends PolicyQualifierInfo
 {
     /**
      * URI.
      *
-     * @var string $_uri
+     * @var string
      */
     protected $_uri;
-    
+
     /**
      * Constructor.
      *
@@ -32,17 +33,17 @@ class CPSQualifier extends PolicyQualifierInfo
         $this->_oid = self::OID_CPS;
         $this->_uri = $uri;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromQualifierASN1(UnspecifiedType $el): self
+    public static function fromQualifierASN1(UnspecifiedType $el): PolicyQualifierInfo
     {
         return new self($el->asString()->string());
     }
-    
+
     /**
      * Get URI.
      *
@@ -52,13 +53,11 @@ class CPSQualifier extends PolicyQualifierInfo
     {
         return $this->_uri;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return IA5String
      */
-    protected function _qualifierASN1(): IA5String
+    protected function _qualifierASN1(): Element
     {
         return new IA5String($this->_uri);
     }

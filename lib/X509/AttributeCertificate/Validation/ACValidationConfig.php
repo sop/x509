@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate\Validation;
+namespace Sop\X509\AttributeCertificate\Validation;
 
-use X509\Certificate\Extension\Target\Target;
-use X509\CertificationPath\CertificationPath;
+use Sop\X509\Certificate\Extension\Target\Target;
+use Sop\X509\CertificationPath\CertificationPath;
 
 /**
  * Provides configuration context for the attribute certificate validation.
@@ -18,28 +18,28 @@ class ACValidationConfig
      * @var CertificationPath
      */
     protected $_holderPath;
-    
+
     /**
      * Certification path of the AC issuer.
      *
      * @var CertificationPath
      */
     protected $_issuerPath;
-    
+
     /**
      * Evaluation reference time.
      *
      * @var \DateTimeImmutable
      */
     protected $_evalTime;
-    
+
     /**
      * Permitted targets.
      *
      * @var Target[]
      */
     protected $_targets;
-    
+
     /**
      * Constructor.
      *
@@ -52,9 +52,9 @@ class ACValidationConfig
         $this->_holderPath = $holder_path;
         $this->_issuerPath = $issuer_path;
         $this->_evalTime = new \DateTimeImmutable();
-        $this->_targets = array();
+        $this->_targets = [];
     }
-    
+
     /**
      * Get certification path of the AC's holder.
      *
@@ -64,7 +64,7 @@ class ACValidationConfig
     {
         return $this->_holderPath;
     }
-    
+
     /**
      * Get certification path of the AC's issuer.
      *
@@ -74,11 +74,12 @@ class ACValidationConfig
     {
         return $this->_issuerPath;
     }
-    
+
     /**
      * Get self with given evaluation reference time.
      *
      * @param \DateTimeImmutable $dt
+     *
      * @return self
      */
     public function withEvaluationTime(\DateTimeImmutable $dt): self
@@ -87,7 +88,7 @@ class ACValidationConfig
         $obj->_evalTime = $dt;
         return $obj;
     }
-    
+
     /**
      * Get the evaluation reference time.
      *
@@ -97,11 +98,12 @@ class ACValidationConfig
     {
         return $this->_evalTime;
     }
-    
+
     /**
      * Get self with permitted targets.
      *
      * @param Target ...$targets
+     *
      * @return self
      */
     public function withTargets(Target ...$targets): self
@@ -110,9 +112,9 @@ class ACValidationConfig
         $obj->_targets = $targets;
         return $obj;
     }
-    
+
     /**
-     * Get array of permitted targets
+     * Get array of permitted targets.
      *
      * @return Target[]
      */

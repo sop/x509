@@ -1,17 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\BasicConstraintsExtension;
-use X509\Certificate\Extension\Extension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\BasicConstraintsExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
+class BasicConstraintsTest extends TestCase
 {
     public function testCreate()
     {
@@ -19,7 +22,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(BasicConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -29,7 +32,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_BASIC_CONSTRAINTS, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -39,7 +42,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -51,7 +54,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -63,7 +66,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(BasicConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -75,7 +78,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,7 +88,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCA());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -95,7 +98,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(3, $ext->pathLen());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -107,7 +110,7 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasBasicConstraints());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -118,13 +121,11 @@ class BasicConstraintsTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->basicConstraints();
         $this->assertInstanceOf(BasicConstraintsExtension::class, $ext);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testNoPathLenFail()
     {
         $ext = new BasicConstraintsExtension(false, false);
+        $this->expectException(\LogicException::class);
         $ext->pathLen();
     }
 }

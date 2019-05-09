@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\CertificatePolicy;
+namespace Sop\X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>PolicyInformation</i> ASN.1 type used by
  * 'Certificate Policies' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.4
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */
 class PolicyInformation implements \Countable, \IteratorAggregate
 {
@@ -21,61 +21,57 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      *
      * @var string
      */
-    const OID_ANY_POLICY = "2.5.29.32.0";
-    
+    const OID_ANY_POLICY = '2.5.29.32.0';
+
     /**
      * Policy identifier.
      *
-     * @var string $_oid
+     * @var string
      */
     protected $_oid;
-    
+
     /**
      * Policy qualifiers.
      *
-     * @var PolicyQualifierInfo[] $_qualifiers
+     * @var PolicyQualifierInfo[]
      */
     protected $_qualifiers;
-    
+
     /**
      * Constructor.
      *
-     * @param string $oid
+     * @param string              $oid
      * @param PolicyQualifierInfo ...$qualifiers
      */
     public function __construct(string $oid, PolicyQualifierInfo ...$qualifiers)
     {
         $this->_oid = $oid;
-        $this->_qualifiers = array();
+        $this->_qualifiers = [];
         foreach ($qualifiers as $qual) {
             $this->_qualifiers[$qual->oid()] = $qual;
         }
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
-        $oid = $seq->at(0)
-            ->asObjectIdentifier()
-            ->oid();
-        $qualifiers = array();
+        $oid = $seq->at(0)->asObjectIdentifier()->oid();
+        $qualifiers = [];
         if (count($seq) > 1) {
             $qualifiers = array_map(
                 function (UnspecifiedType $el) {
                     return PolicyQualifierInfo::fromASN1($el->asSequence());
-                },
-                $seq->at(1)
-                    ->asSequence()
-                    ->elements());
+                }, $seq->at(1)->asSequence()->elements());
         }
         return new self($oid, ...$qualifiers);
     }
-    
+
     /**
      * Get policy identifier.
      *
@@ -85,7 +81,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
     {
         return $this->_oid;
     }
-    
+
     /**
      * Check whether this policy is anyPolicy.
      *
@@ -95,7 +91,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
     {
         return self::OID_ANY_POLICY === $this->_oid;
     }
-    
+
     /**
      * Get policy qualifiers.
      *
@@ -105,33 +101,36 @@ class PolicyInformation implements \Countable, \IteratorAggregate
     {
         return array_values($this->_qualifiers);
     }
-    
+
     /**
      * Check whether qualifier is present.
      *
      * @param string $oid
-     * @return boolean
+     *
+     * @return bool
      */
     public function has(string $oid): bool
     {
         return isset($this->_qualifiers[$oid]);
     }
-    
+
     /**
      * Get qualifier by OID.
      *
      * @param string $oid
-     * @throws \OutOfBoundsException
+     *
+     * @throws \LogicException IF not set
+     *
      * @return PolicyQualifierInfo
      */
     public function get(string $oid): PolicyQualifierInfo
     {
         if (!$this->has($oid)) {
-            throw new \LogicException("No $oid qualifier.");
+            throw new \LogicException("No {$oid} qualifier.");
         }
         return $this->_qualifiers[$oid];
     }
-    
+
     /**
      * Check whether CPS qualifier is present.
      *
@@ -141,21 +140,22 @@ class PolicyInformation implements \Countable, \IteratorAggregate
     {
         return $this->has(PolicyQualifierInfo::OID_CPS);
     }
-    
+
     /**
      * Get CPS qualifier.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return CPSQualifier
      */
     public function CPSQualifier(): CPSQualifier
     {
         if (!$this->hasCPSQualifier()) {
-            throw new \LogicException("CPS qualifier not set.");
+            throw new \LogicException('CPS qualifier not set.');
         }
         return $this->get(PolicyQualifierInfo::OID_CPS);
     }
-    
+
     /**
      * Check whether user notice qualifier is present.
      *
@@ -165,21 +165,22 @@ class PolicyInformation implements \Countable, \IteratorAggregate
     {
         return $this->has(PolicyQualifierInfo::OID_UNOTICE);
     }
-    
+
     /**
      * Get user notice qualifier.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return UserNoticeQualifier
      */
     public function userNoticeQualifier(): UserNoticeQualifier
     {
         if (!$this->hasUserNoticeQualifier()) {
-            throw new \LogicException("User notice qualifier not set.");
+            throw new \LogicException('User notice qualifier not set.');
         }
         return $this->get(PolicyQualifierInfo::OID_UNOTICE);
     }
-    
+
     /**
      * Get ASN.1 structure.
      *
@@ -187,7 +188,7 @@ class PolicyInformation implements \Countable, \IteratorAggregate
      */
     public function toASN1(): Sequence
     {
-        $elements = array(new ObjectIdentifier($this->_oid));
+        $elements = [new ObjectIdentifier($this->_oid)];
         if (count($this->_qualifiers)) {
             $qualifiers = array_map(
                 function (PolicyQualifierInfo $pqi) {
@@ -197,22 +198,24 @@ class PolicyInformation implements \Countable, \IteratorAggregate
         }
         return new Sequence(...$elements);
     }
-    
+
     /**
      * Get number of qualifiers.
      *
      * @see \Countable::count()
+     *
      * @return int
      */
     public function count(): int
     {
         return count($this->_qualifiers);
     }
-    
+
     /**
      * Get iterator for qualifiers.
      *
      * @see \IteratorAggregate::getIterator()
+     *
      * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator

@@ -1,46 +1,49 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
+use PHPUnit\Framework\TestCase;
 use Sop\CryptoEncoding\PEM;
-use X509\Certificate\Certificate;
-use X509\Certificate\CertificateChain;
-use X509\CertificationPath\CertificationPath;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\CertificateChain;
+use Sop\X509\CertificationPath\CertificationPath;
 
 /**
  * @group certificate
+ *
+ * @internal
  */
-class CertificateChainTest extends \PHPUnit\Framework\TestCase
+class CertificateChainTest extends TestCase
 {
     private static $_pems;
-    
+
     private static $_certs;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_pems = array(
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem"),
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-interm-rsa.pem"),
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
+        self::$_pems = [
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-rsa.pem'),
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-interm-rsa.pem'),
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ca.pem'), ];
         self::$_certs = array_map(
             function (PEM $pem) {
                 return Certificate::fromPEM($pem);
             }, self::$_pems);
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_pems = null;
         self::$_certs = null;
     }
-    
+
     public function testCreateChain()
     {
         $chain = new CertificateChain(...self::$_certs);
         $this->assertInstanceOf(CertificateChain::class, $chain);
         return $chain;
     }
-    
+
     /**
      * @depends testCreateChain
      *
@@ -51,7 +54,7 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
         $certs = $chain->certificates();
         $this->assertContainsOnlyInstancesOf(Certificate::class, $chain);
     }
-    
+
     /**
      * @depends testCreateChain
      *
@@ -61,16 +64,14 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_certs[0], $chain->endEntityCertificate());
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEndEntityCertFail()
     {
         $chain = new CertificateChain();
+        $this->expectException(\LogicException::class);
         $chain->endEntityCertificate();
     }
-    
+
     /**
      * @depends testCreateChain
      *
@@ -80,16 +81,14 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_certs[2], $chain->trustAnchorCertificate());
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testTrustAnchorCertFail()
     {
         $chain = new CertificateChain();
+        $this->expectException(\LogicException::class);
         $chain->trustAnchorCertificate();
     }
-    
+
     /**
      * @depends testCreateChain
      *
@@ -99,7 +98,7 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(3, $chain);
     }
-    
+
     /**
      * @depends testCreateChain
      *
@@ -107,20 +106,20 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(CertificateChain $chain)
     {
-        $certs = array();
+        $certs = [];
         foreach ($chain as $cert) {
             $certs[] = $cert;
         }
         $this->assertContainsOnlyInstancesOf(Certificate::class, $certs);
     }
-    
+
     public function testFromPEMs()
     {
         $chain = CertificateChain::fromPEMs(...self::$_pems);
         $this->assertInstanceOf(CertificateChain::class, $chain);
         return $chain;
     }
-    
+
     /**
      * @depends testCreateChain
      * @depends testFromPEMs
@@ -133,7 +132,7 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $chain);
     }
-    
+
     /**
      * @depends testCreateChain
      *
@@ -147,7 +146,7 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $str);
         return $str;
     }
-    
+
     /**
      * @depends testToPEMString
      *
@@ -159,7 +158,7 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CertificateChain::class, $chain);
         return $chain;
     }
-    
+
     /**
      * @depends testCreateChain
      * @depends testFromPEMString
@@ -172,7 +171,7 @@ class CertificateChainTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $chain);
     }
-    
+
     /**
      * @depends testCreateChain
      *

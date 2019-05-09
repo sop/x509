@@ -2,26 +2,27 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\Target;
+namespace Sop\X509\Certificate\Extension\Target;
 
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ExplicitlyTaggedType;
-use X509\GeneralName\GeneralName;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ExplicitlyTaggedType;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\GeneralName;
 
 /**
  * Implements 'targetName' CHOICE of the <i>Target</i> ASN.1 type.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.3.2
+ * @see https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
 class TargetName extends Target
 {
     /**
      * Name.
      *
-     * @var GeneralName $_name
+     * @var GeneralName
      */
     protected $_name;
-    
+
     /**
      * Constructor.
      *
@@ -32,26 +33,25 @@ class TargetName extends Target
         $this->_name = $name;
         $this->_type = self::TYPE_NAME;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param TaggedType $el
      * @return self
      */
-    public static function fromChosenASN1(TaggedType $el): self
+    public static function fromChosenASN1(TaggedType $el): Target
     {
         return new self(GeneralName::fromASN1($el));
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     public function string(): string
     {
         return $this->_name->string();
     }
-    
+
     /**
      * Get name.
      *
@@ -61,13 +61,11 @@ class TargetName extends Target
     {
         return $this->_name;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return ExplicitlyTaggedType
      */
-    public function toASN1(): TaggedType
+    public function toASN1(): Element
     {
         return new ExplicitlyTaggedType($this->_type, $this->_name->toASN1());
     }

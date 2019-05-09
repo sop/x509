@@ -1,28 +1,31 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\NameConstraintsExtension;
-use X509\Certificate\Extension\NameConstraints\GeneralSubtree;
-use X509\Certificate\Extension\NameConstraints\GeneralSubtrees;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtree;
+use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtrees;
+use Sop\X509\Certificate\Extension\NameConstraintsExtension;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class NameConstraintsTest extends \PHPUnit\Framework\TestCase
+class NameConstraintsTest extends TestCase
 {
-    const PERMITTED_URI = ".example.com";
-    
-    const PERMITTED_DN = "cn=Test";
-    
-    const EXCLUDED_URI = "nope.example.com";
-    
+    const PERMITTED_URI = '.example.com';
+
+    const PERMITTED_DN = 'cn=Test';
+
+    const EXCLUDED_URI = 'nope.example.com';
+
     public function testCreatePermitted()
     {
         $subtrees = new GeneralSubtrees(
@@ -32,7 +35,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     public function testCreateExcluded()
     {
         $subtrees = new GeneralSubtrees(
@@ -40,7 +43,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     /**
      * @depends testCreatePermitted
      * @depends testCreateExcluded
@@ -55,7 +58,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NameConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -65,7 +68,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_NAME_CONSTRAINTS, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -75,7 +78,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -87,7 +90,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -99,7 +102,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NameConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -111,7 +114,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -123,7 +126,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -135,7 +138,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     /**
      * @depends testPermitted
      *
@@ -145,7 +148,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $subtrees);
     }
-    
+
     /**
      * @depends testPermitted
      *
@@ -153,14 +156,14 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(GeneralSubtrees $subtrees)
     {
-        $values = array();
+        $values = [];
         foreach ($subtrees as $subtree) {
             $values[] = $subtree;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(GeneralSubtree::class, $values);
     }
-    
+
     /**
      * @depends testPermitted
      *
@@ -172,7 +175,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
             $subtrees->all()[0]->base()
                 ->string());
     }
-    
+
     /**
      * @depends testPermitted
      *
@@ -184,7 +187,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
             $subtrees->all()[1]->base()
                 ->string());
     }
-    
+
     /**
      * @depends testExcluded
      *
@@ -196,7 +199,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
             $subtrees->all()[0]->base()
                 ->string());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -208,7 +211,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasNameConstraints());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -219,14 +222,14 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->nameConstraints();
         $this->assertInstanceOf(NameConstraintsExtension::class, $ext);
     }
-    
+
     public function testCreateEmpty()
     {
         $ext = new NameConstraintsExtension(false);
         $this->assertInstanceOf(NameConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreateEmpty
      *
@@ -238,7 +241,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncodeEmpty
      *
@@ -250,7 +253,7 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(NameConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreateEmpty
      * @depends testDecodeEmpty
@@ -262,26 +265,26 @@ class NameConstraintsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param NameConstraintsExtension $ext
      */
     public function testNoPermittedSubtreesFail(NameConstraintsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->permittedSubtrees();
     }
-    
+
     /**
      * @depends testCreateEmpty
-     * @expectedException LogicException
      *
      * @param NameConstraintsExtension $ext
      */
     public function testNoExcludedSubtreesFail(NameConstraintsExtension $ext)
     {
+        $this->expectException(\LogicException::class);
         $ext->excludedSubtrees();
     }
 }

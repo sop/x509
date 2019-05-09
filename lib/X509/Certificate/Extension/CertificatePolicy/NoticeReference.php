@@ -2,50 +2,51 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\CertificatePolicy;
+namespace Sop\X509\Certificate\Extension\CertificatePolicy;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\Integer;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\Integer;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>NoticeReference</i> ASN.1 type used by
  * 'Certificate Policies' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.4
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */
 class NoticeReference
 {
     /**
      * Organization.
      *
-     * @var DisplayText $_organization
+     * @var DisplayText
      */
     protected $_organization;
-    
+
     /**
      * Notification reference numbers.
      *
-     * @var int[] $_numbers
+     * @var int[]
      */
     protected $_numbers;
-    
+
     /**
      * Constructor.
      *
      * @param DisplayText $organization
-     * @param int ...$numbers
+     * @param int         ...$numbers
      */
     public function __construct(DisplayText $organization, int ...$numbers)
     {
         $this->_organization = $organization;
         $this->_numbers = $numbers;
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): self
@@ -54,13 +55,10 @@ class NoticeReference
         $numbers = array_map(
             function (UnspecifiedType $el) {
                 return $el->asInteger()->intNumber();
-            },
-            $seq->at(1)
-                ->asSequence()
-                ->elements());
+            }, $seq->at(1)->asSequence()->elements());
         return new self($org, ...$numbers);
     }
-    
+
     /**
      * Get reference organization.
      *
@@ -70,7 +68,7 @@ class NoticeReference
     {
         return $this->_organization;
     }
-    
+
     /**
      * Get reference numbers.
      *
@@ -80,7 +78,7 @@ class NoticeReference
     {
         return $this->_numbers;
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *

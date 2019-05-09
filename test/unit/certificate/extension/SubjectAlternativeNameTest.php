@@ -1,22 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\SubjectAlternativeNameExtension;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\SubjectAlternativeNameExtension;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
+class SubjectAlternativeNameTest extends TestCase
 {
-    const DN = "cn=Alt name";
-    
+    const DN = 'cn=Alt name';
+
     public function testCreate()
     {
         $ext = new SubjectAlternativeNameExtension(true,
@@ -24,7 +27,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubjectAlternativeNameExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -34,7 +37,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_SUBJECT_ALT_NAME, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -44,7 +47,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -56,7 +59,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -69,7 +72,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubjectAlternativeNameExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -81,7 +84,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -92,7 +95,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(self::DN, $ext->names()
             ->firstDN());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -104,7 +107,7 @@ class SubjectAlternativeNameTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasSubjectAlternativeName());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *

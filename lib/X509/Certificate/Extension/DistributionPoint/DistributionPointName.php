@@ -2,44 +2,39 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\DistributionPoint;
+namespace Sop\X509\Certificate\Extension\DistributionPoint;
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
-use X501\ASN1\RDN;
-use X509\GeneralName\GeneralNames;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X501\ASN1\RDN;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * Base class for <i>DistributionPointName</i> ASN.1 CHOICE type used by
  * 'CRL Distribution Points' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.13
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.13
  */
 abstract class DistributionPointName
 {
     const TAG_FULL_NAME = 0;
     const TAG_RDN = 1;
-    
+
     /**
      * Type.
      *
-     * @var int $_tag
+     * @var int
      */
     protected $_tag;
-    
-    /**
-     * Generate ASN.1 element.
-     *
-     * @return Element
-     */
-    abstract protected function _valueASN1();
-    
+
     /**
      * Initialize from TaggedType.
      *
      * @param TaggedType $el
+     *
      * @throws \UnexpectedValueException
+     *
      * @return self
      */
     public static function fromTaggedType(TaggedType $el): self
@@ -54,10 +49,10 @@ abstract class DistributionPointName
                     RDN::fromASN1($el->asImplicit(Element::TYPE_SET)->asSet()));
             default:
                 throw new \UnexpectedValueException(
-                    "DistributionPointName tag " . $el->tag() . " not supported.");
+                    'DistributionPointName tag ' . $el->tag() . ' not supported.');
         }
     }
-    
+
     /**
      * Get type tag.
      *
@@ -67,7 +62,7 @@ abstract class DistributionPointName
     {
         return $this->_tag;
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -77,4 +72,11 @@ abstract class DistributionPointName
     {
         return new ImplicitlyTaggedType($this->_tag, $this->_valueASN1());
     }
+
+    /**
+     * Generate ASN.1 element.
+     *
+     * @return Element
+     */
+    abstract protected function _valueASN1(): Element;
 }

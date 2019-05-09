@@ -1,22 +1,24 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\PolicyConstraintsExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\PolicyConstraintsExtension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefPolicyConstraintsTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return PolicyConstraintsExtension
      */
     public function testPolicyConstraintsExtension()
@@ -25,7 +27,7 @@ class RefPolicyConstraintsTest extends RefExtTestHelper
         $this->assertInstanceOf(PolicyConstraintsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testPolicyConstraintsExtension
      *
@@ -35,7 +37,7 @@ class RefPolicyConstraintsTest extends RefExtTestHelper
     {
         $this->assertEquals(3, $pc->requireExplicitPolicy());
     }
-    
+
     /**
      * @depends testPolicyConstraintsExtension
      *

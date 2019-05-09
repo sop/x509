@@ -5,20 +5,22 @@
  * php path-validate.php
  */
 
-use Sop\CryptoEncoding\PEM;
-use X509\Certificate\Certificate;
-use X509\CertificationPath\CertificationPath;
-use X509\CertificationPath\PathValidation\PathValidationConfig;
+declare(strict_types = 1);
 
-require dirname(__DIR__) . "/vendor/autoload.php";
+use Sop\CryptoEncoding\PEM;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\CertificationPath\CertificationPath;
+use Sop\X509\CertificationPath\PathValidation\PathValidationConfig;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 // generate CA and end-entity certificates
 $dir = __DIR__;
 $ca_pem = `php '$dir/create-ca-cert.php'`;
 $csr_pem = `php '$dir/create-csr.php'`;
-$ca_file = tempnam(sys_get_temp_dir(), "crt");
+$ca_file = tempnam(sys_get_temp_dir(), 'crt');
 file_put_contents($ca_file, $ca_pem);
-$csr_file = tempnam(sys_get_temp_dir(), "csr");
+$csr_file = tempnam(sys_get_temp_dir(), 'csr');
 file_put_contents($csr_file, $csr_pem);
 $cert_pem = `php '$dir/issue-cert.php' '$ca_file' '$csr_file'`;
 // load CA certificate

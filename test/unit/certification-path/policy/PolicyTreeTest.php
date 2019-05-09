@@ -1,14 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\CertificationPath\Policy\PolicyNode;
-use X509\CertificationPath\Policy\PolicyTree;
+use PHPUnit\Framework\TestCase;
+use Sop\X509\CertificationPath\Policy\PolicyNode;
+use Sop\X509\CertificationPath\Policy\PolicyTree;
 
 /**
  * @group certification-path
+ *
+ * @internal
  */
-class PolicyTreeTest extends \PHPUnit\Framework\TestCase
+class PolicyTreeTest extends TestCase
 {
     /**
      * Cover edge case where root node is pruned.
@@ -17,12 +20,12 @@ class PolicyTreeTest extends \PHPUnit\Framework\TestCase
     {
         $tree = new PolicyTree(PolicyNode::anyPolicyNode());
         $obj = new ReflectionClass($tree);
-        $prop = $obj->getProperty("_root");
+        $prop = $obj->getProperty('_root');
         $prop->setAccessible(true);
         $prop->setValue($tree, null);
         $this->assertEmpty($tree->policiesAtDepth(1));
     }
-    
+
     /**
      * Cover edge case where root node is pruned.
      */
@@ -30,10 +33,10 @@ class PolicyTreeTest extends \PHPUnit\Framework\TestCase
     {
         $tree = new PolicyTree(PolicyNode::anyPolicyNode());
         $obj = new ReflectionClass($tree);
-        $prop = $obj->getProperty("_root");
+        $prop = $obj->getProperty('_root');
         $prop->setAccessible(true);
         $prop->setValue($tree, null);
-        $mtd = $obj->getMethod("_validPolicyNodeSet");
+        $mtd = $obj->getMethod('_validPolicyNodeSet');
         $mtd->setAccessible(true);
         $this->assertEmpty($mtd->invoke($tree));
     }

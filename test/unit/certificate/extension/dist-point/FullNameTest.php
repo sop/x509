@@ -1,28 +1,31 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ImplicitTagging;
-use X509\Certificate\Extension\DistributionPoint\FullName;
-use X509\GeneralName\GeneralNames;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\Certificate\Extension\DistributionPoint\FullName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * @group certificate
  * @group extension
  * @group distribution-point
+ *
+ * @internal
  */
-class FullNameTest extends \PHPUnit\Framework\TestCase
+class FullNameTest extends TestCase
 {
-    const URI = "urn:test";
-    
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $name = FullName::fromURI(self::URI);
         $this->assertInstanceOf(FullName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -34,7 +37,7 @@ class FullNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -46,7 +49,7 @@ class FullNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(FullName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -58,7 +61,7 @@ class FullNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *

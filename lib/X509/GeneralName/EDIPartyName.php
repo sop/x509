@@ -2,28 +2,28 @@
 
 declare(strict_types = 1);
 
-namespace X509\GeneralName;
+namespace Sop\X509\GeneralName;
 
-use ASN1\Type\TaggedType;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\TaggedType;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>ediPartyName</i> CHOICE type of <i>GeneralName</i>.
  *
  * Currently acts as a parking object for decoding.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.6
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
+ *
  * @todo Implement EDIPartyName type
  */
 class EDIPartyName extends GeneralName
 {
     /**
-     *
-     * @var \ASN1\Element
+     * @var \Sop\ASN1\Element
      */
     protected $_element;
-    
+
     /**
      * Constructor.
      */
@@ -31,30 +31,28 @@ class EDIPartyName extends GeneralName
     {
         $this->_tag = self::TAG_EDI_PARTY_NAME;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el): self
+    public static function fromChosenASN1(UnspecifiedType $el): GeneralName
     {
         $obj = new self();
         $obj->_element = $el->asSequence();
         return $obj;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     public function string(): string
     {
         return bin2hex($this->_element->toDER());
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     protected function _choiceASN1(): TaggedType

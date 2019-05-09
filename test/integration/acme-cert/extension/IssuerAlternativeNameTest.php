@@ -1,23 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\IssuerAlternativeNameExtension;
-use X509\GeneralName\GeneralName;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\IssuerAlternativeNameExtension;
+use Sop\X509\GeneralName\GeneralName;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefIssuerAlternativeNameTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return IssuerAlternativeNameExtension
      */
     public function testIssuerAlternativeName()
@@ -26,7 +28,7 @@ class RefIssuerAlternativeNameTest extends RefExtTestHelper
         $this->assertInstanceOf(IssuerAlternativeNameExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testIssuerAlternativeName
      *
@@ -39,6 +41,6 @@ class RefIssuerAlternativeNameTest extends RefExtTestHelper
             ->dn()
             ->toString();
         $this->assertEquals(
-            "o=ACME Alternative Ltd.,c=FI,cn=ACME Wheel Intermediate", $dn);
+            'o=ACME Alternative Ltd.,c=FI,cn=ACME Wheel Intermediate', $dn);
     }
 }

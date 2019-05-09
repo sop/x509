@@ -1,19 +1,23 @@
 <?php
+
 declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\AccessDescription\AuthorityAccessDescription;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\AccessDescription\AuthorityAccessDescription;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
- *
  * @group certificate
  * @group extension
  * @group access-description
+ *
+ * @internal
  */
-class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
+class AuthorityAccessDescriptionTest extends TestCase
 {
-    const URI = "urn:test";
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $desc = new AuthorityAccessDescription(
@@ -22,9 +26,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthorityAccessDescription::class, $desc);
         return $desc;
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityAccessDescription $desc
@@ -35,9 +38,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
-     *
      * @depends testEncode
      *
      * @param string $data
@@ -48,9 +50,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthorityAccessDescription::class, $desc);
         return $desc;
     }
-    
+
     /**
-     *
      * @depends testCreate
      * @depends testDecode
      *
@@ -62,9 +63,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityAccessDescription $desc
@@ -73,9 +73,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($desc->isOSCPMethod());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityAccessDescription $desc
@@ -84,9 +83,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($desc->isCAIssuersMethod());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityAccessDescription $desc
@@ -96,9 +94,8 @@ class AuthorityAccessDescriptionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(AuthorityAccessDescription::OID_METHOD_OSCP,
             $desc->accessMethod());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityAccessDescription $desc

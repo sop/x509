@@ -1,22 +1,24 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\InhibitAnyPolicyExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\InhibitAnyPolicyExtension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefInhibitAnyPolicyTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return InhibitAnyPolicyExtension
      */
     public function testInhibitAnyPolicyExtension()
@@ -25,7 +27,7 @@ class RefInhibitAnyPolicyTest extends RefExtTestHelper
         $this->assertInstanceOf(InhibitAnyPolicyExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testInhibitAnyPolicyExtension
      *

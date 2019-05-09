@@ -1,27 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\TargetInformationExtension;
-use X509\Certificate\Extension\Target\Target;
-use X509\Certificate\Extension\Target\TargetGroup;
-use X509\Certificate\Extension\Target\TargetName;
-use X509\Certificate\Extension\Target\Targets;
-use X509\GeneralName\DNSName;
-use X509\GeneralName\DirectoryName;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\Target\Target;
+use Sop\X509\Certificate\Extension\Target\TargetGroup;
+use Sop\X509\Certificate\Extension\Target\TargetName;
+use Sop\X509\Certificate\Extension\Target\Targets;
+use Sop\X509\Certificate\Extension\TargetInformationExtension;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\DNSName;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class TargetInformationTest extends \PHPUnit\Framework\TestCase
+class TargetInformationTest extends TestCase
 {
-    const NAME_DN = "cn=Target";
-    
-    const GROUP_DOMAIN = ".example.com";
-    
+    const NAME_DN = 'cn=Target';
+
+    const GROUP_DOMAIN = '.example.com';
+
     public function testCreateTargets()
     {
         $targets = new Targets(
@@ -30,7 +33,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Targets::class, $targets);
         return $targets;
     }
-    
+
     /**
      * @depends testCreateTargets
      *
@@ -42,7 +45,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(TargetInformationExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -52,7 +55,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_TARGET_INFORMATION, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -62,7 +65,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -74,7 +77,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -86,7 +89,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(TargetInformationExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -98,7 +101,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -108,7 +111,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -116,14 +119,14 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(TargetInformationExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $target) {
             $values[] = $target;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(Target::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -133,7 +136,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::NAME_DN, $ext->names()[0]->string());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -143,7 +146,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::GROUP_DOMAIN, $ext->groups()[0]->string());
     }
-    
+
     /**
      * Cover __clone method.
      *
@@ -155,7 +158,7 @@ class TargetInformationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(TargetInformationExtension::class, clone $ext);
     }
-    
+
     public function testFromTargets()
     {
         $ext = TargetInformationExtension::fromTargets(

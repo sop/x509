@@ -1,26 +1,29 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Primitive\NullType;
-use ASN1\Type\Tagged\ImplicitTagging;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\OtherName;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\NullType;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\OtherName;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class OtherNameTest extends \PHPUnit\Framework\TestCase
+class OtherNameTest extends TestCase
 {
     public function testCreate()
     {
-        $name = new OtherName("1.3.6.1.3.1", new NullType());
+        $name = new OtherName('1.3.6.1.3.1', new NullType());
         $this->assertInstanceOf(OtherName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -32,7 +35,7 @@ class OtherNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -43,7 +46,7 @@ class OtherNameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_OTHER_NAME, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -55,7 +58,7 @@ class OtherNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(OtherName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -67,7 +70,7 @@ class OtherNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -75,9 +78,9 @@ class OtherNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testString(OtherName $name)
     {
-        $this->assertInternalType("string", $name->string());
+        $this->assertIsString($name->string());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -85,9 +88,9 @@ class OtherNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testOID(OtherName $name)
     {
-        $this->assertEquals("1.3.6.1.3.1", $name->type());
+        $this->assertEquals('1.3.6.1.3.1', $name->type());
     }
-    
+
     /**
      * @depends testCreate
      *

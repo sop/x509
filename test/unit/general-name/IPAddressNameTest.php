@@ -1,24 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Primitive\OctetString;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\IPAddress;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\IPAddress;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class IPAddressNameTest extends \PHPUnit\Framework\TestCase
+class IPAddressNameTest extends TestCase
 {
-    /**
-     * @expectedException UnexpectedValueException
-     */
     public function testInvalidASN1()
     {
         $el = new ImplicitlyTaggedType(GeneralName::TAG_IP_ADDRESS,
-            new OctetString(""));
+            new OctetString(''));
+        $this->expectException(\UnexpectedValueException::class);
         IPAddress::fromASN1($el);
     }
 }

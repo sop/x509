@@ -2,82 +2,82 @@
 
 declare(strict_types = 1);
 
-namespace X509\AttributeCertificate;
+namespace Sop\X509\AttributeCertificate;
 
-use ASN1\Element;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\Integer;
-use X509\Certificate\Certificate;
-use X509\Certificate\UniqueIdentifier;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\Integer;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\Certificate\UniqueIdentifier;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
 
 /**
  * Implements <i>IssuerSerial</i> ASN.1 type.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.1
+ * @see https://tools.ietf.org/html/rfc5755#section-4.1
  */
 class IssuerSerial
 {
     /**
      * Issuer name.
      *
-     * @var GeneralNames $_issuer
+     * @var GeneralNames
      */
     protected $_issuer;
-    
+
     /**
-     * Serial number.
+     * Serial number as a base 10 integer.
      *
-     * @var string $_serial
+     * @var string
      */
     protected $_serial;
-    
+
     /**
      * Issuer unique ID.
      *
-     * @var UniqueIdentifier|null $_issuerUID
+     * @var null|UniqueIdentifier
      */
     protected $_issuerUID;
-    
+
     /**
      * Constructor.
      *
-     * @param GeneralNames $issuer
-     * @param string|int $serial
-     * @param UniqueIdentifier|null $uid
+     * @param GeneralNames          $issuer
+     * @param int|string            $serial
+     * @param null|UniqueIdentifier $uid
      */
     public function __construct(GeneralNames $issuer, $serial,
-        UniqueIdentifier $uid = null)
+        ?UniqueIdentifier $uid = null)
     {
         $this->_issuer = $issuer;
         $this->_serial = strval($serial);
         $this->_issuerUID = $uid;
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): IssuerSerial
     {
         $issuer = GeneralNames::fromASN1($seq->at(0)->asSequence());
-        $serial = $seq->at(1)
-            ->asInteger()
-            ->number();
+        $serial = $seq->at(1)->asInteger()->number();
         $uid = null;
         if ($seq->has(2, Element::TYPE_BIT_STRING)) {
             $uid = UniqueIdentifier::fromASN1($seq->at(2)->asBitString());
         }
         return new self($issuer, $serial, $uid);
     }
-    
+
     /**
      * Initialize from a public key certificate.
      *
      * @param Certificate $cert
+     *
      * @return self
      */
     public static function fromPKC(Certificate $cert): IssuerSerial
@@ -88,7 +88,7 @@ class IssuerSerial
         $uid = $tbsCert->hasIssuerUniqueID() ? $tbsCert->issuerUniqueID() : null;
         return new self($issuer, $serial, $uid);
     }
-    
+
     /**
      * Get issuer name.
      *
@@ -98,7 +98,7 @@ class IssuerSerial
     {
         return $this->_issuer;
     }
-    
+
     /**
      * Get serial number.
      *
@@ -108,7 +108,7 @@ class IssuerSerial
     {
         return $this->_serial;
     }
-    
+
     /**
      * Check whether issuer unique identifier is present.
      *
@@ -118,21 +118,22 @@ class IssuerSerial
     {
         return isset($this->_issuerUID);
     }
-    
+
     /**
      * Get issuer unique identifier.
      *
-     * @throws \LogicException
+     * @throws \LogicException If not set
+     *
      * @return UniqueIdentifier
      */
     public function issuerUID(): UniqueIdentifier
     {
         if (!$this->hasIssuerUID()) {
-            throw new \LogicException("issuerUID not set.");
+            throw new \LogicException('issuerUID not set.');
         }
         return $this->_issuerUID;
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -140,18 +141,19 @@ class IssuerSerial
      */
     public function toASN1(): Sequence
     {
-        $elements = array($this->_issuer->toASN1(), new Integer($this->_serial));
+        $elements = [$this->_issuer->toASN1(), new Integer($this->_serial)];
         if (isset($this->_issuerUID)) {
             $elements[] = $this->_issuerUID->toASN1();
         }
         return new Sequence(...$elements);
     }
-    
+
     /**
      * Check whether this IssuerSerial identifies given certificate.
      *
      * @param Certificate $cert
-     * @return boolean
+     *
+     * @return bool
      */
     public function identifiesPKC(Certificate $cert): bool
     {
@@ -159,7 +161,7 @@ class IssuerSerial
         if (!$tbs->issuer()->equals($this->_issuer->firstDN())) {
             return false;
         }
-        if (strval($tbs->serialNumber()) != strval($this->_serial)) {
+        if ($tbs->serialNumber() !== $this->_serial) {
             return false;
         }
         if ($this->_issuerUID && !$this->_checkUniqueID($cert)) {
@@ -167,21 +169,20 @@ class IssuerSerial
         }
         return true;
     }
-    
+
     /**
      * Check whether issuerUID matches given certificate.
      *
      * @param Certificate $cert
-     * @return boolean
+     *
+     * @return bool
      */
     private function _checkUniqueID(Certificate $cert): bool
     {
         if (!$cert->tbsCertificate()->hasIssuerUniqueID()) {
             return false;
         }
-        $uid = $cert->tbsCertificate()
-            ->issuerUniqueID()
-            ->string();
+        $uid = $cert->tbsCertificate()->issuerUniqueID()->string();
         if ($this->_issuerUID->string() != $uid) {
             return false;
         }

@@ -1,24 +1,26 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Sop\CryptoEncoding\PEM;
 use Sop\CryptoTypes\Asymmetric\RSA\RSAPrivateKey;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\SubjectKeyIdentifierExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\SubjectKeyIdentifierExtension;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefSubjectKeyIdentifierTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return SubjectKeyIdentifierExtension
      */
     public function testSubjectKeyIdentifier()
@@ -27,7 +29,7 @@ class RefSubjectKeyIdentifierTest extends RefExtTestHelper
         $this->assertInstanceOf(SubjectKeyIdentifierExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testSubjectKeyIdentifier
      *
@@ -36,7 +38,7 @@ class RefSubjectKeyIdentifierTest extends RefExtTestHelper
     public function testSubjectKeyIdentifierKey(
         SubjectKeyIdentifierExtension $ski)
     {
-        $pem = PEM::fromFile(TEST_ASSETS_DIR . "/certs/keys/acme-rsa.pem");
+        $pem = PEM::fromFile(TEST_ASSETS_DIR . '/certs/keys/acme-rsa.pem');
         $keyid = RSAPrivateKey::fromPEM($pem)->publicKey()
             ->publicKeyInfo()
             ->keyIdentifier();

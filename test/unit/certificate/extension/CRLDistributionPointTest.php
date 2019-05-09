@@ -1,30 +1,33 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\ObjectIdentifier;
-use ASN1\Type\Primitive\OctetString;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\CRLDistributionPointsExtension;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
-use X509\Certificate\Extension\DistributionPoint\FullName;
-use X509\Certificate\Extension\DistributionPoint\ReasonFlags;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\X509\Certificate\Extension\CRLDistributionPointsExtension;
+use Sop\X509\Certificate\Extension\DistributionPoint\DistributionPoint;
+use Sop\X509\Certificate\Extension\DistributionPoint\FullName;
+use Sop\X509\Certificate\Extension\DistributionPoint\ReasonFlags;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extensions;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
+class CRLDistributionPointTest extends TestCase
 {
-    const DP_URI = "urn:test";
-    
-    const ISSUER_DN = "cn=Issuer";
-    
+    const DP_URI = 'urn:test';
+
+    const ISSUER_DN = 'cn=Issuer';
+
     public function testCreateDistributionPoint()
     {
         $name = new FullName(
@@ -35,7 +38,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DistributionPoint::class, $dp);
         return $dp;
     }
-    
+
     /**
      * @depends testCreateDistributionPoint
      *
@@ -48,7 +51,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CRLDistributionPointsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -58,7 +61,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_CRL_DISTRIBUTION_POINTS, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -68,7 +71,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -80,7 +83,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -92,7 +95,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(CRLDistributionPointsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -104,7 +107,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -114,7 +117,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -122,14 +125,14 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(CRLDistributionPointsExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $dp) {
             $values[] = $dp;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(DistributionPoint::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -141,7 +144,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DistributionPoint::class, $dp);
         return $dp;
     }
-    
+
     /**
      * @depends testDistributionPoint
      *
@@ -154,7 +157,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
             ->firstURI();
         $this->assertEquals(self::DP_URI, $uri);
     }
-    
+
     /**
      * @depends testDistributionPoint
      *
@@ -165,7 +168,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($dp->reasons()
             ->isPrivilegeWithdrawn());
     }
-    
+
     /**
      * @depends testDistributionPoint
      *
@@ -177,7 +180,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
             $dp->crlIssuer()
                 ->firstDN());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -189,7 +192,7 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasCRLDistributionPoints());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -200,25 +203,21 @@ class CRLDistributionPointTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->crlDistributionPoints();
         $this->assertInstanceOf(CRLDistributionPointsExtension::class, $ext);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEncodeEmptyFail()
     {
         $ext = new CRLDistributionPointsExtension(false);
+        $this->expectException(\LogicException::class);
         $ext->toASN1();
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testDecodeEmptyFail()
     {
         $seq = new Sequence();
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_CRL_DISTRIBUTION_POINTS),
             new OctetString($seq->toDER()));
+        $this->expectException(\UnexpectedValueException::class);
         CRLDistributionPointsExtension::fromASN1($ext_seq);
     }
 }

@@ -1,25 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ImplicitTagging;
-use X509\GeneralName\DNSName;
-use X509\GeneralName\GeneralName;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\DNSName;
+use Sop\X509\GeneralName\GeneralName;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class DNSNameTest extends \PHPUnit\Framework\TestCase
+class DNSNameTest extends TestCase
 {
     public function testCreate()
     {
-        $name = new DNSName("test.example.com");
+        $name = new DNSName('test.example.com');
         $this->assertInstanceOf(DNSName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -31,7 +34,7 @@ class DNSNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -42,7 +45,7 @@ class DNSNameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_DNS_NAME, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -54,7 +57,7 @@ class DNSNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DNSName::class, $name);
         return $name;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -66,7 +69,7 @@ class DNSNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -74,6 +77,6 @@ class DNSNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testDNS(DNSName $name)
     {
-        $this->assertEquals("test.example.com", $name->name());
+        $this->assertEquals('test.example.com', $name->name());
     }
 }

@@ -2,25 +2,25 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension\Target;
+namespace Sop\X509\Certificate\Extension\Target;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>Targets</i> ASN.1 type as a <i>SEQUENCE OF Target</i>.
  *
- * @link https://tools.ietf.org/html/rfc5755#section-4.3.2
+ * @see https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
 class Targets implements \Countable, \IteratorAggregate
 {
     /**
      * Target elements.
      *
-     * @var Target[] $_targets
+     * @var Target[]
      */
     protected $_targets;
-    
+
     /**
      * Constructor.
      *
@@ -30,11 +30,12 @@ class Targets implements \Countable, \IteratorAggregate
     {
         $this->_targets = $targets;
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): self
@@ -45,7 +46,7 @@ class Targets implements \Countable, \IteratorAggregate
             }, $seq->elements());
         return new self(...$targets);
     }
-    
+
     /**
      * Get all targets.
      *
@@ -55,22 +56,7 @@ class Targets implements \Countable, \IteratorAggregate
     {
         return $this->_targets;
     }
-    
-    /**
-     * Get all targets of given type.
-     *
-     * @param int $type
-     * @return Target[]
-     */
-    protected function _allOfType(int $type): array
-    {
-        return array_values(
-            array_filter($this->_targets,
-                function (Target $target) use ($type) {
-                    return $target->type() == $type;
-                }));
-    }
-    
+
     /**
      * Get all name targets.
      *
@@ -80,7 +66,7 @@ class Targets implements \Countable, \IteratorAggregate
     {
         return $this->_allOfType(Target::TYPE_NAME);
     }
-    
+
     /**
      * Get all group targets.
      *
@@ -90,12 +76,13 @@ class Targets implements \Countable, \IteratorAggregate
     {
         return $this->_allOfType(Target::TYPE_GROUP);
     }
-    
+
     /**
      * Check whether given target is present.
      *
      * @param Target $target
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasTarget(Target $target): bool
     {
@@ -106,7 +93,7 @@ class Targets implements \Countable, \IteratorAggregate
         }
         return false;
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -120,25 +107,42 @@ class Targets implements \Countable, \IteratorAggregate
             }, $this->_targets);
         return new Sequence(...$elements);
     }
-    
+
     /**
-     *
      * @see \Countable::count()
+     *
      * @return int
      */
     public function count(): int
     {
         return count($this->_targets);
     }
-    
+
     /**
      * Get iterator for targets.
      *
      * @see \IteratorAggregate::getIterator()
+     *
      * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_targets);
+    }
+
+    /**
+     * Get all targets of given type.
+     *
+     * @param int $type
+     *
+     * @return Target[]
+     */
+    protected function _allOfType(int $type): array
+    {
+        return array_values(
+            array_filter($this->_targets,
+                function (Target $target) use ($type) {
+                    return $target->type() == $type;
+                }));
     }
 }

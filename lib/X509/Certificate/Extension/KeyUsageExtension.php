@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate\Extension;
+namespace Sop\X509\Certificate\Extension;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Primitive\BitString;
-use ASN1\Util\Flags;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\ASN1\Util\Flags;
 
 /**
  * Implements 'Key Usage' certificate extension.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.3
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.3
  */
 class KeyUsageExtension extends Extension
 {
@@ -24,38 +24,26 @@ class KeyUsageExtension extends Extension
     const CRL_SIGN = 0x004;
     const ENCIPHER_ONLY = 0x002;
     const DECIPHER_ONLY = 0x001;
-    
+
     /**
      * Key usage flags.
      *
-     * @var int $_keyUsage
+     * @var int
      */
     protected $_keyUsage;
-    
+
     /**
      * Constructor.
      *
      * @param bool $critical
-     * @param int $keyUsage
+     * @param int  $keyUsage
      */
     public function __construct(bool $critical, int $keyUsage)
     {
         parent::__construct(self::OID_KEY_USAGE, $critical);
         $this->_keyUsage = $keyUsage;
     }
-    
-    /**
-     *
-     * {@inheritdoc}
-     * @return self
-     */
-    protected static function _fromDER(string $data, bool $critical): self
-    {
-        return new self($critical,
-            Flags::fromBitString(UnspecifiedType::fromDER($data)->asBitString(),
-                9)->intNumber());
-    }
-    
+
     /**
      * Check whether digitalSignature flag is set.
      *
@@ -65,7 +53,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::DIGITAL_SIGNATURE);
     }
-    
+
     /**
      * Check whether nonRepudiation/contentCommitment flag is set.
      *
@@ -75,7 +63,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::NON_REPUDIATION);
     }
-    
+
     /**
      * Check whether keyEncipherment flag is set.
      *
@@ -85,7 +73,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::KEY_ENCIPHERMENT);
     }
-    
+
     /**
      * Check whether dataEncipherment flag is set.
      *
@@ -95,7 +83,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::DATA_ENCIPHERMENT);
     }
-    
+
     /**
      * Check whether keyAgreement flag is set.
      *
@@ -105,7 +93,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::KEY_AGREEMENT);
     }
-    
+
     /**
      * Check whether keyCertSign flag is set.
      *
@@ -115,7 +103,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::KEY_CERT_SIGN);
     }
-    
+
     /**
      * Check whether cRLSign flag is set.
      *
@@ -125,7 +113,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::CRL_SIGN);
     }
-    
+
     /**
      * Check whether encipherOnly flag is set.
      *
@@ -135,7 +123,7 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::ENCIPHER_ONLY);
     }
-    
+
     /**
      * Check whether decipherOnly flag is set.
      *
@@ -145,24 +133,33 @@ class KeyUsageExtension extends Extension
     {
         return $this->_flagSet(self::DECIPHER_ONLY);
     }
-    
+
     /**
      * Check whether given flag is set.
      *
      * @param int $flag
-     * @return boolean
+     *
+     * @return bool
      */
     protected function _flagSet(int $flag): bool
     {
         return (bool) ($this->_keyUsage & $flag);
     }
-    
+
     /**
-     *
      * {@inheritdoc}
-     * @return BitString
      */
-    protected function _valueASN1(): BitString
+    protected static function _fromDER(string $data, bool $critical): Extension
+    {
+        return new self($critical,
+            Flags::fromBitString(
+                UnspecifiedType::fromDER($data)->asBitString(), 9)->intNumber());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function _valueASN1(): Element
     {
         $flags = new Flags($this->_keyUsage, 9);
         return $flags->bitString()->withoutTrailingZeroes();

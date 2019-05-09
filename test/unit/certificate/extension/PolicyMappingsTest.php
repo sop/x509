@@ -1,35 +1,38 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\ObjectIdentifier;
-use ASN1\Type\Primitive\OctetString;
-use X509\Certificate\Extensions;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\PolicyMappingsExtension;
-use X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
-use X509\Certificate\Extension\PolicyMappings\PolicyMapping;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\Primitive\OctetString;
+use Sop\X509\Certificate\Extension\CertificatePolicy\PolicyInformation;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\PolicyMappings\PolicyMapping;
+use Sop\X509\Certificate\Extension\PolicyMappingsExtension;
+use Sop\X509\Certificate\Extensions;
 
 /**
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
+class PolicyMappingsTest extends TestCase
 {
-    const ISSUER_POLICY_OID = "1.3.6.1.3.1";
-    
-    const SUBJECT_POLICY_OID = "1.3.6.1.3.2";
-    
+    const ISSUER_POLICY_OID = '1.3.6.1.3.1';
+
+    const SUBJECT_POLICY_OID = '1.3.6.1.3.2';
+
     public function testCreateMappings()
     {
-        $mappings = array(
+        $mappings = [
             new PolicyMapping(self::ISSUER_POLICY_OID, self::SUBJECT_POLICY_OID),
-            new PolicyMapping("1.3.6.1.3.3", "1.3.6.1.3.4"));
+            new PolicyMapping('1.3.6.1.3.3', '1.3.6.1.3.4'), ];
         $this->assertInstanceOf(PolicyMapping::class, $mappings[0]);
         return $mappings;
     }
-    
+
     /**
      * @depends testCreateMappings
      *
@@ -41,7 +44,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyMappingsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -51,7 +54,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(Extension::OID_POLICY_MAPPINGS, $ext->oid());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -61,7 +64,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($ext->isCritical());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -73,7 +76,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -85,7 +88,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyMappingsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -97,7 +100,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -108,7 +111,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertContainsOnlyInstancesOf(PolicyMapping::class,
             $ext->mappings());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -116,10 +119,10 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
      */
     public function testIssuerMappings(PolicyMappingsExtension $ext)
     {
-        $this->assertContainsOnly("string",
+        $this->assertContainsOnly('string',
             $ext->issuerMappings(self::ISSUER_POLICY_OID));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -129,7 +132,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -137,14 +140,14 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(PolicyMappingsExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $mapping) {
             $values[] = $mapping;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(PolicyMapping::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -156,7 +159,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PolicyMapping::class, $mapping);
         return $mapping;
     }
-    
+
     /**
      * @depends testMapping
      *
@@ -167,7 +170,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(self::ISSUER_POLICY_OID,
             $mapping->issuerDomainPolicy());
     }
-    
+
     /**
      * @depends testMapping
      *
@@ -178,7 +181,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(self::SUBJECT_POLICY_OID,
             $mapping->subjectDomainPolicy());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -188,7 +191,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->hasAnyPolicyMapping());
     }
-    
+
     public function testHasAnyPolicyIssuer()
     {
         $ext = new PolicyMappingsExtension(false,
@@ -196,7 +199,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
                 self::SUBJECT_POLICY_OID));
         $this->assertTrue($ext->hasAnyPolicyMapping());
     }
-    
+
     public function testHasAnyPolicySubject()
     {
         $ext = new PolicyMappingsExtension(false,
@@ -204,7 +207,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
                 PolicyInformation::OID_ANY_POLICY));
         $this->assertTrue($ext->hasAnyPolicyMapping());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -216,7 +219,7 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($extensions->hasPolicyMappings());
         return $extensions;
     }
-    
+
     /**
      * @depends testExtensions
      *
@@ -227,25 +230,21 @@ class PolicyMappingsTest extends \PHPUnit\Framework\TestCase
         $ext = $exts->policyMappings();
         $this->assertInstanceOf(PolicyMappingsExtension::class, $ext);
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEncodeEmptyFail()
     {
         $ext = new PolicyMappingsExtension(false);
+        $this->expectException(\LogicException::class);
         $ext->toASN1();
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testDecodeEmptyFail()
     {
         $seq = new Sequence();
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_POLICY_MAPPINGS),
             new OctetString($seq->toDER()));
+        $this->expectException(\UnexpectedValueException::class);
         PolicyMappingsExtension::fromASN1($ext_seq);
     }
 }

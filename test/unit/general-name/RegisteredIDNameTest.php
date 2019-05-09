@@ -1,25 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ImplicitTagging;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\RegisteredID;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\RegisteredID;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
+class RegisteredIDNameTest extends TestCase
 {
     public function testCreate()
     {
-        $rid = new RegisteredID("1.3.6.1.3.1");
+        $rid = new RegisteredID('1.3.6.1.3.1');
         $this->assertInstanceOf(RegisteredID::class, $rid);
         return $rid;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -31,7 +34,7 @@ class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -42,7 +45,7 @@ class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_REGISTERED_ID, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -54,7 +57,7 @@ class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RegisteredID::class, $rid);
         return $rid;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -66,7 +69,7 @@ class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -74,9 +77,9 @@ class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testString(RegisteredID $rid)
     {
-        $this->assertInternalType("string", $rid->string());
+        $this->assertIsString($rid->string());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -84,6 +87,6 @@ class RegisteredIDNameTest extends \PHPUnit\Framework\TestCase
      */
     public function testOID(RegisteredID $rid)
     {
-        $this->assertEquals("1.3.6.1.3.1", $rid->oid());
+        $this->assertEquals('1.3.6.1.3.1', $rid->oid());
     }
 }

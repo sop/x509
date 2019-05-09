@@ -1,27 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\Tagged\ImplicitTagging;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Tagged\ImplicitTagging;
+use Sop\ASN1\Type\TaggedType;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group general-name
+ *
+ * @internal
  */
-class URINameTest extends \PHPUnit\Framework\TestCase
+class URINameTest extends TestCase
 {
-    const URI = "urn:test";
-    
+    const URI = 'urn:test';
+
     public function testCreate()
     {
         $uri = new UniformResourceIdentifier(self::URI);
         $this->assertInstanceOf(UniformResourceIdentifier::class, $uri);
         return $uri;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -33,7 +36,7 @@ class URINameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ImplicitTagging::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -44,7 +47,7 @@ class URINameTest extends \PHPUnit\Framework\TestCase
         $el = TaggedType::fromDER($der);
         $this->assertEquals(GeneralName::TAG_URI, $el->tag());
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -56,7 +59,7 @@ class URINameTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UniformResourceIdentifier::class, $uri);
         return $uri;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -69,7 +72,7 @@ class URINameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -79,7 +82,7 @@ class URINameTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::URI, $uri->string());
     }
-    
+
     /**
      * @depends testCreate
      *

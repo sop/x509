@@ -1,18 +1,21 @@
 <?php
+
 declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\AuthorityInformationAccessExtension;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\AccessDescription\AuthorityAccessDescription;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\AccessDescription\AuthorityAccessDescription;
+use Sop\X509\Certificate\Extension\AuthorityInformationAccessExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
- *
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
+class AuthorityInformationAccessTest extends TestCase
 {
     public function testCreate()
     {
@@ -22,13 +25,12 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
                 new UniformResourceIdentifier('urn:test')),
             new AuthorityAccessDescription(
                 AuthorityAccessDescription::OID_METHOD_OSCP,
-                new UniformResourceIdentifier("https://oscp.example.com/")));
+                new UniformResourceIdentifier('https://oscp.example.com/')));
         $this->assertInstanceOf(AuthorityInformationAccessExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param Extension $ext
@@ -38,9 +40,8 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(Extension::OID_AUTHORITY_INFORMATION_ACCESS,
             $ext->oid());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param Extension $ext
@@ -49,9 +50,8 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($ext->isCritical());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param Extension $ext
@@ -62,9 +62,8 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
-     *
      * @depends testEncode
      *
      * @param string $der
@@ -76,9 +75,8 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AuthorityInformationAccessExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
-     *
      * @depends testCreate
      * @depends testDecode
      *
@@ -89,9 +87,8 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityInformationAccessExtension $ext
@@ -102,9 +99,8 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertContainsOnlyInstancesOf(AuthorityAccessDescription::class,
             $ext->accessDescriptions());
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityInformationAccessExtension $ext
@@ -113,16 +109,15 @@ class AuthorityInformationAccessTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $ext);
     }
-    
+
     /**
-     *
      * @depends testCreate
      *
      * @param AuthorityInformationAccessExtension $ext
      */
     public function testIterator(AuthorityInformationAccessExtension $ext)
     {
-        $values = array();
+        $values = [];
         foreach ($ext as $desc) {
             $values[] = $desc;
         }

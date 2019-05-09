@@ -1,29 +1,32 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\Primitive\GeneralizedTime;
-use ASN1\Type\Primitive\UTCTime;
-use X509\Certificate\Time;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\GeneralizedTime;
+use Sop\ASN1\Type\Primitive\UTCTime;
+use Sop\X509\Certificate\Time;
 
 /**
  * @group certificate
  * @group time
+ *
+ * @internal
  */
-class TimeTest extends \PHPUnit\Framework\TestCase
+class TimeTest extends TestCase
 {
-    const TIME = "2016-04-06 12:00:00";
-    
-    const TIME_GEN = "2050-01-01 12:00:00";
-    
+    const TIME = '2016-04-06 12:00:00';
+
+    const TIME_GEN = '2050-01-01 12:00:00';
+
     public function testCreate()
     {
         $time = Time::fromString(self::TIME);
         $this->assertInstanceOf(Time::class, $time);
         return $time;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -35,7 +38,7 @@ class TimeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UTCTime::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -47,7 +50,7 @@ class TimeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Time::class, $time);
         return $time;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -59,7 +62,7 @@ class TimeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -70,22 +73,22 @@ class TimeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(new \DateTimeImmutable(self::TIME),
             $time->dateTime());
     }
-    
+
     public function testTimezone()
     {
-        $time = Time::fromString(self::TIME, "UTC");
+        $time = Time::fromString(self::TIME, 'UTC');
         $this->assertEquals(
-            new DateTimeImmutable(self::TIME, new DateTimeZone("UTC")),
+            new DateTimeImmutable(self::TIME, new DateTimeZone('UTC')),
             $time->dateTime());
     }
-    
+
     public function testCreateGeneralized()
     {
-        $time = Time::fromString(self::TIME_GEN, "UTC");
+        $time = Time::fromString(self::TIME_GEN, 'UTC');
         $this->assertInstanceOf(Time::class, $time);
         return $time;
     }
-    
+
     /**
      * @depends testCreateGeneralized
      *
@@ -97,7 +100,7 @@ class TimeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralizedTime::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncodeGeneralized
      *
@@ -109,7 +112,7 @@ class TimeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Time::class, $time);
         return $time;
     }
-    
+
     /**
      * @depends testCreateGeneralized
      * @depends testDecodeGeneralized
@@ -121,43 +124,39 @@ class TimeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     public function testDecodeFractional()
     {
-        $dt = \DateTimeImmutable::createFromFormat("!Y-m-d H:i:s.u",
-            "2050-01-01 12:00:00.500");
+        $dt = \DateTimeImmutable::createFromFormat('!Y-m-d H:i:s.u',
+            '2050-01-01 12:00:00.500');
         $time = new Time($dt);
         $this->assertInstanceOf(GeneralizedTime::class, $time->toASN1());
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException UnexpectedValueException
      *
      * @param Time $time
      */
     public function testDecodeUnknownTypeFail(Time $time)
     {
         $cls = new ReflectionClass($time);
-        $prop = $cls->getProperty("_type");
+        $prop = $cls->getProperty('_type');
         $prop->setAccessible(true);
         $prop->setValue($time, Element::TYPE_NULL);
+        $this->expectException(\UnexpectedValueException::class);
         $time->toASN1();
     }
-    
-    /**
-     * @expectedException RuntimeException
-     */
+
     public function testInvalidDateFail()
     {
-        Time::fromString("nope");
+        $this->expectException(\RuntimeException::class);
+        Time::fromString('nope');
     }
-    
-    /**
-     * @expectedException RuntimeException
-     */
+
     public function testInvalidTimezone()
     {
-        Time::fromString("now", "fail");
+        $this->expectException(\RuntimeException::class);
+        Time::fromString('now', 'fail');
     }
 }

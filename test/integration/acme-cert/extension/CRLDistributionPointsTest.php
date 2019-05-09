@@ -1,28 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use X509\Certificate\Extension\CRLDistributionPointsExtension;
-use X509\Certificate\Extension\Extension;
-use X509\Certificate\Extension\DistributionPoint\DistributionPoint;
-use X509\Certificate\Extension\DistributionPoint\DistributionPointName;
-use X509\Certificate\Extension\DistributionPoint\FullName;
-use X509\Certificate\Extension\DistributionPoint\ReasonFlags;
-use X509\GeneralName\GeneralName;
-use X509\GeneralName\GeneralNames;
+use Sop\X509\Certificate\Extension\CRLDistributionPointsExtension;
+use Sop\X509\Certificate\Extension\DistributionPoint\DistributionPoint;
+use Sop\X509\Certificate\Extension\DistributionPoint\DistributionPointName;
+use Sop\X509\Certificate\Extension\DistributionPoint\FullName;
+use Sop\X509\Certificate\Extension\DistributionPoint\ReasonFlags;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\GeneralNames;
 
-require_once __DIR__ . "/RefExtTestHelper.php";
+require_once __DIR__ . '/RefExtTestHelper.php';
 
 /**
  * @group certificate
  * @group extension
  * @group decode
+ *
+ * @internal
  */
 class RefCRLDistributionPointsTest extends RefExtTestHelper
 {
     /**
-     *
      * @param Extensions $extensions
+     *
      * @return CRLDistributionPointsExtension
      */
     public function testCRLDistributionPointsExtension()
@@ -31,11 +33,12 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $this->assertInstanceOf(CRLDistributionPointsExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
      * @depends testCRLDistributionPointsExtension
      *
      * @param CRLDistributionPointsExtension $ext
+     *
      * @return DistributionPoint
      */
     public function testDistributionPoint(CRLDistributionPointsExtension $ext)
@@ -44,11 +47,12 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $this->assertInstanceOf(DistributionPoint::class, $cdp);
         return $cdp;
     }
-    
+
     /**
      * @depends testDistributionPoint
      *
      * @param DistributionPoint $dp
+     *
      * @return FullName
      */
     public function testFullName(DistributionPoint $dp)
@@ -57,7 +61,7 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $this->assertEquals(DistributionPointName::TAG_FULL_NAME, $name->tag());
         return $name;
     }
-    
+
     /**
      * @depends testFullName
      *
@@ -68,13 +72,14 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $uri = $name->names()
             ->firstOf(GeneralName::TAG_URI)
             ->uri();
-        $this->assertEquals("http://example.com/myca.crl", $uri);
+        $this->assertEquals('http://example.com/myca.crl', $uri);
     }
-    
+
     /**
      * @depends testDistributionPoint
      *
      * @param DistributionPoint $dp
+     *
      * @return ReasonFlags
      */
     public function testReasons(DistributionPoint $dp)
@@ -83,7 +88,7 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $this->assertInstanceOf(ReasonFlags::class, $reasons);
         return $reasons;
     }
-    
+
     /**
      * @depends testReasons
      *
@@ -100,11 +105,12 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $this->assertFalse($reasons->isPrivilegeWithdrawn());
         $this->assertFalse($reasons->isAACompromise());
     }
-    
+
     /**
      * @depends testDistributionPoint
      *
      * @param DistributionPoint $dp
+     *
      * @return GeneralNames
      */
     public function testIssuer(DistributionPoint $dp)
@@ -113,7 +119,7 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
         $this->assertInstanceOf(GeneralNames::class, $issuer);
         return $issuer;
     }
-    
+
     /**
      * @depends testIssuer
      *
@@ -122,6 +128,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
     public function testIssuerDirName(GeneralNames $gn)
     {
         $dn = $gn->firstOf(GeneralName::TAG_DIRECTORY_NAME)->dn();
-        $this->assertEquals("cn=ACME,o=ACME Ltd.", $dn->toString());
+        $this->assertEquals('cn=ACME,o=ACME Ltd.', $dn->toString());
     }
 }

@@ -1,38 +1,41 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\AttributeCertificate\AttCertValidityPeriod;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\AttributeCertificate\AttCertValidityPeriod;
 
 /**
  * @group ac
+ *
+ * @internal
  */
-class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
+class AttCertValidityPeriodTest extends TestCase
 {
     private static $_nb;
-    
+
     private static $_na;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_nb = new DateTimeImmutable("2016-05-17 12:00:00");
-        self::$_na = new DateTimeImmutable("2016-05-17 13:00:00");
+        self::$_nb = new DateTimeImmutable('2016-05-17 12:00:00');
+        self::$_na = new DateTimeImmutable('2016-05-17 13:00:00');
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_nb = null;
         self::$_nb = null;
     }
-    
+
     public function testCreate()
     {
         $validity = new AttCertValidityPeriod(self::$_nb, self::$_na);
         $this->assertInstanceOf(AttCertValidityPeriod::class, $validity);
         return $validity;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -44,7 +47,7 @@ class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -56,7 +59,7 @@ class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AttCertValidityPeriod::class, $iss_ser);
         return $iss_ser;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -74,7 +77,7 @@ class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
             ->getTimestamp(), $new->notAfterTime()
             ->getTimestamp());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -84,7 +87,7 @@ class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_nb, $validity->notBeforeTime());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -94,11 +97,11 @@ class AttCertValidityPeriodTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_na, $validity->notAfterTime());
     }
-    
+
     public function testFromStrings()
     {
-        $validity = AttCertValidityPeriod::fromStrings("now", "now + 1 day",
-            "UTC");
+        $validity = AttCertValidityPeriod::fromStrings('now', 'now + 1 day',
+            'UTC');
         $this->assertInstanceOf(AttCertValidityPeriod::class, $validity);
     }
 }

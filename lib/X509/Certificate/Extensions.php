@@ -2,11 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace X509\Certificate;
+namespace Sop\X509\Certificate;
 
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension as Ext;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\UnspecifiedType;
+use Sop\X509\Certificate\Extension\AuthorityKeyIdentifierExtension;
+use Sop\X509\Certificate\Extension\BasicConstraintsExtension;
+use Sop\X509\Certificate\Extension\CertificatePoliciesExtension;
+use Sop\X509\Certificate\Extension\CRLDistributionPointsExtension;
+use Sop\X509\Certificate\Extension\ExtendedKeyUsageExtension;
+use Sop\X509\Certificate\Extension\Extension;
+use Sop\X509\Certificate\Extension\InhibitAnyPolicyExtension;
+use Sop\X509\Certificate\Extension\IssuerAlternativeNameExtension;
+use Sop\X509\Certificate\Extension\KeyUsageExtension;
+use Sop\X509\Certificate\Extension\NameConstraintsExtension;
+use Sop\X509\Certificate\Extension\PolicyConstraintsExtension;
+use Sop\X509\Certificate\Extension\PolicyMappingsExtension;
+use Sop\X509\Certificate\Extension\SubjectAlternativeNameExtension;
+use Sop\X509\Certificate\Extension\SubjectKeyIdentifierExtension;
 
 /**
  * Implements <i>Extensions</i> ASN.1 type.
@@ -14,45 +27,46 @@ use X509\Certificate\Extension as Ext;
  * Several convenience methods are provided to fetch commonly used
  * standard extensions. Others can be accessed using <code>get($oid)</code>.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.1.2.9
+ * @see https://tools.ietf.org/html/rfc5280#section-4.1.2.9
  */
 class Extensions implements \Countable, \IteratorAggregate
 {
     /**
      * Extensions.
      *
-     * @var Extension\Extension[] $_extensions
+     * @var Extension[]
      */
     protected $_extensions;
-    
+
     /**
      * Constructor.
      *
-     * @param Ext\Extension ...$extensions Extension objects
+     * @param Extension ...$extensions Extension objects
      */
-    public function __construct(Ext\Extension ...$extensions)
+    public function __construct(Extension ...$extensions)
     {
-        $this->_extensions = array();
+        $this->_extensions = [];
         foreach ($extensions as $ext) {
             $this->_extensions[$ext->oid()] = $ext;
         }
     }
-    
+
     /**
      * Initialize from ASN.1.
      *
      * @param Sequence $seq
+     *
      * @return self
      */
     public static function fromASN1(Sequence $seq): Extensions
     {
         $extensions = array_map(
             function (UnspecifiedType $el) {
-                return Ext\Extension::fromASN1($el->asSequence());
+                return Extension::fromASN1($el->asSequence());
             }, $seq->elements());
         return new self(...$extensions);
     }
-    
+
     /**
      * Generate ASN.1 structure.
      *
@@ -67,14 +81,15 @@ class Extensions implements \Countable, \IteratorAggregate
                 }, $this->_extensions));
         return new Sequence(...$elements);
     }
-    
+
     /**
      * Get self with extensions added.
      *
-     * @param Ext\Extension ...$exts One or more extensions to add
+     * @param Extension ...$exts One or more extensions to add
+     *
      * @return self
      */
-    public function withExtensions(Ext\Extension ...$exts): Extensions
+    public function withExtensions(Extension ...$exts): Extensions
     {
         $obj = clone $this;
         foreach ($exts as $ext) {
@@ -82,33 +97,36 @@ class Extensions implements \Countable, \IteratorAggregate
         }
         return $obj;
     }
-    
+
     /**
      * Check whether extension is present.
      *
      * @param string $oid Extensions OID
+     *
      * @return bool
      */
     public function has(string $oid): bool
     {
         return isset($this->_extensions[$oid]);
     }
-    
+
     /**
      * Get extension by OID.
      *
      * @param string $oid
+     *
      * @throws \LogicException If extension is not present
-     * @return Extension\Extension
+     *
+     * @return Extension
      */
-    public function get(string $oid): Ext\Extension
+    public function get(string $oid): Extension
     {
         if (!$this->has($oid)) {
-            throw new \LogicException("No extension by OID $oid.");
+            throw new \LogicException("No extension by OID {$oid}.");
         }
         return $this->_extensions[$oid];
     }
-    
+
     /**
      * Check whether 'Authority Key Identifier' extension is present.
      *
@@ -116,22 +134,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasAuthorityKeyIdentifier(): bool
     {
-        return $this->has(Ext\Extension::OID_AUTHORITY_KEY_IDENTIFIER);
+        return $this->has(Extension::OID_AUTHORITY_KEY_IDENTIFIER);
     }
-    
+
     /**
      * Get 'Authority Key Identifier' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\AuthorityKeyIdentifierExtension
+     *
+     * @return AuthorityKeyIdentifierExtension
      */
-    public function authorityKeyIdentifier(): Ext\AuthorityKeyIdentifierExtension
+    public function authorityKeyIdentifier(): AuthorityKeyIdentifierExtension
     {
-        /** @var Extension\AuthorityKeyIdentifierExtension $keyIdentifier */
-        $keyIdentifier = $this->get(Ext\Extension::OID_AUTHORITY_KEY_IDENTIFIER);
-        return $keyIdentifier;
+        return $this->get(Extension::OID_AUTHORITY_KEY_IDENTIFIER);
     }
-    
+
     /**
      * Check whether 'Subject Key Identifier' extension is present.
      *
@@ -139,23 +156,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasSubjectKeyIdentifier(): bool
     {
-        return $this->has(Ext\Extension::OID_SUBJECT_KEY_IDENTIFIER);
+        return $this->has(Extension::OID_SUBJECT_KEY_IDENTIFIER);
     }
-    
+
     /**
      * Get 'Subject Key Identifier' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\SubjectKeyIdentifierExtension
+     *
+     * @return SubjectKeyIdentifierExtension
      */
-    public function subjectKeyIdentifier(): Ext\SubjectKeyIdentifierExtension
+    public function subjectKeyIdentifier(): SubjectKeyIdentifierExtension
     {
-        /** @var Extension\SubjectKeyIdentifierExtension $subjectKeyIdentifier */
-        $subjectKeyIdentifier = $this->get(
-            Ext\Extension::OID_SUBJECT_KEY_IDENTIFIER);
-        return $subjectKeyIdentifier;
+        return $this->get(Extension::OID_SUBJECT_KEY_IDENTIFIER);
     }
-    
+
     /**
      * Check whether 'Key Usage' extension is present.
      *
@@ -163,22 +178,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasKeyUsage(): bool
     {
-        return $this->has(Ext\Extension::OID_KEY_USAGE);
+        return $this->has(Extension::OID_KEY_USAGE);
     }
-    
+
     /**
      * Get 'Key Usage' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\KeyUsageExtension
+     *
+     * @return KeyUsageExtension
      */
-    public function keyUsage(): Ext\KeyUsageExtension
+    public function keyUsage(): KeyUsageExtension
     {
-        /** @var Extension\KeyUsageExtension $keyUsage */
-        $keyUsage = $this->get(Ext\Extension::OID_KEY_USAGE);
-        return $keyUsage;
+        return $this->get(Extension::OID_KEY_USAGE);
     }
-    
+
     /**
      * Check whether 'Certificate Policies' extension is present.
      *
@@ -186,22 +200,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasCertificatePolicies(): bool
     {
-        return $this->has(Ext\Extension::OID_CERTIFICATE_POLICIES);
+        return $this->has(Extension::OID_CERTIFICATE_POLICIES);
     }
-    
+
     /**
      * Get 'Certificate Policies' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\CertificatePoliciesExtension
+     *
+     * @return CertificatePoliciesExtension
      */
-    public function certificatePolicies(): Ext\CertificatePoliciesExtension
+    public function certificatePolicies(): CertificatePoliciesExtension
     {
-        /** @var Extension\CertificatePoliciesExtension $certPolicies */
-        $certPolicies = $this->get(Ext\Extension::OID_CERTIFICATE_POLICIES);
-        return $certPolicies;
+        return $this->get(Extension::OID_CERTIFICATE_POLICIES);
     }
-    
+
     /**
      * Check whether 'Policy Mappings' extension is present.
      *
@@ -209,22 +222,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasPolicyMappings(): bool
     {
-        return $this->has(Ext\Extension::OID_POLICY_MAPPINGS);
+        return $this->has(Extension::OID_POLICY_MAPPINGS);
     }
-    
+
     /**
      * Get 'Policy Mappings' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\PolicyMappingsExtension
+     *
+     * @return PolicyMappingsExtension
      */
-    public function policyMappings(): Ext\PolicyMappingsExtension
+    public function policyMappings(): PolicyMappingsExtension
     {
-        /** @var Extension\PolicyMappingsExtension $policyMappings */
-        $policyMappings = $this->get(Ext\Extension::OID_POLICY_MAPPINGS);
-        return $policyMappings;
+        return $this->get(Extension::OID_POLICY_MAPPINGS);
     }
-    
+
     /**
      * Check whether 'Subject Alternative Name' extension is present.
      *
@@ -232,22 +244,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasSubjectAlternativeName(): bool
     {
-        return $this->has(Ext\Extension::OID_SUBJECT_ALT_NAME);
+        return $this->has(Extension::OID_SUBJECT_ALT_NAME);
     }
-    
+
     /**
      * Get 'Subject Alternative Name' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\SubjectAlternativeNameExtension
+     *
+     * @return SubjectAlternativeNameExtension
      */
-    public function subjectAlternativeName(): Ext\SubjectAlternativeNameExtension
+    public function subjectAlternativeName(): SubjectAlternativeNameExtension
     {
-        /** @var Extension\SubjectAlternativeNameExtension $subjectAltName */
-        $subjectAltName = $this->get(Ext\Extension::OID_SUBJECT_ALT_NAME);
-        return $subjectAltName;
+        return $this->get(Extension::OID_SUBJECT_ALT_NAME);
     }
-    
+
     /**
      * Check whether 'Issuer Alternative Name' extension is present.
      *
@@ -255,21 +266,19 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasIssuerAlternativeName(): bool
     {
-        return $this->has(Ext\Extension::OID_ISSUER_ALT_NAME);
+        return $this->has(Extension::OID_ISSUER_ALT_NAME);
     }
-    
+
     /**
      * Get 'Issuer Alternative Name' extension.
      *
-     * @return \X509\Certificate\Extension\IssuerAlternativeNameExtension
+     * @return IssuerAlternativeNameExtension
      */
-    public function issuerAlternativeName(): Ext\IssuerAlternativeNameExtension
+    public function issuerAlternativeName(): IssuerAlternativeNameExtension
     {
-        /** @var Extension\IssuerAlternativeNameExtension $issuerAltName */
-        $issuerAltName = $this->get(Ext\Extension::OID_ISSUER_ALT_NAME);
-        return $issuerAltName;
+        return $this->get(Extension::OID_ISSUER_ALT_NAME);
     }
-    
+
     /**
      * Check whether 'Basic Constraints' extension is present.
      *
@@ -277,22 +286,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasBasicConstraints(): bool
     {
-        return $this->has(Ext\Extension::OID_BASIC_CONSTRAINTS);
+        return $this->has(Extension::OID_BASIC_CONSTRAINTS);
     }
-    
+
     /**
      * Get 'Basic Constraints' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\BasicConstraintsExtension
+     *
+     * @return BasicConstraintsExtension
      */
-    public function basicConstraints(): Ext\BasicConstraintsExtension
+    public function basicConstraints(): BasicConstraintsExtension
     {
-        /** @var Extension\BasicConstraintsExtension $basicConstraints */
-        $basicConstraints = $this->get(Ext\Extension::OID_BASIC_CONSTRAINTS);
-        return $basicConstraints;
+        return $this->get(Extension::OID_BASIC_CONSTRAINTS);
     }
-    
+
     /**
      * Check whether 'Name Constraints' extension is present.
      *
@@ -300,22 +308,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasNameConstraints(): bool
     {
-        return $this->has(Ext\Extension::OID_NAME_CONSTRAINTS);
+        return $this->has(Extension::OID_NAME_CONSTRAINTS);
     }
-    
+
     /**
      * Get 'Name Constraints' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\NameConstraintsExtension
+     *
+     * @return NameConstraintsExtension
      */
-    public function nameConstraints(): Ext\NameConstraintsExtension
+    public function nameConstraints(): NameConstraintsExtension
     {
-        /** @var Extension\NameConstraintsExtension $nameConstraints */
-        $nameConstraints = $this->get(Ext\Extension::OID_NAME_CONSTRAINTS);
-        return $nameConstraints;
+        return $this->get(Extension::OID_NAME_CONSTRAINTS);
     }
-    
+
     /**
      * Check whether 'Policy Constraints' extension is present.
      *
@@ -323,22 +330,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasPolicyConstraints(): bool
     {
-        return $this->has(Ext\Extension::OID_POLICY_CONSTRAINTS);
+        return $this->has(Extension::OID_POLICY_CONSTRAINTS);
     }
-    
+
     /**
      * Get 'Policy Constraints' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\PolicyConstraintsExtension
+     *
+     * @return PolicyConstraintsExtension
      */
-    public function policyConstraints(): Ext\PolicyConstraintsExtension
+    public function policyConstraints(): PolicyConstraintsExtension
     {
-        /** @var Extension\PolicyConstraintsExtension $policyConstraints */
-        $policyConstraints = $this->get(Ext\Extension::OID_POLICY_CONSTRAINTS);
-        return $policyConstraints;
+        return $this->get(Extension::OID_POLICY_CONSTRAINTS);
     }
-    
+
     /**
      * Check whether 'Extended Key Usage' extension is present.
      *
@@ -346,22 +352,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasExtendedKeyUsage(): bool
     {
-        return $this->has(Ext\Extension::OID_EXT_KEY_USAGE);
+        return $this->has(Extension::OID_EXT_KEY_USAGE);
     }
-    
+
     /**
      * Get 'Extended Key Usage' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\ExtendedKeyUsageExtension
+     *
+     * @return ExtendedKeyUsageExtension
      */
-    public function extendedKeyUsage(): Ext\ExtendedKeyUsageExtension
+    public function extendedKeyUsage(): ExtendedKeyUsageExtension
     {
-        /** @var Extension\ExtendedKeyUsageExtension $keyUsage */
-        $keyUsage = $this->get(Ext\Extension::OID_EXT_KEY_USAGE);
-        return $keyUsage;
+        return $this->get(Extension::OID_EXT_KEY_USAGE);
     }
-    
+
     /**
      * Check whether 'CRL Distribution Points' extension is present.
      *
@@ -369,22 +374,21 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasCRLDistributionPoints(): bool
     {
-        return $this->has(Ext\Extension::OID_CRL_DISTRIBUTION_POINTS);
+        return $this->has(Extension::OID_CRL_DISTRIBUTION_POINTS);
     }
-    
+
     /**
      * Get 'CRL Distribution Points' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\CRLDistributionPointsExtension
+     *
+     * @return CRLDistributionPointsExtension
      */
-    public function crlDistributionPoints(): Ext\CRLDistributionPointsExtension
+    public function crlDistributionPoints(): CRLDistributionPointsExtension
     {
-        /** @var Extension\CRLDistributionPointsExtension $crlDist */
-        $crlDist = $this->get(Ext\Extension::OID_CRL_DISTRIBUTION_POINTS);
-        return $crlDist;
+        return $this->get(Extension::OID_CRL_DISTRIBUTION_POINTS);
     }
-    
+
     /**
      * Check whether 'Inhibit anyPolicy' extension is present.
      *
@@ -392,36 +396,36 @@ class Extensions implements \Countable, \IteratorAggregate
      */
     public function hasInhibitAnyPolicy(): bool
     {
-        return $this->has(Ext\Extension::OID_INHIBIT_ANY_POLICY);
+        return $this->has(Extension::OID_INHIBIT_ANY_POLICY);
     }
-    
+
     /**
      * Get 'Inhibit anyPolicy' extension.
      *
      * @throws \LogicException If extension is not present
-     * @return \X509\Certificate\Extension\InhibitAnyPolicyExtension
-     */
-    public function inhibitAnyPolicy(): Ext\InhibitAnyPolicyExtension
-    {
-        /** @var Extension\InhibitAnyPolicyExtension $inhibitAny */
-        $inhibitAny = $this->get(Ext\Extension::OID_INHIBIT_ANY_POLICY);
-        return $inhibitAny;
-    }
-    
-    /**
      *
+     * @return InhibitAnyPolicyExtension
+     */
+    public function inhibitAnyPolicy(): InhibitAnyPolicyExtension
+    {
+        return $this->get(Extension::OID_INHIBIT_ANY_POLICY);
+    }
+
+    /**
      * @see \Countable::count()
+     *
      * @return int
      */
     public function count(): int
     {
         return count($this->_extensions);
     }
-    
+
     /**
      * Get iterator for extensions.
      *
      * @see \IteratorAggregate::getIterator()
+     *
      * @return \Traversable
      */
     public function getIterator(): \Traversable

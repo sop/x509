@@ -1,6 +1,7 @@
 # export
 .git* export-ignore
 .*.yml export-ignore
+.php_cs* export-ignore
 test/ export-ignore
 phpunit.* export-ignore
 examples/ export-ignore

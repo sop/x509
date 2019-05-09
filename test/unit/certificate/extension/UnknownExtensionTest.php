@@ -1,20 +1,22 @@
 <?php
+
 declare(strict_types = 1);
 
-use ASN1\Element;
-use ASN1\Type\Primitive\NullType;
-use X509\Certificate\Extension\UnknownExtension;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Primitive\NullType;
+use Sop\X509\Certificate\Extension\UnknownExtension;
 
 /**
- *
  * @group certificate
  * @group extension
+ *
+ * @internal
  */
-class UnknownExtensionTest extends \PHPUnit\Framework\TestCase
+class UnknownExtensionTest extends TestCase
 {
     /**
-     *
-     * @return \X509\Certificate\Extension\UnknownExtension
+     * @return \Sop\X509\Certificate\Extension\UnknownExtension
      */
     public function testCreateWithDER()
     {
@@ -22,10 +24,10 @@ class UnknownExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UnknownExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
-     *
      * @depends testCreateWithDER
+     *
      * @param UnknownExtension $ext
      */
     public function testExtensionValueDER(UnknownExtension $ext)
@@ -33,10 +35,9 @@ class UnknownExtensionTest extends \PHPUnit\Framework\TestCase
         $expect = (new NullType())->toDER();
         $this->assertEquals($expect, $ext->extensionValue());
     }
-    
+
     /**
-     *
-     * @return \X509\Certificate\Extension\UnknownExtension
+     * @return \Sop\X509\Certificate\Extension\UnknownExtension
      */
     public function testCreateFromString()
     {
@@ -44,20 +45,20 @@ class UnknownExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UnknownExtension::class, $ext);
         return $ext;
     }
-    
+
     /**
-     *
      * @depends testCreateFromString
+     *
      * @param UnknownExtension $ext
      */
     public function testExtensionValueRaw(UnknownExtension $ext)
     {
         $this->assertEquals('DATA', $ext->extensionValue());
     }
-    
+
     /**
-     *
      * @depends testCreateWithDER
+     *
      * @param UnknownExtension $ext
      */
     public function testExtensionValueASN1(UnknownExtension $ext)
@@ -68,11 +69,10 @@ class UnknownExtensionTest extends \PHPUnit\Framework\TestCase
         $result = $mtd->invoke($ext);
         $this->assertInstanceOf(Element::class, $result);
     }
-    
+
     /**
-     *
      * @depends testCreateFromString
-     * @expectedException RuntimeException
+     *
      * @param UnknownExtension $ext
      */
     public function testExtensionValueASN1Fail(UnknownExtension $ext)
@@ -80,6 +80,7 @@ class UnknownExtensionTest extends \PHPUnit\Framework\TestCase
         $cls = new ReflectionClass(UnknownExtension::class);
         $mtd = $cls->getMethod('_valueASN1');
         $mtd->setAccessible(true);
+        $this->expectException(\RuntimeException::class);
         $mtd->invoke($ext);
     }
 }

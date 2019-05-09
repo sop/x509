@@ -1,34 +1,37 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\Attribute;
-use X501\ASN1\AttributeType;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
-use X509\AttributeCertificate\Attribute\GroupAttributeValue;
-use X509\AttributeCertificate\Attribute\IetfAttrValue;
-use X509\AttributeCertificate\Attribute\RoleAttributeValue;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\Attribute;
+use Sop\X501\ASN1\AttributeType;
+use Sop\X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\GroupAttributeValue;
+use Sop\X509\AttributeCertificate\Attribute\IetfAttrValue;
+use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
+class AttributeCertificateAttributesTest extends TestCase
 {
     public function testCreate()
     {
         $attribs = Attributes::fromAttributeValues(
             new AccessIdentityAttributeValue(
-                new UniformResourceIdentifier("urn:service"),
-                new UniformResourceIdentifier("urn:ident")),
-            new RoleAttributeValue(new UniformResourceIdentifier("urn:admin")));
+                new UniformResourceIdentifier('urn:service'),
+                new UniformResourceIdentifier('urn:ident')),
+            new RoleAttributeValue(new UniformResourceIdentifier('urn:admin')));
         $this->assertInstanceOf(Attributes::class, $attribs);
         return $attribs;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -40,7 +43,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -52,7 +55,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Attributes::class, $tc);
         return $tc;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -64,7 +67,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -74,7 +77,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $attribs);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -82,14 +85,14 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(Attributes $attribs)
     {
-        $values = array();
+        $values = [];
         foreach ($attribs as $attr) {
             $values[] = $attr;
         }
         $this->assertCount(2, $values);
         $this->assertContainsOnlyInstancesOf(Attribute::class, $values);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -99,7 +102,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertTrue($attribs->has(AccessIdentityAttributeValue::OID));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -110,7 +113,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Attribute::class,
             $attribs->firstOf(AccessIdentityAttributeValue::OID));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -121,7 +124,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(1, $attribs->allOf(
             AccessIdentityAttributeValue::OID));
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -131,10 +134,10 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $attribs = $attribs->withAdditional(
             Attribute::fromAttributeValues(
-                new GroupAttributeValue(IetfAttrValue::fromString("test"))));
+                new GroupAttributeValue(IetfAttrValue::fromString('test'))));
         $this->assertInstanceOf(Attributes::class, $attribs);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -144,15 +147,15 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $attribs = $attribs->withUnique(
             Attribute::fromAttributeValues(
-                new RoleAttributeValue(new UniformResourceIdentifier("uri:new"))));
+                new RoleAttributeValue(new UniformResourceIdentifier('uri:new'))));
         $this->assertInstanceOf(Attributes::class, $attribs);
         $this->assertCount(2, $attribs);
-        $this->assertEquals("uri:new",
+        $this->assertEquals('uri:new',
             $attribs->firstOf(AttributeType::OID_ROLE)
                 ->first()
                 ->roleName());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -162,7 +165,7 @@ class AttributeCertificateAttributesTest extends \PHPUnit\Framework\TestCase
     {
         $attribs = $attribs->withUnique(
             Attribute::fromAttributeValues(
-                new GroupAttributeValue(IetfAttrValue::fromString("test"))));
+                new GroupAttributeValue(IetfAttrValue::fromString('test'))));
         $this->assertCount(3, $attribs);
     }
 }

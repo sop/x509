@@ -2,41 +2,41 @@
 
 declare(strict_types = 1);
 
-namespace X509\GeneralName;
+namespace Sop\X509\GeneralName;
 
-use ASN1\Element;
-use ASN1\Type\TaggedType;
-use ASN1\Type\UnspecifiedType;
-use ASN1\Type\Constructed\Sequence;
-use ASN1\Type\Primitive\ObjectIdentifier;
-use ASN1\Type\Tagged\ExplicitlyTaggedType;
-use ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Element;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\ASN1\Type\Primitive\ObjectIdentifier;
+use Sop\ASN1\Type\Tagged\ExplicitlyTaggedType;
+use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
+use Sop\ASN1\Type\TaggedType;
+use Sop\ASN1\Type\UnspecifiedType;
 
 /**
  * Implements <i>otherName</i> CHOICE type of <i>GeneralName</i>.
  *
- * @link https://tools.ietf.org/html/rfc5280#section-4.2.1.6
+ * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */
 class OtherName extends GeneralName
 {
     /**
      * Type OID.
      *
-     * @var string $_type
+     * @var string
      */
     protected $_type;
-    
+
     /**
      * Value.
      *
-     * @var Element $_element
+     * @var Element
      */
     protected $_element;
-    
+
     /**
      * Constructor.
      *
-     * @param string $type_id OID
+     * @param string  $type_id OID
      * @param Element $el
      */
     public function __construct(string $type_id, Element $el)
@@ -45,33 +45,28 @@ class OtherName extends GeneralName
         $this->_type = $type_id;
         $this->_element = $el;
     }
-    
+
     /**
+     * {@inheritdoc}
      *
-     * @param UnspecifiedType $el
      * @return self
      */
-    public static function fromChosenASN1(UnspecifiedType $el): self
+    public static function fromChosenASN1(UnspecifiedType $el): GeneralName
     {
         $seq = $el->asSequence();
-        $type_id = $seq->at(0)
-            ->asObjectIdentifier()
-            ->oid();
-        $value = $seq->getTagged(0)
-            ->asExplicit()
-            ->asElement();
+        $type_id = $seq->at(0)->asObjectIdentifier()->oid();
+        $value = $seq->getTagged(0)->asExplicit()->asElement();
         return new self($type_id, $value);
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     public function string(): string
     {
-        return $this->_type . "/#" . bin2hex($this->_element->toDER());
+        return $this->_type . '/#' . bin2hex($this->_element->toDER());
     }
-    
+
     /**
      * Get type OID.
      *
@@ -81,7 +76,7 @@ class OtherName extends GeneralName
     {
         return $this->_type;
     }
-    
+
     /**
      * Get value element.
      *
@@ -91,9 +86,8 @@ class OtherName extends GeneralName
     {
         return $this->_element;
     }
-    
+
     /**
-     *
      * {@inheritdoc}
      */
     protected function _choiceASN1(): TaggedType

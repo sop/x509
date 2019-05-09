@@ -1,24 +1,27 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Primitive\BitString;
-use X509\Certificate\UniqueIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Primitive\BitString;
+use Sop\X509\Certificate\UniqueIdentifier;
 
 /**
  * @group certificate
+ *
+ * @internal
  */
-class UniqueIdentifierTest extends \PHPUnit\Framework\TestCase
+class UniqueIdentifierTest extends TestCase
 {
-    const UID = "urn:test";
-    
+    const UID = 'urn:test';
+
     public function testCreate()
     {
         $id = UniqueIdentifier::fromString(self::UID);
         $this->assertInstanceOf(UniqueIdentifier::class, $id);
         return $id;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -30,7 +33,7 @@ class UniqueIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(BitString::class, $bs);
         return $bs->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -42,7 +45,7 @@ class UniqueIdentifierTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(UniqueIdentifier::class, $id);
         return $id;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -54,7 +57,7 @@ class UniqueIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -64,7 +67,7 @@ class UniqueIdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::UID, $id->string());
     }
-    
+
     /**
      * @depends testCreate
      *

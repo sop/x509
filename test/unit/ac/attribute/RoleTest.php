@@ -1,27 +1,30 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X501\ASN1\AttributeType;
-use X501\ASN1\AttributeValue\AttributeValue;
-use X501\MatchingRule\MatchingRule;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Attribute\RoleAttributeValue;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X501\ASN1\AttributeType;
+use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X501\MatchingRule\MatchingRule;
+use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group ac
  * @group attribute
+ *
+ * @internal
  */
-class RoleAttributeTest extends \PHPUnit\Framework\TestCase
+class RoleAttributeTest extends TestCase
 {
-    const ROLE_URI = "urn:administrator";
-    
-    const AUTHORITY_DN = "cn=Role Authority";
-    
+    const ROLE_URI = 'urn:administrator';
+
+    const AUTHORITY_DN = 'cn=Role Authority';
+
     public function testCreate()
     {
         $value = new RoleAttributeValue(
@@ -30,7 +33,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RoleAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -42,7 +45,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -55,7 +58,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RoleAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -67,7 +70,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -77,14 +80,14 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(AttributeType::OID_ROLE, $value->oid());
     }
-    
+
     public function testFromString()
     {
         $value = RoleAttributeValue::fromString(self::ROLE_URI,
             new GeneralNames(DirectoryName::fromDNString(self::AUTHORITY_DN)));
         $this->assertInstanceOf(RoleAttributeValue::class, $value);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -94,7 +97,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::ROLE_URI, $value->roleName());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -106,7 +109,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
             $value->roleAuthority()
                 ->firstDN());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -118,7 +121,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($attribs->hasRole());
         return $attribs;
     }
-    
+
     /**
      * @depends testAttributes
      *
@@ -128,7 +131,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(RoleAttributeValue::class, $attribs->role());
     }
-    
+
     /**
      * @depends testAttributes
      *
@@ -139,15 +142,15 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertContainsOnlyInstancesOf(RoleAttributeValue::class,
             $attribs->roles());
     }
-    
+
     public function testAllFromMultipleAttributes()
     {
         $attribs = Attributes::fromAttributeValues(
-            RoleAttributeValue::fromString("urn:role:1"),
-            RoleAttributeValue::fromString("urn:role:2"));
+            RoleAttributeValue::fromString('urn:role:1'),
+            RoleAttributeValue::fromString('urn:role:2'));
         $this->assertCount(2, $attribs->roles());
     }
-    
+
     public function testCreateWithoutAuthority()
     {
         $value = new RoleAttributeValue(
@@ -155,7 +158,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RoleAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreateWithoutAuthority
      *
@@ -167,7 +170,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncodeWithoutAuthority
      *
@@ -180,7 +183,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RoleAttributeValue::class, $value);
         return $value;
     }
-    
+
     /**
      * @depends testCreateWithoutAuthority
      * @depends testDecodeWithoutAuthority
@@ -193,18 +196,18 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreateWithoutAuthority
-     * @expectedException LogicException
      *
      * @param RoleAttributeValue $value
      */
     public function testNoRoleAuthorityFail(RoleAttributeValue $value)
     {
+        $this->expectException(\LogicException::class);
         $value->roleAuthority();
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -212,9 +215,9 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
      */
     public function testStringValue(AttributeValue $value)
     {
-        $this->assertInternalType("string", $value->stringValue());
+        $this->assertIsString($value->stringValue());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -225,7 +228,7 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(MatchingRule::class,
             $value->equalityMatchingRule());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -233,9 +236,9 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
      */
     public function testRFC2253String(AttributeValue $value)
     {
-        $this->assertInternalType("string", $value->rfc2253String());
+        $this->assertIsString($value->rfc2253String());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -243,6 +246,6 @@ class RoleAttributeTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(AttributeValue $value)
     {
-        $this->assertInternalType("string", strval($value));
+        $this->assertIsString(strval($value));
     }
 }

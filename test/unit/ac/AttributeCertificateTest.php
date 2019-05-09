@@ -1,61 +1,64 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\CryptoBridge\Crypto;
 use Sop\CryptoEncoding\PEM;
-use Sop\CryptoTypes\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
+use Sop\CryptoTypes\AlgorithmIdentifier\GenericAlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Signature\SHA256WithRSAEncryptionAlgorithmIdentifier;
 use Sop\CryptoTypes\Asymmetric\PrivateKeyInfo;
 use Sop\CryptoTypes\Signature\Signature;
-use X501\ASN1\Name;
-use X509\AttributeCertificate\AttCertIssuer;
-use X509\AttributeCertificate\AttCertValidityPeriod;
-use X509\AttributeCertificate\AttributeCertificate;
-use X509\AttributeCertificate\AttributeCertificateInfo;
-use X509\AttributeCertificate\Attributes;
-use X509\AttributeCertificate\Holder;
-use X509\AttributeCertificate\IssuerSerial;
-use X509\AttributeCertificate\Attribute\RoleAttributeValue;
-use X509\Certificate\Certificate;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\GeneralNames;
-use X509\GeneralName\UniformResourceIdentifier;
+use Sop\X501\ASN1\Name;
+use Sop\X509\AttributeCertificate\AttCertIssuer;
+use Sop\X509\AttributeCertificate\AttCertValidityPeriod;
+use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
+use Sop\X509\AttributeCertificate\AttributeCertificate;
+use Sop\X509\AttributeCertificate\AttributeCertificateInfo;
+use Sop\X509\AttributeCertificate\Attributes;
+use Sop\X509\AttributeCertificate\Holder;
+use Sop\X509\AttributeCertificate\IssuerSerial;
+use Sop\X509\Certificate\Certificate;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\GeneralNames;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group ac
+ *
+ * @internal
  */
-class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
+class AttributeCertificateTest extends TestCase
 {
     private static $_acPem;
-    
+
     private static $_privateKeyInfo;
-    
-    public static function setUpBeforeClass()
+
+    public static function setUpBeforeClass(): void
     {
-        self::$_acPem = PEM::fromFile(TEST_ASSETS_DIR . "/ac/acme-ac.pem");
+        self::$_acPem = PEM::fromFile(TEST_ASSETS_DIR . '/ac/acme-ac.pem');
         self::$_privateKeyInfo = PrivateKeyInfo::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/rsa/private_key.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/rsa/private_key.pem'));
     }
-    
-    public static function tearDownAfterClass()
+
+    public static function tearDownAfterClass(): void
     {
         self::$_acPem = null;
         self::$_privateKeyInfo = null;
     }
-    
+
     public function testCreate()
     {
         $holder = new Holder(
             new IssuerSerial(
-                new GeneralNames(DirectoryName::fromDNString("cn=Issuer")), 42));
-        $issuer = AttCertIssuer::fromName(Name::fromString("cn=Issuer"));
-        $validity = AttCertValidityPeriod::fromStrings("2016-04-29 12:00:00",
-            "2016-04-29 13:00:00");
+                new GeneralNames(DirectoryName::fromDNString('cn=Issuer')), 42));
+        $issuer = AttCertIssuer::fromName(Name::fromString('cn=Issuer'));
+        $validity = AttCertValidityPeriod::fromStrings('2016-04-29 12:00:00',
+            '2016-04-29 13:00:00');
         $attribs = Attributes::fromAttributeValues(
-            new RoleAttributeValue(new UniformResourceIdentifier("urn:admin")));
+            new RoleAttributeValue(new UniformResourceIdentifier('urn:admin')));
         $acinfo = new AttributeCertificateInfo($holder, $issuer, $validity,
             $attribs);
         $algo = new SHA256WithRSAEncryptionAlgorithmIdentifier();
@@ -67,7 +70,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AttributeCertificate::class, $ac);
         return $ac;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -79,7 +82,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $seq);
         return $seq->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -91,7 +94,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(AttributeCertificate::class, $ac);
         return $ac;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -104,7 +107,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -114,7 +117,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(AttributeCertificateInfo::class, $ac->acinfo());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -125,7 +128,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SignatureAlgorithmIdentifier::class,
             $ac->signatureAlgorithm());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -135,7 +138,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(Signature::class, $ac->signatureValue());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -146,28 +149,28 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
         $pubkey_info = self::$_privateKeyInfo->publicKeyInfo();
         $this->assertTrue($ac->verify($pubkey_info));
     }
-    
+
     /**
      * @depends testCreate
-     * @expectedException UnexpectedValueException
      *
      * @param AttributeCertificate $ac
      */
     public function testInvalidAlgoFail(AttributeCertificate $ac)
     {
         $seq = $ac->toASN1();
-        $algo = new GenericAlgorithmIdentifier("1.3.6.1.3");
+        $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(1, $algo->toASN1());
+        $this->expectException(\UnexpectedValueException::class);
         AttributeCertificate::fromASN1($seq);
     }
-    
+
     public function testFromPEM()
     {
         $ac = AttributeCertificate::fromPEM(self::$_acPem);
         $this->assertInstanceOf(AttributeCertificate::class, $ac);
         return $ac;
     }
-    
+
     /**
      * @depends testFromPEM
      *
@@ -179,7 +182,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(PEM::class, $pem);
         return $pem;
     }
-    
+
     /**
      * @depends testToPEM
      *
@@ -189,15 +192,13 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(self::$_acPem, $pem);
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testInvalidPEMTypeFail()
     {
-        AttributeCertificate::fromPEM(new PEM("fail", ""));
+        $this->expectException(\UnexpectedValueException::class);
+        AttributeCertificate::fromPEM(new PEM('fail', ''));
     }
-    
+
     /**
      * @depends testFromPEM
      *
@@ -205,9 +206,9 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(AttributeCertificate $ac)
     {
-        $this->assertInternalType("string", strval($ac));
+        $this->assertIsString(strval($ac));
     }
-    
+
     /**
      * @depends testFromPEM
      *
@@ -216,10 +217,10 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     public function testIsHeldBy(AttributeCertificate $ac)
     {
         $cert = Certificate::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ecdsa.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ecdsa.pem'));
         $this->assertTrue($ac->isHeldBy($cert));
     }
-    
+
     /**
      * @depends testFromPEM
      *
@@ -228,10 +229,10 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     public function testIsHeldByFail(AttributeCertificate $ac)
     {
         $cert = Certificate::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ca.pem'));
         $this->assertFalse($ac->isHeldBy($cert));
     }
-    
+
     /**
      * @depends testFromPEM
      *
@@ -240,10 +241,10 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     public function testIsIssuedBy(AttributeCertificate $ac)
     {
         $cert = Certificate::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-rsa.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-rsa.pem'));
         $this->assertTrue($ac->isIssuedBy($cert));
     }
-    
+
     /**
      * @depends testFromPEM
      *
@@ -252,7 +253,7 @@ class AttributeCertificateTest extends \PHPUnit\Framework\TestCase
     public function testIsIssuedByFail(AttributeCertificate $ac)
     {
         $cert = Certificate::fromPEM(
-            PEM::fromFile(TEST_ASSETS_DIR . "/certs/acme-ca.pem"));
+            PEM::fromFile(TEST_ASSETS_DIR . '/certs/acme-ca.pem'));
         $this->assertFalse($ac->isIssuedBy($cert));
     }
 }

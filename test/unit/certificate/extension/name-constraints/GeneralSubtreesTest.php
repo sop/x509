@@ -1,29 +1,32 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-use ASN1\Type\Constructed\Sequence;
-use X509\Certificate\Extension\NameConstraints\GeneralSubtree;
-use X509\Certificate\Extension\NameConstraints\GeneralSubtrees;
-use X509\GeneralName\DirectoryName;
-use X509\GeneralName\UniformResourceIdentifier;
+use PHPUnit\Framework\TestCase;
+use Sop\ASN1\Type\Constructed\Sequence;
+use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtree;
+use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtrees;
+use Sop\X509\GeneralName\DirectoryName;
+use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
  * @group certificate
  * @group extension
  * @group name-constraint
+ *
+ * @internal
  */
-class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
+class GeneralSubtreesTest extends TestCase
 {
     public function testCreate()
     {
         $subtrees = new GeneralSubtrees(
-            new GeneralSubtree(new UniformResourceIdentifier(".example.com")),
-            new GeneralSubtree(DirectoryName::fromDNString("cn=Test")));
+            new GeneralSubtree(new UniformResourceIdentifier('.example.com')),
+            new GeneralSubtree(DirectoryName::fromDNString('cn=Test')));
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -35,7 +38,7 @@ class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Sequence::class, $el);
         return $el->toDER();
     }
-    
+
     /**
      * @depends testEncode
      *
@@ -47,7 +50,7 @@ class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(GeneralSubtrees::class, $subtrees);
         return $subtrees;
     }
-    
+
     /**
      * @depends testCreate
      * @depends testDecode
@@ -59,7 +62,7 @@ class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals($ref, $new);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -70,7 +73,7 @@ class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
         $this->assertContainsOnlyInstancesOf(GeneralSubtree::class,
             $subtrees->all());
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -80,7 +83,7 @@ class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertCount(2, $subtrees);
     }
-    
+
     /**
      * @depends testCreate
      *
@@ -88,27 +91,23 @@ class GeneralSubtreesTest extends \PHPUnit\Framework\TestCase
      */
     public function testIterator(GeneralSubtrees $subtrees)
     {
-        $values = array();
+        $values = [];
         foreach ($subtrees as $subtree) {
             $values[] = $subtree;
         }
         $this->assertContainsOnlyInstancesOf(GeneralSubtree::class, $values);
     }
-    
-    /**
-     * @expectedException UnexpectedValueException
-     */
+
     public function testDecodeEmptyFail()
     {
+        $this->expectException(\UnexpectedValueException::class);
         GeneralSubtrees::fromASN1(new Sequence());
     }
-    
-    /**
-     * @expectedException LogicException
-     */
+
     public function testEncodeEmptyFail()
     {
         $subtrees = new GeneralSubtrees();
+        $this->expectException(\LogicException::class);
         $subtrees->toASN1();
     }
 }
