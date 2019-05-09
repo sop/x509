@@ -279,8 +279,8 @@ class PolicyTree
             if ($node->isAnyPolicy()) {
                 // then generate a child node of the node of depth i-1
                 // that has a valid_policy of anyPolicy as follows...
-                foreach ($this->_nodesAtDepth($state->index() - 1) as $node) {
-                    if ($node->isAnyPolicy()) {
+                foreach ($this->_nodesAtDepth($state->index() - 1) as $subnode) {
+                    if ($subnode->isAnyPolicy()) {
                         // try to fetch qualifiers of anyPolicy certificate policy
                         $qualifiers = [];
                         try {
@@ -290,7 +290,7 @@ class PolicyTree
                         } catch (\LogicException $e) {
                             // if there's no policies or no qualifiers
                         }
-                        $node->addChild(new PolicyNode($idp, $qualifiers, $sdps));
+                        $subnode->addChild(new PolicyNode($idp, $qualifiers, $sdps));
                         // bail after first anyPolicy has been processed
                         break;
                     }
