@@ -40,4 +40,19 @@ class PolicyTreeTest extends TestCase
         $mtd->setAccessible(true);
         $this->assertEmpty($mtd->invoke($tree));
     }
+
+    /**
+     * Cover edge case where root node is pruned.
+     */
+    public function testPruneNoRoot()
+    {
+        $tree = new PolicyTree(PolicyNode::anyPolicyNode());
+        $obj = new ReflectionClass($tree);
+        $prop = $obj->getProperty('_root');
+        $prop->setAccessible(true);
+        $prop->setValue($tree, null);
+        $mtd = $obj->getMethod('_pruneTree');
+        $mtd->setAccessible(true);
+        $this->assertEquals(0, $mtd->invoke($tree, 0));
+    }
 }

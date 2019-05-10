@@ -331,6 +331,9 @@ class PolicyTree
      */
     protected function _pruneTree(int $depth): int
     {
+        if (!$this->_root) {
+            return 0;
+        }
         for ($i = $depth; $i > 0; --$i) {
             foreach ($this->_nodesAtDepth($i) as $node) {
                 if (!count($node)) {
@@ -339,7 +342,6 @@ class PolicyTree
             }
         }
         // if root has no children left
-        assert(isset($this->_root), new \RuntimeException('_root is null'));
         if (!count($this->_root)) {
             $this->_root = null;
             return 0;
