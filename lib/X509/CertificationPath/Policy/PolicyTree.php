@@ -282,13 +282,13 @@ class PolicyTree
                 foreach ($this->_nodesAtDepth($state->index() - 1) as $subnode) {
                     if ($subnode->isAnyPolicy()) {
                         // try to fetch qualifiers of anyPolicy certificate policy
-                        $qualifiers = [];
                         try {
                             $qualifiers = $cert->tbsCertificate()
                                 ->extensions()->certificatePolicies()
                                 ->anyPolicy()->qualifiers();
                         } catch (\LogicException $e) {
                             // if there's no policies or no qualifiers
+                            $qualifiers = [];
                         }
                         $subnode->addChild(new PolicyNode($idp, $qualifiers, $sdps));
                         // bail after first anyPolicy has been processed
