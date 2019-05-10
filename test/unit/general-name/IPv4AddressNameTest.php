@@ -153,4 +153,15 @@ class IPv4AddressNameTest extends TestCase
         $this->expectException(\UnexpectedValueException::class);
         IPv4Address::fromOctets('');
     }
+
+    /**
+     * @depends testCreate
+     *
+     * @param IPAddress $ip
+     */
+    public function testNoMaskFails(IPAddress $ip)
+    {
+        $this->expectException(\LogicException::class);
+        $ip->mask();
+    }
 }

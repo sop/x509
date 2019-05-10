@@ -86,12 +86,27 @@ abstract class IPAddress extends GeneralName
     }
 
     /**
+     * Check whether mask is present.
+     *
+     * @return bool
+     */
+    public function hasMask(): bool
+    {
+        return isset($this->_mask);
+    }
+
+    /**
      * Get subnet mask as a string.
+     *
+     * @throws \LogicException If not set
      *
      * @return string
      */
     public function mask(): string
     {
+        if (!$this->hasMask()) {
+            throw new \LogicException('mask is not set.');
+        }
         return $this->_mask;
     }
 
