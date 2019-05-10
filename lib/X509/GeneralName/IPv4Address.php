@@ -18,7 +18,7 @@ class IPv4Address extends IPAddress
     public static function fromOctets(string $octets): self
     {
         $mask = null;
-        $bytes = unpack('C*', $octets);
+        $bytes = unpack('C*', $octets) ?: [];
         switch (count($bytes)) {
             case 4:
                 $ip = implode('.', $bytes);
