@@ -9,7 +9,7 @@ use Sop\X509\GeneralName\GeneralNames;
 use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
- * Implements 'fullName' ASN.1 CHOICE type of <i>DistributionPointName</i>
+ * Implements 'fullName' ASN.1 CHOICE type of *DistributionPointName*
  * used by 'CRL Distribution Points' certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.13

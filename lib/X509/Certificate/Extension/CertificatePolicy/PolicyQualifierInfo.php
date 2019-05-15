@@ -10,8 +10,8 @@ use Sop\ASN1\Type\Primitive\ObjectIdentifier;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Base class for <i>PolicyQualifierInfo</i> ASN.1 types used by
- * 'Certificate Policies' certificate extension.
+ * Base class for *PolicyQualifierInfo* ASN.1 types used by 'Certificate Policies'
+ * certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */

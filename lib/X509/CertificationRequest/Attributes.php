@@ -12,9 +12,9 @@ use Sop\X509\CertificationRequest\Attribute\ExtensionRequestValue;
 use Sop\X509\Feature\AttributeContainer;
 
 /**
- * Implements <i>Attributes</i> ASN.1 type as a <i>SET OF Attribute</i>.
+ * Implements *Attributes* ASN.1 type as a *SET OF Attribute*.
  *
- * Used in <i>CertificationRequestInfo</i>.
+ * Used in *CertificationRequestInfo*.
  *
  * @see https://tools.ietf.org/html/rfc2986#section-4
  */

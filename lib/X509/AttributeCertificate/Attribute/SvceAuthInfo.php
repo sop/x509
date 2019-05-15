@@ -14,7 +14,7 @@ use Sop\X501\MatchingRule\MatchingRule;
 use Sop\X509\GeneralName\GeneralName;
 
 /**
- * Base class implementing <i>SvceAuthInfo</i> ASN.1 type used by
+ * Base class implementing *SvceAuthInfo* ASN.1 type used by
  * attribute certificate attribute values.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.4.1

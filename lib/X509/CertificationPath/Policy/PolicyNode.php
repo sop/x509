@@ -150,7 +150,7 @@ class PolicyNode implements \IteratorAggregate, \Countable
     public function hasChildWithValidPolicy(string $oid): bool
     {
         foreach ($this->_children as $node) {
-            if ($node->validPolicy() == $oid) {
+            if ($node->validPolicy() === $oid) {
                 return true;
             }
         }

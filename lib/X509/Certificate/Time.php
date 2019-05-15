@@ -11,7 +11,7 @@ use Sop\ASN1\Type\TimeType;
 use Sop\X509\Feature\DateTimeHelper;
 
 /**
- * Implements <i>Time</i> ASN.1 type.
+ * Implements *Time* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.1
  */
@@ -97,7 +97,7 @@ class Time
             case Element::TYPE_GENERALIZED_TIME:
                 // GeneralizedTime must not contain fractional seconds
                 // (rfc5280 4.1.2.5.2)
-                if (0 != $dt->format('u')) {
+                if (0 !== intval($dt->format('u'))) {
                     // remove fractional seconds (round down)
                     $dt = self::_roundDownFractionalSeconds($dt);
                 }

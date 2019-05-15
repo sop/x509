@@ -8,7 +8,7 @@ use Sop\ASN1\Element;
 use Sop\ASN1\Type\TaggedType;
 
 /**
- * Base class for <i>Target</i> ASN.1 CHOICE type.
+ * Base class for *Target* ASN.1 CHOICE type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.3.2
  */

@@ -22,10 +22,10 @@ use Sop\X509\Certificate\Extension\SubjectAlternativeNameExtension;
 use Sop\X509\Certificate\Extension\SubjectKeyIdentifierExtension;
 
 /**
- * Implements <i>Extensions</i> ASN.1 type.
+ * Implements *Extensions* ASN.1 type.
  *
- * Several convenience methods are provided to fetch commonly used
- * standard extensions. Others can be accessed using <code>get($oid)</code>.
+ * Several convenience methods are provided to fetch commonly used standard extensions.
+ * Others can be accessed using `get($oid)`.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.1.2.9
  */

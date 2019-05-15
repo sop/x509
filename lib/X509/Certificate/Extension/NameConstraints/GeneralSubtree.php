@@ -11,8 +11,8 @@ use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
 use Sop\X509\GeneralName\GeneralName;
 
 /**
- * Implements <i>GeneralSubtree</i> ASN.1 type used by
- * 'Name Constraints' certificate extension.
+ * Implements *GeneralSubtree* ASN.1 type used by 'Name Constraints'
+ * certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.10
  */

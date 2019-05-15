@@ -9,8 +9,8 @@ use Sop\ASN1\Type\Primitive\IA5String;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>CPSuri</i> ASN.1 type used by
- * 'Certificate Policies' certificate extension.
+ * Implements *CPSuri* ASN.1 type used by 'Certificate Policies'
+ * certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */

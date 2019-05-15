@@ -15,7 +15,7 @@ use Sop\CryptoTypes\Signature\Signature;
 use Sop\X509\Certificate\Certificate;
 
 /**
- * Implements <i>AttributeCertificate</i> ASN.1 type.
+ * Implements *AttributeCertificate* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  */

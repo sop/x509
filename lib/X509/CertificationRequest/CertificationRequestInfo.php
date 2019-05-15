@@ -18,7 +18,7 @@ use Sop\X509\Certificate\Extensions;
 use Sop\X509\CertificationRequest\Attribute\ExtensionRequestValue;
 
 /**
- * Implements <i>CertificationRequestInfo</i> ASN.1 type.
+ * Implements *CertificationRequestInfo* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc2986#section-4
  */
@@ -79,7 +79,7 @@ class CertificationRequestInfo
     public static function fromASN1(Sequence $seq): self
     {
         $version = $seq->at(0)->asInteger()->intNumber();
-        if (self::VERSION_1 != $version) {
+        if (self::VERSION_1 !== $version) {
             throw new \UnexpectedValueException(
                 "Version {$version} not supported.");
         }

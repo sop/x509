@@ -14,7 +14,7 @@ use Sop\CryptoTypes\Asymmetric\PublicKeyInfo;
 use Sop\CryptoTypes\Signature\Signature;
 
 /**
- * Implements <i>Certificate</i> ASN.1 type.
+ * Implements *Certificate* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.1
  */
@@ -109,7 +109,7 @@ class Certificate
      */
     public static function fromPEM(PEM $pem): self
     {
-        if (PEM::TYPE_CERTIFICATE != $pem->type()) {
+        if (PEM::TYPE_CERTIFICATE !== $pem->type()) {
             throw new \UnexpectedValueException('Invalid PEM type.');
         }
         return self::fromDER($pem->data());
@@ -228,7 +228,7 @@ class Certificate
     {
         $sn1 = $this->_tbsCertificate->serialNumber();
         $sn2 = $cert->_tbsCertificate->serialNumber();
-        return $sn1 == $sn2;
+        return $sn1 === $sn2;
     }
 
     /**
@@ -242,7 +242,7 @@ class Certificate
     {
         $kid1 = $this->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
         $kid2 = $cert->_tbsCertificate->subjectPublicKeyInfo()->keyIdentifier();
-        return $kid1 == $kid2;
+        return $kid1 === $kid2;
     }
 
     /**

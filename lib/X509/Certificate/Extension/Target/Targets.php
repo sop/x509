@@ -8,7 +8,7 @@ use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>Targets</i> ASN.1 type as a <i>SEQUENCE OF Target</i>.
+ * Implements *Targets* ASN.1 type as a *SEQUENCE OF Target*.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
@@ -142,7 +142,7 @@ class Targets implements \Countable, \IteratorAggregate
         return array_values(
             array_filter($this->_targets,
                 function (Target $target) use ($type) {
-                    return $target->type() == $type;
+                    return $target->type() === $type;
                 }));
     }
 }

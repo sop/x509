@@ -9,7 +9,7 @@ use Sop\ASN1\Type\Primitive\ObjectIdentifier;
 use Sop\X509\GeneralName\GeneralName;
 
 /**
- * Base class implementing <i>AccessDescription</i> ASN.1 type for
+ * Base class implementing *AccessDescription* ASN.1 type for
  * 'Authority Information Access' and 'Subject Information Access' certificate
  * extensions.
  *

@@ -7,7 +7,7 @@ namespace Sop\X509\Certificate;
 use Sop\ASN1\Type\Primitive\BitString;
 
 /**
- * Implements <i>UniqueIdentifier</i> ASN.1 type.
+ * Implements *UniqueIdentifier* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.1.2.8
  */

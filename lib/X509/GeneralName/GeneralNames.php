@@ -9,7 +9,7 @@ use Sop\ASN1\Type\UnspecifiedType;
 use Sop\X501\ASN1\Name;
 
 /**
- * Implements <i>GeneralNames</i> ASN.1 type.
+ * Implements *GeneralNames* ASN.1 type.
  *
  * Provides convenience methods to retrieve the first value of commonly used
  * CHOICE types.
@@ -60,7 +60,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
     /**
      * Check whether GeneralNames contains a GeneralName of given type.
      *
-     * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
+     * @param int $tag One of `GeneralName::TAG_*` enumerations
      *
      * @return bool
      */
@@ -72,7 +72,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
     /**
      * Get first GeneralName of given type.
      *
-     * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
+     * @param int $tag One of `GeneralName::TAG_*` enumerations
      *
      * @throws \OutOfBoundsException
      *
@@ -90,7 +90,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
     /**
      * Get all GeneralName objects of given type.
      *
-     * @param int $tag One of <code>GeneralName::TAG_*</code> enumerations
+     * @param int $tag One of `GeneralName::TAG_*` enumerations
      *
      * @return GeneralName[]
      */

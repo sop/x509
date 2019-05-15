@@ -9,8 +9,8 @@ use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>UserNotice</i> ASN.1 type used by
- * 'Certificate Policies' certificate extension.
+ * Implements *UserNotice* ASN.1 type used by 'Certificate Policies'
+ * certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */

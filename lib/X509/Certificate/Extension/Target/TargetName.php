@@ -10,7 +10,7 @@ use Sop\ASN1\Type\TaggedType;
 use Sop\X509\GeneralName\GeneralName;
 
 /**
- * Implements 'targetName' CHOICE of the <i>Target</i> ASN.1 type.
+ * Implements 'targetName' CHOICE of the *Target* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.3.2
  */

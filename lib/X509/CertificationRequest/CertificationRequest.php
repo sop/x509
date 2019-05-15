@@ -13,7 +13,7 @@ use Sop\CryptoTypes\AlgorithmIdentifier\Feature\SignatureAlgorithmIdentifier;
 use Sop\CryptoTypes\Signature\Signature;
 
 /**
- * Implements <i>CertificationRequest</i> ASN.1 type.
+ * Implements *CertificationRequest* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc2986#section-4
  */

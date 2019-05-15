@@ -17,9 +17,9 @@ use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
 use Sop\X509\Feature\AttributeContainer;
 
 /**
- * Implements <i>Attributes</i> ASN.1 type as a <i>SEQUENCE OF Attribute</i>.
+ * Implements *Attributes* ASN.1 type as a *SEQUENCE OF Attribute*.
  *
- * Used in <i>AttributeCertificateInfo</i>.
+ * Used in *AttributeCertificateInfo*.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  * @see https://tools.ietf.org/html/rfc5755#section-4.2.7

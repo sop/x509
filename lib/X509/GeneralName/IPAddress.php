@@ -10,9 +10,9 @@ use Sop\ASN1\Type\TaggedType;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>iPAddress</i> CHOICE type of <i>GeneralName</i>.
+ * Implements *iPAddress* CHOICE type of *GeneralName*.
  *
- * Concrete classes <code>IPv4Address</code> and <code>IPv6Address</code>
+ * Concrete classes `IPv4Address` and `IPv6Address`
  * furthermore implement the parsing semantics.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6

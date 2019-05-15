@@ -12,8 +12,8 @@ use Sop\ASN1\Type\Primitive\VisibleString;
 use Sop\ASN1\Type\StringType;
 
 /**
- * Implements <i>DisplayText</i> ASN.1 CHOICE type used by
- * 'Certificate Policies' certificate extension.
+ * Implements *DisplayText* ASN.1 CHOICE type used by 'Certificate Policies'
+ * certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.4
  */

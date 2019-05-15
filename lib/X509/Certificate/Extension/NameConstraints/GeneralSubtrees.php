@@ -8,8 +8,8 @@ use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>GeneralSubtrees</i> ASN.1 type used by
- * 'Name Constraints' certificate extension.
+ * Implements *GeneralSubtrees* ASN.1 type used by 'Name Constraints'
+ * certificate extension.
  *
  * @see @link https://tools.ietf.org/html/rfc5280#section-4.2.1.10
  */

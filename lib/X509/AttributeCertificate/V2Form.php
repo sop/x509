@@ -12,7 +12,7 @@ use Sop\X509\Certificate\Certificate;
 use Sop\X509\GeneralName\GeneralNames;
 
 /**
- * Implements <i>V2Form</i> ASN.1 type used as a attribute certificate issuer.
+ * Implements *V2Form* ASN.1 type used as a attribute certificate issuer.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  */

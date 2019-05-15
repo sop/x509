@@ -9,7 +9,7 @@ use Sop\ASN1\Type\TaggedType;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>GeneralName</i> CHOICE with implicit tagging.
+ * Implements *GeneralName* CHOICE with implicit tagging.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */

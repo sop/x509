@@ -11,7 +11,7 @@ use Sop\X501\ASN1\RDN;
 use Sop\X509\GeneralName\GeneralNames;
 
 /**
- * Base class for <i>DistributionPointName</i> ASN.1 CHOICE type used by
+ * Base class for *DistributionPointName* ASN.1 CHOICE type used by
  * 'CRL Distribution Points' certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.13

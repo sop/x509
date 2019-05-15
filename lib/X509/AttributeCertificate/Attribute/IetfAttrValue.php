@@ -11,7 +11,7 @@ use Sop\ASN1\Type\Primitive\UTF8String;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>IetfAttrSyntax.values</i> ASN.1 CHOICE type.
+ * Implements *IetfAttrSyntax.values* ASN.1 CHOICE type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.4
  */

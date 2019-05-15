@@ -71,7 +71,7 @@ class PolicyTree
         $tree = clone $this;
         if ($state->policyMapping() > 0) {
             $tree->_applyMappings($cert, $state);
-        } elseif (0 == $state->policyMapping()) {
+        } elseif (0 === $state->policyMapping()) {
             $tree->_deleteMappings($cert, $state);
         }
         // if whole tree is pruned
@@ -246,7 +246,7 @@ class PolicyTree
             $match_count = 0;
             foreach ($this->_nodesAtDepth($state->index()) as $node) {
                 // ...where ID-P is the valid_policy
-                if ($node->validPolicy() == $idp) {
+                if ($node->validPolicy() === $idp) {
                     // set expected_policy_set to the set of subjectDomainPolicy
                     // values that are specified as equivalent to ID-P by
                     // the policy mappings extension

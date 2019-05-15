@@ -11,8 +11,8 @@ use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
 use Sop\X509\GeneralName\GeneralNames;
 
 /**
- * Implements <i>DistributionPoint</i> ASN.1 type used by
- * 'CRL Distribution Points' certificate extension.
+ * Implements *DistributionPoint* ASN.1 type used by 'CRL Distribution Points'
+ * certificate extension.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.13
  */

@@ -13,7 +13,7 @@ use Sop\CryptoTypes\AlgorithmIdentifier\AlgorithmIdentifier;
 use Sop\CryptoTypes\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
 
 /**
- * Implements <i>ObjectDigestInfo</i> ASN.1 type.
+ * Implements *ObjectDigestInfo* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  * @see https://tools.ietf.org/html/rfc5755#section-7.3

@@ -10,8 +10,7 @@ use Sop\ASN1\Type\TaggedType;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>uniformResourceIdentifier</i> CHOICE type of
- * <i>GeneralName</i>.
+ * Implements *uniformResourceIdentifier* CHOICE type of *GeneralName*.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.2.1.6
  */

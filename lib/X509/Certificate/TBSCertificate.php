@@ -21,7 +21,7 @@ use Sop\X509\Certificate\Extension\SubjectKeyIdentifierExtension;
 use Sop\X509\CertificationRequest\CertificationRequest;
 
 /**
- * Implements <i>TBSCertificate</i> ASN.1 type.
+ * Implements *TBSCertificate* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5280#section-4.1.2
  */
@@ -578,7 +578,7 @@ class TBSCertificate
         $elements = [];
         $version = $this->version();
         // if version is not default
-        if (self::VERSION_1 != $version) {
+        if (self::VERSION_1 !== $version) {
             $elements[] = new ExplicitlyTaggedType(0, new Integer($version));
         }
         $serial = $this->serialNumber();

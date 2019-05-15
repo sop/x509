@@ -12,7 +12,7 @@ use Sop\X509\GeneralName\DirectoryName;
 use Sop\X509\GeneralName\GeneralNames;
 
 /**
- * Base class implementing <i>AttCertIssuer</i> ASN.1 CHOICE type.
+ * Base class implementing *AttCertIssuer* ASN.1 CHOICE type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  */

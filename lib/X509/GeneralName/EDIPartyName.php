@@ -9,7 +9,7 @@ use Sop\ASN1\Type\TaggedType;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>ediPartyName</i> CHOICE type of <i>GeneralName</i>.
+ * Implements *ediPartyName* CHOICE type of *GeneralName*.
  *
  * Currently acts as a parking object for decoding.
  *

@@ -81,7 +81,7 @@ class PolicyMappingsExtension extends Extension implements \Countable, \Iterator
     {
         $oids = [];
         foreach ($this->_mappings as $mapping) {
-            if ($mapping->issuerDomainPolicy() == $oid) {
+            if ($mapping->issuerDomainPolicy() === $oid) {
                 $oids[] = $mapping->subjectDomainPolicy();
             }
         }

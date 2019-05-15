@@ -9,7 +9,7 @@ use Sop\ASN1\Type\Primitive\GeneralizedTime;
 use Sop\X509\Feature\DateTimeHelper;
 
 /**
- * Implements <i>AttCertValidityPeriod</i> ASN.1 type.
+ * Implements *AttCertValidityPeriod* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  */

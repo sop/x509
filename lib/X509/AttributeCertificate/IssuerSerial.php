@@ -13,7 +13,7 @@ use Sop\X509\GeneralName\DirectoryName;
 use Sop\X509\GeneralName\GeneralNames;
 
 /**
- * Implements <i>IssuerSerial</i> ASN.1 type.
+ * Implements *IssuerSerial* ASN.1 type.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  */
@@ -183,7 +183,7 @@ class IssuerSerial
             return false;
         }
         $uid = $cert->tbsCertificate()->issuerUniqueID()->string();
-        if ($this->_issuerUID->string() != $uid) {
+        if ($this->_issuerUID->string() !== $uid) {
             return false;
         }
         return true;

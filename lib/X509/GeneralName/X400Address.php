@@ -9,7 +9,7 @@ use Sop\ASN1\Type\TaggedType;
 use Sop\ASN1\Type\UnspecifiedType;
 
 /**
- * Implements <i>x400Address</i> CHOICE type of <i>GeneralName</i>.
+ * Implements *x400Address* CHOICE type of *GeneralName*.
  *
  * Currently acts as a parking object for decoding.
  *

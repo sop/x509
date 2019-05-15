@@ -13,9 +13,8 @@ use Sop\X509\Certificate\Extension\Target\Targets;
 /**
  * Implements 'AC Targeting' certificate extension.
  *
- * <b>NOTE</b>: Syntax is <i>SEQUENCE OF Targets</i>, but only one
- * <i>Targets</i> element must be used.
- * Multiple <i>Targets</i> elements shall be merged into single <i>Targets</i>.
+ * **NOTE**: Syntax is *SEQUENCE OF Targets*, but only one *Targets* element
+ * must be used. Multiple *Targets* elements shall be merged into single *Targets*.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.3.2
  */
