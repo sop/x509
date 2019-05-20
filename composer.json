@@ -1,40 +1,40 @@
 {
-	"name": "sop/x509",
-	"description": "A PHP library for X.509 public key certificates, attribute certificates, certification requests and certification path validation.",
-	"homepage": "https://github.com/sop/x509",
-	"license": "MIT",
-	"type": "library",
-	"keywords": [
-		"x509",
-		"x.509",
-		"certificate",
-		"attribute certificate",
-		"ac",
-		"certification request",
-		"csr"
-	],
-	"authors": [
-		{
-			"name": "Joni Eskelinen",
-			"email": "jonieske@gmail.com",
-			"role": "Developer"
-		}
-	],
-	"require": {
-		"php": ">=7.0",
-		"ext-gmp": "*",
-		"sop/asn1": "^3.2.0",
-		"sop/x501": "^0.5.0",
-		"sop/crypto-types": "^0.2.1",
-		"sop/crypto-bridge": "^0.2.0",
-		"sop/crypto-encoding": "^0.2.0"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "^6.4"
-	},
-	"autoload": {
-		"psr-4": {
-			"X509\\": "lib/X509/"
-		}
-	}
+    "name": "sop/x509",
+    "description": "A PHP library for X.509 public key certificates, attribute certificates, certification requests and certification path validation.",
+    "homepage": "https://github.com/sop/x509",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "x509",
+        "x.509",
+        "certificate",
+        "attribute certificate",
+        "ac",
+        "certification request",
+        "csr"
+    ],
+    "authors": [
+        {
+            "name": "Joni Eskelinen",
+            "email": "jonieske@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "ext-gmp": "*",
+        "sop/asn1": "^3.2.0",
+        "sop/x501": "^0.5.0",
+        "sop/crypto-types": "^0.2.1",
+        "sop/crypto-bridge": "^0.2.0",
+        "sop/crypto-encoding": "^0.2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "X509\\": "lib/X509/"
+        }
+    }
 }
