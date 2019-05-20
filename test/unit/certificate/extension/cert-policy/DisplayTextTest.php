@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use PHPUnit\Framework\TestCase;
 use Sop\ASN1\Element;
+use Sop\ASN1\Type\BaseString;
 use Sop\ASN1\Type\Primitive\BMPString;
 use Sop\ASN1\Type\Primitive\IA5String;
 use Sop\ASN1\Type\Primitive\UTF8String;
@@ -46,7 +47,7 @@ class DisplayTextTest extends TestCase
      */
     public function testDecode($data)
     {
-        $qual = DisplayText::fromASN1(StringType::fromDER($data));
+        $qual = DisplayText::fromASN1(BaseString::fromDER($data));
         $this->assertInstanceOf(DisplayText::class, $qual);
         return $qual;
     }
