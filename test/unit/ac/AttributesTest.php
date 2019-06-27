@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\X501\ASN1\Attribute;
 use Sop\X501\ASN1\AttributeType;
+use Sop\X501\ASN1\AttributeValue\DescriptionValue;
 use Sop\X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
 use Sop\X509\AttributeCertificate\Attribute\GroupAttributeValue;
 use Sop\X509\AttributeCertificate\Attribute\IetfAttrValue;
@@ -27,7 +28,8 @@ class AttributeCertificateAttributesTest extends TestCase
             new AccessIdentityAttributeValue(
                 new UniformResourceIdentifier('urn:service'),
                 new UniformResourceIdentifier('urn:ident')),
-            new RoleAttributeValue(new UniformResourceIdentifier('urn:admin')));
+            new RoleAttributeValue(new UniformResourceIdentifier('urn:admin')),
+            new DescriptionValue('test'));
         $this->assertInstanceOf(Attributes::class, $attribs);
         return $attribs;
     }
@@ -75,7 +77,7 @@ class AttributeCertificateAttributesTest extends TestCase
      */
     public function testCount(Attributes $attribs)
     {
-        $this->assertCount(2, $attribs);
+        $this->assertCount(3, $attribs);
     }
 
     /**
@@ -89,7 +91,7 @@ class AttributeCertificateAttributesTest extends TestCase
         foreach ($attribs as $attr) {
             $values[] = $attr;
         }
-        $this->assertCount(2, $values);
+        $this->assertCount(3, $values);
         $this->assertContainsOnlyInstancesOf(Attribute::class, $values);
     }
 
@@ -149,7 +151,7 @@ class AttributeCertificateAttributesTest extends TestCase
             Attribute::fromAttributeValues(
                 new RoleAttributeValue(new UniformResourceIdentifier('uri:new'))));
         $this->assertInstanceOf(Attributes::class, $attribs);
-        $this->assertCount(2, $attribs);
+        $this->assertCount(3, $attribs);
         $this->assertEquals('uri:new',
             $attribs->firstOf(AttributeType::OID_ROLE)
                 ->first()
@@ -166,6 +168,6 @@ class AttributeCertificateAttributesTest extends TestCase
         $attribs = $attribs->withUnique(
             Attribute::fromAttributeValues(
                 new GroupAttributeValue(IetfAttrValue::fromString('test'))));
-        $this->assertCount(3, $attribs);
+        $this->assertCount(4, $attribs);
     }
 }

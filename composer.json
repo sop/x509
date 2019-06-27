@@ -24,7 +24,7 @@
         "php": ">=7.2",
         "ext-gmp": "*",
         "sop/asn1": "^4.0.0",
-        "sop/x501": "^0.6.0",
+        "sop/x501": "^0.6.1",
         "sop/crypto-types": "^0.3.0",
         "sop/crypto-bridge": "^0.3.1",
         "sop/crypto-encoding": "^0.3.0"

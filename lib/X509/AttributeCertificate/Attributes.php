@@ -4,30 +4,23 @@ declare(strict_types = 1);
 
 namespace Sop\X509\AttributeCertificate;
 
-use Sop\ASN1\Type\Constructed\Sequence;
-use Sop\ASN1\Type\UnspecifiedType;
 use Sop\X501\ASN1\Attribute;
 use Sop\X501\ASN1\AttributeType;
-use Sop\X501\ASN1\AttributeValue\AttributeValue;
+use Sop\X501\ASN1\Collection\SequenceOfAttributes;
 use Sop\X509\AttributeCertificate\Attribute\AccessIdentityAttributeValue;
 use Sop\X509\AttributeCertificate\Attribute\AuthenticationInfoAttributeValue;
 use Sop\X509\AttributeCertificate\Attribute\ChargingIdentityAttributeValue;
 use Sop\X509\AttributeCertificate\Attribute\GroupAttributeValue;
 use Sop\X509\AttributeCertificate\Attribute\RoleAttributeValue;
-use Sop\X509\Feature\AttributeContainer;
 
 /**
- * Implements *Attributes* ASN.1 type as a *SEQUENCE OF Attribute*.
- *
- * Used in *AttributeCertificateInfo*.
+ * Implements *Attributes* ASN.1 type of *AttributeCertificateInfo*.
  *
  * @see https://tools.ietf.org/html/rfc5755#section-4.1
  * @see https://tools.ietf.org/html/rfc5755#section-4.2.7
  */
-class Attributes implements \Countable, \IteratorAggregate
+class Attributes extends SequenceOfAttributes
 {
-    use AttributeContainer;
-
     /**
      * Mapping from OID to attribute value class name.
      *
@@ -42,58 +35,6 @@ class Attributes implements \Countable, \IteratorAggregate
         GroupAttributeValue::OID => GroupAttributeValue::class,
         AttributeType::OID_ROLE => RoleAttributeValue::class,
     ];
-
-    /**
-     * Constructor.
-     *
-     * @param Attribute ...$attribs
-     */
-    public function __construct(Attribute ...$attribs)
-    {
-        $this->_attributes = $attribs;
-    }
-
-    /**
-     * Initialize from attribute values.
-     *
-     * @param AttributeValue ...$values
-     *
-     * @return self
-     */
-    public static function fromAttributeValues(AttributeValue ...$values): self
-    {
-        $attribs = array_map(
-            function (AttributeValue $value) {
-                return $value->toAttribute();
-            }, $values);
-        return new self(...$attribs);
-    }
-
-    /**
-     * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
-     */
-    public static function fromASN1(Sequence $seq): self
-    {
-        $attribs = array_map(
-            function (UnspecifiedType $el) {
-                return Attribute::fromASN1($el->asSequence());
-            }, $seq->elements());
-        // cast attributes
-        $attribs = array_map(
-            function (Attribute $attr) {
-                $oid = $attr->oid();
-                if (array_key_exists($oid, self::MAP_OID_TO_CLASS)) {
-                    $cls = self::MAP_OID_TO_CLASS[$oid];
-                    $attr = $attr->castValues($cls);
-                }
-                return $attr;
-            }, $attribs);
-        return new self(...$attribs);
-    }
 
     /**
      * Check whether 'Access Identity' attribute is present.
@@ -210,16 +151,14 @@ class Attributes implements \Countable, \IteratorAggregate
     }
 
     /**
-     * Generate ASN.1 structure.
-     *
-     * @return Sequence
+     * {@inheritdoc}
      */
-    public function toASN1(): Sequence
+    protected static function _castAttributeValues(Attribute $attribute): Attribute
     {
-        $elements = array_map(
-            function (Attribute $attr) {
-                return $attr->toASN1();
-            }, array_values($this->_attributes));
-        return new Sequence(...$elements);
+        $oid = $attribute->oid();
+        if (isset(self::MAP_OID_TO_CLASS[$oid])) {
+            return $attribute->castValues(self::MAP_OID_TO_CLASS[$oid]);
+        }
+        return $attribute;
     }
 }

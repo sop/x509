@@ -121,6 +121,46 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
+     */
+    public function testHas(SubjectDirectoryAttributesExtension $ext)
+    {
+        $this->assertTrue($ext->has('cn'));
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testHasNot(SubjectDirectoryAttributesExtension $ext)
+    {
+        $this->assertFalse($ext->has('ou'));
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testAllOf(SubjectDirectoryAttributesExtension $ext)
+    {
+        $this->assertCount(1, $ext->allOf('cn'));
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testAllOfNone(SubjectDirectoryAttributesExtension $ext)
+    {
+        $this->assertCount(0, $ext->allOf('ou'));
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testAll(SubjectDirectoryAttributesExtension $ext)
+    {
+        $this->assertCount(2, $ext->all());
+    }
+
+    /**
+     * @depends testCreate
      *
      * @param SubjectDirectoryAttributesExtension $ext
      */
