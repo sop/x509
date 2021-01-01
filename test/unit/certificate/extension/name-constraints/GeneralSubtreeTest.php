@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\X509\Certificate\Extension\NameConstraints\GeneralSubtree;
 use Sop\X509\GeneralName\GeneralName;
+use Sop\X509\GeneralName\RFC822Name;
 use Sop\X509\GeneralName\UniformResourceIdentifier;
 
 /**
@@ -115,5 +116,16 @@ class GeneralSubtreeTest extends TestCase
     public function testRecodedWithAll(GeneralSubtree $ref, GeneralSubtree $new)
     {
         $this->assertEquals($ref, $new);
+    }
+
+    /**
+     * Test for GeneralName tag that collide with other GeneralSubtree tags.
+     */
+    public function testCollidingTag()
+    {
+        $subtree = new GeneralSubtree(new RFC822Name('test'));
+        $asn1 = $subtree->toASN1();
+        $result = GeneralSubtree::fromASN1($asn1);
+        $this->assertInstanceOf(GeneralSubtree::class, $result);
     }
 }

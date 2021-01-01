@@ -65,13 +65,22 @@ class GeneralSubtree
         $base = GeneralName::fromASN1($seq->at(0)->asTagged());
         $min = 0;
         $max = null;
-        if ($seq->hasTagged(0)) {
-            $min = $seq->getTagged(0)->asImplicit(Element::TYPE_INTEGER)
-                ->asInteger()->intNumber();
-        }
-        if ($seq->hasTagged(1)) {
-            $max = $seq->getTagged(1)->asImplicit(Element::TYPE_INTEGER)
-                ->asInteger()->intNumber();
+        // GeneralName is a CHOICE, which may be tagged as otherName [0]
+        // or rfc822Name [1]. As minimum and maximum are also implicitly tagged,
+        // we have to iterate the remaining elements instead of just checking
+        // for tagged types.
+        for ($i = 1; $i < count($seq); ++$i) {
+            $el = $seq->at($i)->expectTagged();
+            switch ($el->tag()) {
+                case 0:
+                    $min = $el->asImplicit(Element::TYPE_INTEGER)
+                        ->asInteger()->intNumber();
+                    break;
+                case 1:
+                    $max = $el->asImplicit(Element::TYPE_INTEGER)
+                        ->asInteger()->intNumber();
+                    break;
+            }
         }
         return new self($base, $min, $max);
     }
