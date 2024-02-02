@@ -15,6 +15,7 @@ use Sop\X509\Certificate\Extension\Extension;
 use Sop\X509\Certificate\Extension\InhibitAnyPolicyExtension;
 use Sop\X509\Certificate\Extension\IssuerAlternativeNameExtension;
 use Sop\X509\Certificate\Extension\KeyUsageExtension;
+use Sop\X509\Certificate\Extension\LogotypeExtension;
 use Sop\X509\Certificate\Extension\NameConstraintsExtension;
 use Sop\X509\Certificate\Extension\PolicyConstraintsExtension;
 use Sop\X509\Certificate\Extension\PolicyMappingsExtension;
@@ -409,6 +410,28 @@ class Extensions implements \Countable, \IteratorAggregate
     public function inhibitAnyPolicy(): InhibitAnyPolicyExtension
     {
         return $this->get(Extension::OID_INHIBIT_ANY_POLICY);
+    }
+
+    /**
+     * Check whether 'Logotype' extension is present.
+     *
+     * @return bool
+     */
+    public function hasLogotype(): bool
+    {
+        return $this->has(Extension::OID_LOGOTYPE);
+    }
+
+    /**
+     * Get 'Logotype' extension.
+     *
+     * @throws \LogicException If extension is not present
+     *
+     * @return LogotypeExtension
+     */
+    public function logotype(): LogotypeExtension
+    {
+        return $this->get(Extension::OID_LOGOTYPE);
     }
 
     /**

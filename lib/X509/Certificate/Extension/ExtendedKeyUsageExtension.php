@@ -45,6 +45,7 @@ class ExtendedKeyUsageExtension extends Extension implements \Countable, \Iterat
     const OID_CMC_CA = '1.3.6.1.5.5.7.3.27';
     const OID_CMC_RA = '1.3.6.1.5.5.7.3.28';
     const OID_CMC_ARCHIVE = '1.3.6.1.5.5.7.3.29';
+    const OID_BIMI = '1.3.6.1.5.5.7.3.31';
 
     /**
      * Purpose OID's.
