@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.1/phpunit.xsd" 
-    colors="true" 
-    convertErrorsToExceptions="true" 
-    convertNoticesToExceptions="true" 
-    convertWarningsToExceptions="true" 
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
     bootstrap="test/bootstrap.php">
+    <coverage includeUncoveredFiles="true"
+        processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">lib</directory>
+        </include>
+        <report>
+            <clover outputFile="build/logs/clover.xml" />
+            <html outputDirectory="build/coverage" />
+        </report>
+    </coverage>
     <testsuites>
         <testsuite name="Unit">
             <directory>test/unit</directory>
@@ -14,16 +24,5 @@
             <directory>test/integration</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true" 
-            processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">lib</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-clover" 
-            target="build/logs/clover.xml" />
-        <log type="coverage-html" 
-            target="build/coverage" />
-    </logging>
+    <logging />
 </phpunit>

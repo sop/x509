@@ -30,7 +30,8 @@
         "sop/crypto-encoding": "^0.3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.1"
+        "phpunit/phpunit": "^9",
+        "friendsofphp/php-cs-fixer": "^3.49"
     },
     "autoload": {
         "psr-4": {
