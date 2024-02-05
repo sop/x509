@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Sop\X509\GeneralName;
 
+use Sop\ASN1\Element;
 use Sop\ASN1\Type\Tagged\ImplicitlyTaggedType;
 use Sop\ASN1\Type\TaggedType;
 use Sop\ASN1\Type\UnspecifiedType;
@@ -20,7 +21,7 @@ use Sop\ASN1\Type\UnspecifiedType;
 class X400Address extends GeneralName
 {
     /**
-     * @var \Sop\ASN1\Element
+     * @var Element
      */
     protected $_element;
 
@@ -33,8 +34,6 @@ class X400Address extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -44,17 +43,11 @@ class X400Address extends GeneralName
         return $obj;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return bin2hex($this->_element->toDER());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag, $this->_element);

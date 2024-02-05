@@ -33,8 +33,6 @@ class RefACDecodeTest extends TestCase
     /**
      * @depends testPEM
      *
-     * @param PEM $pem
-     *
      * @return AttributeCertificate
      */
     public function testAC(PEM $pem)
@@ -48,8 +46,6 @@ class RefACDecodeTest extends TestCase
     /**
      * @depends testAC
      *
-     * @param AttributeCertificate $ac
-     *
      * @return AttributeCertificateInfo
      */
     public function testACI(AttributeCertificate $ac)
@@ -61,8 +57,6 @@ class RefACDecodeTest extends TestCase
 
     /**
      * @depends testAC
-     *
-     * @param AttributeCertificate $ac
      *
      * @return AlgorithmIdentifier
      */
@@ -76,8 +70,6 @@ class RefACDecodeTest extends TestCase
 
     /**
      * @depends testAC
-     *
-     * @param AttributeCertificate $ac
      */
     public function testVerifySignature(AttributeCertificate $ac)
     {

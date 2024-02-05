@@ -25,8 +25,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -35,8 +33,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -45,8 +41,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -70,9 +64,6 @@ class AAControlsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -81,8 +72,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AAControlsExtension $ext
      */
     public function testPathLen(AAControlsExtension $ext)
     {
@@ -91,8 +80,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testDecode
-     *
-     * @param AAControlsExtension $ext
      */
     public function testPermitted(AAControlsExtension $ext)
     {
@@ -101,8 +88,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testDecode
-     *
-     * @param AAControlsExtension $ext
      */
     public function testExcluded(AAControlsExtension $ext)
     {
@@ -111,8 +96,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testDecode
-     *
-     * @param AAControlsExtension $ext
      */
     public function testUnspecified(AAControlsExtension $ext)
     {
@@ -128,8 +111,6 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param Extension $ext
      */
     public function testEncodeEmpty(Extension $ext)
     {
@@ -153,9 +134,6 @@ class AAControlsTest extends TestCase
     /**
      * @depends testCreateEmpty
      * @depends testDecodeEmpty
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecodedEmpty(Extension $ref, Extension $new)
     {
@@ -164,34 +142,28 @@ class AAControlsTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param AAControlsExtension $ext
      */
     public function testNoPathLenFail(AAControlsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->pathLen();
     }
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param AAControlsExtension $ext
      */
     public function testNoPermittedAttrsFail(AAControlsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->permittedAttrs();
     }
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param AAControlsExtension $ext
      */
     public function testNoExcludedAttrsFail(AAControlsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->excludedAttrs();
     }
 }

@@ -30,8 +30,6 @@ class DisplayTextTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param DisplayText $dt
      */
     public function testEncode(DisplayText $dt)
     {
@@ -55,9 +53,6 @@ class DisplayTextTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param DisplayText $ref
-     * @param DisplayText $new
      */
     public function testRecoded(DisplayText $ref, DisplayText $new)
     {
@@ -66,8 +61,6 @@ class DisplayTextTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param DisplayText $dt
      */
     public function testString(DisplayText $dt)
     {
@@ -101,14 +94,12 @@ class DisplayTextTest extends TestCase
     public function testEncodeUnsupportedTypeFail()
     {
         $dt = new DisplayText('', Element::TYPE_NULL);
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         $dt->toASN1();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param DisplayText $dt
      */
     public function testToString(DisplayText $dt)
     {

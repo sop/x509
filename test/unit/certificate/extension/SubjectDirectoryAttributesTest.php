@@ -21,9 +21,9 @@ use Sop\X509\Certificate\Extension\SubjectDirectoryAttributesExtension;
  */
 class SubjectDirectoryAttributesTest extends TestCase
 {
-    const CN = 'Test';
+    public const CN = 'Test';
 
-    const DESC = 'Description';
+    public const DESC = 'Description';
 
     public function testCreate()
     {
@@ -37,8 +37,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -48,8 +46,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -58,8 +54,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -84,9 +78,6 @@ class SubjectDirectoryAttributesTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -95,8 +86,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectDirectoryAttributesExtension $ext
      */
     public function testCN(SubjectDirectoryAttributesExtension $ext)
     {
@@ -108,8 +97,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectDirectoryAttributesExtension $ext
      */
     public function testDesc(SubjectDirectoryAttributesExtension $ext)
     {
@@ -161,8 +148,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectDirectoryAttributesExtension $ext
      */
     public function testCount(SubjectDirectoryAttributesExtension $ext)
     {
@@ -171,8 +156,6 @@ class SubjectDirectoryAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectDirectoryAttributesExtension $ext
      */
     public function testIterator(SubjectDirectoryAttributesExtension $ext)
     {
@@ -187,7 +170,7 @@ class SubjectDirectoryAttributesTest extends TestCase
     public function testEncodeEmptyFail()
     {
         $ext = new SubjectDirectoryAttributesExtension(false);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->toASN1();
     }
 
@@ -197,7 +180,7 @@ class SubjectDirectoryAttributesTest extends TestCase
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_SUBJECT_DIRECTORY_ATTRIBUTES),
             new OctetString($seq->toDER()));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         SubjectDirectoryAttributesExtension::fromASN1($ext_seq);
     }
 }

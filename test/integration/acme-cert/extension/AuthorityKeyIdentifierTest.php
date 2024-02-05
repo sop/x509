@@ -19,8 +19,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return AuthorityKeyIdentifierExtension
      */
     public function testAuthorityKeyIdentifier()
@@ -32,8 +30,6 @@ class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
 
     /**
      * @depends testAuthorityKeyIdentifier
-     *
-     * @param AuthorityKeyIdentifierExtension $aki
      */
     public function testAuthorityKeyIdentifierKey(
         AuthorityKeyIdentifierExtension $aki)
@@ -48,8 +44,6 @@ class RefAuthorityKeyIdentifierTest extends RefExtTestHelper
 
     /**
      * @depends testAuthorityKeyIdentifier
-     *
-     * @param AuthorityKeyIdentifierExtension $aki
      */
     public function testAuthorityKeyIdentifierIssuer(
         AuthorityKeyIdentifierExtension $aki)

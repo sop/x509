@@ -24,9 +24,9 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class CRLDistributionPointTest extends TestCase
 {
-    const DP_URI = 'urn:test';
+    public const DP_URI = 'urn:test';
 
-    const ISSUER_DN = 'cn=Issuer';
+    public const ISSUER_DN = 'cn=Issuer';
 
     public function testCreateDistributionPoint()
     {
@@ -41,8 +41,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreateDistributionPoint
-     *
-     * @param DistributionPoint $dp
      */
     public function testCreate(DistributionPoint $dp)
     {
@@ -54,8 +52,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -64,8 +60,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -74,8 +68,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -99,9 +91,6 @@ class CRLDistributionPointTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -110,8 +99,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CRLDistributionPointsExtension $ext
      */
     public function testCount(CRLDistributionPointsExtension $ext)
     {
@@ -120,8 +107,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CRLDistributionPointsExtension $ext
      */
     public function testIterator(CRLDistributionPointsExtension $ext)
     {
@@ -135,8 +120,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CRLDistributionPointsExtension $ext
      */
     public function testDistributionPoint(CRLDistributionPointsExtension $ext)
     {
@@ -147,8 +130,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testDistributionPoint
-     *
-     * @param DistributionPoint $dp
      */
     public function testDPName(DistributionPoint $dp)
     {
@@ -160,8 +141,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testDistributionPoint
-     *
-     * @param DistributionPoint $dp
      */
     public function testDPReasons(DistributionPoint $dp)
     {
@@ -171,8 +150,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testDistributionPoint
-     *
-     * @param DistributionPoint $dp
      */
     public function testDPIssuer(DistributionPoint $dp)
     {
@@ -183,8 +160,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CRLDistributionPointsExtension $ext
      */
     public function testExtensions(CRLDistributionPointsExtension $ext)
     {
@@ -195,8 +170,6 @@ class CRLDistributionPointTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -207,7 +180,7 @@ class CRLDistributionPointTest extends TestCase
     public function testEncodeEmptyFail()
     {
         $ext = new CRLDistributionPointsExtension(false);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->toASN1();
     }
 
@@ -217,7 +190,7 @@ class CRLDistributionPointTest extends TestCase
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_CRL_DISTRIBUTION_POINTS),
             new OctetString($seq->toDER()));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         CRLDistributionPointsExtension::fromASN1($ext_seq);
     }
 }

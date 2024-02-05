@@ -41,10 +41,6 @@ class DistributionPoint
 
     /**
      * Constructor.
-     *
-     * @param null|DistributionPointName $name
-     * @param null|ReasonFlags           $reasons
-     * @param null|GeneralNames          $issuer
      */
     public function __construct(?DistributionPointName $name = null,
         ?ReasonFlags $reasons = null, ?GeneralNames $issuer = null)
@@ -56,10 +52,6 @@ class DistributionPoint
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -86,8 +78,6 @@ class DistributionPoint
 
     /**
      * Check whether distribution point name is set.
-     *
-     * @return bool
      */
     public function hasDistributionPointName(): bool
     {
@@ -98,8 +88,6 @@ class DistributionPoint
      * Get distribution point name.
      *
      * @throws \LogicException If not set
-     *
-     * @return DistributionPointName
      */
     public function distributionPointName(): DistributionPointName
     {
@@ -111,8 +99,6 @@ class DistributionPoint
 
     /**
      * Check whether distribution point name is set and it's a full name.
-     *
-     * @return bool
      */
     public function hasFullName(): bool
     {
@@ -124,8 +110,6 @@ class DistributionPoint
      * Get full distribution point name.
      *
      * @throws \LogicException If not set
-     *
-     * @return FullName
      */
     public function fullName(): FullName
     {
@@ -137,8 +121,6 @@ class DistributionPoint
 
     /**
      * Check whether distribution point name is set and it's a relative name.
-     *
-     * @return bool
      */
     public function hasRelativeName(): bool
     {
@@ -150,8 +132,6 @@ class DistributionPoint
      * Get relative distribution point name.
      *
      * @throws \LogicException If not set
-     *
-     * @return RelativeName
      */
     public function relativeName(): RelativeName
     {
@@ -163,8 +143,6 @@ class DistributionPoint
 
     /**
      * Check whether reasons flags is set.
-     *
-     * @return bool
      */
     public function hasReasons(): bool
     {
@@ -175,8 +153,6 @@ class DistributionPoint
      * Get revocation reason flags.
      *
      * @throws \LogicException If not set
-     *
-     * @return ReasonFlags
      */
     public function reasons(): ReasonFlags
     {
@@ -188,8 +164,6 @@ class DistributionPoint
 
     /**
      * Check whether cRLIssuer is set.
-     *
-     * @return bool
      */
     public function hasCRLIssuer(): bool
     {
@@ -200,8 +174,6 @@ class DistributionPoint
      * Get CRL issuer.
      *
      * @throws \LogicException If not set
-     *
-     * @return GeneralNames
      */
     public function crlIssuer(): GeneralNames
     {
@@ -213,8 +185,6 @@ class DistributionPoint
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {

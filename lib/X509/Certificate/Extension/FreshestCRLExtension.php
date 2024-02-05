@@ -15,9 +15,6 @@ class FreshestCRLExtension extends CRLDistributionPointsExtension
 {
     /**
      * Constructor.
-     *
-     * @param bool              $critical
-     * @param DistributionPoint ...$distribution_points
      */
     public function __construct(bool $critical,
         DistributionPoint ...$distribution_points)

@@ -6,14 +6,14 @@ namespace Sop\X509\Certificate\Extension\Logotype;
 
 use Sop\ASN1\Type\Constructed\Sequence;
 
-class LogotypeAudio  {
-
-    /**     
+class LogotypeAudio
+{
+    /**
      * @var LogotypeDetails
      */
     protected $_audioDetails;
 
-    /**     
+    /**
      * @var null|LogotypeAudioInfo
      */
     protected $_audioInfo;
@@ -24,18 +24,21 @@ class LogotypeAudio  {
         $this->_audioInfo = $audioInfo;
     }
 
-    public function audioDetails() : LogotypeDetails {
+    public function audioDetails(): LogotypeDetails
+    {
         return $this->_audioDetails;
     }
 
-    /**     
-     * @return null|LogotypeDetails 
+    /**
+     * @return null|LogotypeDetails
      */
-    public function audioInfo()  {
+    public function audioInfo()
+    {
         return $this->_audioInfo;
     }
 
-    public static function fromASN1(Sequence $seq) : LogotypeAudio {
+    public static function fromASN1(Sequence $seq): LogotypeAudio
+    {
         /*
         LogotypeAudio ::= SEQUENCE {
             audioDetails    LogotypeDetails,
@@ -48,7 +51,8 @@ class LogotypeAudio  {
         );
     }
 
-    public function toASN1() : Sequence {
+    public function toASN1(): Sequence
+    {
         $elements = [$this->_audioDetails->toASN1()];
 
         if ($this->_audioInfo) {

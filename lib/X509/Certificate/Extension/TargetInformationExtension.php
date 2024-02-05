@@ -36,9 +36,6 @@ class TargetInformationExtension extends Extension implements \Countable, \Itera
 
     /**
      * Constructor.
-     *
-     * @param bool    $critical
-     * @param Targets ...$targets
      */
     public function __construct(bool $critical, Targets ...$targets)
     {
@@ -58,10 +55,6 @@ class TargetInformationExtension extends Extension implements \Countable, \Itera
      * Initialize from one or more Target objects.
      *
      * Extension criticality shall be set to true as specified by RFC 5755.
-     *
-     * @param Target ...$target
-     *
-     * @return TargetInformationExtension
      */
     public static function fromTargets(Target ...$target): self
     {
@@ -70,8 +63,6 @@ class TargetInformationExtension extends Extension implements \Countable, \Itera
 
     /**
      * Get all targets.
-     *
-     * @return Targets
      */
     public function targets(): Targets
     {
@@ -107,8 +98,6 @@ class TargetInformationExtension extends Extension implements \Countable, \Itera
 
     /**
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -119,17 +108,12 @@ class TargetInformationExtension extends Extension implements \Countable, \Itera
      * Get iterator for targets.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->targets()->all());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $targets = array_map(
@@ -139,9 +123,6 @@ class TargetInformationExtension extends Extension implements \Countable, \Itera
         return new self($critical, ...$targets);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = array_map(

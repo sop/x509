@@ -16,7 +16,7 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class AuthorityAccessDescriptionTest extends TestCase
 {
-    const URI = 'urn:test';
+    public const URI = 'urn:test';
 
     public function testCreate()
     {
@@ -29,8 +29,6 @@ class AuthorityAccessDescriptionTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityAccessDescription $desc
      */
     public function testEncode(AuthorityAccessDescription $desc)
     {
@@ -54,9 +52,6 @@ class AuthorityAccessDescriptionTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AuthorityAccessDescription $ref
-     * @param AuthorityAccessDescription $new
      */
     public function testRecoded(AuthorityAccessDescription $ref,
         AuthorityAccessDescription $new)
@@ -66,8 +61,6 @@ class AuthorityAccessDescriptionTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityAccessDescription $desc
      */
     public function testIsOSCP(AuthorityAccessDescription $desc)
     {
@@ -76,8 +69,6 @@ class AuthorityAccessDescriptionTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityAccessDescription $desc
      */
     public function testIsNotCAIssuers(AuthorityAccessDescription $desc)
     {
@@ -86,8 +77,6 @@ class AuthorityAccessDescriptionTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityAccessDescription $desc
      */
     public function testAccessMethod(AuthorityAccessDescription $desc)
     {
@@ -97,8 +86,6 @@ class AuthorityAccessDescriptionTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityAccessDescription $desc
      */
     public function testLocation(AuthorityAccessDescription $desc)
     {

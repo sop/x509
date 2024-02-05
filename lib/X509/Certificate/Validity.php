@@ -29,9 +29,6 @@ class Validity
 
     /**
      * Constructor.
-     *
-     * @param Time $not_before
-     * @param Time $not_after
      */
     public function __construct(Time $not_before, Time $not_after)
     {
@@ -41,8 +38,6 @@ class Validity
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -57,8 +52,6 @@ class Validity
      * @param null|string $nb_date Not before date
      * @param null|string $na_date Not after date
      * @param null|string $tz      Timezone string
-     *
-     * @return self
      */
     public static function fromStrings(?string $nb_date, ?string $na_date,
         ?string $tz = null): self
@@ -69,8 +62,6 @@ class Validity
 
     /**
      * Get not before time.
-     *
-     * @return Time
      */
     public function notBefore(): Time
     {
@@ -79,8 +70,6 @@ class Validity
 
     /**
      * Get not after time.
-     *
-     * @return Time
      */
     public function notAfter(): Time
     {
@@ -89,8 +78,6 @@ class Validity
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {

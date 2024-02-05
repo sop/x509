@@ -38,11 +38,7 @@ class GeneralNames implements \Countable, \IteratorAggregate
     /**
      * Initialize from ASN.1.
      *
-     * @param Sequence $seq
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): GeneralNames
     {
@@ -61,8 +57,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * Check whether GeneralNames contains a GeneralName of given type.
      *
      * @param int $tag One of `GeneralName::TAG_*` enumerations
-     *
-     * @return bool
      */
     public function has(int $tag): bool
     {
@@ -75,8 +69,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * @param int $tag One of `GeneralName::TAG_*` enumerations
      *
      * @throws \OutOfBoundsException
-     *
-     * @return GeneralName
      */
     public function firstOf(int $tag): GeneralName
     {
@@ -105,8 +97,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
 
     /**
      * Get value of the first 'dNSName' type.
-     *
-     * @return string
      */
     public function firstDNS(): string
     {
@@ -120,8 +110,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
 
     /**
      * Get value of the first 'directoryName' type.
-     *
-     * @return Name
      */
     public function firstDN(): Name
     {
@@ -135,8 +123,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
 
     /**
      * Get value of the first 'uniformResourceIdentifier' type.
-     *
-     * @return string
      */
     public function firstURI(): string
     {
@@ -150,8 +136,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -168,8 +152,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
 
     /**
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -180,8 +162,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
      * Get iterator for GeneralName objects.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
@@ -190,10 +170,6 @@ class GeneralNames implements \Countable, \IteratorAggregate
 
     /**
      * Find first GeneralName by given tag.
-     *
-     * @param int $tag
-     *
-     * @return null|GeneralName
      */
     protected function _findFirst(int $tag): ?GeneralName
     {

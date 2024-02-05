@@ -29,8 +29,6 @@ class GeneralSubtreesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralSubtrees $subtrees
      */
     public function testEncode(GeneralSubtrees $subtrees)
     {
@@ -54,9 +52,6 @@ class GeneralSubtreesTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param GeneralSubtrees $ref
-     * @param GeneralSubtrees $new
      */
     public function testRecoded(GeneralSubtrees $ref, GeneralSubtrees $new)
     {
@@ -65,8 +60,6 @@ class GeneralSubtreesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralSubtrees $subtrees
      */
     public function testAll(GeneralSubtrees $subtrees)
     {
@@ -76,8 +69,6 @@ class GeneralSubtreesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralSubtrees $subtrees
      */
     public function testCount(GeneralSubtrees $subtrees)
     {
@@ -86,8 +77,6 @@ class GeneralSubtreesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralSubtrees $subtrees
      */
     public function testIterator(GeneralSubtrees $subtrees)
     {
@@ -100,14 +89,14 @@ class GeneralSubtreesTest extends TestCase
 
     public function testDecodeEmptyFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         GeneralSubtrees::fromASN1(new Sequence());
     }
 
     public function testEncodeEmptyFail()
     {
         $subtrees = new GeneralSubtrees();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $subtrees->toASN1();
     }
 }

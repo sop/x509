@@ -7,6 +7,4 @@ namespace Sop\X509\CertificationPath\Exception;
 /**
  * Exception thrown on certification path building errors.
  */
-class PathBuildingException extends \RuntimeException
-{
-}
+class PathBuildingException extends \RuntimeException {}

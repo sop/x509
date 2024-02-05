@@ -25,8 +25,6 @@ class DirectoryName extends GeneralName
 
     /**
      * Constructor.
-     *
-     * @param Name $dn
      */
     public function __construct(Name $dn)
     {
@@ -35,8 +33,6 @@ class DirectoryName extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -46,19 +42,12 @@ class DirectoryName extends GeneralName
 
     /**
      * Initialize from distinguished name string.
-     *
-     * @param string $str
-     *
-     * @return self
      */
     public static function fromDNString(string $str): self
     {
         return new self(Name::fromString($str));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_dn->toString();
@@ -66,17 +55,12 @@ class DirectoryName extends GeneralName
 
     /**
      * Get directory name.
-     *
-     * @return Name
      */
     public function dn(): Name
     {
         return $this->_dn;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         // Name type is itself a CHOICE, so explicit tagging must be

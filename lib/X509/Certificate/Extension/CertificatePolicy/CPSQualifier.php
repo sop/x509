@@ -25,8 +25,6 @@ class CPSQualifier extends PolicyQualifierInfo
 
     /**
      * Constructor.
-     *
-     * @param string $uri
      */
     public function __construct(string $uri)
     {
@@ -35,8 +33,6 @@ class CPSQualifier extends PolicyQualifierInfo
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromQualifierASN1(UnspecifiedType $el): PolicyQualifierInfo
@@ -46,17 +42,12 @@ class CPSQualifier extends PolicyQualifierInfo
 
     /**
      * Get URI.
-     *
-     * @return string
      */
     public function uri(): string
     {
         return $this->_uri;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _qualifierASN1(): Element
     {
         return new IA5String($this->_uri);

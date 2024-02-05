@@ -71,15 +71,13 @@ class TBSCertificateTest extends TestCase
             ->withIssuerUniqueID(UniqueIdentifier::fromString('issuer'))
             ->withSubjectUniqueID(UniqueIdentifier::fromString('subject'))
             ->withAdditionalExtensions(
-            new BasicConstraintsExtension(true, false));
+                new BasicConstraintsExtension(true, false));
         $this->assertInstanceOf(TBSCertificate::class, $tc);
         return $tc;
     }
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testEncodeWithAll(TBSCertificate $tc)
     {
@@ -103,9 +101,6 @@ class TBSCertificateTest extends TestCase
     /**
      * @depends testCreateWithAll
      * @depends testDecodeWithAll
-     *
-     * @param TBSCertificate $ref
-     * @param TBSCertificate $new
      */
     public function testRecoded(TBSCertificate $ref, TBSCertificate $new)
     {
@@ -114,8 +109,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testVersion(TBSCertificate $tc)
     {
@@ -124,8 +117,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testSerialNumber(TBSCertificate $tc)
     {
@@ -134,8 +125,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testSignature(TBSCertificate $tc)
     {
@@ -145,8 +134,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testIssuer(TBSCertificate $tc)
     {
@@ -155,8 +142,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testValidity(TBSCertificate $tc)
     {
@@ -165,8 +150,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testSubject(TBSCertificate $tc)
     {
@@ -175,8 +158,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testSubjectPKI(TBSCertificate $tc)
     {
@@ -186,8 +167,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testIssuerUniqueID(TBSCertificate $tc)
     {
@@ -198,8 +177,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testSubjectUniqueID(TBSCertificate $tc)
     {
@@ -210,8 +187,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testExtensions(TBSCertificate $tc)
     {
@@ -220,8 +195,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithVersion(TBSCertificate $tc)
     {
@@ -231,8 +204,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithSerialNumber(TBSCertificate $tc)
     {
@@ -242,8 +213,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithRandomSerialNumber(TBSCertificate $tc)
     {
@@ -254,8 +223,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithSignature(TBSCertificate $tc)
     {
@@ -265,8 +232,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithIssuer(TBSCertificate $tc)
     {
@@ -276,8 +241,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithValidity(TBSCertificate $tc)
     {
@@ -287,8 +250,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithSubject(TBSCertificate $tc)
     {
@@ -298,8 +259,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithSubjectPublicKeyInfo(TBSCertificate $tc)
     {
@@ -310,8 +269,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithIssuerUniqueID(TBSCertificate $tc)
     {
@@ -321,8 +278,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithSubjectUniqueID(TBSCertificate $tc)
     {
@@ -332,8 +287,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithExtensions(TBSCertificate $tc)
     {
@@ -343,8 +296,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testWithAdditionalExtensions(TBSCertificate $tc)
     {
@@ -355,63 +306,51 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testNoVersionFail(TBSCertificate $tc)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $tc->version();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testNoSerialFail(TBSCertificate $tc)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $tc->serialNumber();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testNoSignatureFail(TBSCertificate $tc)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $tc->signature();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testNoIssuerUniqueIDFail(TBSCertificate $tc)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $tc->issuerUniqueID();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testNoSubjectUniqueIDFail(TBSCertificate $tc)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $tc->subjectUniqueID();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testSign(TBSCertificate $tc)
     {
@@ -422,8 +361,6 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TBSCertificate $tc
      */
     public function testDecodeVersion1(TBSCertificate $tc)
     {
@@ -437,15 +374,13 @@ class TBSCertificateTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param TBSCertificate $tc
      */
     public function testInvalidAlgoFail(TBSCertificate $tc)
     {
         $seq = $tc->toASN1();
         $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(2, $algo->toASN1());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         TBSCertificate::fromASN1($seq);
     }
 }

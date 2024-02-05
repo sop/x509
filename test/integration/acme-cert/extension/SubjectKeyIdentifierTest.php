@@ -19,8 +19,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefSubjectKeyIdentifierTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return SubjectKeyIdentifierExtension
      */
     public function testSubjectKeyIdentifier()
@@ -32,8 +30,6 @@ class RefSubjectKeyIdentifierTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectKeyIdentifier
-     *
-     * @param SubjectKeyIdentifierExtension $ski
      */
     public function testSubjectKeyIdentifierKey(
         SubjectKeyIdentifierExtension $ski)

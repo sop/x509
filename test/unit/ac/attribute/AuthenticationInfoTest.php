@@ -17,11 +17,11 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class AuthenticationInfoAttributeTest extends TestCase
 {
-    const SERVICE_URI = 'urn:service';
+    public const SERVICE_URI = 'urn:service';
 
-    const IDENT_URI = 'urn:username';
+    public const IDENT_URI = 'urn:username';
 
-    const AUTH_INFO = 'password';
+    public const AUTH_INFO = 'password';
 
     public function testCreate()
     {
@@ -34,8 +34,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEncode(AttributeValue $value)
     {
@@ -60,9 +58,6 @@ class AuthenticationInfoAttributeTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecoded(AttributeValue $ref, AttributeValue $new)
     {
@@ -71,8 +66,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testOID(AttributeValue $value)
     {
@@ -81,8 +74,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthenticationInfoAttributeValue $value
      */
     public function testService(AuthenticationInfoAttributeValue $value)
     {
@@ -91,8 +82,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthenticationInfoAttributeValue $value
      */
     public function testIdent(AuthenticationInfoAttributeValue $value)
     {
@@ -101,8 +90,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthenticationInfoAttributeValue $value
      */
     public function testAuthInfo(AuthenticationInfoAttributeValue $value)
     {
@@ -111,8 +98,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testAttributes(AttributeValue $value)
     {
@@ -123,8 +108,6 @@ class AuthenticationInfoAttributeTest extends TestCase
 
     /**
      * @depends testAttributes
-     *
-     * @param Attributes $attribs
      */
     public function testFromAttributes(Attributes $attribs)
     {

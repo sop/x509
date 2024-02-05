@@ -73,8 +73,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificate $ac
      */
     public function testEncode(AttributeCertificate $ac)
     {
@@ -98,9 +96,6 @@ class AttributeCertificateTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeCertificate $ref
-     * @param AttributeCertificate $new
      */
     public function testRecoded(AttributeCertificate $ref,
         AttributeCertificate $new)
@@ -110,8 +105,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificate $ac
      */
     public function testAttributeCertificateInfo(AttributeCertificate $ac)
     {
@@ -120,8 +113,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificate $ac
      */
     public function testSignatureAlgo(AttributeCertificate $ac)
     {
@@ -131,8 +122,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificate $ac
      */
     public function testSignatureValue(AttributeCertificate $ac)
     {
@@ -141,8 +130,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificate $ac
      */
     public function testVerify(AttributeCertificate $ac)
     {
@@ -152,15 +139,13 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificate $ac
      */
     public function testInvalidAlgoFail(AttributeCertificate $ac)
     {
         $seq = $ac->toASN1();
         $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(1, $algo->toASN1());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         AttributeCertificate::fromASN1($seq);
     }
 
@@ -173,8 +158,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testFromPEM
-     *
-     * @param AttributeCertificate $ac
      */
     public function testToPEM(AttributeCertificate $ac)
     {
@@ -185,8 +168,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testToPEM
-     *
-     * @param PEM $pem
      */
     public function testPEMEquals(PEM $pem)
     {
@@ -195,14 +176,12 @@ class AttributeCertificateTest extends TestCase
 
     public function testInvalidPEMTypeFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         AttributeCertificate::fromPEM(new PEM('fail', ''));
     }
 
     /**
      * @depends testFromPEM
-     *
-     * @param AttributeCertificate $ac
      */
     public function testToString(AttributeCertificate $ac)
     {
@@ -211,8 +190,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testFromPEM
-     *
-     * @param AttributeCertificate $ac
      */
     public function testIsHeldBy(AttributeCertificate $ac)
     {
@@ -223,8 +200,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testFromPEM
-     *
-     * @param AttributeCertificate $ac
      */
     public function testIsHeldByFail(AttributeCertificate $ac)
     {
@@ -235,8 +210,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testFromPEM
-     *
-     * @param AttributeCertificate $ac
      */
     public function testIsIssuedBy(AttributeCertificate $ac)
     {
@@ -247,8 +220,6 @@ class AttributeCertificateTest extends TestCase
 
     /**
      * @depends testFromPEM
-     *
-     * @param AttributeCertificate $ac
      */
     public function testIsIssuedByFail(AttributeCertificate $ac)
     {

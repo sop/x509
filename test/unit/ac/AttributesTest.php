@@ -36,8 +36,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testEncode(Attributes $attribs)
     {
@@ -61,9 +59,6 @@ class AttributeCertificateAttributesTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Attributes $ref
-     * @param Attributes $new
      */
     public function testRecoded(Attributes $ref, Attributes $new)
     {
@@ -72,8 +67,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testCount(Attributes $attribs)
     {
@@ -82,8 +75,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testIterator(Attributes $attribs)
     {
@@ -97,8 +88,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testHas(Attributes $attribs)
     {
@@ -107,8 +96,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testFirstOf(Attributes $attribs)
     {
@@ -118,8 +105,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testAllOf(Attributes $attribs)
     {
@@ -129,8 +114,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testWithAdditional(Attributes $attribs)
     {
@@ -142,8 +125,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testWithUniqueReplace(Attributes $attribs)
     {
@@ -160,8 +141,6 @@ class AttributeCertificateAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testWithUniqueAdded(Attributes $attribs)
     {

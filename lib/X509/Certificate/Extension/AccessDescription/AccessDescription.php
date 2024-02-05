@@ -45,10 +45,6 @@ abstract class AccessDescription
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -58,8 +54,6 @@ abstract class AccessDescription
 
     /**
      * Get the access method OID.
-     *
-     * @return string
      */
     public function accessMethod(): string
     {
@@ -68,8 +62,6 @@ abstract class AccessDescription
 
     /**
      * Get the access location.
-     *
-     * @return GeneralName
      */
     public function accessLocation(): GeneralName
     {
@@ -78,8 +70,6 @@ abstract class AccessDescription
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {

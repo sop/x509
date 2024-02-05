@@ -16,8 +16,6 @@ trait DateTimeHelper
      * @param null|string $tz   Timezone, default if omitted
      *
      * @throws \RuntimeException
-     *
-     * @return \DateTimeImmutable
      */
     private static function _createDateTime(
         ?string $time = null, ?string $tz = null): \DateTimeImmutable
@@ -41,10 +39,6 @@ trait DateTimeHelper
     /**
      * Rounds a \DateTimeImmutable value such that fractional
      * seconds are removed.
-     *
-     * @param \DateTimeImmutable $dt
-     *
-     * @return \DateTimeImmutable
      */
     private static function _roundDownFractionalSeconds(
         \DateTimeImmutable $dt): \DateTimeImmutable
@@ -56,11 +50,7 @@ trait DateTimeHelper
     /**
      * Create DateTimeZone object from string.
      *
-     * @param string $tz
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return \DateTimeZone
      */
     private static function _createTimeZone(string $tz): \DateTimeZone
     {
@@ -73,8 +63,6 @@ trait DateTimeHelper
 
     /**
      * Get last error caused by DateTimeImmutable.
-     *
-     * @return string
      */
     private static function _getLastDateTimeImmutableErrorsStr(): string
     {

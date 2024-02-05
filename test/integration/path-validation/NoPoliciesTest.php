@@ -24,9 +24,9 @@ use Sop\X509\CertificationPath\PathValidation\PathValidationConfig;
  */
 class CertificateNoPoliciesValidationIntegrationTest extends TestCase
 {
-    const CA_NAME = 'cn=CA';
+    public const CA_NAME = 'cn=CA';
 
-    const CERT_NAME = 'cn=EE';
+    public const CERT_NAME = 'cn=EE';
 
     private static $_caKey;
 

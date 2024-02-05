@@ -16,9 +16,9 @@ use Sop\X509\Certificate\Time;
  */
 class TimeTest extends TestCase
 {
-    const TIME = '2016-04-06 12:00:00';
+    public const TIME = '2016-04-06 12:00:00';
 
-    const TIME_GEN = '2050-01-01 12:00:00';
+    public const TIME_GEN = '2050-01-01 12:00:00';
 
     public function testCreate()
     {
@@ -29,8 +29,6 @@ class TimeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Time $time
      */
     public function testEncode(Time $time)
     {
@@ -54,9 +52,6 @@ class TimeTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Time $ref
-     * @param Time $new
      */
     public function testRecoded(Time $ref, Time $new)
     {
@@ -65,12 +60,10 @@ class TimeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Time $time
      */
     public function testTime(Time $time)
     {
-        $this->assertEquals(new \DateTimeImmutable(self::TIME),
+        $this->assertEquals(new DateTimeImmutable(self::TIME),
             $time->dateTime());
     }
 
@@ -91,8 +84,6 @@ class TimeTest extends TestCase
 
     /**
      * @depends testCreateGeneralized
-     *
-     * @param Time $time
      */
     public function testEncodeGeneralized(Time $time)
     {
@@ -116,9 +107,6 @@ class TimeTest extends TestCase
     /**
      * @depends testCreateGeneralized
      * @depends testDecodeGeneralized
-     *
-     * @param Time $ref
-     * @param Time $new
      */
     public function testRecodedGeneralized(Time $ref, Time $new)
     {
@@ -127,7 +115,7 @@ class TimeTest extends TestCase
 
     public function testDecodeFractional()
     {
-        $dt = \DateTimeImmutable::createFromFormat('!Y-m-d H:i:s.u',
+        $dt = DateTimeImmutable::createFromFormat('!Y-m-d H:i:s.u',
             '2050-01-01 12:00:00.500');
         $time = new Time($dt);
         $this->assertInstanceOf(GeneralizedTime::class, $time->toASN1());
@@ -135,8 +123,6 @@ class TimeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Time $time
      */
     public function testDecodeUnknownTypeFail(Time $time)
     {
@@ -144,19 +130,19 @@ class TimeTest extends TestCase
         $prop = $cls->getProperty('_type');
         $prop->setAccessible(true);
         $prop->setValue($time, Element::TYPE_NULL);
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         $time->toASN1();
     }
 
     public function testInvalidDateFail()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         Time::fromString('nope');
     }
 
     public function testInvalidTimezone()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         Time::fromString('now', 'fail');
     }
 }

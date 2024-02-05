@@ -39,8 +39,6 @@ class RefCertificateDecodeTest extends TestCase
     /**
      * @depends testCert
      *
-     * @param Certificate $cert
-     *
      * @return TBSCertificate
      */
     public function testTBSCertificate(Certificate $cert)
@@ -53,8 +51,6 @@ class RefCertificateDecodeTest extends TestCase
     /**
      * @depends testCert
      *
-     * @param Certificate $cert
-     *
      * @return AlgorithmIdentifier
      */
     public function testSignatureAlgorithm(Certificate $cert)
@@ -66,8 +62,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testSignatureAlgorithm
-     *
-     * @param AlgorithmIdentifier $algo
      */
     public function testSignatureAlgorithmValue(AlgorithmIdentifier $algo)
     {
@@ -77,8 +71,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testCert
-     *
-     * @param Certificate $cert
      *
      * @return Signature
      */
@@ -91,8 +83,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testSignature
-     *
-     * @param Signature $sig
      */
     public function testSignatureValue(Signature $sig)
     {
@@ -104,8 +94,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      */
     public function testVersion(TBSCertificate $tbsCert)
     {
@@ -114,8 +102,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      */
     public function testSerial(TBSCertificate $tbsCert)
     {
@@ -124,8 +110,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      */
     public function testSignatureAlgo(TBSCertificate $tbsCert)
     {
@@ -136,8 +120,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      *
      * @return Name
      */
@@ -150,8 +132,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testIssuer
-     *
-     * @param Name $name
      */
     public function testIssuerDN(Name $name)
     {
@@ -161,8 +141,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      *
      * @return Validity
      */
@@ -175,36 +153,30 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testValidity
-     *
-     * @param Validity $validity
      */
     public function testNotBefore(Validity $validity)
     {
         $str = $validity->notBefore()
             ->dateTime()
-            ->setTimezone(new \DateTimeZone('GMT'))
+            ->setTimezone(new DateTimeZone('GMT'))
             ->format('M j H:i:s Y T');
         $this->assertEquals('Jan 1 12:00:00 2016 GMT', $str);
     }
 
     /**
      * @depends testValidity
-     *
-     * @param Validity $validity
      */
     public function testNotAfter(Validity $validity)
     {
         $str = $validity->notAfter()
             ->dateTime()
-            ->setTimezone(new \DateTimeZone('GMT'))
+            ->setTimezone(new DateTimeZone('GMT'))
             ->format('M j H:i:s Y T');
         $this->assertEquals('Jan 2 15:04:05 2026 GMT', $str);
     }
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      *
      * @return Name
      */
@@ -217,8 +189,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testSubject
-     *
-     * @param Name $name
      */
     public function testSubjectDN(Name $name)
     {
@@ -227,8 +197,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      *
      * @return PublicKeyInfo
      */
@@ -241,8 +209,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testSubjectPublicKeyInfo
-     *
-     * @param PublicKeyInfo $pki
      */
     public function testPublicKeyAlgo(PublicKeyInfo $pki)
     {
@@ -253,8 +219,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testSubjectPublicKeyInfo
-     *
-     * @param PublicKeyInfo $pki
      */
     public function testPublicKey(PublicKeyInfo $pki)
     {
@@ -265,8 +229,6 @@ class RefCertificateDecodeTest extends TestCase
 
     /**
      * @depends testTBSCertificate
-     *
-     * @param TBSCertificate $tbsCert
      *
      * @return Extensions
      */

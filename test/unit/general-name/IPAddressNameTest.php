@@ -19,7 +19,7 @@ class IPAddressNameTest extends TestCase
     {
         $el = new ImplicitlyTaggedType(GeneralName::TAG_IP_ADDRESS,
             new OctetString(''));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         IPAddress::fromASN1($el);
     }
 }

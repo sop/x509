@@ -23,8 +23,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefCRLDistributionPointsTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return CRLDistributionPointsExtension
      */
     public function testCRLDistributionPointsExtension()
@@ -36,8 +34,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
 
     /**
      * @depends testCRLDistributionPointsExtension
-     *
-     * @param CRLDistributionPointsExtension $ext
      *
      * @return DistributionPoint
      */
@@ -51,8 +47,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
     /**
      * @depends testDistributionPoint
      *
-     * @param DistributionPoint $dp
-     *
      * @return FullName
      */
     public function testFullName(DistributionPoint $dp)
@@ -64,8 +58,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
 
     /**
      * @depends testFullName
-     *
-     * @param FullName $name
      */
     public function testURI(FullName $name)
     {
@@ -78,8 +70,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
     /**
      * @depends testDistributionPoint
      *
-     * @param DistributionPoint $dp
-     *
      * @return ReasonFlags
      */
     public function testReasons(DistributionPoint $dp)
@@ -91,8 +81,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
 
     /**
      * @depends testReasons
-     *
-     * @param ReasonFlags $reasons
      */
     public function testReasonFlags(ReasonFlags $reasons)
     {
@@ -109,8 +97,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
     /**
      * @depends testDistributionPoint
      *
-     * @param DistributionPoint $dp
-     *
      * @return GeneralNames
      */
     public function testIssuer(DistributionPoint $dp)
@@ -122,8 +108,6 @@ class RefCRLDistributionPointsTest extends RefExtTestHelper
 
     /**
      * @depends testIssuer
-     *
-     * @param GeneralNames $gn
      */
     public function testIssuerDirName(GeneralNames $gn)
     {

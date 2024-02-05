@@ -45,8 +45,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testCount(CertificationPath $path)
     {
@@ -55,8 +53,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testIterator(CertificationPath $path)
     {
@@ -70,8 +66,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testValidate(CertificationPath $path)
     {
@@ -97,9 +91,6 @@ class CertificationPathTest extends TestCase
     /**
      * @depends testCreate
      * @depends testFromCertificateChain
-     *
-     * @param CertificationPath $ref
-     * @param CertificationPath $path
      */
     public function testFromChainEquals(CertificationPath $ref,
         CertificationPath $path)
@@ -109,8 +100,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testTrustAnchor(CertificationPath $path)
     {
@@ -121,14 +110,12 @@ class CertificationPathTest extends TestCase
     public function testTrustAnchorFail()
     {
         $path = new CertificationPath();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $path->trustAnchorCertificate();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testEndEntity(CertificationPath $path)
     {
@@ -139,14 +126,12 @@ class CertificationPathTest extends TestCase
     public function testEndEntityFail()
     {
         $path = new CertificationPath();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $path->endEntityCertificate();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testCertificateChain(CertificationPath $path)
     {
@@ -156,8 +141,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testStartWithSingle(CertificationPath $path)
     {
@@ -166,8 +149,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testStartWithMulti(CertificationPath $path)
     {
@@ -177,8 +158,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testStartWithAll(CertificationPath $path)
     {
@@ -187,8 +166,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testStartWithTooManyFail(CertificationPath $path)
     {
@@ -199,8 +176,6 @@ class CertificationPathTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationPath $path
      */
     public function testStartWithFail(CertificationPath $path)
     {

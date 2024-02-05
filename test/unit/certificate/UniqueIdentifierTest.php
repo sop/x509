@@ -13,7 +13,7 @@ use Sop\X509\Certificate\UniqueIdentifier;
  */
 class UniqueIdentifierTest extends TestCase
 {
-    const UID = 'urn:test';
+    public const UID = 'urn:test';
 
     public function testCreate()
     {
@@ -24,8 +24,6 @@ class UniqueIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param UniqueIdentifier $id
      */
     public function testEncode(UniqueIdentifier $id)
     {
@@ -49,9 +47,6 @@ class UniqueIdentifierTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param UniqueIdentifier $ref
-     * @param UniqueIdentifier $new
      */
     public function testRecoded(UniqueIdentifier $ref, UniqueIdentifier $new)
     {
@@ -60,8 +55,6 @@ class UniqueIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param UniqueIdentifier $id
      */
     public function testString(UniqueIdentifier $id)
     {
@@ -70,8 +63,6 @@ class UniqueIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param UniqueIdentifier $id
      */
     public function testBitString(UniqueIdentifier $id)
     {

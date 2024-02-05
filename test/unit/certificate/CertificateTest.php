@@ -54,8 +54,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testEncode(Certificate $cert)
     {
@@ -79,9 +77,6 @@ class CertificateTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Certificate $ref
-     * @param Certificate $new
      */
     public function testRecoded(Certificate $ref, Certificate $new)
     {
@@ -90,8 +85,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testTBSCertificate(Certificate $cert)
     {
@@ -100,8 +93,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testSignatureAlgorithm(Certificate $cert)
     {
@@ -111,8 +102,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testSignature(Certificate $cert)
     {
@@ -121,8 +110,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testToPEM(Certificate $cert)
     {
@@ -133,8 +120,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testToPEM
-     *
-     * @param PEM $pem
      */
     public function testPEMType(PEM $pem)
     {
@@ -143,8 +128,6 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testToPEM
-     *
-     * @param PEM $pem
      */
     public function testFromPEM(PEM $pem)
     {
@@ -156,9 +139,6 @@ class CertificateTest extends TestCase
     /**
      * @depends testCreate
      * @depends testFromPEM
-     *
-     * @param Certificate $ref
-     * @param Certificate $new
      */
     public function testPEMRecoded(Certificate $ref, Certificate $new)
     {
@@ -167,14 +147,12 @@ class CertificateTest extends TestCase
 
     public function testFromInvalidPEMFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         Certificate::fromPEM(new PEM('nope', ''));
     }
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testToString(Certificate $cert)
     {
@@ -183,15 +161,13 @@ class CertificateTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Certificate $cert
      */
     public function testInvalidAlgoFail(Certificate $cert)
     {
         $seq = $cert->toASN1();
         $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(1, $algo->toASN1());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         Certificate::fromASN1($seq);
     }
 }

@@ -53,8 +53,6 @@ class CertificationPathValidationTest extends TestCase
 
     /**
      * @depends testValidateDefault
-     *
-     * @param PathValidationResult $result
      */
     public function testResult(PathValidationResult $result)
     {
@@ -88,7 +86,7 @@ class CertificationPathValidationTest extends TestCase
 
     public function testNoCertsFail()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         new PathValidator(Crypto::getDefault(),
             PathValidationConfig::defaultConfig());
     }
@@ -112,7 +110,7 @@ class CertificationPathValidationTest extends TestCase
         $prop = $cls->getProperty('_certificates');
         $prop->setAccessible(true);
         $prop->setValue($validator, []);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $validator->validate();
     }
 }

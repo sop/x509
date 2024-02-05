@@ -17,7 +17,7 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 class FullNameTest extends TestCase
 {
-    const URI = 'urn:test';
+    public const URI = 'urn:test';
 
     public function testCreate()
     {
@@ -28,8 +28,6 @@ class FullNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param FullName $name
      */
     public function testEncode(FullName $name)
     {
@@ -53,9 +51,6 @@ class FullNameTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param FullName $ref
-     * @param FullName $new
      */
     public function testRecoded(FullName $ref, FullName $new)
     {
@@ -64,8 +59,6 @@ class FullNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param FullName $name
      */
     public function testNames(FullName $name)
     {

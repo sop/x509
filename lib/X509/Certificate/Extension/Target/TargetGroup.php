@@ -25,8 +25,6 @@ class TargetGroup extends Target
 
     /**
      * Constructor.
-     *
-     * @param GeneralName $name
      */
     public function __construct(GeneralName $name)
     {
@@ -35,8 +33,6 @@ class TargetGroup extends Target
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(TaggedType $el): Target
@@ -44,9 +40,6 @@ class TargetGroup extends Target
         return new self(GeneralName::fromASN1($el));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_name->string();
@@ -54,17 +47,12 @@ class TargetGroup extends Target
 
     /**
      * Get group name.
-     *
-     * @return GeneralName
      */
     public function name(): GeneralName
     {
         return $this->_name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toASN1(): Element
     {
         return new ExplicitlyTaggedType($this->_type, $this->_name->toASN1());

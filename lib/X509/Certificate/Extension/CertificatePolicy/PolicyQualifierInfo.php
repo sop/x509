@@ -22,14 +22,14 @@ abstract class PolicyQualifierInfo
      *
      * @var string
      */
-    const OID_CPS = '1.3.6.1.5.5.7.2.1';
+    public const OID_CPS = '1.3.6.1.5.5.7.2.1';
 
     /**
      * OID for the user notice qualifier.
      *
      * @var string
      */
-    const OID_UNOTICE = '1.3.6.1.5.5.7.2.2';
+    public const OID_UNOTICE = '1.3.6.1.5.5.7.2.2';
 
     /**
      * Qualifier identifier.
@@ -40,10 +40,6 @@ abstract class PolicyQualifierInfo
 
     /**
      * Initialize from qualifier ASN.1 element.
-     *
-     * @param UnspecifiedType $el
-     *
-     * @return self
      */
     public static function fromQualifierASN1(UnspecifiedType $el): PolicyQualifierInfo
     {
@@ -54,11 +50,7 @@ abstract class PolicyQualifierInfo
     /**
      * Initialize from ASN.1.
      *
-     * @param Sequence $seq
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -74,8 +66,6 @@ abstract class PolicyQualifierInfo
 
     /**
      * Get qualifier identifier.
-     *
-     * @return string
      */
     public function oid(): string
     {
@@ -84,8 +74,6 @@ abstract class PolicyQualifierInfo
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -95,8 +83,6 @@ abstract class PolicyQualifierInfo
 
     /**
      * Generate ASN.1 for the 'qualifier' field.
-     *
-     * @return Element
      */
     abstract protected function _qualifierASN1(): Element;
 }

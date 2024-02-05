@@ -20,9 +20,9 @@ use Sop\X509\Certificate\Extensions;
  */
 class PolicyMappingsTest extends TestCase
 {
-    const ISSUER_POLICY_OID = '1.3.6.1.3.1';
+    public const ISSUER_POLICY_OID = '1.3.6.1.3.1';
 
-    const SUBJECT_POLICY_OID = '1.3.6.1.3.2';
+    public const SUBJECT_POLICY_OID = '1.3.6.1.3.2';
 
     public function testCreateMappings()
     {
@@ -35,8 +35,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreateMappings
-     *
-     * @param array $mappings
      */
     public function testCreate(array $mappings)
     {
@@ -47,8 +45,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -57,8 +53,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -67,8 +61,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -92,9 +84,6 @@ class PolicyMappingsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -103,8 +92,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testMappings(PolicyMappingsExtension $ext)
     {
@@ -114,8 +101,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testIssuerMappings(PolicyMappingsExtension $ext)
     {
@@ -125,8 +110,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testCount(PolicyMappingsExtension $ext)
     {
@@ -135,8 +118,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testIterator(PolicyMappingsExtension $ext)
     {
@@ -150,8 +131,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testMapping(PolicyMappingsExtension $ext)
     {
@@ -162,8 +141,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testMapping
-     *
-     * @param PolicyMapping $mapping
      */
     public function testIssuerPolicy(PolicyMapping $mapping)
     {
@@ -173,8 +150,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testMapping
-     *
-     * @param PolicyMapping $mapping
      */
     public function testSubjectPolicy(PolicyMapping $mapping)
     {
@@ -184,8 +159,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testHasAnyPolicyMapping(PolicyMappingsExtension $ext)
     {
@@ -210,8 +183,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMappingsExtension $ext
      */
     public function testExtensions(PolicyMappingsExtension $ext)
     {
@@ -222,8 +193,6 @@ class PolicyMappingsTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -234,7 +203,7 @@ class PolicyMappingsTest extends TestCase
     public function testEncodeEmptyFail()
     {
         $ext = new PolicyMappingsExtension(false);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->toASN1();
     }
 
@@ -244,7 +213,7 @@ class PolicyMappingsTest extends TestCase
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_POLICY_MAPPINGS),
             new OctetString($seq->toDER()));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         PolicyMappingsExtension::fromASN1($ext_seq);
     }
 }

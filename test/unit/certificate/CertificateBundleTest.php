@@ -62,8 +62,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testCount(CertificateBundle $bundle)
     {
@@ -72,8 +70,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testAll(CertificateBundle $bundle)
     {
@@ -82,8 +78,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testIterator(CertificateBundle $bundle)
     {
@@ -97,8 +91,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testContains(CertificateBundle $bundle)
     {
@@ -129,8 +121,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testAllBySubjectKeyID(CertificateBundle $bundle)
     {
@@ -144,8 +134,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testWithPEM(CertificateBundle $bundle)
     {
@@ -155,8 +143,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testWithPEMBundle(CertificateBundle $bundle)
     {
@@ -166,8 +152,6 @@ class CertificateBundleTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificateBundle $bundle
      */
     public function testWithCertificates(CertificateBundle $bundle)
     {

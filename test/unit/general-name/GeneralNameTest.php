@@ -19,13 +19,13 @@ class GeneralNameTest extends TestCase
 {
     public function testInvalidTagFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         GeneralName::fromASN1(new ImplicitlyTaggedType(9, new NullType()));
     }
 
     public function testFromChosenBadCall()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         GeneralName::fromChosenASN1(new UnspecifiedType(new NullType()));
     }
 

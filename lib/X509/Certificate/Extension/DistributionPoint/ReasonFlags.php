@@ -16,14 +16,14 @@ use Sop\ASN1\Util\Flags;
 class ReasonFlags
 {
     // const UNUSED = 0x100;
-    const KEY_COMPROMISE = 0x080;
-    const CA_COMPROMISE = 0x040;
-    const AFFILIATION_CHANGED = 0x020;
-    const SUPERSEDED = 0x010;
-    const CESSATION_OF_OPERATION = 0x008;
-    const CERTIFICATE_HOLD = 0x004;
-    const PRIVILEGE_WITHDRAWN = 0x002;
-    const AA_COMPROMISE = 0x001;
+    public const KEY_COMPROMISE = 0x080;
+    public const CA_COMPROMISE = 0x040;
+    public const AFFILIATION_CHANGED = 0x020;
+    public const SUPERSEDED = 0x010;
+    public const CESSATION_OF_OPERATION = 0x008;
+    public const CERTIFICATE_HOLD = 0x004;
+    public const PRIVILEGE_WITHDRAWN = 0x002;
+    public const AA_COMPROMISE = 0x001;
 
     /**
      * Flags.
@@ -34,8 +34,6 @@ class ReasonFlags
 
     /**
      * Constructor.
-     *
-     * @param int $flags
      */
     public function __construct(int $flags)
     {
@@ -44,10 +42,6 @@ class ReasonFlags
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param BitString $bs
-     *
-     * @return self
      */
     public static function fromASN1(BitString $bs): self
     {
@@ -56,8 +50,6 @@ class ReasonFlags
 
     /**
      * Check whether keyCompromise flag is set.
-     *
-     * @return bool
      */
     public function isKeyCompromise(): bool
     {
@@ -66,8 +58,6 @@ class ReasonFlags
 
     /**
      * Check whether cACompromise flag is set.
-     *
-     * @return bool
      */
     public function isCACompromise(): bool
     {
@@ -76,8 +66,6 @@ class ReasonFlags
 
     /**
      * Check whether affiliationChanged flag is set.
-     *
-     * @return bool
      */
     public function isAffiliationChanged(): bool
     {
@@ -86,8 +74,6 @@ class ReasonFlags
 
     /**
      * Check whether superseded flag is set.
-     *
-     * @return bool
      */
     public function isSuperseded(): bool
     {
@@ -96,8 +82,6 @@ class ReasonFlags
 
     /**
      * Check whether cessationOfOperation flag is set.
-     *
-     * @return bool
      */
     public function isCessationOfOperation(): bool
     {
@@ -106,8 +90,6 @@ class ReasonFlags
 
     /**
      * Check whether certificateHold flag is set.
-     *
-     * @return bool
      */
     public function isCertificateHold(): bool
     {
@@ -116,8 +98,6 @@ class ReasonFlags
 
     /**
      * Check whether privilegeWithdrawn flag is set.
-     *
-     * @return bool
      */
     public function isPrivilegeWithdrawn(): bool
     {
@@ -126,8 +106,6 @@ class ReasonFlags
 
     /**
      * Check whether aACompromise flag is set.
-     *
-     * @return bool
      */
     public function isAACompromise(): bool
     {
@@ -136,8 +114,6 @@ class ReasonFlags
 
     /**
      * Generate ASN.1 element.
-     *
-     * @return BitString
      */
     public function toASN1(): BitString
     {
@@ -147,10 +123,6 @@ class ReasonFlags
 
     /**
      * Check whether given flag is set.
-     *
-     * @param int $flag
-     *
-     * @return bool
      */
     protected function _flagSet(int $flag): bool
     {

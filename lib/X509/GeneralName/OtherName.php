@@ -36,8 +36,7 @@ class OtherName extends GeneralName
     /**
      * Constructor.
      *
-     * @param string  $type_id OID
-     * @param Element $el
+     * @param string $type_id OID
      */
     public function __construct(string $type_id, Element $el)
     {
@@ -47,8 +46,6 @@ class OtherName extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -59,9 +56,6 @@ class OtherName extends GeneralName
         return new self($type_id, $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_type . '/#' . bin2hex($this->_element->toDER());
@@ -69,8 +63,6 @@ class OtherName extends GeneralName
 
     /**
      * Get type OID.
-     *
-     * @return string
      */
     public function type(): string
     {
@@ -79,17 +71,12 @@ class OtherName extends GeneralName
 
     /**
      * Get value element.
-     *
-     * @return Element
      */
     public function value(): Element
     {
         return $this->_element;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag,

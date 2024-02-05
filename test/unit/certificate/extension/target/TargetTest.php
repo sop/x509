@@ -22,20 +22,20 @@ class TargetTest extends TestCase
 {
     public function testFromASN1BadCall()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         Target::fromChosenASN1(new ImplicitlyTaggedType(0, new NullType()));
     }
 
     public function testDecodeTargetCertUnsupportedFail()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         Target::fromASN1(
             new ImplicitlyTaggedType(Target::TYPE_CERT, new NullType()));
     }
 
     public function testDecodeUnsupportedTagFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         Target::fromASN1(new ImplicitlyTaggedType(3, new NullType()));
     }
 

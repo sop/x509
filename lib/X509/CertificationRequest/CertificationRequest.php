@@ -42,10 +42,6 @@ class CertificationRequest
 
     /**
      * Constructor.
-     *
-     * @param CertificationRequestInfo     $info
-     * @param SignatureAlgorithmIdentifier $algo
-     * @param Signature                    $signature
      */
     public function __construct(CertificationRequestInfo $info,
         SignatureAlgorithmIdentifier $algo, Signature $signature)
@@ -57,8 +53,6 @@ class CertificationRequest
 
     /**
      * Get certification request as a PEM formatted string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -67,10 +61,6 @@ class CertificationRequest
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -87,10 +77,6 @@ class CertificationRequest
 
     /**
      * Initialize from DER.
-     *
-     * @param string $data
-     *
-     * @return self
      */
     public static function fromDER(string $data): self
     {
@@ -100,11 +86,7 @@ class CertificationRequest
     /**
      * Initialize from PEM.
      *
-     * @param PEM $pem
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromPEM(PEM $pem): self
     {
@@ -116,8 +98,6 @@ class CertificationRequest
 
     /**
      * Get certification request info.
-     *
-     * @return CertificationRequestInfo
      */
     public function certificationRequestInfo(): CertificationRequestInfo
     {
@@ -126,8 +106,6 @@ class CertificationRequest
 
     /**
      * Get signature algorithm.
-     *
-     * @return SignatureAlgorithmIdentifier
      */
     public function signatureAlgorithm(): SignatureAlgorithmIdentifier
     {
@@ -136,8 +114,6 @@ class CertificationRequest
 
     /**
      * Get signature.
-     *
-     * @return Signature
      */
     public function signature(): Signature
     {
@@ -146,8 +122,6 @@ class CertificationRequest
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -157,8 +131,6 @@ class CertificationRequest
 
     /**
      * Get certification request as a DER.
-     *
-     * @return string
      */
     public function toDER(): string
     {
@@ -167,8 +139,6 @@ class CertificationRequest
 
     /**
      * Get certification request as a PEM.
-     *
-     * @return PEM
      */
     public function toPEM(): PEM
     {

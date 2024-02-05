@@ -22,7 +22,7 @@ use Sop\X509\Certificate\UniqueIdentifier;
  */
 class AttributeCertificateInfo
 {
-    const VERSION_2 = 1;
+    public const VERSION_2 = 1;
 
     /**
      * AC version.
@@ -109,11 +109,7 @@ class AttributeCertificateInfo
     /**
      * Initialize from ASN.1.
      *
-     * @param Sequence $seq
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -148,10 +144,6 @@ class AttributeCertificateInfo
 
     /**
      * Get self with holder.
-     *
-     * @param Holder $holder
-     *
-     * @return self
      */
     public function withHolder(Holder $holder): self
     {
@@ -162,10 +154,6 @@ class AttributeCertificateInfo
 
     /**
      * Get self with issuer.
-     *
-     * @param AttCertIssuer $issuer
-     *
-     * @return self
      */
     public function withIssuer(AttCertIssuer $issuer): self
     {
@@ -176,10 +164,6 @@ class AttributeCertificateInfo
 
     /**
      * Get self with signature algorithm identifier.
-     *
-     * @param SignatureAlgorithmIdentifier $algo
-     *
-     * @return self
      */
     public function withSignature(SignatureAlgorithmIdentifier $algo): self
     {
@@ -192,8 +176,6 @@ class AttributeCertificateInfo
      * Get self with serial number.
      *
      * @param int|string $serial Base 10 serial number
-     *
-     * @return self
      */
     public function withSerialNumber($serial): self
     {
@@ -206,26 +188,20 @@ class AttributeCertificateInfo
      * Get self with random positive serial number.
      *
      * @param int $size Number of random bytes
-     *
-     * @return self
      */
     public function withRandomSerialNumber(int $size = 16): self
     {
         // ensure that first byte is always non-zero and having first bit unset
-        $num = gmp_init(mt_rand(1, 0x7f), 10);
+        $num = gmp_init(mt_rand(1, 0x7F), 10);
         for ($i = 1; $i < $size; ++$i) {
             $num <<= 8;
-            $num += mt_rand(0, 0xff);
+            $num += mt_rand(0, 0xFF);
         }
         return $this->withSerialNumber(gmp_strval($num, 10));
     }
 
     /**
      * Get self with validity period.
-     *
-     * @param AttCertValidityPeriod $validity
-     *
-     * @return self
      */
     public function withValidity(AttCertValidityPeriod $validity): self
     {
@@ -236,10 +212,6 @@ class AttributeCertificateInfo
 
     /**
      * Get self with attributes.
-     *
-     * @param Attributes $attribs
-     *
-     * @return self
      */
     public function withAttributes(Attributes $attribs): self
     {
@@ -250,10 +222,6 @@ class AttributeCertificateInfo
 
     /**
      * Get self with issuer unique identifier.
-     *
-     * @param UniqueIdentifier $uid
-     *
-     * @return self
      */
     public function withIssuerUniqueID(UniqueIdentifier $uid): self
     {
@@ -264,10 +232,6 @@ class AttributeCertificateInfo
 
     /**
      * Get self with extensions.
-     *
-     * @param Extensions $extensions
-     *
-     * @return self
      */
     public function withExtensions(Extensions $extensions): self
     {
@@ -280,8 +244,6 @@ class AttributeCertificateInfo
      * Get self with extensions added.
      *
      * @param Extension ...$exts One or more Extension objects
-     *
-     * @return self
      */
     public function withAdditionalExtensions(Extension ...$exts): self
     {
@@ -292,8 +254,6 @@ class AttributeCertificateInfo
 
     /**
      * Get version.
-     *
-     * @return int
      */
     public function version(): int
     {
@@ -302,8 +262,6 @@ class AttributeCertificateInfo
 
     /**
      * Get AC holder.
-     *
-     * @return Holder
      */
     public function holder(): Holder
     {
@@ -312,8 +270,6 @@ class AttributeCertificateInfo
 
     /**
      * Get AC issuer.
-     *
-     * @return AttCertIssuer
      */
     public function issuer(): AttCertIssuer
     {
@@ -322,8 +278,6 @@ class AttributeCertificateInfo
 
     /**
      * Check whether signature is set.
-     *
-     * @return bool
      */
     public function hasSignature(): bool
     {
@@ -334,8 +288,6 @@ class AttributeCertificateInfo
      * Get signature algorithm identifier.
      *
      * @throws \LogicException If not set
-     *
-     * @return SignatureAlgorithmIdentifier
      */
     public function signature(): SignatureAlgorithmIdentifier
     {
@@ -347,8 +299,6 @@ class AttributeCertificateInfo
 
     /**
      * Check whether serial number is present.
-     *
-     * @return bool
      */
     public function hasSerialNumber(): bool
     {
@@ -359,8 +309,6 @@ class AttributeCertificateInfo
      * Get AC serial number as a base 10 integer.
      *
      * @throws \LogicException If not set
-     *
-     * @return string
      */
     public function serialNumber(): string
     {
@@ -372,8 +320,6 @@ class AttributeCertificateInfo
 
     /**
      * Get validity period.
-     *
-     * @return AttCertValidityPeriod
      */
     public function validityPeriod(): AttCertValidityPeriod
     {
@@ -382,8 +328,6 @@ class AttributeCertificateInfo
 
     /**
      * Get attributes.
-     *
-     * @return Attributes
      */
     public function attributes(): Attributes
     {
@@ -392,8 +336,6 @@ class AttributeCertificateInfo
 
     /**
      * Check whether issuer unique identifier is present.
-     *
-     * @return bool
      */
     public function hasIssuerUniqueID(): bool
     {
@@ -404,8 +346,6 @@ class AttributeCertificateInfo
      * Get issuer unique identifier.
      *
      * @throws \LogicException If not set
-     *
-     * @return UniqueIdentifier
      */
     public function issuerUniqueID(): UniqueIdentifier
     {
@@ -417,8 +357,6 @@ class AttributeCertificateInfo
 
     /**
      * Get extensions.
-     *
-     * @return Extensions
      */
     public function extensions(): Extensions
     {
@@ -427,8 +365,6 @@ class AttributeCertificateInfo
 
     /**
      * Get ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -452,8 +388,6 @@ class AttributeCertificateInfo
      * @param SignatureAlgorithmIdentifier $algo         Signature algorithm
      * @param PrivateKeyInfo               $privkey_info Private key
      * @param null|Crypto                  $crypto       Crypto engine, use default if not set
-     *
-     * @return AttributeCertificate
      */
     public function sign(SignatureAlgorithmIdentifier $algo,
         PrivateKeyInfo $privkey_info, ?Crypto $crypto = null): AttributeCertificate

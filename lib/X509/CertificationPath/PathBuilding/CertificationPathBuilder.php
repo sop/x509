@@ -60,8 +60,6 @@ class CertificationPathBuilder
      * @param null|CertificateBundle $intermediate Optional intermediate certificates
      *
      * @throws PathBuildingException
-     *
-     * @return CertificationPath
      */
     public function shortestPathToTarget(Certificate $target,
         ?CertificateBundle $intermediate = null): CertificationPath
@@ -114,9 +112,6 @@ class CertificationPathBuilder
      * Helper method for allPathsToTarget to be called recursively.
      *
      * @todo Implement loop detection
-     *
-     * @param Certificate            $target
-     * @param null|CertificateBundle $intermediate
      *
      * @return array[] Array of arrays containing path certificates
      */

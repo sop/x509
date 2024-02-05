@@ -9,50 +9,50 @@ use Sop\ASN1\Type\Primitive\IA5String;
 use Sop\ASN1\Type\Primitive\Integer;
 use Sop\ASN1\Type\Tagged\ExplicitlyTaggedType;
 
-class LogotypeImageInfo  {
+class LogotypeImageInfo
+{
+    public const LogotypeImageTypeGrayScale = 0;
+    public const LogotypeImageTypeColor = 1;
 
-    const LogotypeImageTypeGrayScale = 0;
-    const LogotypeImageTypeColor = 1;
-
-    /**     
-     * @var Integer
+    /**
+     * @var int
      */
     protected $_type;
 
-    /**     
-     * @var Integer
+    /**
+     * @var int
      */
     protected $_fileSize;
 
-    /**     
-     * @var Integer
+    /**
+     * @var int
      */
     protected $_xSize;
 
-    /**     
-     * @var Integer
+    /**
+     * @var int
      */
     protected $_ySize;
 
-    /**     
+    /**
      * @var null|LogotypeImageResolution
      */
     protected $_resolution;
 
-    /**     
+    /**
      * @var null|IA5String
      */
     protected $_language;
 
     public function __construct(
-        Integer $type, 
-        Integer $fileSize, 
-        Integer $xSize, 
-        Integer $ySize, 
+        Integer $type,
+        Integer $fileSize,
+        Integer $xSize,
+        Integer $ySize,
         ?LogotypeImageResolution $resolution,
         ?IA5String $language)
     {
-        $this->_type = $type;    
+        $this->_type = $type;
         $this->_fileSize = $fileSize;
         $this->_xSize = $xSize;
         $this->_ySize = $ySize;
@@ -60,38 +60,44 @@ class LogotypeImageInfo  {
         $this->_language = $language;
     }
 
-    public function type() : Integer {
+    public function type(): Integer
+    {
         return $this->_type;
     }
 
-    public function fileSize() : Integer {
+    public function fileSize(): Integer
+    {
         return $this->_fileSize;
     }
 
-    public function xSize() : Integer {
+    public function xSize(): Integer
+    {
         return $this->_xSize;
     }
 
-    public function ySize() : Integer {
+    public function ySize(): Integer
+    {
         return $this->_ySize;
     }
 
-    /**     
+    /**
      * @return null|LogotypeImageResolution
      */
-    public function resolution()  {
+    public function resolution()
+    {
         return $this->_resolution;
     }
 
-    /**     
-     * @return null|IA5String 
+    /**
+     * @return null|IA5String
      */
-    public function language() {
+    public function language()
+    {
         return $this->_ySize;
     }
 
-
-    public static function fromASN1(Sequence $seq) : LogotypeImageInfo {
+    public static function fromASN1(Sequence $seq): LogotypeImageInfo
+    {
         /*
         LogotypeImageInfo ::= SEQUENCE {
             type            [0] LogotypeImageType DEFAULT color,
@@ -106,7 +112,7 @@ class LogotypeImageInfo  {
 
         $type = $seq->hasTagged(0) ? $seq->getTagged(0)->asUnspecified()->asInteger()->intNumber() : new Integer(static::LogotypeImageTypeColor);
 
-        $offset = $seq->hasTagged(0) ? 0 : 1;        
+        $offset = $seq->hasTagged(0) ? 0 : 1;
 
         $fileSize = $seq->at(1 - $offset)->asInteger();
         $xSize = $seq->at(2 - $offset)->asInteger();
@@ -114,8 +120,7 @@ class LogotypeImageInfo  {
 
         if ($seq->has(4 - $offset)) {
             $resolution = LogotypeImageResolution::fromASN1($seq->at(4 - $offset)->asSequence());
-        }
-        else {
+        } else {
             $resolution = null;
         }
 
@@ -124,9 +129,10 @@ class LogotypeImageInfo  {
         return new LogotypeImageInfo($type, $fileSize, $xSize, $ySize, $resolution, $language);
     }
 
-    public function toASN1() : Sequence {
-        $elements = [];        
-        
+    public function toASN1(): Sequence
+    {
+        $elements = [];
+
         if ($this->_type->intNumber() != static::LogotypeImageTypeColor) {
             $elements[] = new ExplicitlyTaggedType(0, $this->_type);
         }

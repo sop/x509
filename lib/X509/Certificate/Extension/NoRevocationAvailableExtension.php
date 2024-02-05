@@ -16,26 +16,18 @@ class NoRevocationAvailableExtension extends Extension
 {
     /**
      * Constructor.
-     *
-     * @param bool $critical
      */
     public function __construct(bool $critical)
     {
         parent::__construct(self::OID_NO_REV_AVAIL, $critical);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         NullType::fromDER($data);
         return new self($critical);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         return new NullType();

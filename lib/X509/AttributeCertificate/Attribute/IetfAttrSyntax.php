@@ -37,8 +37,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
 
     /**
      * Constructor.
-     *
-     * @param IetfAttrValue ...$values
      */
     public function __construct(IetfAttrValue ...$values)
     {
@@ -47,8 +45,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromASN1(UnspecifiedType $el): AttributeValue
@@ -73,10 +69,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
 
     /**
      * Get self with policy authority.
-     *
-     * @param GeneralNames $names
-     *
-     * @return self
      */
     public function withPolicyAuthority(GeneralNames $names): self
     {
@@ -87,8 +79,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
 
     /**
      * Check whether policy authority is present.
-     *
-     * @return bool
      */
     public function hasPolicyAuthority(): bool
     {
@@ -99,8 +89,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
      * Get policy authority.
      *
      * @throws \LogicException If not set
-     *
-     * @return GeneralNames
      */
     public function policyAuthority(): GeneralNames
     {
@@ -124,8 +112,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
      * Get first value.
      *
      * @throws \LogicException If not set
-     *
-     * @return IetfAttrValue
      */
     public function first(): IetfAttrValue
     {
@@ -135,9 +121,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
         return $this->_values[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toASN1(): Element
     {
         $elements = [];
@@ -153,25 +136,16 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
         return new Sequence(...$elements);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function stringValue(): string
     {
         return '#' . bin2hex($this->toASN1()->toDER());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function equalityMatchingRule(): MatchingRule
     {
         return new BinaryMatch();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rfc2253String(): string
     {
         return $this->stringValue();
@@ -181,8 +155,6 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
      * Get number of values.
      *
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -193,17 +165,12 @@ abstract class IetfAttrSyntax extends AttributeValue implements \Countable, \Ite
      * Get iterator for values.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_values);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _transcodedString(): string
     {
         return $this->stringValue();

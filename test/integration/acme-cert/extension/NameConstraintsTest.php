@@ -18,8 +18,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefNameConstraintsTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return NameConstraintsExtension
      */
     public function testNameConstraintsExtension()
@@ -31,8 +29,6 @@ class RefNameConstraintsTest extends RefExtTestHelper
 
     /**
      * @depends testNameConstraintsExtension
-     *
-     * @param NameConstraintsExtension $bc
      *
      * @return GeneralSubtrees
      */
@@ -46,8 +42,6 @@ class RefNameConstraintsTest extends RefExtTestHelper
 
     /**
      * @depends testNameConstraintPermittedSubtrees
-     *
-     * @param GeneralSubtrees $gs
      */
     public function testNameConstraintPermittedDomain(GeneralSubtrees $gs)
     {

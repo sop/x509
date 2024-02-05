@@ -14,13 +14,11 @@ class SubjectAccessDescription extends AccessDescription
      *
      * @var string
      */
-    const OID_METHOD_TIME_STAMPING = '1.3.6.1.5.5.7.48.3';
-    const OID_METHOD_CA_REPOSITORY = '1.3.6.1.5.5.7.48.5';
+    public const OID_METHOD_TIME_STAMPING = '1.3.6.1.5.5.7.48.3';
+    public const OID_METHOD_CA_REPOSITORY = '1.3.6.1.5.5.7.48.5';
 
     /**
      * Check whether access method is time stamping.
-     *
-     * @return bool
      */
     public function isTimeStampingMethod(): bool
     {
@@ -29,8 +27,6 @@ class SubjectAccessDescription extends AccessDescription
 
     /**
      * Check whether access method is CA repository.
-     *
-     * @return bool
      */
     public function isCARepositoryMethod(): bool
     {

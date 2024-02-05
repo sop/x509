@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Sop\X509\Certificate\Extension;
 
-use LogicException;
 use Sop\ASN1\Element;
 use Sop\ASN1\Type\Constructed\Sequence;
 use Sop\ASN1\Type\Tagged\ExplicitlyTaggedType;
@@ -17,41 +16,37 @@ use Sop\X509\Certificate\Extension\Logotype\OtherLogotypeInfo;
  *
  * @see https://datatracker.ietf.org/doc/html/rfc9399#section-4.1
  */
-
-class LogotypeExtension extends Extension {
-
-    /**     
+class LogotypeExtension extends Extension
+{
+    /**
      * @var array<LogotypeInfo>
      */
     protected $_communityLogos;
 
-    /**    
+    /**
      * @var null|LogotypeInfo
      */
     protected $_issuerLogo;
 
-    /**    
+    /**
      * @var null|LogotypeInfo
      */
     protected $_subjectLogo;
 
-    /**     
+    /**
      * @var array<LogotypeInfo>
      */
     protected $_otherLogos;
 
     /**
-     
-     * @param array<LogotypeInfo> $communityLogos 
-     * @param null|LogotypeInfo $issuerLogo 
-     * @param null|LogotypeInfo $subjectLogo 
-     * @param array<LogotypeInfo> $otherLogos      
-     */    
+     * @param array<LogotypeInfo> $communityLogos
+     * @param array<LogotypeInfo> $otherLogos
+     */
     public function __construct(
         array $communityLogos = [],
-        ?LogotypeInfo $issuerLogo = null, 
-        ?LogotypeInfo $subjectLogo = null, 
-        array $otherLogos = [])    
+        ?LogotypeInfo $issuerLogo = null,
+        ?LogotypeInfo $subjectLogo = null,
+        array $otherLogos = [])
     {
         parent::__construct(self::OID_LOGOTYPE, false);
 
@@ -61,35 +56,40 @@ class LogotypeExtension extends Extension {
         $this->_otherLogos = $otherLogos;
     }
 
-    /**     
+    /**
      * @return array<LogotypeInfo>
      */
-    public function communityLogos() : array {
+    public function communityLogos(): array
+    {
         return $this->_communityLogos;
     }
 
-    /**     
+    /**
      * @return null|LogotypeInfo
      */
-    public function issuerLogo() : mixed {
+    public function issuerLogo(): mixed
+    {
         return $this->_issuerLogo;
     }
 
-    /**     
+    /**
      * @return null|LogotypeInfo
      */
-    public function subjectLogo() : mixed {
+    public function subjectLogo(): mixed
+    {
         return $this->_subjectLogo;
     }
 
-    /**     
+    /**
      * @return array<LogotypeInfo>
      */
-    public function otherLogos() : array {
+    public function otherLogos(): array
+    {
         return $this->_otherLogos;
     }
 
-    protected function _valueASN1(): Element {         
+    protected function _valueASN1(): Element
+    {
         $communityLogos = array_map(function (LogotypeInfo $logo) {
             return $logo->toASN1();
         }, $this->_communityLogos);
@@ -120,34 +120,31 @@ class LogotypeExtension extends Extension {
     }
 
     /**
-     * {@inheritdoc}
-     * 
-     * @throws LogicException
+     * @throws \LogicException
      */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         if ($critical) {
-            throw new LogicException("The logotype extension must not be marked critical.");
+            throw new \LogicException('The logotype extension must not be marked critical.');
         }
 
-        /*        
+        /*
         LogotypeExtn ::= SEQUENCE {
             communityLogos  [0] EXPLICIT SEQUENCE OF LogotypeInfo OPTIONAL,
             issuerLogo      [1] EXPLICIT LogotypeInfo OPTIONAL,
             subjectLogo     [2] EXPLICIT LogotypeInfo OPTIONAL,
             otherLogos      [3] EXPLICIT SEQUENCE OF OtherLogotypeInfo OPTIONAL }
-        */                                
+        */
 
         $communityLogos = [];
         $issuerLogo = null;
         $subjectLogo = null;
         $otherLogos = [];
 
-        
-        $seq = UnspecifiedType::fromDER($data)->asSequence(); 
+        $seq = UnspecifiedType::fromDER($data)->asSequence();
 
-        if ($seq->count() == 0) {
-            throw new LogicException("At least one logo must be present.");    
+        if (0 == $seq->count()) {
+            throw new \LogicException('At least one logo must be present.');
         }
 
         if ($seq->hasTagged(0)) {
@@ -158,11 +155,11 @@ class LogotypeExtension extends Extension {
         }
 
         if ($seq->hasTagged(1)) {
-            $issuerLogo = LogotypeInfo::fromASN1($seq->getTagged(1)->asImplicit(Element::TYPE_SEQUENCE)->asSequence());   
+            $issuerLogo = LogotypeInfo::fromASN1($seq->getTagged(1)->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
         }
 
-        if ($seq->hasTagged(2)) {            
-            $subjectLogo = LogotypeInfo::fromASN1($seq->getTagged(2)->asImplicit(Element::TYPE_SEQUENCE)->asSequence());   
+        if ($seq->hasTagged(2)) {
+            $subjectLogo = LogotypeInfo::fromASN1($seq->getTagged(2)->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
         }
 
         if ($seq->hasTagged(3)) {
@@ -170,10 +167,8 @@ class LogotypeExtension extends Extension {
                 function (UnspecifiedType $element) {
                     return OtherLogotypeInfo::fromASN1($element->asTagged()->asImplicit(Element::TYPE_SEQUENCE)->asSequence());
                 }, $seq->getTagged(3)->asImplicit(Element::TYPE_SEQUENCE)->asSequence()->elements());
-            
-        }        
-        
+        }
+
         return new self($communityLogos, $issuerLogo, $subjectLogo, $otherLogos);
     }
-
 }

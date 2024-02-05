@@ -33,7 +33,7 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class AttributeCertificateInfoTest extends TestCase
 {
-    const ISSUER_DN = 'cn=Issuer';
+    public const ISSUER_DN = 'cn=Issuer';
 
     private static $_holder;
 
@@ -98,8 +98,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testEncode(AttributeCertificateInfo $aci)
     {
@@ -123,9 +121,6 @@ class AttributeCertificateInfoTest extends TestCase
     /**
      * @depends testCreateWithAll
      * @depends testDecode
-     *
-     * @param AttributeCertificateInfo $ref
-     * @param AttributeCertificateInfo $new
      */
     public function testRecoded(AttributeCertificateInfo $ref,
         AttributeCertificateInfo $new)
@@ -135,8 +130,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testVersion(AttributeCertificateInfo $aci)
     {
@@ -145,8 +138,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testHolder(AttributeCertificateInfo $aci)
     {
@@ -155,8 +146,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testIssuer(AttributeCertificateInfo $aci)
     {
@@ -165,8 +154,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testSignature(AttributeCertificateInfo $aci)
     {
@@ -176,8 +163,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testSerialNumber(AttributeCertificateInfo $aci)
     {
@@ -186,8 +171,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testValidityPeriod(AttributeCertificateInfo $aci)
     {
@@ -196,8 +179,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testAttributes(AttributeCertificateInfo $aci)
     {
@@ -206,8 +187,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testIssuerUniqueID(AttributeCertificateInfo $aci)
     {
@@ -217,8 +196,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testExtensions(AttributeCertificateInfo $aci)
     {
@@ -227,8 +204,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithHolder(AttributeCertificateInfo $aci)
     {
@@ -238,8 +213,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithIssuer(AttributeCertificateInfo $aci)
     {
@@ -249,8 +222,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithSignature(AttributeCertificateInfo $aci)
     {
@@ -261,8 +232,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithSerial(AttributeCertificateInfo $aci)
     {
@@ -272,8 +241,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithRandomSerial(AttributeCertificateInfo $aci)
     {
@@ -284,8 +251,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithValidity(AttributeCertificateInfo $aci)
     {
@@ -295,8 +260,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithAttributes(AttributeCertificateInfo $aci)
     {
@@ -306,8 +269,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithIssuerUniqueID(AttributeCertificateInfo $aci)
     {
@@ -318,8 +279,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithExtensions(AttributeCertificateInfo $aci)
     {
@@ -330,8 +289,6 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testWithAdditionalExtensions(AttributeCertificateInfo $aci)
     {
@@ -343,54 +300,44 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testDecodeInvalidVersion(AttributeCertificateInfo $aci)
     {
         $seq = $aci->toASN1();
         $seq = $seq->withReplaced(0, new Integer(0));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         AttributeCertificateInfo::fromASN1($seq);
     }
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testNoSignatureFail(AttributeCertificateInfo $aci)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $aci->signature();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testNoSerialFail(AttributeCertificateInfo $aci)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $aci->serialNumber();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testNoIssuerUniqueIdFail(AttributeCertificateInfo $aci)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $aci->issuerUniqueID();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testSign(AttributeCertificateInfo $aci)
     {
@@ -401,15 +348,13 @@ class AttributeCertificateInfoTest extends TestCase
 
     /**
      * @depends testCreateWithAll
-     *
-     * @param AttributeCertificateInfo $aci
      */
     public function testInvalidAlgoFail(AttributeCertificateInfo $aci)
     {
         $seq = $aci->toASN1();
         $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(3, $algo->toASN1());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         AttributeCertificateInfo::fromASN1($seq);
     }
 }

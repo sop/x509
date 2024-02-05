@@ -29,10 +29,6 @@ class PolicyConstraintsExtension extends Extension
 
     /**
      * Constructor.
-     *
-     * @param bool     $critical
-     * @param null|int $require_explicit_policy
-     * @param null|int $inhibit_policy_mapping
      */
     public function __construct(bool $critical,
         ?int $require_explicit_policy = null, ?int $inhibit_policy_mapping = null)
@@ -44,8 +40,6 @@ class PolicyConstraintsExtension extends Extension
 
     /**
      * Whether requireExplicitPolicy is present.
-     *
-     * @return bool
      */
     public function hasRequireExplicitPolicy(): bool
     {
@@ -56,8 +50,6 @@ class PolicyConstraintsExtension extends Extension
      * Get requireExplicitPolicy.
      *
      * @throws \LogicException If not set
-     *
-     * @return int
      */
     public function requireExplicitPolicy(): int
     {
@@ -69,8 +61,6 @@ class PolicyConstraintsExtension extends Extension
 
     /**
      * Whether inhibitPolicyMapping is present.
-     *
-     * @return bool
      */
     public function hasInhibitPolicyMapping(): bool
     {
@@ -81,8 +71,6 @@ class PolicyConstraintsExtension extends Extension
      * Get inhibitPolicyMapping.
      *
      * @throws \LogicException If not set
-     *
-     * @return int
      */
     public function inhibitPolicyMapping(): int
     {
@@ -92,9 +80,6 @@ class PolicyConstraintsExtension extends Extension
         return $this->_inhibitPolicyMapping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $seq = UnspecifiedType::fromDER($data)->asSequence();
@@ -111,9 +96,6 @@ class PolicyConstraintsExtension extends Extension
         return new self($critical, $require_explicit_policy, $inhibit_policy_mapping);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = [];

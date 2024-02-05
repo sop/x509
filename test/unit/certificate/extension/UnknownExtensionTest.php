@@ -16,7 +16,7 @@ use Sop\X509\Certificate\Extension\UnknownExtension;
 class UnknownExtensionTest extends TestCase
 {
     /**
-     * @return \Sop\X509\Certificate\Extension\UnknownExtension
+     * @return UnknownExtension
      */
     public function testCreateWithDER()
     {
@@ -27,8 +27,6 @@ class UnknownExtensionTest extends TestCase
 
     /**
      * @depends testCreateWithDER
-     *
-     * @param UnknownExtension $ext
      */
     public function testExtensionValueDER(UnknownExtension $ext)
     {
@@ -37,7 +35,7 @@ class UnknownExtensionTest extends TestCase
     }
 
     /**
-     * @return \Sop\X509\Certificate\Extension\UnknownExtension
+     * @return UnknownExtension
      */
     public function testCreateFromString()
     {
@@ -48,8 +46,6 @@ class UnknownExtensionTest extends TestCase
 
     /**
      * @depends testCreateFromString
-     *
-     * @param UnknownExtension $ext
      */
     public function testExtensionValueRaw(UnknownExtension $ext)
     {
@@ -58,8 +54,6 @@ class UnknownExtensionTest extends TestCase
 
     /**
      * @depends testCreateWithDER
-     *
-     * @param UnknownExtension $ext
      */
     public function testExtensionValueASN1(UnknownExtension $ext)
     {
@@ -72,15 +66,13 @@ class UnknownExtensionTest extends TestCase
 
     /**
      * @depends testCreateFromString
-     *
-     * @param UnknownExtension $ext
      */
     public function testExtensionValueASN1Fail(UnknownExtension $ext)
     {
         $cls = new ReflectionClass(UnknownExtension::class);
         $mtd = $cls->getMethod('_valueASN1');
         $mtd->setAccessible(true);
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $mtd->invoke($ext);
     }
 }

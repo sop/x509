@@ -28,10 +28,6 @@ class UnknownExtension extends Extension
 
     /**
      * Constructor.
-     *
-     * @param string  $oid
-     * @param bool    $critical
-     * @param Element $element
      */
     public function __construct(string $oid, bool $critical, Element $element)
     {
@@ -42,12 +38,6 @@ class UnknownExtension extends Extension
 
     /**
      * Create instance from a raw encoded extension value.
-     *
-     * @param string $oid
-     * @param bool   $critical
-     * @param string $data
-     *
-     * @return self
      */
     public static function fromRawString(string $oid, bool $critical,
         string $data): self
@@ -60,25 +50,17 @@ class UnknownExtension extends Extension
 
     /**
      * Get the encoded extension value.
-     *
-     * @return string
      */
     public function extensionValue(): string
     {
         return $this->_data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _extnValue(): OctetString
     {
         return new OctetString($this->_data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         if (!isset($this->_element)) {

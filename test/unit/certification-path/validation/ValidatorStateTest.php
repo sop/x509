@@ -39,19 +39,15 @@ class ValidatorStateTest extends TestCase
 
     /**
      * @depends testInitialize
-     *
-     * @param ValidatorState $state
      */
     public function testValidPolicyTreeFail(ValidatorState $state)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $state->withoutValidPolicyTree()->validPolicyTree();
     }
 
     /**
      * @depends testInitialize
-     *
-     * @param ValidatorState $state
      */
     public function testWorkingPublicKeyParameters(ValidatorState $state)
     {

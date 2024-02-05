@@ -17,9 +17,9 @@ use Sop\X509\GeneralName\IPv4Address;
  */
 class IPv4AddressNameTest extends TestCase
 {
-    const ADDR = '127.0.0.1';
+    public const ADDR = '127.0.0.1';
 
-    const MASK = '255.255.255.0';
+    public const MASK = '255.255.255.0';
 
     public function testCreate()
     {
@@ -30,8 +30,6 @@ class IPv4AddressNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param IPAddress $ip
      */
     public function testEncode(IPAddress $ip)
     {
@@ -66,9 +64,6 @@ class IPv4AddressNameTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param IPAddress $ref
-     * @param IPAddress $new
      */
     public function testRecoded(IPAddress $ref, IPAddress $new)
     {
@@ -77,8 +72,6 @@ class IPv4AddressNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param IPAddress $ip
      */
     public function testAddress(IPAddress $ip)
     {
@@ -94,8 +87,6 @@ class IPv4AddressNameTest extends TestCase
 
     /**
      * @depends testCreateWithMask
-     *
-     * @param IPAddress $ip
      */
     public function testEncodeWithMask(IPAddress $ip)
     {
@@ -119,9 +110,6 @@ class IPv4AddressNameTest extends TestCase
     /**
      * @depends testCreateWithMask
      * @depends testDecodeWithMask
-     *
-     * @param IPAddress $ref
-     * @param IPAddress $new
      */
     public function testRecodedWithMask(IPAddress $ref, IPAddress $new)
     {
@@ -130,8 +118,6 @@ class IPv4AddressNameTest extends TestCase
 
     /**
      * @depends testCreateWithMask
-     *
-     * @param IPAddress $ip
      */
     public function testMask(IPAddress $ip)
     {
@@ -140,8 +126,6 @@ class IPv4AddressNameTest extends TestCase
 
     /**
      * @depends testCreateWithMask
-     *
-     * @param IPAddress $ip
      */
     public function testString(IPAddress $ip)
     {
@@ -150,18 +134,16 @@ class IPv4AddressNameTest extends TestCase
 
     public function testInvalidOctetLength()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         IPv4Address::fromOctets('');
     }
 
     /**
      * @depends testCreate
-     *
-     * @param IPAddress $ip
      */
     public function testNoMaskFails(IPAddress $ip)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ip->mask();
     }
 }

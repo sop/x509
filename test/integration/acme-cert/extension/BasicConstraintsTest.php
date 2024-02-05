@@ -16,8 +16,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefBasicConstraintsTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return BasicConstraintsExtension
      */
     public function testBasicConstraintsExtension()
@@ -29,8 +27,6 @@ class RefBasicConstraintsTest extends RefExtTestHelper
 
     /**
      * @depends testBasicConstraintsExtension
-     *
-     * @param BasicConstraintsExtension $bc
      */
     public function testBasicConstraintsCA(BasicConstraintsExtension $bc)
     {
@@ -39,8 +35,6 @@ class RefBasicConstraintsTest extends RefExtTestHelper
 
     /**
      * @depends testBasicConstraintsExtension
-     *
-     * @param BasicConstraintsExtension $bc
      */
     public function testBasicConstraintsPathLen(BasicConstraintsExtension $bc)
     {

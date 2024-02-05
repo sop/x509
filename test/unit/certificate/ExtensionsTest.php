@@ -28,8 +28,6 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testEncode(Extensions $exts)
     {
@@ -53,9 +51,6 @@ class ExtensionsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extensions $ref
-     * @param Extensions $new
      */
     public function testRecoded(Extensions $ref, Extensions $new)
     {
@@ -64,8 +59,6 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testHas(Extensions $exts)
     {
@@ -74,8 +67,6 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testHasNot(Extensions $exts)
     {
@@ -84,8 +75,6 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testGet(Extensions $exts)
     {
@@ -94,19 +83,15 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testGetFail(Extensions $exts)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $exts->get('1.3.6.1.3.3');
     }
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testCount(Extensions $exts)
     {
@@ -115,8 +100,6 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testIterator(Extensions $exts)
     {
@@ -130,8 +113,6 @@ class ExtensionsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extensions $exts
      */
     public function testWithExtensions(Extensions $exts)
     {

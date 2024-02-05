@@ -53,8 +53,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testEncode(CertificationRequest $cr)
     {
@@ -78,9 +76,6 @@ class CertificationRequestTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param CertificationRequest $ref
-     * @param CertificationRequest $new
      */
     public function testRecoded(CertificationRequest $ref,
         CertificationRequest $new)
@@ -90,8 +85,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testCertificationRequestInfo(CertificationRequest $cr)
     {
@@ -101,8 +94,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testAlgo(CertificationRequest $cr)
     {
@@ -113,8 +104,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testSignature(CertificationRequest $cr)
     {
@@ -123,8 +112,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testVerify(CertificationRequest $cr)
     {
@@ -133,22 +120,18 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testInvalidAlgoFail(CertificationRequest $cr)
     {
         $seq = $cr->toASN1();
         $algo = new GenericAlgorithmIdentifier('1.3.6.1.3');
         $seq = $seq->withReplaced(1, $algo->toASN1());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         CertificationRequest::fromASN1($seq);
     }
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testToPEM(CertificationRequest $cr)
     {
@@ -159,8 +142,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequest $cr
      */
     public function testToString(CertificationRequest $cr)
     {
@@ -169,8 +150,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testToPEM
-     *
-     * @param PEM $pem
      */
     public function testPEMType(PEM $pem)
     {
@@ -179,8 +158,6 @@ class CertificationRequestTest extends TestCase
 
     /**
      * @depends testToPEM
-     *
-     * @param PEM $pem
      */
     public function testFromPEM(PEM $pem)
     {
@@ -192,9 +169,6 @@ class CertificationRequestTest extends TestCase
     /**
      * @depends testCreate
      * @depends testFromPEM
-     *
-     * @param CertificationRequest $ref
-     * @param CertificationRequest $new
      */
     public function testPEMRecoded(CertificationRequest $ref,
         CertificationRequest $new)
@@ -204,7 +178,7 @@ class CertificationRequestTest extends TestCase
 
     public function testFromInvalidPEMFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         CertificationRequest::fromPEM(new PEM('nope', ''));
     }
 }

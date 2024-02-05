@@ -19,9 +19,9 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 class GroupAttributeTest extends TestCase
 {
-    const AUTHORITY_DN = 'cn=Authority Name';
+    public const AUTHORITY_DN = 'cn=Authority Name';
 
-    const GROUP_NAME = 'administrators';
+    public const GROUP_NAME = 'administrators';
 
     public function testCreate()
     {
@@ -35,8 +35,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEncode(AttributeValue $value)
     {
@@ -61,9 +59,6 @@ class GroupAttributeTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecoded(AttributeValue $ref, AttributeValue $new)
     {
@@ -72,8 +67,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testOID(AttributeValue $value)
     {
@@ -82,8 +75,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GroupAttributeValue $value
      */
     public function testAuthority(GroupAttributeValue $value)
     {
@@ -94,8 +85,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GroupAttributeValue $value
      */
     public function testCount(GroupAttributeValue $value)
     {
@@ -104,8 +93,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GroupAttributeValue $value
      */
     public function testGroupName(GroupAttributeValue $value)
     {
@@ -114,8 +101,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testAttributes(AttributeValue $value)
     {
@@ -126,8 +111,6 @@ class GroupAttributeTest extends TestCase
 
     /**
      * @depends testAttributes
-     *
-     * @param Attributes $attribs
      */
     public function testFromAttributes(Attributes $attribs)
     {

@@ -26,8 +26,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEncode(AttributeValue $value)
     {
@@ -52,9 +50,6 @@ class ExtensionRequestTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecoded(AttributeValue $ref, AttributeValue $new)
     {
@@ -63,8 +58,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testOID(AttributeValue $value)
     {
@@ -73,8 +66,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtensionRequestValue $value
      */
     public function testExtensions(ExtensionRequestValue $value)
     {
@@ -83,8 +74,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtensionRequestValue $value
      */
     public function testStringValue(ExtensionRequestValue $value)
     {
@@ -93,8 +82,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtensionRequestValue $value
      */
     public function testEqualityMatchingRule(ExtensionRequestValue $value)
     {
@@ -104,8 +91,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtensionRequestValue $value
      */
     public function testRFC2253String(ExtensionRequestValue $value)
     {
@@ -114,8 +99,6 @@ class ExtensionRequestTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtensionRequestValue $value
      */
     public function testToString(ExtensionRequestValue $value)
     {

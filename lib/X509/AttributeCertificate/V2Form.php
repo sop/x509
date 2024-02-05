@@ -41,8 +41,6 @@ class V2Form extends AttCertIssuer
 
     /**
      * Constructor.
-     *
-     * @param null|GeneralNames $names
      */
     public function __construct(?GeneralNames $names = null)
     {
@@ -53,10 +51,6 @@ class V2Form extends AttCertIssuer
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromV2ASN1(Sequence $seq): self
     {
@@ -84,8 +78,6 @@ class V2Form extends AttCertIssuer
 
     /**
      * Check whether issuer name is set.
-     *
-     * @return bool
      */
     public function hasIssuerName(): bool
     {
@@ -96,8 +88,6 @@ class V2Form extends AttCertIssuer
      * Get issuer name.
      *
      * @throws \LogicException If not set
-     *
-     * @return GeneralNames
      */
     public function issuerName(): GeneralNames
     {
@@ -112,17 +102,12 @@ class V2Form extends AttCertIssuer
      *
      * This is a convenience method conforming to RFC 5755, which states
      * that Issuer must contain only one non-empty distinguished name.
-     *
-     * @return Name
      */
     public function name(): Name
     {
         return $this->issuerName()->firstDN();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toASN1(): Element
     {
         $elements = [];
@@ -140,9 +125,6 @@ class V2Form extends AttCertIssuer
         return new ImplicitlyTaggedType(0, new Sequence(...$elements));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function identifiesPKC(Certificate $cert): bool
     {
         $name = $this->_issuerName->firstDN();

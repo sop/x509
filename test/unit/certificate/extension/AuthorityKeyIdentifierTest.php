@@ -25,9 +25,9 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 class AuthorityKeyIdentifierTest extends TestCase
 {
-    const KEY_ID = 'test-id';
+    public const KEY_ID = 'test-id';
 
-    const SERIAL = 42;
+    public const SERIAL = 42;
 
     private static $_issuer;
 
@@ -60,8 +60,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -70,8 +68,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -80,8 +76,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -106,9 +100,6 @@ class AuthorityKeyIdentifierTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -117,8 +108,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityKeyIdentifierExtension $ext
      */
     public function testKeyIdentifier(AuthorityKeyIdentifierExtension $ext)
     {
@@ -127,8 +116,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityKeyIdentifierExtension $ext
      */
     public function testIssuer(AuthorityKeyIdentifierExtension $ext)
     {
@@ -137,8 +124,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityKeyIdentifierExtension $ext
      */
     public function testSerial(AuthorityKeyIdentifierExtension $ext)
     {
@@ -147,8 +132,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityKeyIdentifierExtension $ext
      */
     public function testExtensions(AuthorityKeyIdentifierExtension $ext)
     {
@@ -159,8 +142,6 @@ class AuthorityKeyIdentifierTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -175,35 +156,35 @@ class AuthorityKeyIdentifierTest extends TestCase
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_AUTHORITY_KEY_IDENTIFIER),
             new OctetString($seq->toDER()));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         AuthorityKeyIdentifierExtension::fromASN1($ext_seq);
     }
 
     public function testEncodeIssuerXorSerialFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, '', null, 1);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->toASN1();
     }
 
     public function testNoKeyIdentifierFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, null);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->keyIdentifier();
     }
 
     public function testNoIssuerFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, null);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->issuer();
     }
 
     public function testNoSerialFail()
     {
         $ext = new AuthorityKeyIdentifierExtension(false, null);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->serial();
     }
 }

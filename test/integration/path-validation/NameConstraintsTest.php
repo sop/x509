@@ -27,9 +27,9 @@ use Sop\X509\GeneralName\DirectoryName;
  */
 class NameConstraintsValidationIntegrationTest extends TestCase
 {
-    const CA_NAME = 'cn=CA';
+    public const CA_NAME = 'cn=CA';
 
-    const CERT_NAME = 'cn=EE,c=FI';
+    public const CERT_NAME = 'cn=EE,c=FI';
 
     private static $_caKey;
 

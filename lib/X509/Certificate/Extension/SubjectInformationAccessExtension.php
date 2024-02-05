@@ -26,9 +26,6 @@ class SubjectInformationAccessExtension extends Extension implements \Countable,
 
     /**
      * Constructor.
-     *
-     * @param bool                     $critical
-     * @param SubjectAccessDescription ...$access
      */
     public function __construct(bool $critical, SubjectAccessDescription ...$access)
     {
@@ -50,8 +47,6 @@ class SubjectInformationAccessExtension extends Extension implements \Countable,
      * Get the number of access descriptions.
      *
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -70,9 +65,6 @@ class SubjectInformationAccessExtension extends Extension implements \Countable,
         return new \ArrayIterator($this->_accessDescriptions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $access = array_map(
@@ -82,9 +74,6 @@ class SubjectInformationAccessExtension extends Extension implements \Countable,
         return new self($critical, ...$access);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = array_map(

@@ -18,8 +18,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefSubjectAlternativeNameTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return SubjectAlternativeNameExtension
      */
     public function testSubjectAlternativeName()
@@ -31,8 +29,6 @@ class RefSubjectAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectAlternativeName
-     *
-     * @param SubjectAlternativeNameExtension $san
      */
     public function testSANEmail(SubjectAlternativeNameExtension $san)
     {
@@ -44,8 +40,6 @@ class RefSubjectAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectAlternativeName
-     *
-     * @param SubjectAlternativeNameExtension $san
      */
     public function testSANURI(SubjectAlternativeNameExtension $san)
     {
@@ -57,8 +51,6 @@ class RefSubjectAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectAlternativeName
-     *
-     * @param SubjectAlternativeNameExtension $san
      */
     public function testSANDNS(SubjectAlternativeNameExtension $san)
     {
@@ -70,8 +62,6 @@ class RefSubjectAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectAlternativeName
-     *
-     * @param SubjectAlternativeNameExtension $san
      */
     public function testSANRegisteredID(SubjectAlternativeNameExtension $san)
     {
@@ -83,8 +73,6 @@ class RefSubjectAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectAlternativeName
-     *
-     * @param SubjectAlternativeNameExtension $san
      */
     public function testSANIPAddresses(SubjectAlternativeNameExtension $san)
     {
@@ -99,8 +87,6 @@ class RefSubjectAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectAlternativeName
-     *
-     * @param SubjectAlternativeNameExtension $san
      */
     public function testSANDirectoryName(SubjectAlternativeNameExtension $san)
     {

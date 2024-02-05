@@ -9,11 +9,7 @@ class IPv6Address extends IPAddress
     /**
      * Initialize from octets.
      *
-     * @param string $octets
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return self
      */
     public static function fromOctets(string $octets): self
     {
@@ -37,8 +33,6 @@ class IPv6Address extends IPAddress
      * Convert an array of 16 bit words to an IPv6 string representation.
      *
      * @param int[] $words
-     *
-     * @return string
      */
     protected static function _wordsToIPv6String(array $words): string
     {
@@ -49,9 +43,6 @@ class IPv6Address extends IPAddress
         return implode(':', $groups);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _octets(): string
     {
         $words = array_map('hexdec', explode(':', $this->_ip));

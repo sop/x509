@@ -44,10 +44,6 @@ class AttributeCertificate
 
     /**
      * Constructor.
-     *
-     * @param AttributeCertificateInfo     $acinfo
-     * @param SignatureAlgorithmIdentifier $algo
-     * @param Signature                    $signature
      */
     public function __construct(AttributeCertificateInfo $acinfo,
         SignatureAlgorithmIdentifier $algo, Signature $signature)
@@ -59,8 +55,6 @@ class AttributeCertificate
 
     /**
      * Get attribute certificate as a PEM formatted string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -69,10 +63,6 @@ class AttributeCertificate
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -89,10 +79,6 @@ class AttributeCertificate
 
     /**
      * Initialize from DER data.
-     *
-     * @param string $data
-     *
-     * @return self
      */
     public static function fromDER(string $data): self
     {
@@ -102,11 +88,7 @@ class AttributeCertificate
     /**
      * Initialize from PEM.
      *
-     * @param PEM $pem
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromPEM(PEM $pem): self
     {
@@ -118,8 +100,6 @@ class AttributeCertificate
 
     /**
      * Get attribute certificate info.
-     *
-     * @return AttributeCertificateInfo
      */
     public function acinfo(): AttributeCertificateInfo
     {
@@ -128,8 +108,6 @@ class AttributeCertificate
 
     /**
      * Get signature algorithm identifier.
-     *
-     * @return SignatureAlgorithmIdentifier
      */
     public function signatureAlgorithm(): SignatureAlgorithmIdentifier
     {
@@ -138,8 +116,6 @@ class AttributeCertificate
 
     /**
      * Get signature value.
-     *
-     * @return Signature
      */
     public function signatureValue(): Signature
     {
@@ -148,8 +124,6 @@ class AttributeCertificate
 
     /**
      * Get ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -160,8 +134,6 @@ class AttributeCertificate
 
     /**
      * Get attribute certificate as a DER.
-     *
-     * @return string
      */
     public function toDER(): string
     {
@@ -170,8 +142,6 @@ class AttributeCertificate
 
     /**
      * Get attribute certificate as a PEM.
-     *
-     * @return PEM
      */
     public function toPEM(): PEM
     {
@@ -183,8 +153,6 @@ class AttributeCertificate
      * by given public key certificate.
      *
      * @param Certificate $cert Certificate
-     *
-     * @return bool
      */
     public function isHeldBy(Certificate $cert): bool
     {
@@ -199,8 +167,6 @@ class AttributeCertificate
      * certificate.
      *
      * @param Certificate $cert Certificate
-     *
-     * @return bool
      */
     public function isIssuedBy(Certificate $cert): bool
     {
@@ -215,8 +181,6 @@ class AttributeCertificate
      *
      * @param PublicKeyInfo $pubkey_info Signer's public key
      * @param null|Crypto   $crypto      Crypto engine, use default if not set
-     *
-     * @return bool
      */
     public function verify(PublicKeyInfo $pubkey_info, ?Crypto $crypto = null): bool
     {

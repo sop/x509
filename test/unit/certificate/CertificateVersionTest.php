@@ -74,7 +74,7 @@ class CertificateVersionTest extends TestCase
     {
         $tbsCert = self::$_tbsCert->withSubjectUniqueID(
             UniqueIdentifier::fromString('subject'))->withIssuerUniqueID(
-            UniqueIdentifier::fromString('issuer'));
+                UniqueIdentifier::fromString('issuer'));
         $cert = $tbsCert->sign(new SHA1WithRSAEncryptionAlgorithmIdentifier(),
             self::$_privateKeyInfo);
         $this->assertEquals($cert->tbsCertificate()

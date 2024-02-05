@@ -74,8 +74,6 @@ class PathValidator
      * Validate certification path.
      *
      * @throws PathValidationException
-     *
-     * @return PathValidationResult
      */
     public function validate(): PathValidationResult
     {
@@ -106,12 +104,7 @@ class PathValidator
      *
      * @see https://tools.ietf.org/html/rfc5280#section-6.1.3
      *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
      * @throws PathValidationException
-     *
-     * @return ValidatorState
      */
     private function _processCertificate(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -155,11 +148,6 @@ class PathValidator
      * 6.1.4.
      *
      * @see https://tools.ietf.org/html/rfc5280#section-6.1.4
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     private function _prepareNext(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -198,12 +186,7 @@ class PathValidator
      *
      * @see https://tools.ietf.org/html/rfc5280#section-6.1.5
      *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
      * @throws PathValidationException
-     *
-     * @return ValidatorState
      */
     private function _wrapUp(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -217,8 +200,8 @@ class PathValidator
         // (b)
         if ($extensions->hasPolicyConstraints()) {
             $ext = $extensions->policyConstraints();
-            if ($ext->hasRequireExplicitPolicy() &&
-                0 === $ext->requireExplicitPolicy()) {
+            if ($ext->hasRequireExplicitPolicy()
+                && 0 === $ext->requireExplicitPolicy()) {
                 $state = $state->withExplicitPolicy(0);
             }
         }
@@ -239,11 +222,6 @@ class PathValidator
     /**
      * Update working_public_key, working_public_key_parameters and
      * working_public_key_algorithm state variables from certificate.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     private function _setPublicKeyState(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -271,9 +249,6 @@ class PathValidator
     /**
      * Verify certificate signature.
      *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
      * @throws PathValidationException
      */
     private function _verifySignature(ValidatorState $state,
@@ -294,8 +269,6 @@ class PathValidator
     /**
      * Check certificate validity.
      *
-     * @param Certificate $cert
-     *
      * @throws PathValidationException
      */
     private function _checkValidity(Certificate $cert): void
@@ -313,8 +286,6 @@ class PathValidator
 
     /**
      * Check certificate revocation.
-     *
-     * @param Certificate $cert
      */
     private function _checkRevocation(Certificate $cert)
     {
@@ -323,9 +294,6 @@ class PathValidator
 
     /**
      * Check certificate issuer.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
      *
      * @throws PathValidationException
      */
@@ -336,20 +304,12 @@ class PathValidator
         }
     }
 
-    /**
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     */
     private function _checkPermittedSubtrees(ValidatorState $state, Certificate $cert)
     {
         // @todo Implement
         $state->permittedSubtrees();
     }
 
-    /**
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     */
     private function _checkExcludedSubtrees(ValidatorState $state, Certificate $cert)
     {
         // @todo Implement
@@ -359,12 +319,7 @@ class PathValidator
     /**
      * Apply policy mappings handling for the preparation step.
      *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
      * @throws PathValidationException
-     *
-     * @return ValidatorState
      */
     private function _preparePolicyMappings(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -385,11 +340,6 @@ class PathValidator
 
     /**
      * Apply name constraints handling for the preparation step.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     private function _prepareNameConstraints(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -403,10 +353,6 @@ class PathValidator
 
     /**
      * Apply preparation for a non-self-signed certificate.
-     *
-     * @param ValidatorState $state
-     *
-     * @return ValidatorState
      */
     private function _prepareNonSelfIssued(ValidatorState $state): ValidatorState
     {
@@ -427,11 +373,6 @@ class PathValidator
 
     /**
      * Apply policy constraints handling for the preparation step.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     private function _preparePolicyConstraints(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -442,13 +383,13 @@ class PathValidator
         }
         $ext = $extensions->policyConstraints();
         // (i.1)
-        if ($ext->hasRequireExplicitPolicy() &&
-                $ext->requireExplicitPolicy() < $state->explicitPolicy()) {
+        if ($ext->hasRequireExplicitPolicy()
+                && $ext->requireExplicitPolicy() < $state->explicitPolicy()) {
             $state = $state->withExplicitPolicy($ext->requireExplicitPolicy());
         }
         // (i.2)
-        if ($ext->hasInhibitPolicyMapping() &&
-                $ext->inhibitPolicyMapping() < $state->policyMapping()) {
+        if ($ext->hasInhibitPolicyMapping()
+                && $ext->inhibitPolicyMapping() < $state->policyMapping()) {
             $state = $state->withPolicyMapping($ext->inhibitPolicyMapping());
         }
         return $state;
@@ -456,11 +397,6 @@ class PathValidator
 
     /**
      * Apply inhibit any-policy handling for the preparation step.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     private function _prepareInhibitAnyPolicy(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -478,12 +414,7 @@ class PathValidator
     /**
      * Verify maximum certification path length for the preparation step.
      *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
      * @throws PathValidationException
-     *
-     * @return ValidatorState
      */
     private function _verifyMaxPathLength(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -501,8 +432,6 @@ class PathValidator
     /**
      * Check key usage extension for the preparation step.
      *
-     * @param Certificate $cert
-     *
      * @throws PathValidationException
      */
     private function _checkKeyUsage(Certificate $cert): void
@@ -516,12 +445,6 @@ class PathValidator
         }
     }
 
-    /**
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
-     */
     private function _processNameConstraints(ValidatorState $state,
         Certificate $cert): ValidatorState
     {
@@ -531,8 +454,6 @@ class PathValidator
 
     /**
      * Process basic constraints extension.
-     *
-     * @param Certificate $cert
      *
      * @throws PathValidationException
      */
@@ -554,11 +475,6 @@ class PathValidator
 
     /**
      * Process pathLenConstraint.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     private function _processPathLengthContraint(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -575,12 +491,6 @@ class PathValidator
         return $state;
     }
 
-    /**
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
-     */
     private function _processExtensions(ValidatorState $state,
         Certificate $cert): ValidatorState
     {
@@ -588,11 +498,6 @@ class PathValidator
         return $state;
     }
 
-    /**
-     * @param ValidatorState $state
-     *
-     * @return ValidatorState
-     */
     private function _calculatePolicyIntersection(ValidatorState $state): ValidatorState
     {
         // (i) If the valid_policy_tree is NULL, the intersection is NULL

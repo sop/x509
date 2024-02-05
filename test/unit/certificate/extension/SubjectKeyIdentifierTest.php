@@ -16,7 +16,7 @@ use Sop\X509\Certificate\Extensions;
  */
 class SubjectKeyIdentifierTest extends TestCase
 {
-    const KEY_ID = 'test-id';
+    public const KEY_ID = 'test-id';
 
     public function testCreate()
     {
@@ -27,8 +27,6 @@ class SubjectKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -37,8 +35,6 @@ class SubjectKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -47,8 +43,6 @@ class SubjectKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -72,9 +66,6 @@ class SubjectKeyIdentifierTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -83,8 +74,6 @@ class SubjectKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectKeyIdentifierExtension $ext
      */
     public function testKeyIdentifier(SubjectKeyIdentifierExtension $ext)
     {
@@ -93,8 +82,6 @@ class SubjectKeyIdentifierTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectKeyIdentifierExtension $ext
      */
     public function testExtensions(SubjectKeyIdentifierExtension $ext)
     {
@@ -105,8 +92,6 @@ class SubjectKeyIdentifierTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {

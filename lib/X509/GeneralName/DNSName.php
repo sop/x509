@@ -35,8 +35,6 @@ class DNSName extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -44,9 +42,6 @@ class DNSName extends GeneralName
         return new self($el->asIA5String()->string());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_name;
@@ -54,17 +49,12 @@ class DNSName extends GeneralName
 
     /**
      * Get DNS name.
-     *
-     * @return string
      */
     public function name(): string
     {
         return $this->_name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag, new IA5String($this->_name));

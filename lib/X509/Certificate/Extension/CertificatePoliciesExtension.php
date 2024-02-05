@@ -25,9 +25,6 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
 
     /**
      * Constructor.
-     *
-     * @param bool              $critical
-     * @param PolicyInformation ...$policies
      */
     public function __construct(bool $critical, PolicyInformation ...$policies)
     {
@@ -40,10 +37,6 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
 
     /**
      * Check whether policy information by OID is present.
-     *
-     * @param string $oid
-     *
-     * @return bool
      */
     public function has(string $oid): bool
     {
@@ -53,11 +46,7 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
     /**
      * Get policy information by OID.
      *
-     * @param string $oid
-     *
      * @throws \LogicException If not set
-     *
-     * @return PolicyInformation
      */
     public function get(string $oid): PolicyInformation
     {
@@ -69,8 +58,6 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
 
     /**
      * Check whether anyPolicy is present.
-     *
-     * @return bool
      */
     public function hasAnyPolicy(): bool
     {
@@ -81,8 +68,6 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
      * Get anyPolicy information.
      *
      * @throws \LogicException if anyPolicy is not present
-     *
-     * @return PolicyInformation
      */
     public function anyPolicy(): PolicyInformation
     {
@@ -96,8 +81,6 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
      * Get the number of policies.
      *
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -108,17 +91,12 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
      * Get iterator for policy information terms.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_policies);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $policies = array_map(
@@ -132,9 +110,6 @@ class CertificatePoliciesExtension extends Extension implements \Countable, \Ite
         return new self($critical, ...$policies);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         if (!count($this->_policies)) {

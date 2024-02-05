@@ -82,9 +82,6 @@ class RequestToCertTest extends TestCase
     /**
      * @depends testCreateRequest
      * @depends testCreateCA
-     *
-     * @param CertificationRequest $csr
-     * @param Certificate          $ca_cert
      */
     public function testIssueCertificate(CertificationRequest $csr,
         Certificate $ca_cert)
@@ -108,9 +105,6 @@ class RequestToCertTest extends TestCase
     /**
      * @depends testCreateCA
      * @depends testIssueCertificate
-     *
-     * @param Certificate $ca
-     * @param Certificate $cert
      */
     public function testBuildPath(Certificate $ca, Certificate $cert)
     {
@@ -121,8 +115,6 @@ class RequestToCertTest extends TestCase
 
     /**
      * @depends testBuildPath
-     *
-     * @param CertificationPath $path
      */
     public function testValidatePath(CertificationPath $path)
     {

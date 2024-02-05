@@ -22,14 +22,12 @@ class Attributes extends SetOfAttributes
      *
      * @var array
      */
-    const MAP_OID_TO_CLASS = [
+    public const MAP_OID_TO_CLASS = [
         ExtensionRequestValue::OID => ExtensionRequestValue::class,
     ];
 
     /**
      * Check whether extension request attribute is present.
-     *
-     * @return bool
      */
     public function hasExtensionRequest(): bool
     {
@@ -40,8 +38,6 @@ class Attributes extends SetOfAttributes
      * Get extension request attribute value.
      *
      * @throws \LogicException
-     *
-     * @return ExtensionRequestValue
      */
     public function extensionRequest(): ExtensionRequestValue
     {
@@ -51,9 +47,6 @@ class Attributes extends SetOfAttributes
         return $this->firstOf(ExtensionRequestValue::OID)->first();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _castAttributeValues(Attribute $attribute): Attribute
     {
         $oid = $attribute->oid();

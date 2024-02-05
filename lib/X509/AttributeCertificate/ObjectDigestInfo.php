@@ -20,9 +20,9 @@ use Sop\CryptoTypes\AlgorithmIdentifier\Feature\AlgorithmIdentifierType;
  */
 class ObjectDigestInfo
 {
-    const TYPE_PUBLIC_KEY = 0;
-    const TYPE_PUBLIC_KEY_CERT = 1;
-    const TYPE_OTHER_OBJECT_TYPES = 2;
+    public const TYPE_PUBLIC_KEY = 0;
+    public const TYPE_PUBLIC_KEY_CERT = 1;
+    public const TYPE_OTHER_OBJECT_TYPES = 2;
 
     /**
      * Object type.
@@ -54,10 +54,6 @@ class ObjectDigestInfo
 
     /**
      * Constructor.
-     *
-     * @param int                     $type
-     * @param AlgorithmIdentifierType $algo
-     * @param BitString               $digest
      */
     public function __construct(int $type, AlgorithmIdentifierType $algo,
         BitString $digest)
@@ -70,10 +66,6 @@ class ObjectDigestInfo
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): ObjectDigestInfo
     {
@@ -92,8 +84,6 @@ class ObjectDigestInfo
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {

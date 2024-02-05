@@ -35,9 +35,6 @@ abstract class IPAddress extends GeneralName
 
     /**
      * Constructor.
-     *
-     * @param string      $ip
-     * @param null|string $mask
      */
     public function __construct(string $ip, ?string $mask = null)
     {
@@ -47,8 +44,6 @@ abstract class IPAddress extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -67,9 +62,6 @@ abstract class IPAddress extends GeneralName
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_ip . (isset($this->_mask) ? '/' . $this->_mask : '');
@@ -77,8 +69,6 @@ abstract class IPAddress extends GeneralName
 
     /**
      * Get IP address as a string.
-     *
-     * @return string
      */
     public function address(): string
     {
@@ -87,8 +77,6 @@ abstract class IPAddress extends GeneralName
 
     /**
      * Check whether mask is present.
-     *
-     * @return bool
      */
     public function hasMask(): bool
     {
@@ -99,8 +87,6 @@ abstract class IPAddress extends GeneralName
      * Get subnet mask as a string.
      *
      * @throws \LogicException If not set
-     *
-     * @return string
      */
     public function mask(): string
     {
@@ -112,14 +98,9 @@ abstract class IPAddress extends GeneralName
 
     /**
      * Get octet representation of the IP address.
-     *
-     * @return string
      */
     abstract protected function _octets(): string;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag,

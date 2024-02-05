@@ -33,10 +33,6 @@ class BasicConstraintsExtension extends Extension
 
     /**
      * Constructor.
-     *
-     * @param bool     $critical
-     * @param bool     $ca
-     * @param null|int $path_len
      */
     public function __construct(bool $critical, bool $ca, ?int $path_len = null)
     {
@@ -47,8 +43,6 @@ class BasicConstraintsExtension extends Extension
 
     /**
      * Whether certificate is a CA.
-     *
-     * @return bool
      */
     public function isCA(): bool
     {
@@ -57,8 +51,6 @@ class BasicConstraintsExtension extends Extension
 
     /**
      * Whether path length is present.
-     *
-     * @return bool
      */
     public function hasPathLen(): bool
     {
@@ -69,8 +61,6 @@ class BasicConstraintsExtension extends Extension
      * Get path length.
      *
      * @throws \LogicException If not set
-     *
-     * @return int
      */
     public function pathLen(): int
     {
@@ -80,9 +70,6 @@ class BasicConstraintsExtension extends Extension
         return $this->_pathLen;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $seq = UnspecifiedType::fromDER($data)->asSequence();
@@ -98,9 +85,6 @@ class BasicConstraintsExtension extends Extension
         return new self($critical, $ca, $path_len);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = [];

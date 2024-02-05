@@ -69,8 +69,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Create initial node for the policy tree.
-     *
-     * @return self
      */
     public static function anyPolicyNode(): self
     {
@@ -80,8 +78,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Get the valid policy OID.
-     *
-     * @return string
      */
     public function validPolicy(): string
     {
@@ -90,8 +86,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Check whether node has anyPolicy as a valid policy.
-     *
-     * @return bool
      */
     public function isAnyPolicy(): bool
     {
@@ -110,10 +104,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Check whether node has OID as an expected policy.
-     *
-     * @param string $oid
-     *
-     * @return bool
      */
     public function hasExpectedPolicy(string $oid): bool
     {
@@ -142,10 +132,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Check whether node has a child node with given valid policy OID.
-     *
-     * @param string $oid
-     *
-     * @return bool
      */
     public function hasChildWithValidPolicy(string $oid): bool
     {
@@ -159,10 +145,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Add child node.
-     *
-     * @param PolicyNode $node
-     *
-     * @return self
      */
     public function addChild(PolicyNode $node): self
     {
@@ -198,8 +180,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Check whether node has a parent.
-     *
-     * @return bool
      */
     public function hasParent(): bool
     {
@@ -208,8 +188,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Get the parent node.
-     *
-     * @return null|PolicyNode
      */
     public function parent(): ?PolicyNode
     {
@@ -235,8 +213,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
      * Walk tree from this node, applying a callback for each node.
      *
      * Nodes are traversed depth-first and callback shall be applied post-order.
-     *
-     * @param callable $fn
      */
     public function walkNodes(callable $fn): void
     {
@@ -248,8 +224,6 @@ class PolicyNode implements \IteratorAggregate, \Countable
 
     /**
      * Get the total number of nodes in a tree.
-     *
-     * @return int
      */
     public function nodeCount(): int
     {

@@ -32,9 +32,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
 
     /**
      * Constructor.
-     *
-     * @param null|DisplayText     $text
-     * @param null|NoticeReference $ref
      */
     public function __construct(?DisplayText $text = null,
         ?NoticeReference $ref = null)
@@ -45,8 +42,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromQualifierASN1(UnspecifiedType $el): PolicyQualifierInfo
@@ -66,8 +61,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
 
     /**
      * Whether explicit text is present.
-     *
-     * @return bool
      */
     public function hasExplicitText(): bool
     {
@@ -78,8 +71,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      * Get explicit text.
      *
      * @throws \LogicException If not set
-     *
-     * @return DisplayText
      */
     public function explicitText(): DisplayText
     {
@@ -91,8 +82,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
 
     /**
      * Whether notice reference is present.
-     *
-     * @return bool
      */
     public function hasNoticeRef(): bool
     {
@@ -103,8 +92,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
      * Get notice reference.
      *
      * @throws \LogicException If not set
-     *
-     * @return NoticeReference
      */
     public function noticeRef(): NoticeReference
     {
@@ -114,9 +101,6 @@ class UserNoticeQualifier extends PolicyQualifierInfo
         return $this->_ref;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _qualifierASN1(): Element
     {
         $elements = [];

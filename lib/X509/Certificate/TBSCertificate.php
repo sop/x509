@@ -28,9 +28,9 @@ use Sop\X509\CertificationRequest\CertificationRequest;
 class TBSCertificate
 {
     // Certificate version enumerations
-    const VERSION_1 = 0;
-    const VERSION_2 = 1;
-    const VERSION_3 = 2;
+    public const VERSION_1 = 0;
+    public const VERSION_2 = 1;
+    public const VERSION_3 = 2;
 
     /**
      * Certificate version.
@@ -122,10 +122,6 @@ class TBSCertificate
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -171,10 +167,6 @@ class TBSCertificate
      * Initialize from certification request.
      *
      * Note that signature is not verified and must be done by the caller.
-     *
-     * @param CertificationRequest $cr
-     *
-     * @return self
      */
     public static function fromCSR(CertificationRequest $cr): self
     {
@@ -203,8 +195,6 @@ class TBSCertificate
      * set to issuing certificate's public key identifier.
      *
      * @param Certificate $cert Issuing party's certificate
-     *
-     * @return self
      */
     public function withIssuerCertificate(Certificate $cert): self
     {
@@ -223,10 +213,6 @@ class TBSCertificate
      *
      * If version is not set, appropriate version is automatically
      * determined during signing.
-     *
-     * @param int $version
-     *
-     * @return self
      */
     public function withVersion(int $version): self
     {
@@ -239,8 +225,6 @@ class TBSCertificate
      * Get self with given serial number.
      *
      * @param int|string $serial Base 10 number
-     *
-     * @return self
      */
     public function withSerialNumber($serial): self
     {
@@ -253,26 +237,20 @@ class TBSCertificate
      * Get self with random positive serial number.
      *
      * @param int $size Number of random bytes
-     *
-     * @return self
      */
     public function withRandomSerialNumber(int $size = 16): self
     {
         // ensure that first byte is always non-zero and having first bit unset
-        $num = gmp_init(mt_rand(1, 0x7f), 10);
+        $num = gmp_init(mt_rand(1, 0x7F), 10);
         for ($i = 1; $i < $size; ++$i) {
             $num <<= 8;
-            $num += mt_rand(0, 0xff);
+            $num += mt_rand(0, 0xFF);
         }
         return $this->withSerialNumber(gmp_strval($num, 10));
     }
 
     /**
      * Get self with given signature algorithm.
-     *
-     * @param SignatureAlgorithmIdentifier $algo
-     *
-     * @return self
      */
     public function withSignature(SignatureAlgorithmIdentifier $algo): self
     {
@@ -283,10 +261,6 @@ class TBSCertificate
 
     /**
      * Get self with given issuer.
-     *
-     * @param Name $issuer
-     *
-     * @return self
      */
     public function withIssuer(Name $issuer): self
     {
@@ -297,10 +271,6 @@ class TBSCertificate
 
     /**
      * Get self with given validity.
-     *
-     * @param Validity $validity
-     *
-     * @return self
      */
     public function withValidity(Validity $validity): self
     {
@@ -311,10 +281,6 @@ class TBSCertificate
 
     /**
      * Get self with given subject.
-     *
-     * @param Name $subject
-     *
-     * @return self
      */
     public function withSubject(Name $subject): self
     {
@@ -325,10 +291,6 @@ class TBSCertificate
 
     /**
      * Get self with given subject public key info.
-     *
-     * @param PublicKeyInfo $pub_key_info
-     *
-     * @return self
      */
     public function withSubjectPublicKeyInfo(PublicKeyInfo $pub_key_info): self
     {
@@ -339,10 +301,6 @@ class TBSCertificate
 
     /**
      * Get self with issuer unique ID.
-     *
-     * @param UniqueIdentifier $id
-     *
-     * @return self
      */
     public function withIssuerUniqueID(UniqueIdentifier $id): self
     {
@@ -353,10 +311,6 @@ class TBSCertificate
 
     /**
      * Get self with subject unique ID.
-     *
-     * @param UniqueIdentifier $id
-     *
-     * @return self
      */
     public function withSubjectUniqueID(UniqueIdentifier $id): self
     {
@@ -367,10 +321,6 @@ class TBSCertificate
 
     /**
      * Get self with given extensions.
-     *
-     * @param Extensions $extensions
-     *
-     * @return self
      */
     public function withExtensions(Extensions $extensions): self
     {
@@ -383,8 +333,6 @@ class TBSCertificate
      * Get self with extensions added.
      *
      * @param Extension ...$exts One or more Extension objects
-     *
-     * @return self
      */
     public function withAdditionalExtensions(Extension ...$exts): self
     {
@@ -395,8 +343,6 @@ class TBSCertificate
 
     /**
      * Check whether version is set.
-     *
-     * @return bool
      */
     public function hasVersion(): bool
     {
@@ -407,8 +353,6 @@ class TBSCertificate
      * Get certificate version.
      *
      * @throws \LogicException If not set
-     *
-     * @return int
      */
     public function version(): int
     {
@@ -420,8 +364,6 @@ class TBSCertificate
 
     /**
      * Check whether serial number is set.
-     *
-     * @return bool
      */
     public function hasSerialNumber(): bool
     {
@@ -431,9 +373,9 @@ class TBSCertificate
     /**
      * Get serial number.
      *
-     * @throws \LogicException If not set
-     *
      * @return string Base 10 integer
+     *
+     * @throws \LogicException If not set
      */
     public function serialNumber(): string
     {
@@ -445,8 +387,6 @@ class TBSCertificate
 
     /**
      * Check whether signature algorithm is set.
-     *
-     * @return bool
      */
     public function hasSignature(): bool
     {
@@ -457,8 +397,6 @@ class TBSCertificate
      * Get signature algorithm.
      *
      * @throws \LogicException If not set
-     *
-     * @return SignatureAlgorithmIdentifier
      */
     public function signature(): SignatureAlgorithmIdentifier
     {
@@ -470,8 +408,6 @@ class TBSCertificate
 
     /**
      * Get issuer.
-     *
-     * @return Name
      */
     public function issuer(): Name
     {
@@ -480,8 +416,6 @@ class TBSCertificate
 
     /**
      * Get validity period.
-     *
-     * @return Validity
      */
     public function validity(): Validity
     {
@@ -490,8 +424,6 @@ class TBSCertificate
 
     /**
      * Get subject.
-     *
-     * @return Name
      */
     public function subject(): Name
     {
@@ -500,8 +432,6 @@ class TBSCertificate
 
     /**
      * Get subject public key.
-     *
-     * @return PublicKeyInfo
      */
     public function subjectPublicKeyInfo(): PublicKeyInfo
     {
@@ -510,8 +440,6 @@ class TBSCertificate
 
     /**
      * Whether issuer unique identifier is present.
-     *
-     * @return bool
      */
     public function hasIssuerUniqueID(): bool
     {
@@ -522,8 +450,6 @@ class TBSCertificate
      * Get issuerUniqueID.
      *
      * @throws \LogicException If not set
-     *
-     * @return UniqueIdentifier
      */
     public function issuerUniqueID(): UniqueIdentifier
     {
@@ -535,8 +461,6 @@ class TBSCertificate
 
     /**
      * Whether subject unique identifier is present.
-     *
-     * @return bool
      */
     public function hasSubjectUniqueID(): bool
     {
@@ -547,8 +471,6 @@ class TBSCertificate
      * Get subjectUniqueID.
      *
      * @throws \LogicException If not set
-     *
-     * @return UniqueIdentifier
      */
     public function subjectUniqueID(): UniqueIdentifier
     {
@@ -560,8 +482,6 @@ class TBSCertificate
 
     /**
      * Get extensions.
-     *
-     * @return Extensions
      */
     public function extensions(): Extensions
     {
@@ -570,8 +490,6 @@ class TBSCertificate
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -608,8 +526,6 @@ class TBSCertificate
      * @param SignatureAlgorithmIdentifier $algo         Algorithm used for signing
      * @param PrivateKeyInfo               $privkey_info Private key used for signing
      * @param null|Crypto                  $crypto       Crypto engine, use default if not set
-     *
-     * @return Certificate
      */
     public function sign(SignatureAlgorithmIdentifier $algo,
         PrivateKeyInfo $privkey_info, ?Crypto $crypto = null): Certificate
@@ -630,8 +546,6 @@ class TBSCertificate
 
     /**
      * Determine minimum version for the certificate.
-     *
-     * @return int
      */
     protected function _determineVersion(): int
     {

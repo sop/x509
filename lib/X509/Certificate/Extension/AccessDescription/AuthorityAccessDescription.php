@@ -14,13 +14,11 @@ class AuthorityAccessDescription extends AccessDescription
      *
      * @var string
      */
-    const OID_METHOD_OSCP = '1.3.6.1.5.5.7.48.1';
-    const OID_METHOD_CA_ISSUERS = '1.3.6.1.5.5.7.48.2';
+    public const OID_METHOD_OSCP = '1.3.6.1.5.5.7.48.1';
+    public const OID_METHOD_CA_ISSUERS = '1.3.6.1.5.5.7.48.2';
 
     /**
      * Check whether access method is OSCP.
-     *
-     * @return bool
      */
     public function isOSCPMethod(): bool
     {
@@ -29,8 +27,6 @@ class AuthorityAccessDescription extends AccessDescription
 
     /**
      * Check whether access method is CA issuers.
-     *
-     * @return bool
      */
     public function isCAIssuersMethod(): bool
     {

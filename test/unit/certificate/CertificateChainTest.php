@@ -46,8 +46,6 @@ class CertificateChainTest extends TestCase
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testCertificates(CertificateChain $chain)
     {
@@ -57,8 +55,6 @@ class CertificateChainTest extends TestCase
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testEndEntityCert(CertificateChain $chain)
     {
@@ -68,14 +64,12 @@ class CertificateChainTest extends TestCase
     public function testEndEntityCertFail()
     {
         $chain = new CertificateChain();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $chain->endEntityCertificate();
     }
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testTrustAnchorCert(CertificateChain $chain)
     {
@@ -85,14 +79,12 @@ class CertificateChainTest extends TestCase
     public function testTrustAnchorCertFail()
     {
         $chain = new CertificateChain();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $chain->trustAnchorCertificate();
     }
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testCount(CertificateChain $chain)
     {
@@ -101,8 +93,6 @@ class CertificateChainTest extends TestCase
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testIterator(CertificateChain $chain)
     {
@@ -123,9 +113,6 @@ class CertificateChainTest extends TestCase
     /**
      * @depends testCreateChain
      * @depends testFromPEMs
-     *
-     * @param CertificateChain $ref
-     * @param CertificateChain $chain
      */
     public function testFromPEMEquals(CertificateChain $ref,
         CertificateChain $chain)
@@ -135,8 +122,6 @@ class CertificateChainTest extends TestCase
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testToPEMString(CertificateChain $chain)
     {
@@ -162,9 +147,6 @@ class CertificateChainTest extends TestCase
     /**
      * @depends testCreateChain
      * @depends testFromPEMString
-     *
-     * @param CertificateChain $ref
-     * @param CertificateChain $chain
      */
     public function testFromPEMStringEquals(CertificateChain $ref,
         CertificateChain $chain)
@@ -174,8 +156,6 @@ class CertificateChainTest extends TestCase
 
     /**
      * @depends testCreateChain
-     *
-     * @param CertificateChain $chain
      */
     public function testCertificationPath(CertificateChain $chain)
     {

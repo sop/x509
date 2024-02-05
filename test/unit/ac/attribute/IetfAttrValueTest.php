@@ -18,14 +18,14 @@ class IetfAttrValueTest extends TestCase
 {
     public function testFromUnsupportedTypeFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         IetfAttrValue::fromASN1(new UnspecifiedType(new NullType()));
     }
 
     public function testToUnsupportedTypeFail()
     {
         $val = new IetfAttrValue('', Element::TYPE_NULL);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $val->toASN1();
     }
 
@@ -38,8 +38,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateOctetString
-     *
-     * @param IetfAttrValue $val
      */
     public function testOctetStringType(IetfAttrValue $val)
     {
@@ -48,8 +46,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateOctetString
-     *
-     * @param IetfAttrValue $val
      */
     public function testIsOctetString(IetfAttrValue $val)
     {
@@ -58,8 +54,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateOctetString
-     *
-     * @param IetfAttrValue $val
      */
     public function testValue(IetfAttrValue $val)
     {
@@ -75,8 +69,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateUTF8String
-     *
-     * @param IetfAttrValue $val
      */
     public function testUTF8StringType(IetfAttrValue $val)
     {
@@ -85,8 +77,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateUTF8String
-     *
-     * @param IetfAttrValue $val
      */
     public function testIsUTF8String(IetfAttrValue $val)
     {
@@ -102,8 +92,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateOID
-     *
-     * @param IetfAttrValue $val
      */
     public function testOIDType(IetfAttrValue $val)
     {
@@ -112,8 +100,6 @@ class IetfAttrValueTest extends TestCase
 
     /**
      * @depends testCreateOID
-     *
-     * @param IetfAttrValue $val
      */
     public function testIsOID(IetfAttrValue $val)
     {

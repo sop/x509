@@ -18,7 +18,7 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 class SubjectAlternativeNameTest extends TestCase
 {
-    const DN = 'cn=Alt name';
+    public const DN = 'cn=Alt name';
 
     public function testCreate()
     {
@@ -30,8 +30,6 @@ class SubjectAlternativeNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -40,8 +38,6 @@ class SubjectAlternativeNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -50,8 +46,6 @@ class SubjectAlternativeNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -76,9 +70,6 @@ class SubjectAlternativeNameTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -87,8 +78,6 @@ class SubjectAlternativeNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectAlternativeNameExtension $ext
      */
     public function testName(SubjectAlternativeNameExtension $ext)
     {
@@ -98,8 +87,6 @@ class SubjectAlternativeNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param SubjectAlternativeNameExtension $ext
      */
     public function testExtensions(SubjectAlternativeNameExtension $ext)
     {
@@ -110,8 +97,6 @@ class SubjectAlternativeNameTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {

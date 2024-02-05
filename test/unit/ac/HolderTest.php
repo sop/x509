@@ -52,8 +52,6 @@ class HolderTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Holder $holder
      */
     public function testEncode(Holder $holder)
     {
@@ -77,9 +75,6 @@ class HolderTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Holder $ref
-     * @param Holder $new
      */
     public function testRecoded(Holder $ref, Holder $new)
     {
@@ -88,8 +83,6 @@ class HolderTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Holder $holder
      */
     public function testBaseCertificateID(Holder $holder)
     {
@@ -98,8 +91,6 @@ class HolderTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Holder $holder
      */
     public function testEntityName(Holder $holder)
     {
@@ -108,8 +99,6 @@ class HolderTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Holder $holder
      */
     public function testObjectDigestInfo(Holder $holder)
     {
@@ -140,21 +129,21 @@ class HolderTest extends TestCase
     public function testNoBaseCertificateIDFail()
     {
         $holder = new Holder();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $holder->baseCertificateID();
     }
 
     public function testNoEntityNameFail()
     {
         $holder = new Holder();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $holder->entityName();
     }
 
     public function testNoObjectDigestInfoFail()
     {
         $holder = new Holder();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $holder->objectDigestInfo();
     }
 }

@@ -25,9 +25,6 @@ class CRLDistributionPointsExtension extends Extension implements \Countable, \I
 
     /**
      * Constructor.
-     *
-     * @param bool              $critical
-     * @param DistributionPoint ...$distribution_points
      */
     public function __construct(bool $critical,
         DistributionPoint ...$distribution_points)
@@ -50,8 +47,6 @@ class CRLDistributionPointsExtension extends Extension implements \Countable, \I
      * Get the number of distribution points.
      *
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -62,17 +57,12 @@ class CRLDistributionPointsExtension extends Extension implements \Countable, \I
      * Get iterator for distribution points.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_distributionPoints);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $dps = array_map(
@@ -87,9 +77,6 @@ class CRLDistributionPointsExtension extends Extension implements \Countable, \I
         return new static($critical, ...$dps);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         if (!count($this->_distributionPoints)) {

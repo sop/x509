@@ -32,9 +32,6 @@ class NoticeReference
 
     /**
      * Constructor.
-     *
-     * @param DisplayText $organization
-     * @param int         ...$numbers
      */
     public function __construct(DisplayText $organization, int ...$numbers)
     {
@@ -44,10 +41,6 @@ class NoticeReference
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -61,8 +54,6 @@ class NoticeReference
 
     /**
      * Get reference organization.
-     *
-     * @return DisplayText
      */
     public function organization(): DisplayText
     {
@@ -81,8 +72,6 @@ class NoticeReference
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {

@@ -27,8 +27,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -37,8 +35,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -47,8 +43,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -72,9 +66,6 @@ class KeyUsageTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -83,8 +74,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testDigitalSignature(KeyUsageExtension $ext)
     {
@@ -93,8 +82,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testNonRepudiation(KeyUsageExtension $ext)
     {
@@ -103,8 +90,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testKeyEncipherment(KeyUsageExtension $ext)
     {
@@ -113,8 +98,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testDataEncipherment(KeyUsageExtension $ext)
     {
@@ -123,8 +106,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testKeyAgreement(KeyUsageExtension $ext)
     {
@@ -133,8 +114,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testKeyCertSign(KeyUsageExtension $ext)
     {
@@ -143,8 +122,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testCRLSign(KeyUsageExtension $ext)
     {
@@ -153,8 +130,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testEncipherOnly(KeyUsageExtension $ext)
     {
@@ -163,8 +138,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testDecipherOnly(KeyUsageExtension $ext)
     {
@@ -173,8 +146,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testExtensions(KeyUsageExtension $ext)
     {
@@ -185,8 +156,6 @@ class KeyUsageTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {

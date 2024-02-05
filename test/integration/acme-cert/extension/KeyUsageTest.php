@@ -17,8 +17,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefKeyUsageTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return KeyUsageExtension
      */
     public function testKeyUsage()
@@ -30,8 +28,6 @@ class RefKeyUsageTest extends RefExtTestHelper
 
     /**
      * @depends testKeyUsage
-     *
-     * @param KeyUsageExtension $ku
      */
     public function testKeyUsageBits(KeyUsageExtension $ku)
     {

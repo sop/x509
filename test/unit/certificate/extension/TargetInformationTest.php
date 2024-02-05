@@ -21,9 +21,9 @@ use Sop\X509\GeneralName\DNSName;
  */
 class TargetInformationTest extends TestCase
 {
-    const NAME_DN = 'cn=Target';
+    public const NAME_DN = 'cn=Target';
 
-    const GROUP_DOMAIN = '.example.com';
+    public const GROUP_DOMAIN = '.example.com';
 
     public function testCreateTargets()
     {
@@ -36,8 +36,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreateTargets
-     *
-     * @param Targets $targets
      */
     public function testCreate(Targets $targets)
     {
@@ -48,8 +46,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -58,8 +54,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -68,8 +62,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -93,9 +85,6 @@ class TargetInformationTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -104,8 +93,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TargetInformationExtension $ext
      */
     public function testCount(TargetInformationExtension $ext)
     {
@@ -114,8 +101,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TargetInformationExtension $ext
      */
     public function testIterator(TargetInformationExtension $ext)
     {
@@ -129,8 +114,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TargetInformationExtension $ext
      */
     public function testName(TargetInformationExtension $ext)
     {
@@ -139,8 +122,6 @@ class TargetInformationTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TargetInformationExtension $ext
      */
     public function testGroup(TargetInformationExtension $ext)
     {
@@ -151,8 +132,6 @@ class TargetInformationTest extends TestCase
      * Cover __clone method.
      *
      * @depends testCreate
-     *
-     * @param TargetInformationExtension $ext
      */
     public function testClone(TargetInformationExtension $ext)
     {

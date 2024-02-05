@@ -19,13 +19,13 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 class ChargingIdentityAttributeTest extends TestCase
 {
-    const AUTHORITY_DN = 'cn=Authority Name';
+    public const AUTHORITY_DN = 'cn=Authority Name';
 
-    const OCTETS_VAL = 'octet string';
+    public const OCTETS_VAL = 'octet string';
 
-    const OID_VAL = '1.3.6.1.3.1';
+    public const OID_VAL = '1.3.6.1.3.1';
 
-    const UTF8_VAL = 'UTF-8 string';
+    public const UTF8_VAL = 'UTF-8 string';
 
     public function testCreate()
     {
@@ -41,8 +41,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEncode(AttributeValue $value)
     {
@@ -67,9 +65,6 @@ class ChargingIdentityAttributeTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecoded(AttributeValue $ref, AttributeValue $new)
     {
@@ -78,8 +73,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testOID(AttributeValue $value)
     {
@@ -88,8 +81,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ChargingIdentityAttributeValue $value
      */
     public function testAuthority(ChargingIdentityAttributeValue $value)
     {
@@ -100,8 +91,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ChargingIdentityAttributeValue $value
      */
     public function testCount(ChargingIdentityAttributeValue $value)
     {
@@ -110,8 +99,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ChargingIdentityAttributeValue $value
      */
     public function testIterator(ChargingIdentityAttributeValue $value)
     {
@@ -125,8 +112,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ChargingIdentityAttributeValue $value
      */
     public function testOctetStringValue(ChargingIdentityAttributeValue $value)
     {
@@ -135,8 +120,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ChargingIdentityAttributeValue $value
      */
     public function testOIDValue(ChargingIdentityAttributeValue $value)
     {
@@ -145,8 +128,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ChargingIdentityAttributeValue $value
      */
     public function testUTF8Value(ChargingIdentityAttributeValue $value)
     {
@@ -155,8 +136,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testAttributes(AttributeValue $value)
     {
@@ -167,8 +146,6 @@ class ChargingIdentityAttributeTest extends TestCase
 
     /**
      * @depends testAttributes
-     *
-     * @param Attributes $attribs
      */
     public function testFromAttributes(Attributes $attribs)
     {

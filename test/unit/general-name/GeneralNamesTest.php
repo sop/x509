@@ -28,8 +28,6 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testEncode(GeneralNames $gns)
     {
@@ -53,9 +51,6 @@ class GeneralNamesTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param GeneralNames $ref
-     * @param GeneralNames $new
      */
     public function testRecoded(GeneralNames $ref, GeneralNames $new)
     {
@@ -64,8 +59,6 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testHas(GeneralNames $gns)
     {
@@ -74,8 +67,6 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testHasNot(GeneralNames $gns)
     {
@@ -84,8 +75,6 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testAllOf(GeneralNames $gns)
     {
@@ -94,8 +83,6 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testFirstOf(GeneralNames $gns)
     {
@@ -105,19 +92,15 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testFirstOfFail(GeneralNames $gns)
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         $gns->firstOf(GeneralName::TAG_URI);
     }
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testCount(GeneralNames $gns)
     {
@@ -126,8 +109,6 @@ class GeneralNamesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param GeneralNames $gns
      */
     public function testIterator(GeneralNames $gns)
     {
@@ -141,14 +122,14 @@ class GeneralNamesTest extends TestCase
 
     public function testFromEmptyFail()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         GeneralNames::fromASN1(new Sequence());
     }
 
     public function testEmptyToASN1Fail()
     {
         $gn = new GeneralNames();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $gn->toASN1();
     }
 
@@ -177,7 +158,7 @@ class GeneralNamesTest extends TestCase
     {
         $gn = new GeneralNames(
             new GeneralNamesTest_NameMockup(GeneralName::TAG_DNS_NAME));
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $gn->firstDNS();
     }
 
@@ -185,7 +166,7 @@ class GeneralNamesTest extends TestCase
     {
         $gn = new GeneralNames(
             new GeneralNamesTest_NameMockup(GeneralName::TAG_DIRECTORY_NAME));
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $gn->firstDN();
     }
 
@@ -193,7 +174,7 @@ class GeneralNamesTest extends TestCase
     {
         $gn = new GeneralNames(
             new GeneralNamesTest_NameMockup(GeneralName::TAG_URI));
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $gn->firstURI();
     }
 }

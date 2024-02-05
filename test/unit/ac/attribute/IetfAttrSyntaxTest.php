@@ -24,30 +24,24 @@ class IetfAttrSyntaxTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param IetfAttrSyntax $val
      */
     public function testNoPolicyAuthorityFail(IetfAttrSyntax $val)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $val->policyAuthority();
     }
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param IetfAttrSyntax $val
      */
     public function testNoValuesFirstFail(IetfAttrSyntax $val)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $val->first();
     }
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param IetfAttrSyntax $val
      */
     public function testStringValue(IetfAttrSyntax $val)
     {
@@ -56,8 +50,6 @@ class IetfAttrSyntaxTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param IetfAttrSyntax $val
      */
     public function testEqualityMatchingRule(IetfAttrSyntax $val)
     {
@@ -67,8 +59,6 @@ class IetfAttrSyntaxTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param IetfAttrSyntax $val
      */
     public function testRFC2253String(IetfAttrSyntax $val)
     {
@@ -77,8 +67,6 @@ class IetfAttrSyntaxTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param IetfAttrSyntax $val
      */
     public function testToString(IetfAttrSyntax $val)
     {

@@ -11,7 +11,7 @@ use Sop\ASN1\Type\UnspecifiedType;
  * Implements *GeneralSubtrees* ASN.1 type used by 'Name Constraints'
  * certificate extension.
  *
- * @see @link https://tools.ietf.org/html/rfc5280#section-4.2.1.10
+ * @see @see https://tools.ietf.org/html/rfc5280#section-4.2.1.10
  */
 class GeneralSubtrees implements \Countable, \IteratorAggregate
 {
@@ -24,8 +24,6 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 
     /**
      * Constructor.
-     *
-     * @param GeneralSubtree ...$subtrees
      */
     public function __construct(GeneralSubtree ...$subtrees)
     {
@@ -34,10 +32,6 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -64,8 +58,6 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -81,8 +73,6 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
 
     /**
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -93,8 +83,6 @@ class GeneralSubtrees implements \Countable, \IteratorAggregate
      * Get iterator for subtrees.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {

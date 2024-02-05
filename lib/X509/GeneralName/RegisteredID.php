@@ -35,8 +35,6 @@ class RegisteredID extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -44,9 +42,6 @@ class RegisteredID extends GeneralName
         return new self($el->asObjectIdentifier()->oid());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_oid;
@@ -62,9 +57,6 @@ class RegisteredID extends GeneralName
         return $this->_oid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag,

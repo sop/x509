@@ -23,8 +23,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefFreshestCRLTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return FreshestCRLExtension
      */
     public function testFreshestCRLExtension()
@@ -36,8 +34,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
 
     /**
      * @depends testFreshestCRLExtension
-     *
-     * @param FreshestCRLExtension $ext
      *
      * @return DistributionPoint
      */
@@ -51,8 +47,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
     /**
      * @depends testDistributionPoint
      *
-     * @param DistributionPoint $dp
-     *
      * @return RelativeName
      */
     public function testRelativeName(DistributionPoint $dp)
@@ -64,8 +58,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
 
     /**
      * @depends testRelativeName
-     *
-     * @param RelativeName $name
      */
     public function testRDN(RelativeName $name)
     {
@@ -76,8 +68,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
 
     /**
      * @depends testDistributionPoint
-     *
-     * @param DistributionPoint $dp
      *
      * @return ReasonFlags
      */
@@ -90,8 +80,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
 
     /**
      * @depends testReasons
-     *
-     * @param ReasonFlags $reasons
      */
     public function testReasonFlags(ReasonFlags $reasons)
     {
@@ -108,8 +96,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
     /**
      * @depends testDistributionPoint
      *
-     * @param DistributionPoint $dp
-     *
      * @return GeneralNames
      */
     public function testIssuer(DistributionPoint $dp)
@@ -121,8 +107,6 @@ class RefFreshestCRLTest extends RefExtTestHelper
 
     /**
      * @depends testIssuer
-     *
-     * @param GeneralNames $gn
      */
     public function testIssuerDirName(GeneralNames $gn)
     {

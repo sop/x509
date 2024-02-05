@@ -19,7 +19,7 @@ use Sop\X509\Certificate\Extension\CertificatePolicy\UserNoticeQualifier;
  */
 class PolicyInformationTest extends TestCase
 {
-    const OID = '1.3.6.1.3';
+    public const OID = '1.3.6.1.3';
 
     public function testCreateWithCPS()
     {
@@ -30,8 +30,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testEncodeWithCPS(PolicyInformation $pi)
     {
@@ -55,9 +53,6 @@ class PolicyInformationTest extends TestCase
     /**
      * @depends testCreateWithCPS
      * @depends testDecodeWithCPS
-     *
-     * @param PolicyInformation $ref
-     * @param PolicyInformation $new
      */
     public function testRecodedWithCPS(PolicyInformation $ref,
         PolicyInformation $new)
@@ -67,8 +62,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testOID(PolicyInformation $pi)
     {
@@ -77,8 +70,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testHas(PolicyInformation $pi)
     {
@@ -87,8 +78,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testHasNot(PolicyInformation $pi)
     {
@@ -97,8 +86,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testGet(PolicyInformation $pi)
     {
@@ -108,19 +95,15 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testGetFail(PolicyInformation $pi)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $pi->get('1.3.6.1.3');
     }
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testCPSQualifier(PolicyInformation $pi)
     {
@@ -129,12 +112,10 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithCPS
-     *
-     * @param PolicyInformation $pi
      */
     public function testUserNoticeQualifierFail(PolicyInformation $pi)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $pi->userNoticeQualifier();
     }
 
@@ -148,19 +129,15 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithNotice
-     *
-     * @param PolicyInformation $pi
      */
     public function testCPSQualifierFail(PolicyInformation $pi)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $pi->CPSQualifier();
     }
 
     /**
      * @depends testCreateWithNotice
-     *
-     * @param PolicyInformation $pi
      */
     public function testUserNoticeQualifier(PolicyInformation $pi)
     {
@@ -178,8 +155,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithMultiple
-     *
-     * @param PolicyInformation $pi
      */
     public function testEncodeWithMultiple(PolicyInformation $pi)
     {
@@ -203,9 +178,6 @@ class PolicyInformationTest extends TestCase
     /**
      * @depends testCreateWithMultiple
      * @depends testDecodeWithMultiple
-     *
-     * @param PolicyInformation $ref
-     * @param PolicyInformation $new
      */
     public function testRecodedMultiple(PolicyInformation $ref,
         PolicyInformation $new)
@@ -215,8 +187,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithMultiple
-     *
-     * @param PolicyInformation $pi
      */
     public function testCount(PolicyInformation $pi)
     {
@@ -225,8 +195,6 @@ class PolicyInformationTest extends TestCase
 
     /**
      * @depends testCreateWithMultiple
-     *
-     * @param PolicyInformation $pi
      */
     public function testIterator(PolicyInformation $pi)
     {

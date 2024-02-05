@@ -21,13 +21,13 @@ class PolicyQualifierInfoTest extends TestCase
     public function testFromASN1UnknownTypeFail()
     {
         $seq = new Sequence(new ObjectIdentifier('1.3.6.1.3'), new NullType());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         PolicyQualifierInfo::fromASN1($seq);
     }
 
     public function testFromQualifierBadCall()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         PolicyQualifierInfo::fromQualifierASN1(
             new UnspecifiedType(new NullType()));
     }

@@ -18,8 +18,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefSubjectDirectoryAttributesTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return SubjectDirectoryAttributesExtension
      */
     public function testSubjectDirectoryAttributesExtension()
@@ -32,8 +30,6 @@ class RefSubjectDirectoryAttributesTest extends RefExtTestHelper
 
     /**
      * @depends testSubjectDirectoryAttributesExtension
-     *
-     * @param SubjectDirectoryAttributesExtension $sda
      */
     public function testSDADescription(SubjectDirectoryAttributesExtension $sda)
     {

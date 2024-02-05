@@ -60,10 +60,6 @@ class AuthorityKeyIdentifierExtension extends Extension
 
     /**
      * Create from public key info.
-     *
-     * @param PublicKeyInfo $pki
-     *
-     * @return AuthorityKeyIdentifierExtension
      */
     public static function fromPublicKeyInfo(PublicKeyInfo $pki): self
     {
@@ -72,8 +68,6 @@ class AuthorityKeyIdentifierExtension extends Extension
 
     /**
      * Whether key identifier is present.
-     *
-     * @return bool
      */
     public function hasKeyIdentifier(): bool
     {
@@ -84,8 +78,6 @@ class AuthorityKeyIdentifierExtension extends Extension
      * Get key identifier.
      *
      * @throws \LogicException If not set
-     *
-     * @return string
      */
     public function keyIdentifier(): string
     {
@@ -97,8 +89,6 @@ class AuthorityKeyIdentifierExtension extends Extension
 
     /**
      * Whether issuer is present.
-     *
-     * @return bool
      */
     public function hasIssuer(): bool
     {
@@ -109,8 +99,6 @@ class AuthorityKeyIdentifierExtension extends Extension
      * Get issuer.
      *
      * @throws \LogicException If not set
-     *
-     * @return GeneralNames
      */
     public function issuer(): GeneralNames
     {
@@ -122,8 +110,6 @@ class AuthorityKeyIdentifierExtension extends Extension
 
     /**
      * Whether serial is present.
-     *
-     * @return bool
      */
     public function hasSerial(): bool
     {
@@ -133,9 +119,9 @@ class AuthorityKeyIdentifierExtension extends Extension
     /**
      * Get serial number.
      *
-     * @throws \LogicException If not set
-     *
      * @return string Base 10 integer string
+     *
+     * @throws \LogicException If not set
      */
     public function serial(): string
     {
@@ -145,9 +131,6 @@ class AuthorityKeyIdentifierExtension extends Extension
         return $this->_authorityCertSerialNumber;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $seq = UnspecifiedType::fromDER($data)->asSequence();
@@ -174,9 +157,6 @@ class AuthorityKeyIdentifierExtension extends Extension
         return new self($critical, $keyIdentifier, $issuer, $serial);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = [];
@@ -185,8 +165,8 @@ class AuthorityKeyIdentifierExtension extends Extension
                 new OctetString($this->_keyIdentifier));
         }
         // if either issuer or serial is set, both must be set
-        if (isset($this->_authorityCertIssuer) ||
-             isset($this->_authorityCertSerialNumber)) {
+        if (isset($this->_authorityCertIssuer)
+             || isset($this->_authorityCertSerialNumber)) {
             if (!isset($this->_authorityCertIssuer,
                 $this->_authorityCertSerialNumber)) {
                 throw new \LogicException(

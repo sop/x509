@@ -19,7 +19,7 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class TargetGroupTest extends TestCase
 {
-    const URI = 'urn:test';
+    public const URI = 'urn:test';
 
     public function testCreate()
     {
@@ -30,8 +30,6 @@ class TargetGroupTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Target $target
      */
     public function testEncode(Target $target)
     {
@@ -55,9 +53,6 @@ class TargetGroupTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Target $ref
-     * @param Target $new
      */
     public function testRecoded(Target $ref, Target $new)
     {
@@ -66,8 +61,6 @@ class TargetGroupTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Target $target
      */
     public function testType(Target $target)
     {
@@ -76,8 +69,6 @@ class TargetGroupTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TargetGroup $target
      */
     public function testName(TargetGroup $target)
     {
@@ -87,8 +78,6 @@ class TargetGroupTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param TargetGroup $target
      */
     public function testString(TargetGroup $target)
     {

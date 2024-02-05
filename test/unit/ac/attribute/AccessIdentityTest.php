@@ -17,9 +17,9 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class AccessIdentityAttributeTest extends TestCase
 {
-    const SERVICE_URI = 'urn:service';
+    public const SERVICE_URI = 'urn:service';
 
-    const IDENT_URI = 'urn:username';
+    public const IDENT_URI = 'urn:username';
 
     public function testCreate()
     {
@@ -32,8 +32,6 @@ class AccessIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEncode(AttributeValue $value)
     {
@@ -58,9 +56,6 @@ class AccessIdentityAttributeTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecoded(AttributeValue $ref, AttributeValue $new)
     {
@@ -69,8 +64,6 @@ class AccessIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testOID(AttributeValue $value)
     {
@@ -79,8 +72,6 @@ class AccessIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AccessIdentityAttributeValue $value
      */
     public function testService(AccessIdentityAttributeValue $value)
     {
@@ -89,8 +80,6 @@ class AccessIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AccessIdentityAttributeValue $value
      */
     public function testIdent(AccessIdentityAttributeValue $value)
     {
@@ -99,8 +88,6 @@ class AccessIdentityAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testAttributes(AttributeValue $value)
     {
@@ -111,8 +98,6 @@ class AccessIdentityAttributeTest extends TestCase
 
     /**
      * @depends testAttributes
-     *
-     * @param Attributes $attribs
      */
     public function testFromAttributes(Attributes $attribs)
     {

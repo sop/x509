@@ -102,8 +102,6 @@ class PathValidationConfig
 
     /**
      * Get default configuration.
-     *
-     * @return self
      */
     public static function defaultConfig(): self
     {
@@ -112,10 +110,6 @@ class PathValidationConfig
 
     /**
      * Get self with maximum path length.
-     *
-     * @param int $length
-     *
-     * @return self
      */
     public function withMaxLength(int $length): self
     {
@@ -126,10 +120,6 @@ class PathValidationConfig
 
     /**
      * Get self with reference date and time.
-     *
-     * @param \DateTimeImmutable $dt
-     *
-     * @return self
      */
     public function withDateTime(\DateTimeImmutable $dt): self
     {
@@ -140,10 +130,6 @@ class PathValidationConfig
 
     /**
      * Get self with trust anchor certificate.
-     *
-     * @param Certificate $ca
-     *
-     * @return self
      */
     public function withTrustAnchor(Certificate $ca): self
     {
@@ -154,10 +140,6 @@ class PathValidationConfig
 
     /**
      * Get self with initial-policy-mapping-inhibit set.
-     *
-     * @param bool $flag
-     *
-     * @return self
      */
     public function withPolicyMappingInhibit(bool $flag): self
     {
@@ -168,10 +150,6 @@ class PathValidationConfig
 
     /**
      * Get self with initial-explicit-policy set.
-     *
-     * @param bool $flag
-     *
-     * @return self
      */
     public function withExplicitPolicy(bool $flag): self
     {
@@ -182,10 +160,6 @@ class PathValidationConfig
 
     /**
      * Get self with initial-any-policy-inhibit set.
-     *
-     * @param bool $flag
-     *
-     * @return self
      */
     public function withAnyPolicyInhibit(bool $flag): self
     {
@@ -198,8 +172,6 @@ class PathValidationConfig
      * Get self with user-initial-policy-set set to policy OIDs.
      *
      * @param string ...$policies List of policy OIDs
-     *
-     * @return self
      */
     public function withPolicySet(string ...$policies): self
     {
@@ -210,8 +182,6 @@ class PathValidationConfig
 
     /**
      * Get maximum certification path length.
-     *
-     * @return int
      */
     public function maxLength(): int
     {
@@ -220,8 +190,6 @@ class PathValidationConfig
 
     /**
      * Get reference date and time.
-     *
-     * @return \DateTimeImmutable
      */
     public function dateTime(): \DateTimeImmutable
     {
@@ -240,8 +208,6 @@ class PathValidationConfig
 
     /**
      * Check whether trust anchor certificate is set.
-     *
-     * @return bool
      */
     public function hasTrustAnchor(): bool
     {
@@ -252,8 +218,6 @@ class PathValidationConfig
      * Get trust anchor certificate.
      *
      * @throws \LogicException If not set
-     *
-     * @return Certificate
      */
     public function trustAnchor(): Certificate
     {
@@ -265,8 +229,6 @@ class PathValidationConfig
 
     /**
      * Get initial-policy-mapping-inhibit.
-     *
-     * @return bool
      */
     public function policyMappingInhibit(): bool
     {
@@ -275,8 +237,6 @@ class PathValidationConfig
 
     /**
      * Get initial-explicit-policy.
-     *
-     * @return bool
      */
     public function explicitPolicy(): bool
     {
@@ -285,8 +245,6 @@ class PathValidationConfig
 
     /**
      * Get initial-any-policy-inhibit.
-     *
-     * @return bool
      */
     public function anyPolicyInhibit(): bool
     {

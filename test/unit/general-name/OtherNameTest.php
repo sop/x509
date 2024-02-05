@@ -26,8 +26,6 @@ class OtherNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param OtherName $name
      */
     public function testEncode(OtherName $name)
     {
@@ -62,9 +60,6 @@ class OtherNameTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param OtherName $ref
-     * @param OtherName $new
      */
     public function testRecoded(OtherName $ref, OtherName $new)
     {
@@ -73,8 +68,6 @@ class OtherNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param OtherName $name
      */
     public function testString(OtherName $name)
     {
@@ -83,8 +76,6 @@ class OtherNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param OtherName $name
      */
     public function testOID(OtherName $name)
     {
@@ -93,8 +84,6 @@ class OtherNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param OtherName $name
      */
     public function testValue(OtherName $name)
     {

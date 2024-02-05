@@ -40,8 +40,6 @@ class RefCSRDecodeTest extends TestCase
     /**
      * @depends testCSR
      *
-     * @param CertificationRequest $cr
-     *
      * @return CertificationRequestInfo
      */
     public function testCertificationRequestInfo(CertificationRequest $cr)
@@ -54,8 +52,6 @@ class RefCSRDecodeTest extends TestCase
     /**
      * @depends testCSR
      *
-     * @param CertificationRequest $cr
-     *
      * @return AlgorithmIdentifier
      */
     public function testSignatureAlgorithm(CertificationRequest $cr)
@@ -67,8 +63,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testSignatureAlgorithm
-     *
-     * @param AlgorithmIdentifier $algo
      */
     public function testAlgoType(AlgorithmIdentifier $algo)
     {
@@ -78,8 +72,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testCSR
-     *
-     * @param CertificationRequest $cr
      *
      * @return Signature
      */
@@ -92,8 +84,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testSignature
-     *
-     * @param Signature $signature
      */
     public function testSignatureValue(Signature $signature)
     {
@@ -106,8 +96,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testCertificationRequestInfo
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testVersion(CertificationRequestInfo $cri)
     {
@@ -116,8 +104,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testCertificationRequestInfo
-     *
-     * @param CertificationRequestInfo $cri
      *
      * @return Name
      */
@@ -130,8 +116,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testSubject
-     *
-     * @param Name $name
      */
     public function testSubjectDN(Name $name)
     {
@@ -140,8 +124,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testCertificationRequestInfo
-     *
-     * @param CertificationRequestInfo $cri
      *
      * @return PublicKeyInfo
      */
@@ -154,8 +136,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testSubjectPKInfo
-     *
-     * @param PublicKeyInfo $info
      */
     public function testPublicKeyAlgo(PublicKeyInfo $info)
     {
@@ -166,8 +146,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testSubjectPKInfo
-     *
-     * @param PublicKeyInfo $info
      */
     public function testPublicKey(PublicKeyInfo $info)
     {
@@ -178,8 +156,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testCertificationRequestInfo
-     *
-     * @param CertificationRequestInfo $cri
      *
      * @return Attributes
      */
@@ -194,8 +170,6 @@ class RefCSRDecodeTest extends TestCase
     /**
      * @depends testAttributes
      *
-     * @param Attributes $attribs
-     *
      * @return ExtensionRequestValue
      */
     public function testExtensionRequestAttribute(Attributes $attribs)
@@ -209,8 +183,6 @@ class RefCSRDecodeTest extends TestCase
     /**
      * @depends testExtensionRequestAttribute
      *
-     * @param ExtensionRequestValue $attr
-     *
      * @return Extensions
      */
     public function testRequestedExtensions(ExtensionRequestValue $attr)
@@ -223,8 +195,6 @@ class RefCSRDecodeTest extends TestCase
     /**
      * @depends testRequestedExtensions
      *
-     * @param Extensions $extensions
-     *
      * @return KeyUsageExtension
      */
     public function testKeyUsageExtension(Extensions $extensions)
@@ -236,8 +206,6 @@ class RefCSRDecodeTest extends TestCase
 
     /**
      * @depends testKeyUsageExtension
-     *
-     * @param KeyUsageExtension $ext
      */
     public function testKeyUsageExtensionValue(KeyUsageExtension $ext)
     {

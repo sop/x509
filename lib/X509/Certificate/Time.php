@@ -35,8 +35,6 @@ class Time
 
     /**
      * Constructor.
-     *
-     * @param \DateTimeImmutable $dt
      */
     public function __construct(\DateTimeImmutable $dt)
     {
@@ -46,10 +44,6 @@ class Time
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param TimeType $el
-     *
-     * @return self
      */
     public static function fromASN1(TimeType $el): self
     {
@@ -60,11 +54,6 @@ class Time
 
     /**
      * Initialize from date string.
-     *
-     * @param null|string $time
-     * @param null|string $tz
-     *
-     * @return self
      */
     public static function fromString(?string $time, ?string $tz = null): self
     {
@@ -73,8 +62,6 @@ class Time
 
     /**
      * Get datetime.
-     *
-     * @return \DateTimeImmutable
      */
     public function dateTime(): \DateTimeImmutable
     {
@@ -85,8 +72,6 @@ class Time
      * Generate ASN.1.
      *
      * @throws \UnexpectedValueException
-     *
-     * @return TimeType
      */
     public function toASN1(): TimeType
     {
@@ -109,8 +94,6 @@ class Time
 
     /**
      * Determine whether to use UTCTime or GeneralizedTime ASN.1 type.
-     *
-     * @param \DateTimeImmutable $dt
      *
      * @return int Type tag
      */

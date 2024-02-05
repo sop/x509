@@ -21,9 +21,9 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class RoleAttributeTest extends TestCase
 {
-    const ROLE_URI = 'urn:administrator';
+    public const ROLE_URI = 'urn:administrator';
 
-    const AUTHORITY_DN = 'cn=Role Authority';
+    public const AUTHORITY_DN = 'cn=Role Authority';
 
     public function testCreate()
     {
@@ -36,8 +36,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEncode(AttributeValue $value)
     {
@@ -62,9 +60,6 @@ class RoleAttributeTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecoded(AttributeValue $ref, AttributeValue $new)
     {
@@ -73,8 +68,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testOID(AttributeValue $value)
     {
@@ -90,8 +83,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param RoleAttributeValue $value
      */
     public function testRoleName(RoleAttributeValue $value)
     {
@@ -100,8 +91,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param RoleAttributeValue $value
      */
     public function testRoleAuthority(RoleAttributeValue $value)
     {
@@ -112,8 +101,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testAttributes(AttributeValue $value)
     {
@@ -124,8 +111,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testAttributes
-     *
-     * @param Attributes $attribs
      */
     public function testFromAttributes(Attributes $attribs)
     {
@@ -134,8 +119,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testAttributes
-     *
-     * @param Attributes $attribs
      */
     public function testAllFromAttributes(Attributes $attribs)
     {
@@ -161,8 +144,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreateWithoutAuthority
-     *
-     * @param AttributeValue $value
      */
     public function testEncodeWithoutAuthority(AttributeValue $value)
     {
@@ -187,9 +168,6 @@ class RoleAttributeTest extends TestCase
     /**
      * @depends testCreateWithoutAuthority
      * @depends testDecodeWithoutAuthority
-     *
-     * @param AttributeValue $ref
-     * @param AttributeValue $new
      */
     public function testRecodedWithoutAuthority(AttributeValue $ref,
         AttributeValue $new)
@@ -199,19 +177,15 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreateWithoutAuthority
-     *
-     * @param RoleAttributeValue $value
      */
     public function testNoRoleAuthorityFail(RoleAttributeValue $value)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $value->roleAuthority();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testStringValue(AttributeValue $value)
     {
@@ -220,8 +194,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testEqualityMatchingRule(AttributeValue $value)
     {
@@ -231,8 +203,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testRFC2253String(AttributeValue $value)
     {
@@ -241,8 +211,6 @@ class RoleAttributeTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttributeValue $value
      */
     public function testToString(AttributeValue $value)
     {

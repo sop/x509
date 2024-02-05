@@ -35,9 +35,6 @@ class DisplayText
 
     /**
      * Constructor.
-     *
-     * @param string $text
-     * @param int    $tag
      */
     public function __construct(string $text, int $tag)
     {
@@ -45,9 +42,6 @@ class DisplayText
         $this->_tag = $tag;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->string();
@@ -55,10 +49,6 @@ class DisplayText
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param StringType $el
-     *
-     * @return self
      */
     public static function fromASN1(StringType $el): self
     {
@@ -67,10 +57,6 @@ class DisplayText
 
     /**
      * Initialize from a UTF-8 string.
-     *
-     * @param string $str
-     *
-     * @return self
      */
     public static function fromString(string $str): self
     {
@@ -79,8 +65,6 @@ class DisplayText
 
     /**
      * Get the text.
-     *
-     * @return string
      */
     public function string(): string
     {
@@ -91,8 +75,6 @@ class DisplayText
      * Generate ASN.1 element.
      *
      * @throws \UnexpectedValueException
-     *
-     * @return StringType
      */
     public function toASN1(): StringType
     {

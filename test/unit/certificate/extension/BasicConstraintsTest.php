@@ -25,8 +25,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -35,8 +33,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -45,8 +41,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -70,9 +64,6 @@ class BasicConstraintsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -81,8 +72,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param BasicConstraintsExtension $ext
      */
     public function testCA(BasicConstraintsExtension $ext)
     {
@@ -91,8 +80,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param BasicConstraintsExtension $ext
      */
     public function testPathLen(BasicConstraintsExtension $ext)
     {
@@ -101,8 +88,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param BasicConstraintsExtension $ext
      */
     public function testExtensions(BasicConstraintsExtension $ext)
     {
@@ -113,8 +98,6 @@ class BasicConstraintsTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -125,7 +108,7 @@ class BasicConstraintsTest extends TestCase
     public function testNoPathLenFail()
     {
         $ext = new BasicConstraintsExtension(false, false);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->pathLen();
     }
 }

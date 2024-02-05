@@ -16,15 +16,15 @@ use Sop\ASN1\Type\UnspecifiedType;
 abstract class GeneralName
 {
     // GeneralName CHOICE tags
-    const TAG_OTHER_NAME = 0;
-    const TAG_RFC822_NAME = 1;
-    const TAG_DNS_NAME = 2;
-    const TAG_X400_ADDRESS = 3;
-    const TAG_DIRECTORY_NAME = 4;
-    const TAG_EDI_PARTY_NAME = 5;
-    const TAG_URI = 6;
-    const TAG_IP_ADDRESS = 7;
-    const TAG_REGISTERED_ID = 8;
+    public const TAG_OTHER_NAME = 0;
+    public const TAG_RFC822_NAME = 1;
+    public const TAG_DNS_NAME = 2;
+    public const TAG_X400_ADDRESS = 3;
+    public const TAG_DIRECTORY_NAME = 4;
+    public const TAG_EDI_PARTY_NAME = 5;
+    public const TAG_URI = 6;
+    public const TAG_IP_ADDRESS = 7;
+    public const TAG_REGISTERED_ID = 8;
 
     /**
      * Chosen tag.
@@ -35,8 +35,6 @@ abstract class GeneralName
 
     /**
      * Get general name as a string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -45,17 +43,11 @@ abstract class GeneralName
 
     /**
      * Get string value of the type.
-     *
-     * @return string
      */
     abstract public function string(): string;
 
     /**
      * Initialize concrete object from the chosen ASN.1 element.
-     *
-     * @param UnspecifiedType $el
-     *
-     * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
     {
@@ -66,11 +58,7 @@ abstract class GeneralName
     /**
      * Initialize from ASN.1.
      *
-     * @param TaggedType $el
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromASN1(TaggedType $el): self
     {
@@ -79,37 +67,37 @@ abstract class GeneralName
             case self::TAG_OTHER_NAME:
                 return OtherName::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_SEQUENCE));
-            // rfc822Name
+                // rfc822Name
             case self::TAG_RFC822_NAME:
                 return RFC822Name::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_IA5_STRING));
-            // dNSName
+                // dNSName
             case self::TAG_DNS_NAME:
                 return DNSName::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_IA5_STRING));
-            // x400Address
+                // x400Address
             case self::TAG_X400_ADDRESS:
                 return X400Address::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_SEQUENCE));
-            // directoryName
+                // directoryName
             case self::TAG_DIRECTORY_NAME:
                 // because Name is a CHOICE, albeit having only one option,
                 // explicit tagging must be used
                 // (see X.680 07/2002 30.6.c)
                 return DirectoryName::fromChosenASN1($el->asExplicit());
-            // ediPartyName
+                // ediPartyName
             case self::TAG_EDI_PARTY_NAME:
                 return EDIPartyName::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_SEQUENCE));
-            // uniformResourceIdentifier
+                // uniformResourceIdentifier
             case self::TAG_URI:
                 return UniformResourceIdentifier::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_IA5_STRING));
-            // iPAddress
+                // iPAddress
             case self::TAG_IP_ADDRESS:
                 return IPAddress::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_OCTET_STRING));
-            // registeredID
+                // registeredID
             case self::TAG_REGISTERED_ID:
                 return RegisteredID::fromChosenASN1(
                     $el->asImplicit(Element::TYPE_OBJECT_IDENTIFIER));
@@ -120,8 +108,6 @@ abstract class GeneralName
 
     /**
      * Get type tag.
-     *
-     * @return int
      */
     public function tag(): int
     {
@@ -130,8 +116,6 @@ abstract class GeneralName
 
     /**
      * Generate ASN.1 element.
-     *
-     * @return Element
      */
     public function toASN1(): Element
     {
@@ -158,8 +142,6 @@ abstract class GeneralName
 
     /**
      * Get ASN.1 value in GeneralName CHOICE context.
-     *
-     * @return TaggedType
      */
     abstract protected function _choiceASN1(): TaggedType;
 }

@@ -33,9 +33,6 @@ class IetfAttrValue
 
     /**
      * Constructor.
-     *
-     * @param string $value
-     * @param int    $type
      */
     public function __construct(string $value, int $type)
     {
@@ -43,9 +40,6 @@ class IetfAttrValue
         $this->_value = $value;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->_value;
@@ -54,11 +48,7 @@ class IetfAttrValue
     /**
      * Initialize from ASN.1.
      *
-     * @param UnspecifiedType $el
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromASN1(UnspecifiedType $el): self
     {
@@ -75,10 +65,6 @@ class IetfAttrValue
 
     /**
      * Initialize from octet string.
-     *
-     * @param string $octets
-     *
-     * @return self
      */
     public static function fromOctets(string $octets): self
     {
@@ -87,10 +73,6 @@ class IetfAttrValue
 
     /**
      * Initialize from UTF-8 string.
-     *
-     * @param string $str
-     *
-     * @return self
      */
     public static function fromString(string $str): self
     {
@@ -99,10 +81,6 @@ class IetfAttrValue
 
     /**
      * Initialize from OID.
-     *
-     * @param string $oid
-     *
-     * @return self
      */
     public static function fromOID(string $oid): self
     {
@@ -111,8 +89,6 @@ class IetfAttrValue
 
     /**
      * Get type tag.
-     *
-     * @return int
      */
     public function type(): int
     {
@@ -121,8 +97,6 @@ class IetfAttrValue
 
     /**
      * Whether value type is octets.
-     *
-     * @return bool
      */
     public function isOctets(): bool
     {
@@ -131,8 +105,6 @@ class IetfAttrValue
 
     /**
      * Whether value type is OID.
-     *
-     * @return bool
      */
     public function isOID(): bool
     {
@@ -141,8 +113,6 @@ class IetfAttrValue
 
     /**
      * Whether value type is string.
-     *
-     * @return bool
      */
     public function isString(): bool
     {
@@ -151,8 +121,6 @@ class IetfAttrValue
 
     /**
      * Get value.
-     *
-     * @return string
      */
     public function value(): string
     {
@@ -163,8 +131,6 @@ class IetfAttrValue
      * Generate ASN.1 structure.
      *
      * @throws \LogicException
-     *
-     * @return Element
      */
     public function toASN1(): Element
     {

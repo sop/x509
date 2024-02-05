@@ -17,8 +17,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefInhibitAnyPolicyTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return InhibitAnyPolicyExtension
      */
     public function testInhibitAnyPolicyExtension()
@@ -30,8 +28,6 @@ class RefInhibitAnyPolicyTest extends RefExtTestHelper
 
     /**
      * @depends testInhibitAnyPolicyExtension
-     *
-     * @param InhibitAnyPolicyExtension $ext
      */
     public function testSkipCerts(InhibitAnyPolicyExtension $ext)
     {

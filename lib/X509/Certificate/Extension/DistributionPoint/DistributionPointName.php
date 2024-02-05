@@ -18,8 +18,8 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 abstract class DistributionPointName
 {
-    const TAG_FULL_NAME = 0;
-    const TAG_RDN = 1;
+    public const TAG_FULL_NAME = 0;
+    public const TAG_RDN = 1;
 
     /**
      * Type.
@@ -31,11 +31,7 @@ abstract class DistributionPointName
     /**
      * Initialize from TaggedType.
      *
-     * @param TaggedType $el
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromTaggedType(TaggedType $el): self
     {
@@ -55,8 +51,6 @@ abstract class DistributionPointName
 
     /**
      * Get type tag.
-     *
-     * @return int
      */
     public function tag(): int
     {
@@ -65,8 +59,6 @@ abstract class DistributionPointName
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return ImplicitlyTaggedType
      */
     public function toASN1(): ImplicitlyTaggedType
     {
@@ -75,8 +67,6 @@ abstract class DistributionPointName
 
     /**
      * Generate ASN.1 element.
-     *
-     * @return Element
      */
     abstract protected function _valueASN1(): Element;
 }

@@ -18,8 +18,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefIssuerAlternativeNameTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return IssuerAlternativeNameExtension
      */
     public function testIssuerAlternativeName()
@@ -31,8 +29,6 @@ class RefIssuerAlternativeNameTest extends RefExtTestHelper
 
     /**
      * @depends testIssuerAlternativeName
-     *
-     * @param IssuerAlternativeNameExtension $ian
      */
     public function testIANDirectoryName(IssuerAlternativeNameExtension $ian)
     {

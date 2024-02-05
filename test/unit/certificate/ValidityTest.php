@@ -14,9 +14,9 @@ use Sop\X509\Certificate\Validity;
  */
 class ValidityTest extends TestCase
 {
-    const NB = '2016-04-06 12:00:00';
+    public const NB = '2016-04-06 12:00:00';
 
-    const NA = '2016-04-06 13:00:00';
+    public const NA = '2016-04-06 13:00:00';
 
     public function testCreate()
     {
@@ -27,8 +27,6 @@ class ValidityTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Validity $validity
      */
     public function testEncode(Validity $validity)
     {
@@ -52,9 +50,6 @@ class ValidityTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Validity $ref
-     * @param Validity $new
      */
     public function testRecoded(Validity $ref, Validity $new)
     {
@@ -63,24 +58,20 @@ class ValidityTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Validity $validity
      */
     public function testNotBefore(Validity $validity)
     {
-        $this->assertEquals(new \DateTimeImmutable(self::NB),
+        $this->assertEquals(new DateTimeImmutable(self::NB),
             $validity->notBefore()
                 ->dateTime());
     }
 
     /**
      * @depends testCreate
-     *
-     * @param Validity $validity
      */
     public function testNotAfter(Validity $validity)
     {
-        $this->assertEquals(new \DateTimeImmutable(self::NA),
+        $this->assertEquals(new DateTimeImmutable(self::NA),
             $validity->notAfter()
                 ->dateTime());
     }

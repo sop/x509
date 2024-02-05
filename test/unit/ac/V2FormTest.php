@@ -44,8 +44,6 @@ class V2FormTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param V2Form $issuer
      */
     public function testEncode(V2Form $issuer)
     {
@@ -69,9 +67,6 @@ class V2FormTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param V2Form $ref
-     * @param V2Form $new
      */
     public function testRecoded(V2Form $ref, V2Form $new)
     {
@@ -80,8 +75,6 @@ class V2FormTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param V2Form $issuer
      */
     public function testIssuerName(V2Form $issuer)
     {
@@ -91,14 +84,12 @@ class V2FormTest extends TestCase
     public function testNoIssuerNameFail()
     {
         $issuer = new V2Form();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $issuer->issuerName();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param V2Form $issuer
      */
     public function testName(V2Form $issuer)
     {
@@ -121,8 +112,6 @@ class V2FormTest extends TestCase
 
     /**
      * @depends testDecodeWithAll
-     *
-     * @param V2Form $issuer
      */
     public function testEncodeWithAll(V2Form $issuer)
     {

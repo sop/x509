@@ -43,9 +43,7 @@ class IssuerSerial
     /**
      * Constructor.
      *
-     * @param GeneralNames          $issuer
-     * @param int|string            $serial
-     * @param null|UniqueIdentifier $uid
+     * @param int|string $serial
      */
     public function __construct(GeneralNames $issuer, $serial,
         ?UniqueIdentifier $uid = null)
@@ -57,10 +55,6 @@ class IssuerSerial
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): IssuerSerial
     {
@@ -75,10 +69,6 @@ class IssuerSerial
 
     /**
      * Initialize from a public key certificate.
-     *
-     * @param Certificate $cert
-     *
-     * @return self
      */
     public static function fromPKC(Certificate $cert): IssuerSerial
     {
@@ -91,8 +81,6 @@ class IssuerSerial
 
     /**
      * Get issuer name.
-     *
-     * @return GeneralNames
      */
     public function issuer(): GeneralNames
     {
@@ -101,8 +89,6 @@ class IssuerSerial
 
     /**
      * Get serial number.
-     *
-     * @return string
      */
     public function serial(): string
     {
@@ -111,8 +97,6 @@ class IssuerSerial
 
     /**
      * Check whether issuer unique identifier is present.
-     *
-     * @return bool
      */
     public function hasIssuerUID(): bool
     {
@@ -123,8 +107,6 @@ class IssuerSerial
      * Get issuer unique identifier.
      *
      * @throws \LogicException If not set
-     *
-     * @return UniqueIdentifier
      */
     public function issuerUID(): UniqueIdentifier
     {
@@ -136,8 +118,6 @@ class IssuerSerial
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -150,10 +130,6 @@ class IssuerSerial
 
     /**
      * Check whether this IssuerSerial identifies given certificate.
-     *
-     * @param Certificate $cert
-     *
-     * @return bool
      */
     public function identifiesPKC(Certificate $cert): bool
     {
@@ -172,10 +148,6 @@ class IssuerSerial
 
     /**
      * Check whether issuerUID matches given certificate.
-     *
-     * @param Certificate $cert
-     *
-     * @return bool
      */
     private function _checkUniqueID(Certificate $cert): bool
     {

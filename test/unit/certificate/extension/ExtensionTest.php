@@ -21,7 +21,7 @@ class ExtensionTest extends TestCase
         $cls = new ReflectionClass(Extension::class);
         $mtd = $cls->getMethod('_fromDER');
         $mtd->setAccessible(true);
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $mtd->invoke(null, '', false);
     }
 

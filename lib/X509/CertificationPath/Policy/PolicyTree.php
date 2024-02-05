@@ -31,11 +31,6 @@ class PolicyTree
      * Process policy information from the certificate.
      *
      * Certificate policies extension must be present.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     public function processPolicies(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -59,11 +54,6 @@ class PolicyTree
 
     /**
      * Process policy mappings from the certificate.
-     *
-     * @param ValidatorState $state
-     * @param Certificate    $cert
-     *
-     * @return ValidatorState
      */
     public function processMappings(ValidatorState $state,
         Certificate $cert): ValidatorState
@@ -83,11 +73,6 @@ class PolicyTree
 
     /**
      * Calculate policy intersection as specified in Wrap-Up Procedure 6.1.5.g.
-     *
-     * @param ValidatorState $state
-     * @param array          $policies
-     *
-     * @return ValidatorState
      */
     public function calculateIntersection(ValidatorState $state,
         array $policies): ValidatorState
@@ -170,9 +155,6 @@ class PolicyTree
 
     /**
      * Process single policy information.
-     *
-     * @param PolicyInformation $policy
-     * @param ValidatorState    $state
      */
     protected function _processPolicy(PolicyInformation $policy,
         ValidatorState $state): void
@@ -204,10 +186,6 @@ class PolicyTree
 
     /**
      * Process anyPolicy policy information.
-     *
-     * @param PolicyInformation $policy
-     * @param Certificate       $cert
-     * @param ValidatorState    $state
      */
     protected function _processAnyPolicy(PolicyInformation $policy,
         Certificate $cert, ValidatorState $state): void
@@ -215,8 +193,8 @@ class PolicyTree
         $i = $state->index();
         // if (a) inhibit_anyPolicy is greater than 0 or
         // (b) i<n and the certificate is self-issued
-        if (!($state->inhibitAnyPolicy() > 0 ||
-            ($i < $state->pathLength() && $cert->isSelfIssued()))) {
+        if (!($state->inhibitAnyPolicy() > 0
+            || ($i < $state->pathLength() && $cert->isSelfIssued()))) {
             return;
         }
         // for each node in the valid_policy_tree of depth i-1
@@ -234,9 +212,6 @@ class PolicyTree
 
     /**
      * Apply policy mappings to the policy tree.
-     *
-     * @param Certificate    $cert
-     * @param ValidatorState $state
      */
     protected function _applyMappings(Certificate $cert, ValidatorState $state): void
     {
@@ -265,10 +240,8 @@ class PolicyTree
     /**
      * Apply anyPolicy mapping to the policy tree as specified in 6.1.4 (b)(1).
      *
-     * @param Certificate    $cert
-     * @param ValidatorState $state
-     * @param string         $idp   OID of the issuer domain policy
-     * @param array          $sdps  Array of subject domain policy OIDs
+     * @param string $idp  OID of the issuer domain policy
+     * @param array  $sdps Array of subject domain policy OIDs
      */
     protected function _applyAnyPolicyMapping(Certificate $cert,
         ValidatorState $state, string $idp, array $sdps): void
@@ -303,9 +276,6 @@ class PolicyTree
 
     /**
      * Delete nodes as specified in 6.1.4 (b)(2).
-     *
-     * @param Certificate    $cert
-     * @param ValidatorState $state
      */
     protected function _deleteMappings(Certificate $cert,
         ValidatorState $state): void
@@ -324,8 +294,6 @@ class PolicyTree
 
     /**
      * Prune tree starting from given depth.
-     *
-     * @param int $depth
      *
      * @return int The number of nodes left in a tree
      */
@@ -351,8 +319,6 @@ class PolicyTree
 
     /**
      * Get all nodes at given depth.
-     *
-     * @param int $i
      *
      * @return PolicyNode[]
      */
@@ -406,8 +372,6 @@ class PolicyTree
 
     /**
      * Gather all children of given nodes to a flattened array.
-     *
-     * @param PolicyNode ...$nodes
      *
      * @return PolicyNode[]
      */

@@ -25,8 +25,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -35,8 +33,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -45,8 +41,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -70,9 +64,6 @@ class PolicyConstraintsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -81,8 +72,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyConstraintsExtension $ext
      */
     public function testRequireExplicit(PolicyConstraintsExtension $ext)
     {
@@ -91,8 +80,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyConstraintsExtension $ext
      */
     public function testInhibitMapping(PolicyConstraintsExtension $ext)
     {
@@ -101,8 +88,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyConstraintsExtension $ext
      */
     public function testExtensions(PolicyConstraintsExtension $ext)
     {
@@ -113,8 +98,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -131,8 +114,6 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param Extension $ext
      */
     public function testEncodeEmpty(Extension $ext)
     {
@@ -156,9 +137,6 @@ class PolicyConstraintsTest extends TestCase
     /**
      * @depends testCreateEmpty
      * @depends testDecodeEmpty
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecodedEmpty(Extension $ref, Extension $new)
     {
@@ -167,23 +145,19 @@ class PolicyConstraintsTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param PolicyConstraintsExtension $ext
      */
     public function testNoRequireExplicitFail(PolicyConstraintsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->requireExplicitPolicy();
     }
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param PolicyConstraintsExtension $ext
      */
     public function testNoInhibitMappingFail(PolicyConstraintsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->inhibitPolicyMapping();
     }
 }

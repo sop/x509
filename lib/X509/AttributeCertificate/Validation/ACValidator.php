@@ -60,9 +60,9 @@ class ACValidator
     /**
      * Validate attribute certificate.
      *
-     * @throws ACValidationException If validation fails
-     *
      * @return AttributeCertificate Validated AC
+     *
+     * @throws ACValidationException If validation fails
      */
     public function validate(): AttributeCertificate
     {
@@ -77,9 +77,9 @@ class ACValidator
     /**
      * Validate AC holder's certification.
      *
-     * @throws ACValidationException
-     *
      * @return Certificate Certificate of the AC's holder
+     *
+     * @throws ACValidationException
      */
     private function _validateHolder(): Certificate
     {
@@ -102,9 +102,9 @@ class ACValidator
     /**
      * Verify AC's signature and issuer's certification.
      *
-     * @throws ACValidationException
-     *
      * @return Certificate Certificate of the AC's issuer
+     *
+     * @throws ACValidationException
      */
     private function _verifyIssuer(): Certificate
     {
@@ -132,8 +132,6 @@ class ACValidator
      * Validate AC issuer's profile.
      *
      * @see https://tools.ietf.org/html/rfc5755#section-4.5
-     *
-     * @param Certificate $cert
      *
      * @throws ACValidationException
      */
@@ -180,8 +178,8 @@ class ACValidator
             return;
         }
         $ext = $exts->get(Extension::OID_TARGET_INFORMATION);
-        if ($ext instanceof TargetInformationExtension &&
-            !$this->_hasMatchingTarget($ext->targets())) {
+        if ($ext instanceof TargetInformationExtension
+            && !$this->_hasMatchingTarget($ext->targets())) {
             throw new ACValidationException(
                 "Attribute certificate doesn't have a matching target.");
         }
@@ -191,8 +189,6 @@ class ACValidator
      * Check whether validation configuration has matching targets.
      *
      * @param Targets $targets Set of eligible targets
-     *
-     * @return bool
      */
     private function _hasMatchingTarget(Targets $targets): bool
     {

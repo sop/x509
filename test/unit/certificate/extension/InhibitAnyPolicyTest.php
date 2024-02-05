@@ -25,8 +25,6 @@ class InhibitAnyPolicyTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -35,8 +33,6 @@ class InhibitAnyPolicyTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -45,8 +41,6 @@ class InhibitAnyPolicyTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -70,9 +64,6 @@ class InhibitAnyPolicyTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -81,8 +72,6 @@ class InhibitAnyPolicyTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param InhibitAnyPolicyExtension $ext
      */
     public function testSkipCerts(InhibitAnyPolicyExtension $ext)
     {
@@ -91,8 +80,6 @@ class InhibitAnyPolicyTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param InhibitAnyPolicyExtension $ext
      */
     public function testExtensions(InhibitAnyPolicyExtension $ext)
     {
@@ -103,8 +90,6 @@ class InhibitAnyPolicyTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {

@@ -27,7 +27,6 @@ class PolicyMappingsExtension extends Extension implements \Countable, \Iterator
     /**
      * Constructor.
      *
-     * @param bool          $critical
      * @param PolicyMapping ...$mappings One or more PolicyMapping objects
      */
     public function __construct(bool $critical, PolicyMapping ...$mappings)
@@ -107,8 +106,6 @@ class PolicyMappingsExtension extends Extension implements \Countable, \Iterator
      *
      * RFC 5280 section 4.2.1.5 states that "Policies MUST NOT be mapped either
      * to or from the special value anyPolicy".
-     *
-     * @return bool
      */
     public function hasAnyPolicyMapping(): bool
     {
@@ -127,8 +124,6 @@ class PolicyMappingsExtension extends Extension implements \Countable, \Iterator
      * Get the number of mappings.
      *
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -139,17 +134,12 @@ class PolicyMappingsExtension extends Extension implements \Countable, \Iterator
      * Get iterator for policy mappings.
      *
      * @see \IteratorAggregate::getIterator()
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->_mappings);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $mappings = array_map(
@@ -163,9 +153,6 @@ class PolicyMappingsExtension extends Extension implements \Countable, \Iterator
         return new self($critical, ...$mappings);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         if (!count($this->_mappings)) {

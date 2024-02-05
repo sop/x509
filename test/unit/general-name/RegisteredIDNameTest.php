@@ -25,8 +25,6 @@ class RegisteredIDNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param RegisteredID $rid
      */
     public function testEncode(RegisteredID $rid)
     {
@@ -61,9 +59,6 @@ class RegisteredIDNameTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param RegisteredID $ref
-     * @param RegisteredID $new
      */
     public function testRecoded(RegisteredID $ref, RegisteredID $new)
     {
@@ -72,8 +67,6 @@ class RegisteredIDNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param RegisteredID $rid
      */
     public function testString(RegisteredID $rid)
     {
@@ -82,8 +75,6 @@ class RegisteredIDNameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param RegisteredID $rid
      */
     public function testOID(RegisteredID $rid)
     {

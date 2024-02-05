@@ -54,11 +54,8 @@ class AAControlsExtension extends Extension
     /**
      * Constructor.
      *
-     * @param bool          $critical
-     * @param null|int      $path_len
      * @param null|string[] $permitted
      * @param null|string[] $excluded
-     * @param bool          $permit_unspecified
      */
     public function __construct(bool $critical, ?int $path_len = null,
         ?array $permitted = null, ?array $excluded = null, bool $permit_unspecified = true)
@@ -72,8 +69,6 @@ class AAControlsExtension extends Extension
 
     /**
      * Check whether path length constraint is present.
-     *
-     * @return bool
      */
     public function hasPathLen(): bool
     {
@@ -84,8 +79,6 @@ class AAControlsExtension extends Extension
      * Get path length constraint.
      *
      * @throws \LogicException If not set
-     *
-     * @return int
      */
     public function pathLen(): int
     {
@@ -97,8 +90,6 @@ class AAControlsExtension extends Extension
 
     /**
      * Check whether permitted attributes are present.
-     *
-     * @return bool
      */
     public function hasPermittedAttrs(): bool
     {
@@ -108,9 +99,9 @@ class AAControlsExtension extends Extension
     /**
      * Get OID's of permitted attributes.
      *
-     * @throws \LogicException If not set
-     *
      * @return string[]
+     *
+     * @throws \LogicException If not set
      */
     public function permittedAttrs(): array
     {
@@ -122,8 +113,6 @@ class AAControlsExtension extends Extension
 
     /**
      * Check whether excluded attributes are present.
-     *
-     * @return bool
      */
     public function hasExcludedAttrs(): bool
     {
@@ -133,9 +122,9 @@ class AAControlsExtension extends Extension
     /**
      * Get OID's of excluded attributes.
      *
-     * @throws \LogicException If not set
-     *
      * @return string[]
+     *
+     * @throws \LogicException If not set
      */
     public function excludedAttrs(): array
     {
@@ -148,17 +137,12 @@ class AAControlsExtension extends Extension
     /**
      * Whether to permit attributes that are not explicitly specified in
      * neither permitted nor excluded list.
-     *
-     * @return bool
      */
     public function permitUnspecified(): bool
     {
         return $this->_permitUnSpecified;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $seq = UnspecifiedType::fromDER($data)->asSequence();
@@ -194,9 +178,6 @@ class AAControlsExtension extends Extension
         return new self($critical, $path_len, $permitted, $excluded, $permit_unspecified);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = [];

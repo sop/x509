@@ -25,8 +25,6 @@ class UniformResourceIdentifier extends GeneralName
 
     /**
      * Constructor.
-     *
-     * @param string $uri
      */
     public function __construct(string $uri)
     {
@@ -35,8 +33,6 @@ class UniformResourceIdentifier extends GeneralName
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return self
      */
     public static function fromChosenASN1(UnspecifiedType $el): GeneralName
@@ -44,9 +40,6 @@ class UniformResourceIdentifier extends GeneralName
         return new self($el->asIA5String()->string());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function string(): string
     {
         return $this->_uri;
@@ -54,17 +47,12 @@ class UniformResourceIdentifier extends GeneralName
 
     /**
      * Get URI.
-     *
-     * @return string
      */
     public function uri(): string
     {
         return $this->_uri;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _choiceASN1(): TaggedType
     {
         return new ImplicitlyTaggedType($this->_tag, new IA5String($this->_uri));

@@ -29,8 +29,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testEncode(Attributes $attribs)
     {
@@ -54,9 +52,6 @@ class CSRAttributesTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Attributes $ref
-     * @param Attributes $new
      */
     public function testRecoded(Attributes $ref, Attributes $new)
     {
@@ -65,8 +60,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testExtensionRequest(Attributes $attribs)
     {
@@ -76,8 +69,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testAll(Attributes $attribs)
     {
@@ -86,8 +77,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testCount(Attributes $attribs)
     {
@@ -96,8 +85,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testIterator(Attributes $attribs)
     {
@@ -110,26 +97,22 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testFirstOfFail(Attributes $attribs)
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         $attribs->firstOf('1.3.6.1.3');
     }
 
     public function testNoExtensionRequestFail()
     {
         $attribs = new Attributes();
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $attribs->extensionRequest();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param Attributes $attribs
      */
     public function testWithAdditional(Attributes $attribs)
     {
@@ -141,8 +124,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testWithAdditional
-     *
-     * @param Attributes $attribs
      */
     public function testEncodeWithAdditional(Attributes $attribs)
     {
@@ -165,8 +146,6 @@ class CSRAttributesTest extends TestCase
 
     /**
      * @depends testDecodeWithAdditional
-     *
-     * @param Attributes $attribs
      */
     public function testDecodedWithAdditionalHasCustomAttribute(
         Attributes $attribs)

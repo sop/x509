@@ -43,10 +43,6 @@ class Certificate
 
     /**
      * Constructor.
-     *
-     * @param TBSCertificate               $tbsCert
-     * @param SignatureAlgorithmIdentifier $algo
-     * @param Signature                    $signature
      */
     public function __construct(TBSCertificate $tbsCert,
         SignatureAlgorithmIdentifier $algo, Signature $signature)
@@ -58,8 +54,6 @@ class Certificate
 
     /**
      * Get certificate as a PEM formatted string.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -68,10 +62,6 @@ class Certificate
 
     /**
      * Initialize from ASN.1.
-     *
-     * @param Sequence $seq
-     *
-     * @return self
      */
     public static function fromASN1(Sequence $seq): self
     {
@@ -88,10 +78,6 @@ class Certificate
 
     /**
      * Initialize from DER.
-     *
-     * @param string $data
-     *
-     * @return self
      */
     public static function fromDER(string $data): self
     {
@@ -101,11 +87,7 @@ class Certificate
     /**
      * Initialize from PEM.
      *
-     * @param PEM $pem
-     *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromPEM(PEM $pem): self
     {
@@ -117,8 +99,6 @@ class Certificate
 
     /**
      * Get certificate information.
-     *
-     * @return TBSCertificate
      */
     public function tbsCertificate(): TBSCertificate
     {
@@ -127,8 +107,6 @@ class Certificate
 
     /**
      * Get signature algorithm.
-     *
-     * @return SignatureAlgorithmIdentifier
      */
     public function signatureAlgorithm(): SignatureAlgorithmIdentifier
     {
@@ -137,8 +115,6 @@ class Certificate
 
     /**
      * Get signature value.
-     *
-     * @return Signature
      */
     public function signatureValue(): Signature
     {
@@ -147,8 +123,6 @@ class Certificate
 
     /**
      * Check whether certificate is self-issued.
-     *
-     * @return bool
      */
     public function isSelfIssued(): bool
     {
@@ -160,19 +134,15 @@ class Certificate
      * Check whether certificate is semantically equal to another.
      *
      * @param Certificate $cert Certificate to compare to
-     *
-     * @return bool
      */
     public function equals(Certificate $cert): bool
     {
-        return $this->_hasEqualSerialNumber($cert) &&
-             $this->_hasEqualPublicKey($cert) && $this->_hasEqualSubject($cert);
+        return $this->_hasEqualSerialNumber($cert)
+             && $this->_hasEqualPublicKey($cert) && $this->_hasEqualSubject($cert);
     }
 
     /**
      * Generate ASN.1 structure.
-     *
-     * @return Sequence
      */
     public function toASN1(): Sequence
     {
@@ -183,8 +153,6 @@ class Certificate
 
     /**
      * Get certificate as a DER.
-     *
-     * @return string
      */
     public function toDER(): string
     {
@@ -193,8 +161,6 @@ class Certificate
 
     /**
      * Get certificate as a PEM.
-     *
-     * @return PEM
      */
     public function toPEM(): PEM
     {
@@ -219,10 +185,6 @@ class Certificate
 
     /**
      * Check whether certificate has serial number equal to another.
-     *
-     * @param Certificate $cert
-     *
-     * @return bool
      */
     private function _hasEqualSerialNumber(Certificate $cert): bool
     {
@@ -233,10 +195,6 @@ class Certificate
 
     /**
      * Check whether certificate has public key equal to another.
-     *
-     * @param Certificate $cert
-     *
-     * @return bool
      */
     private function _hasEqualPublicKey(Certificate $cert): bool
     {
@@ -247,10 +205,6 @@ class Certificate
 
     /**
      * Check whether certificate has subject equal to another.
-     *
-     * @param Certificate $cert
-     *
-     * @return bool
      */
     private function _hasEqualSubject(Certificate $cert): bool
     {

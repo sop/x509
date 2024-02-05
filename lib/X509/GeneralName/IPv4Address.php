@@ -9,11 +9,7 @@ class IPv4Address extends IPAddress
     /**
      * Initialize from octets.
      *
-     * @param string $octets
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return self
      */
     public static function fromOctets(string $octets): self
     {
@@ -33,9 +29,6 @@ class IPv4Address extends IPAddress
         return new self($ip, $mask);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _octets(): string
     {
         $bytes = array_map('intval', explode('.', $this->_ip));

@@ -27,19 +27,15 @@ class SvceAuthInfoTest extends TestCase
 
     /**
      * @depends testCreateWithoutAuthInfo
-     *
-     * @param SvceAuthInfo $val
      */
     public function testNoAuthInfoFail(SvceAuthInfo $val)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $val->authInfo();
     }
 
     /**
      * @depends testCreateWithoutAuthInfo
-     *
-     * @param SvceAuthInfo $val
      */
     public function testStringValue(SvceAuthInfo $val)
     {
@@ -48,8 +44,6 @@ class SvceAuthInfoTest extends TestCase
 
     /**
      * @depends testCreateWithoutAuthInfo
-     *
-     * @param SvceAuthInfo $val
      */
     public function testEqualityMatchingRule(SvceAuthInfo $val)
     {
@@ -59,8 +53,6 @@ class SvceAuthInfoTest extends TestCase
 
     /**
      * @depends testCreateWithoutAuthInfo
-     *
-     * @param SvceAuthInfo $val
      */
     public function testRFC2253String(SvceAuthInfo $val)
     {
@@ -69,8 +61,6 @@ class SvceAuthInfoTest extends TestCase
 
     /**
      * @depends testCreateWithoutAuthInfo
-     *
-     * @param SvceAuthInfo $val
      */
     public function testToString(SvceAuthInfo $val)
     {

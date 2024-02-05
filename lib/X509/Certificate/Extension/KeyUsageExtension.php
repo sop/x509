@@ -15,15 +15,15 @@ use Sop\ASN1\Util\Flags;
  */
 class KeyUsageExtension extends Extension
 {
-    const DIGITAL_SIGNATURE = 0x100;
-    const NON_REPUDIATION = 0x080;
-    const KEY_ENCIPHERMENT = 0x040;
-    const DATA_ENCIPHERMENT = 0x020;
-    const KEY_AGREEMENT = 0x010;
-    const KEY_CERT_SIGN = 0x008;
-    const CRL_SIGN = 0x004;
-    const ENCIPHER_ONLY = 0x002;
-    const DECIPHER_ONLY = 0x001;
+    public const DIGITAL_SIGNATURE = 0x100;
+    public const NON_REPUDIATION = 0x080;
+    public const KEY_ENCIPHERMENT = 0x040;
+    public const DATA_ENCIPHERMENT = 0x020;
+    public const KEY_AGREEMENT = 0x010;
+    public const KEY_CERT_SIGN = 0x008;
+    public const CRL_SIGN = 0x004;
+    public const ENCIPHER_ONLY = 0x002;
+    public const DECIPHER_ONLY = 0x001;
 
     /**
      * Key usage flags.
@@ -34,9 +34,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Constructor.
-     *
-     * @param bool $critical
-     * @param int  $keyUsage
      */
     public function __construct(bool $critical, int $keyUsage)
     {
@@ -46,8 +43,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether digitalSignature flag is set.
-     *
-     * @return bool
      */
     public function isDigitalSignature(): bool
     {
@@ -56,8 +51,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether nonRepudiation/contentCommitment flag is set.
-     *
-     * @return bool
      */
     public function isNonRepudiation(): bool
     {
@@ -66,8 +59,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether keyEncipherment flag is set.
-     *
-     * @return bool
      */
     public function isKeyEncipherment(): bool
     {
@@ -76,8 +67,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether dataEncipherment flag is set.
-     *
-     * @return bool
      */
     public function isDataEncipherment(): bool
     {
@@ -86,8 +75,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether keyAgreement flag is set.
-     *
-     * @return bool
      */
     public function isKeyAgreement(): bool
     {
@@ -96,8 +83,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether keyCertSign flag is set.
-     *
-     * @return bool
      */
     public function isKeyCertSign(): bool
     {
@@ -106,8 +91,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether cRLSign flag is set.
-     *
-     * @return bool
      */
     public function isCRLSign(): bool
     {
@@ -116,8 +99,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether encipherOnly flag is set.
-     *
-     * @return bool
      */
     public function isEncipherOnly(): bool
     {
@@ -126,8 +107,6 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether decipherOnly flag is set.
-     *
-     * @return bool
      */
     public function isDecipherOnly(): bool
     {
@@ -136,19 +115,12 @@ class KeyUsageExtension extends Extension
 
     /**
      * Check whether given flag is set.
-     *
-     * @param int $flag
-     *
-     * @return bool
      */
     protected function _flagSet(int $flag): bool
     {
         return (bool) ($this->_keyUsage & $flag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         return new self($critical,
@@ -156,9 +128,6 @@ class KeyUsageExtension extends Extension
                 UnspecifiedType::fromDER($data)->asBitString(), 9)->intNumber());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $flags = new Flags($this->_keyUsage, 9);

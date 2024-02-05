@@ -26,9 +26,6 @@ class AuthorityInformationAccessExtension extends Extension implements \Countabl
 
     /**
      * Constructor.
-     *
-     * @param bool                       $critical
-     * @param AuthorityAccessDescription ...$access
      */
     public function __construct(bool $critical, AuthorityAccessDescription ...$access)
     {
@@ -50,8 +47,6 @@ class AuthorityInformationAccessExtension extends Extension implements \Countabl
      * Get the number of access descriptions.
      *
      * @see \Countable::count()
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -70,9 +65,6 @@ class AuthorityInformationAccessExtension extends Extension implements \Countabl
         return new \ArrayIterator($this->_accessDescriptions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $access = array_map(
@@ -82,9 +74,6 @@ class AuthorityInformationAccessExtension extends Extension implements \Countabl
         return new self($critical, ...$access);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         $elements = array_map(

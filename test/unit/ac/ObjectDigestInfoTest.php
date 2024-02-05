@@ -28,8 +28,6 @@ class ObjectDigestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ObjectDigestInfo $odi
      */
     public function testEncode(ObjectDigestInfo $odi)
     {
@@ -53,9 +51,6 @@ class ObjectDigestInfoTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param ObjectDigestInfo $ref
-     * @param ObjectDigestInfo $new
      */
     public function testRecoded(ObjectDigestInfo $ref, ObjectDigestInfo $new)
     {
@@ -75,8 +70,6 @@ class ObjectDigestInfoTest extends TestCase
 
     /**
      * @depends testDecodeWithOtherObjectTypeID
-     *
-     * @param ObjectDigestInfo $odi
      */
     public function testEncodeWithOtherObjectTypeID(ObjectDigestInfo $odi)
     {

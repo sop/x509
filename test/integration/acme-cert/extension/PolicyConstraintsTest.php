@@ -17,8 +17,6 @@ require_once __DIR__ . '/RefExtTestHelper.php';
 class RefPolicyConstraintsTest extends RefExtTestHelper
 {
     /**
-     * @param Extensions $extensions
-     *
      * @return PolicyConstraintsExtension
      */
     public function testPolicyConstraintsExtension()
@@ -30,8 +28,6 @@ class RefPolicyConstraintsTest extends RefExtTestHelper
 
     /**
      * @depends testPolicyConstraintsExtension
-     *
-     * @param PolicyConstraintsExtension $pc
      */
     public function testRequireExplicitPolicy(PolicyConstraintsExtension $pc)
     {
@@ -40,8 +36,6 @@ class RefPolicyConstraintsTest extends RefExtTestHelper
 
     /**
      * @depends testPolicyConstraintsExtension
-     *
-     * @param PolicyConstraintsExtension $pc
      */
     public function testInhibitPolicyMapping(PolicyConstraintsExtension $pc)
     {

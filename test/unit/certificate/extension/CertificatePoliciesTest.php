@@ -24,13 +24,13 @@ use Sop\X509\Certificate\Extensions;
  */
 class CertificatePoliciesTest extends TestCase
 {
-    const INFO_OID = '1.3.6.1.3';
+    public const INFO_OID = '1.3.6.1.3';
 
-    const CPS_URI = 'urn:test';
+    public const CPS_URI = 'urn:test';
 
-    const NOTICE_TXT = 'Notice';
+    public const NOTICE_TXT = 'Notice';
 
-    const REF_ORG = 'ACME Ltd.';
+    public const REF_ORG = 'ACME Ltd.';
 
     public function testCreateCPS()
     {
@@ -50,9 +50,6 @@ class CertificatePoliciesTest extends TestCase
     /**
      * @depends testCreateCPS
      * @depends testCreateNotice
-     *
-     * @param PolicyQualifierInfo $q1
-     * @param PolicyQualifierInfo $q2
      */
     public function testCreatePolicyInfo(PolicyQualifierInfo $q1,
         PolicyQualifierInfo $q2)
@@ -64,8 +61,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreatePolicyInfo
-     *
-     * @param PolicyInformation $info
      */
     public function testCreate(PolicyInformation $info)
     {
@@ -77,8 +72,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -87,8 +80,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -97,8 +88,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -122,9 +111,6 @@ class CertificatePoliciesTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -133,8 +119,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificatePoliciesExtension $ext
      */
     public function testCount(CertificatePoliciesExtension $ext)
     {
@@ -143,8 +127,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificatePoliciesExtension $ext
      */
     public function testIterator(CertificatePoliciesExtension $ext)
     {
@@ -158,12 +140,10 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificatePoliciesExtension $ext
      */
     public function testGetFail(CertificatePoliciesExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->get('1.2.3');
     }
 
@@ -178,14 +158,12 @@ class CertificatePoliciesTest extends TestCase
     {
         $ext = new CertificatePoliciesExtension(true,
             new PolicyInformation('1.3.6.1.3'));
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->anyPolicy();
     }
 
     /**
      * @depends testCreate
-     *
-     * @param CertificatePoliciesExtension $ext
      */
     public function testInfo(CertificatePoliciesExtension $ext)
     {
@@ -196,8 +174,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testInfo
-     *
-     * @param PolicyInformation $info
      */
     public function testInfoCount(PolicyInformation $info)
     {
@@ -206,8 +182,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testInfo
-     *
-     * @param PolicyInformation $info
      */
     public function testInfoIterator(PolicyInformation $info)
     {
@@ -221,8 +195,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testInfo
-     *
-     * @param PolicyInformation $info
      */
     public function testCPS(PolicyInformation $info)
     {
@@ -233,8 +205,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCPS
-     *
-     * @param CPSQualifier $cps
      */
     public function testCPSURI(CPSQualifier $cps)
     {
@@ -243,8 +213,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testInfo
-     *
-     * @param PolicyInformation $info
      */
     public function testUserNotice(PolicyInformation $info)
     {
@@ -255,8 +223,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testUserNotice
-     *
-     * @param UserNoticeQualifier $notice
      */
     public function testUserNoticeExplicit(UserNoticeQualifier $notice)
     {
@@ -265,8 +231,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testUserNotice
-     *
-     * @param UserNoticeQualifier $notice
      */
     public function testUserNoticeRef(UserNoticeQualifier $notice)
     {
@@ -277,8 +241,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testUserNoticeRef
-     *
-     * @param NoticeReference $ref
      */
     public function testRefOrg(NoticeReference $ref)
     {
@@ -287,8 +249,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testUserNoticeRef
-     *
-     * @param NoticeReference $ref
      */
     public function testRefNumbers(NoticeReference $ref)
     {
@@ -297,8 +257,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificatePoliciesExtension $ext
      */
     public function testExtensions(CertificatePoliciesExtension $ext)
     {
@@ -309,8 +267,6 @@ class CertificatePoliciesTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -321,7 +277,7 @@ class CertificatePoliciesTest extends TestCase
     public function testEncodeEmptyFail()
     {
         $ext = new CertificatePoliciesExtension(false);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->toASN1();
     }
 
@@ -331,7 +287,7 @@ class CertificatePoliciesTest extends TestCase
         $ext_seq = new Sequence(
             new ObjectIdentifier(Extension::OID_CERTIFICATE_POLICIES),
             new OctetString($seq->toDER()));
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         CertificatePoliciesExtension::fromASN1($ext_seq);
     }
 }

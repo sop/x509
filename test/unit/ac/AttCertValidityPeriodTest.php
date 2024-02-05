@@ -38,8 +38,6 @@ class AttCertValidityPeriodTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttCertValidityPeriod $validity
      */
     public function testEncode(AttCertValidityPeriod $validity)
     {
@@ -63,9 +61,6 @@ class AttCertValidityPeriodTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param AttCertValidityPeriod $ref
-     * @param AttCertValidityPeriod $new
      */
     public function testRecoded(AttCertValidityPeriod $ref,
         AttCertValidityPeriod $new)
@@ -80,8 +75,6 @@ class AttCertValidityPeriodTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttCertValidityPeriod $validity
      */
     public function testNotBefore(AttCertValidityPeriod $validity)
     {
@@ -90,8 +83,6 @@ class AttCertValidityPeriodTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AttCertValidityPeriod $validity
      */
     public function testNotAfter(AttCertValidityPeriod $validity)
     {

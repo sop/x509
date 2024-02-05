@@ -16,7 +16,7 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class URINameTest extends TestCase
 {
-    const URI = 'urn:test';
+    public const URI = 'urn:test';
 
     public function testCreate()
     {
@@ -27,8 +27,6 @@ class URINameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param UniformResourceIdentifier $uri
      */
     public function testEncode(UniformResourceIdentifier $uri)
     {
@@ -63,9 +61,6 @@ class URINameTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param UniformResourceIdentifier $ref
-     * @param UniformResourceIdentifier $new
      */
     public function testRecoded(UniformResourceIdentifier $ref,
         UniformResourceIdentifier $new)
@@ -75,8 +70,6 @@ class URINameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param UniformResourceIdentifier $uri
      */
     public function testString(UniformResourceIdentifier $uri)
     {
@@ -85,8 +78,6 @@ class URINameTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param UniformResourceIdentifier $uri
      */
     public function testURI(UniformResourceIdentifier $uri)
     {

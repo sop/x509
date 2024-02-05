@@ -25,7 +25,7 @@ use Sop\X509\GeneralName\GeneralNames;
  */
 class CertificationRequestInfoTest extends TestCase
 {
-    const SAN_DN = 'cn=Alt Name';
+    public const SAN_DN = 'cn=Alt Name';
 
     private static $_subject;
 
@@ -63,8 +63,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testEncode(CertificationRequestInfo $cri)
     {
@@ -88,9 +86,6 @@ class CertificationRequestInfoTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param CertificationRequestInfo $ref
-     * @param CertificationRequestInfo $new
      */
     public function testRecoded(CertificationRequestInfo $ref,
         CertificationRequestInfo $new)
@@ -100,8 +95,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testVersion(CertificationRequestInfo $cri)
     {
@@ -110,8 +103,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testSubject(CertificationRequestInfo $cri)
     {
@@ -120,8 +111,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testWithSubject(CertificationRequestInfo $cri)
     {
@@ -132,8 +121,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testWithExtensionRequest(CertificationRequestInfo $cri)
     {
@@ -155,8 +142,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testSubjectPKI(CertificationRequestInfo $cri)
     {
@@ -166,8 +151,6 @@ class CertificationRequestInfoTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testAttribs(CertificationRequestInfo $cri)
     {
@@ -180,14 +163,12 @@ class CertificationRequestInfoTest extends TestCase
     {
         $cri = new CertificationRequestInfo(self::$_subject,
             self::$_privateKeyInfo->publicKeyInfo());
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $cri->attributes();
     }
 
     /**
      * @depends testAttribs
-     *
-     * @param Attributes $attribs
      */
     public function testSAN(Attributes $attribs)
     {
@@ -204,14 +185,12 @@ class CertificationRequestInfoTest extends TestCase
     {
         $seq = new Sequence(new Integer(1), self::$_subject->toASN1(),
             self::$_privateKeyInfo->publicKeyInfo()->toASN1());
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         CertificationRequestInfo::fromASN1($seq);
     }
 
     /**
      * @depends testCreate
-     *
-     * @param CertificationRequestInfo $cri
      */
     public function testSign(CertificationRequestInfo $cri)
     {

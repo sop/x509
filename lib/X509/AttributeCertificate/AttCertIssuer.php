@@ -20,17 +20,11 @@ abstract class AttCertIssuer
 {
     /**
      * Generate ASN.1 element.
-     *
-     * @return Element
      */
     abstract public function toASN1(): Element;
 
     /**
      * Check whether AttCertIssuer identifies given certificate.
-     *
-     * @param Certificate $cert
-     *
-     * @return bool
      */
     abstract public function identifiesPKC(Certificate $cert): bool;
 
@@ -42,10 +36,6 @@ abstract class AttCertIssuer
      * type.
      *
      * @see https://tools.ietf.org/html/rfc5755#section-4.2.3
-     *
-     * @param Name $name
-     *
-     * @return self
      */
     public static function fromName(Name $name): self
     {
@@ -54,10 +44,6 @@ abstract class AttCertIssuer
 
     /**
      * Initialize from an issuer's public key certificate.
-     *
-     * @param Certificate $cert
-     *
-     * @return self
      */
     public static function fromPKC(Certificate $cert): self
     {
@@ -70,8 +56,6 @@ abstract class AttCertIssuer
      * @param UnspecifiedType $el CHOICE
      *
      * @throws \UnexpectedValueException
-     *
-     * @return self
      */
     public static function fromASN1(UnspecifiedType $el): self
     {

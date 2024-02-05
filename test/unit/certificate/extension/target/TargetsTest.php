@@ -47,8 +47,6 @@ class TargetsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Targets $targets
      */
     public function testEncode(Targets $targets)
     {
@@ -72,9 +70,6 @@ class TargetsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Targets $ref
-     * @param Targets $new
      */
     public function testRecoded(Targets $ref, Targets $new)
     {
@@ -83,8 +78,6 @@ class TargetsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Targets $targets
      */
     public function testAll(Targets $targets)
     {
@@ -93,8 +86,6 @@ class TargetsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Targets $targets
      */
     public function testCount(Targets $targets)
     {
@@ -103,8 +94,6 @@ class TargetsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Targets $targets
      */
     public function testIterator(Targets $targets)
     {
@@ -117,8 +106,6 @@ class TargetsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Targets $targets
      */
     public function testHasTarget(Targets $targets)
     {
@@ -127,8 +114,6 @@ class TargetsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Targets $targets
      */
     public function testHasNoTarget(Targets $targets)
     {

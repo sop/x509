@@ -26,7 +26,6 @@ class SubjectDirectoryAttributesExtension extends Extension implements \Countabl
     /**
      * Constructor.
      *
-     * @param bool      $critical
      * @param Attribute ...$attribs One or more Attribute objects
      */
     public function __construct(bool $critical, Attribute ...$attribs)
@@ -39,8 +38,6 @@ class SubjectDirectoryAttributesExtension extends Extension implements \Countabl
      * Check whether attribute is present.
      *
      * @param string $name OID or attribute name
-     *
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -53,8 +50,6 @@ class SubjectDirectoryAttributesExtension extends Extension implements \Countabl
      * @param string $name OID or attribute name
      *
      * @throws \UnexpectedValueException if attribute is not present
-     *
-     * @return Attribute
      */
     public function firstOf(string $name): Attribute
     {
@@ -85,8 +80,6 @@ class SubjectDirectoryAttributesExtension extends Extension implements \Countabl
 
     /**
      * Get number of attributes.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -103,9 +96,6 @@ class SubjectDirectoryAttributesExtension extends Extension implements \Countabl
         return $this->_attributes->getIterator();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected static function _fromDER(string $data, bool $critical): Extension
     {
         $attribs = SequenceOfAttributes::fromASN1(
@@ -117,9 +107,6 @@ class SubjectDirectoryAttributesExtension extends Extension implements \Countabl
         return new self($critical, ...$attribs->all());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function _valueASN1(): Element
     {
         if (!count($this->_attributes)) {

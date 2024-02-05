@@ -20,11 +20,11 @@ use Sop\X509\GeneralName\UniformResourceIdentifier;
  */
 class NameConstraintsTest extends TestCase
 {
-    const PERMITTED_URI = '.example.com';
+    public const PERMITTED_URI = '.example.com';
 
-    const PERMITTED_DN = 'cn=Test';
+    public const PERMITTED_DN = 'cn=Test';
 
-    const EXCLUDED_URI = 'nope.example.com';
+    public const EXCLUDED_URI = 'nope.example.com';
 
     public function testCreatePermitted()
     {
@@ -47,9 +47,6 @@ class NameConstraintsTest extends TestCase
     /**
      * @depends testCreatePermitted
      * @depends testCreateExcluded
-     *
-     * @param GeneralSubtrees $permitted
-     * @param GeneralSubtrees $excluded
      */
     public function testCreate(GeneralSubtrees $permitted,
         GeneralSubtrees $excluded)
@@ -61,8 +58,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -71,8 +66,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -81,8 +74,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -106,9 +97,6 @@ class NameConstraintsTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -117,8 +105,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param NameConstraintsExtension $ext
      */
     public function testPermitted(NameConstraintsExtension $ext)
     {
@@ -129,8 +115,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param NameConstraintsExtension $ext
      */
     public function testExcluded(NameConstraintsExtension $ext)
     {
@@ -141,8 +125,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testPermitted
-     *
-     * @param GeneralSubtrees $substrees
      */
     public function testCount(GeneralSubtrees $subtrees)
     {
@@ -151,8 +133,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testPermitted
-     *
-     * @param GeneralSubtrees $substrees
      */
     public function testIterator(GeneralSubtrees $subtrees)
     {
@@ -166,8 +146,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testPermitted
-     *
-     * @param GeneralSubtrees $substrees
      */
     public function testPermittedURI(GeneralSubtrees $subtrees)
     {
@@ -178,8 +156,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testPermitted
-     *
-     * @param GeneralSubtrees $substrees
      */
     public function testPermittedDN(GeneralSubtrees $subtrees)
     {
@@ -190,8 +166,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testExcluded
-     *
-     * @param GeneralSubtrees $substrees
      */
     public function testExcludedURI(GeneralSubtrees $subtrees)
     {
@@ -202,8 +176,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param NameConstraintsExtension $ext
      */
     public function testExtensions(NameConstraintsExtension $ext)
     {
@@ -214,8 +186,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {
@@ -232,8 +202,6 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param Extension $ext
      */
     public function testEncodeEmpty(Extension $ext)
     {
@@ -257,9 +225,6 @@ class NameConstraintsTest extends TestCase
     /**
      * @depends testCreateEmpty
      * @depends testDecodeEmpty
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecodedEmpty(Extension $ref, Extension $new)
     {
@@ -268,23 +233,19 @@ class NameConstraintsTest extends TestCase
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param NameConstraintsExtension $ext
      */
     public function testNoPermittedSubtreesFail(NameConstraintsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->permittedSubtrees();
     }
 
     /**
      * @depends testCreateEmpty
-     *
-     * @param NameConstraintsExtension $ext
      */
     public function testNoExcludedSubtreesFail(NameConstraintsExtension $ext)
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $ext->excludedSubtrees();
     }
 }

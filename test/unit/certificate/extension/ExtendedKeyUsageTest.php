@@ -27,8 +27,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -37,8 +35,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -47,8 +43,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -72,9 +66,6 @@ class ExtendedKeyUsageTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -83,8 +74,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtendedKeyUsageExtension $ext
      */
     public function testHas(ExtendedKeyUsageExtension $ext)
     {
@@ -95,8 +84,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtendedKeyUsageExtension $ext
      */
     public function testHasNot(ExtendedKeyUsageExtension $ext)
     {
@@ -106,8 +93,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtendedKeyUsageExtension $ext
      */
     public function testPurposes(ExtendedKeyUsageExtension $ext)
     {
@@ -116,8 +101,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtendedKeyUsageExtension $ext
      */
     public function testCount(ExtendedKeyUsageExtension $ext)
     {
@@ -126,8 +109,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtendedKeyUsageExtension $ext
      */
     public function testIterator(ExtendedKeyUsageExtension $ext)
     {
@@ -140,8 +121,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param ExtendedKeyUsageExtension $ext
      */
     public function testExtensions(ExtendedKeyUsageExtension $ext)
     {
@@ -152,8 +131,6 @@ class ExtendedKeyUsageTest extends TestCase
 
     /**
      * @depends testExtensions
-     *
-     * @param Extensions $exts
      */
     public function testFromExtensions(Extensions $exts)
     {

@@ -15,9 +15,9 @@ use Sop\X509\Certificate\Extension\PolicyMappings\PolicyMapping;
  */
 class PolicyMappingTest extends TestCase
 {
-    const ISSUER_POLICY = '1.3.6.1.3.1';
+    public const ISSUER_POLICY = '1.3.6.1.3.1';
 
-    const SUBJECT_POLICY = '1.3.6.1.3.2';
+    public const SUBJECT_POLICY = '1.3.6.1.3.2';
 
     public function testCreate()
     {
@@ -28,8 +28,6 @@ class PolicyMappingTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMapping $mapping
      */
     public function testEncode(PolicyMapping $mapping)
     {
@@ -53,9 +51,6 @@ class PolicyMappingTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param PolicyMapping $ref
-     * @param PolicyMapping $new
      */
     public function testRecoded(PolicyMapping $ref, PolicyMapping $new)
     {
@@ -64,8 +59,6 @@ class PolicyMappingTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMapping $mapping
      */
     public function testIssuerDomainPolicy(PolicyMapping $mapping)
     {
@@ -74,8 +67,6 @@ class PolicyMappingTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param PolicyMapping $mapping
      */
     public function testSubjectDomainPolicy(PolicyMapping $mapping)
     {

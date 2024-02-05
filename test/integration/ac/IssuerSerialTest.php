@@ -49,8 +49,6 @@ class IssuerSerialIntegrationTest extends TestCase
 
     /**
      * @depends testFromCertificate
-     *
-     * @param IssuerSerial $is
      */
     public function testIssuer(IssuerSerial $is)
     {
@@ -62,8 +60,6 @@ class IssuerSerialIntegrationTest extends TestCase
 
     /**
      * @depends testFromCertificate
-     *
-     * @param IssuerSerial $is
      */
     public function testSerial(IssuerSerial $is)
     {

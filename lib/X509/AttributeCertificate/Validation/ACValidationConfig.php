@@ -57,8 +57,6 @@ class ACValidationConfig
 
     /**
      * Get certification path of the AC's holder.
-     *
-     * @return CertificationPath
      */
     public function holderPath(): CertificationPath
     {
@@ -67,8 +65,6 @@ class ACValidationConfig
 
     /**
      * Get certification path of the AC's issuer.
-     *
-     * @return CertificationPath
      */
     public function issuerPath(): CertificationPath
     {
@@ -77,10 +73,6 @@ class ACValidationConfig
 
     /**
      * Get self with given evaluation reference time.
-     *
-     * @param \DateTimeImmutable $dt
-     *
-     * @return self
      */
     public function withEvaluationTime(\DateTimeImmutable $dt): self
     {
@@ -91,8 +83,6 @@ class ACValidationConfig
 
     /**
      * Get the evaluation reference time.
-     *
-     * @return \DateTimeImmutable
      */
     public function evaluationTime(): \DateTimeImmutable
     {
@@ -101,10 +91,6 @@ class ACValidationConfig
 
     /**
      * Get self with permitted targets.
-     *
-     * @param Target ...$targets
-     *
-     * @return self
      */
     public function withTargets(Target ...$targets): self
     {

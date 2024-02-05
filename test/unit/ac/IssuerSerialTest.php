@@ -42,8 +42,6 @@ class IssuerSerialTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param IssuerSerial $iss_ser
      */
     public function testEncode(IssuerSerial $iss_ser)
     {
@@ -67,9 +65,6 @@ class IssuerSerialTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param IssuerSerial $ref
-     * @param IssuerSerial $new
      */
     public function testRecoded(IssuerSerial $ref, IssuerSerial $new)
     {
@@ -78,8 +73,6 @@ class IssuerSerialTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param IssuerSerial $is
      */
     public function testIssuer(IssuerSerial $is)
     {
@@ -88,8 +81,6 @@ class IssuerSerialTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param IssuerSerial $is
      */
     public function testSerial(IssuerSerial $is)
     {
@@ -98,8 +89,6 @@ class IssuerSerialTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param IssuerSerial $is
      */
     public function testIssuerUID(IssuerSerial $is)
     {
@@ -109,7 +98,7 @@ class IssuerSerialTest extends TestCase
     public function testNoIssuerUIDFail()
     {
         $is = new IssuerSerial(self::$_issuer, 1);
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $is->issuerUID();
     }
 }

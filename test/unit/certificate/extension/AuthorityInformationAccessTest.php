@@ -32,8 +32,6 @@ class AuthorityInformationAccessTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testOID(Extension $ext)
     {
@@ -43,8 +41,6 @@ class AuthorityInformationAccessTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testCritical(Extension $ext)
     {
@@ -53,8 +49,6 @@ class AuthorityInformationAccessTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param Extension $ext
      */
     public function testEncode(Extension $ext)
     {
@@ -79,9 +73,6 @@ class AuthorityInformationAccessTest extends TestCase
     /**
      * @depends testCreate
      * @depends testDecode
-     *
-     * @param Extension $ref
-     * @param Extension $new
      */
     public function testRecoded(Extension $ref, Extension $new)
     {
@@ -90,8 +81,6 @@ class AuthorityInformationAccessTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityInformationAccessExtension $ext
      */
     public function testAccessDescriptions(
         AuthorityInformationAccessExtension $ext)
@@ -102,8 +91,6 @@ class AuthorityInformationAccessTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityInformationAccessExtension $ext
      */
     public function testCount(AuthorityInformationAccessExtension $ext)
     {
@@ -112,8 +99,6 @@ class AuthorityInformationAccessTest extends TestCase
 
     /**
      * @depends testCreate
-     *
-     * @param AuthorityInformationAccessExtension $ext
      */
     public function testIterator(AuthorityInformationAccessExtension $ext)
     {
